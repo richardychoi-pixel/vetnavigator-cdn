@@ -33,6 +33,9 @@
   if (window.__vnLoaded) return;
   window.__vnLoaded = true;
 
+  // ── API Proxy (Cloudflare Worker) ──────────────────────────────────────────
+  var VN_API_URL = 'https://vetnavigator-chat.richard-y-choi.workers.dev';
+
   // ── Read client config ─────────────────────────────────────────────────────
   var cfg = window.VetNavigatorConfig || {};
 
@@ -643,7 +646,7 @@ function cwAiFallback(userMsg) {
 
   var systemPrompt = "You are a VA benefits assistant for a veteran service organization. Answer briefly (3-5 sentences max). Focus only on VA benefits, veteran services, and related topics. If the question is off-topic, say you can only help with VA benefits. End every response with one short follow-up suggestion the veteran can tap. Format: answer, then on a new line starting with 'Suggested next:' followed by the suggestion.";
 
-  fetch('https://api.anthropic.com/v1/messages', {
+  fetch(VN_API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -1303,7 +1306,7 @@ document.getElementById('fb-scan-btn').addEventListener('click', async function(
   var btn = this; btn.disabled = true;
   setStatus('📘 AI is reading your Facebook info...', 'scan-scanning');
   try {
-    var aiRes = await fetch('https://api.anthropic.com/v1/messages', {
+    var aiRes = await fetch(VN_API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1379,7 +1382,7 @@ document.getElementById('admin-scan-btn').addEventListener('click', async functi
   }
   setStatus('🤖 AI is reading your website...', 'scan-scanning');
   try {
-    var aiRes = await fetch('https://api.anthropic.com/v1/messages', {
+    var aiRes = await fetch(VN_API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
