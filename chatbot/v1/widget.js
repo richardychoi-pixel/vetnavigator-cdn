@@ -1061,7 +1061,9 @@ document.addEventListener('vn-admin-saved', function() {
 });
 
 
+function toggleBilling() {
   var toggle = document.getElementById('billing-toggle');
+  if (!toggle) return;
   var isMonthly = toggle.classList.contains('monthly');
   toggle.classList.toggle('monthly', !isMonthly);
   var showAnn = isMonthly;
@@ -1071,8 +1073,10 @@ document.addEventListener('vn-admin-saved', function() {
   document.querySelectorAll('.mo-val').forEach(function(el) {
     el.style.display = showAnn ? 'none' : '';
   });
-  document.getElementById('lbl-annual').classList.toggle('active', showAnn);
-  document.getElementById('lbl-monthly').classList.toggle('active', !showAnn);
+  var lblAnn = document.getElementById('lbl-annual');
+  var lblMo  = document.getElementById('lbl-monthly');
+  if (lblAnn) lblAnn.classList.toggle('active', showAnn);
+  if (lblMo)  lblMo.classList.toggle('active', !showAnn);
 }
 // ── CHECKOUT URLS — paste your GHL/Stripe links here ─────────────────────────
 // To activate: replace each placeholder with your real GHL order form or Stripe checkout URL
@@ -1487,29 +1491,33 @@ document.getElementById('admin-save-btn').addEventListener('click', function() {
   });
 
   var msg = document.getElementById('admin-saved-msg');
-  msg.style.display = 'block';
-  setTimeout(function() { msg.style.display = 'none'; }, 3000);
+  if (msg) {
+    msg.style.display = 'block';
+    setTimeout(function() { msg.style.display = 'none'; }, 3000);
+  }
 
   // Reset chat with new branding
-  cwBuildOrgNodes();
-  cwBuildWelcome();
-  cwMsgs.innerHTML = ''; cwCards.innerHTML = ''; cwChips.innerHTML = '';
-  cwProg.style.width = '0%';
+  if (typeof cwBuildOrgNodes === 'function') cwBuildOrgNodes();
+  if (typeof cwBuildWelcome === 'function') cwBuildWelcome();
+  var cwMsgsEl = document.getElementById('cw-msgs');
+  var cwCardsEl = document.getElementById('cw-cards');
+  var cwChipsEl = document.getElementById('cw-chips');
+  var cwProgEl  = document.getElementById('cw-prog');
+  if (cwMsgsEl)  cwMsgsEl.innerHTML  = '';
+  if (cwCardsEl) cwCardsEl.innerHTML = '';
+  if (cwChipsEl) cwChipsEl.innerHTML = '';
+  if (cwProgEl)  cwProgEl.style.width = '0%';
 });
 
 }); // end DOMContentLoaded
 
-
   // ── Init on DOM ready ──────────────────────────────────────────────────────
   function vnInit() {
     if (typeof cwBuildOrgNodes === 'function') cwBuildOrgNodes();
-    if (document.getElementById('fcw-org-name')) {
-      document.getElementById('fcw-org-name').textContent = cwOrgName + ' — Benefits Assistant';
-    }
-    if (document.getElementById('cw-org-name')) {
-      document.getElementById('cw-org-name').textContent = cwOrgName;
-    }
-    // Dispatch event so page can listen
+    var fcwOrgNameEl = document.getElementById('fcw-org-name');
+    var cwOrgNameEl  = document.getElementById('cw-org-name');
+    if (fcwOrgNameEl) fcwOrgNameEl.textContent = cwOrgName + ' — Benefits Assistant';
+    if (cwOrgNameEl)  cwOrgNameEl.textContent  = cwOrgName;
     window.dispatchEvent(new CustomEvent('vn-ready', { detail: { orgId: cfg.orgId } }));
   }
 
