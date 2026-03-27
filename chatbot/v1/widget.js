@@ -53,6 +53,9 @@
   var cwLang       = cfg.lang       || 'en';
   var GHL_WEBHOOK  = cfg.webhook    || '';
 
+  // ── DOM-ready wrapper for all injection ───────────────────────────────────
+  function vnInjectDOM() {
+
   // ── Inject CSS ─────────────────────────────────────────────────────────────
   var style = document.createElement('style');
   style.id  = 'vn-widget-styles';
@@ -92,6 +95,15 @@
   var AI_DAILY_CAP = 20;
   window.AI_DAILY_CAP = AI_DAILY_CAP;
 
+
+  } // end vnInjectDOM
+
+  // Run injection when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', vnInjectDOM);
+  } else {
+    vnInjectDOM();
+  }
 
 document.addEventListener('DOMContentLoaded', function() {
 
