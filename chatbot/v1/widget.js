@@ -1539,4 +1539,14 @@ document.getElementById('admin-save-btn').addEventListener('click', function() {
     vnInit();
   }
 
+  // ── Expose functions to window for onclick handlers ───────────────────────
+  window.toggleFloat   = toggleFloat;
+  window.openFloat     = openFloat;
+  window.collapseFloat = collapseFloat;
+  window.dismissNotif  = dismissNotif;
+  window.fcwSend       = fcwSend;
+  window.goToCheckout  = goToCheckout;
+  window.closeCheckout = closeCheckout;
+  window.toggleBilling = toggleBilling;
+
 })();
