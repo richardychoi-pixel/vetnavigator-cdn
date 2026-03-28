@@ -1460,10 +1460,36 @@
     if (node.pct !== undefined) setProg(node.pct);
   }
 
-  function renderGated() {
-    botMsg(s('gated'));
+  function renderGated(key) {
+    var label = key ? topicLabel(key) : 'that topic';
+    botMsg("I'd love to help with <strong>" + label + "</strong>.\n\nFor this topic, I'd recommend speaking directly with your VSO counselor — they can give you personalized guidance at no cost and walk you through the details step by step.");
     clearOpts();
-    mkChips(['Find a VSO counselor', 'See all benefits']);
+    mkChips(['Find a VSO counselor', 'See all benefits', 'Start over']);
+
+    // Silent upsell notification to VetNavigator
+    if (BREVO_KEY && ORG_EMAIL) {
+      var tierNeeded = TOPIC_TIERS[key] || 2;
+      var planNeeded = tierNeeded >= 3 ? 'Standard' : 'Starter';
+      fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
+        body: JSON.stringify({
+          sender:  { name: 'VetNavigator AI', email: SUPPORT_EMAIL },
+          to:      [{ email: SUPPORT_EMAIL }],
+          subject: '📊 Upgrade Opportunity — ' + ORG_NAME + ' · ' + label,
+          htmlContent: '<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;">'
+            + '<div style="background:#1a3a6b;padding:20px 24px;border-radius:10px 10px 0 0;color:#fff;">'
+            + '<h2 style="margin:0;font-size:18px;">📊 Veteran Requested Gated Topic</h2></div>'
+            + '<div style="padding:20px 24px;background:#fff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;">'
+            + '<p style="font-size:14px;color:#374151;margin:0 0 12px;"><strong>' + ORG_NAME + '</strong> (License: ' + LICENSE_KEY + ')</p>'
+            + '<p style="font-size:14px;color:#374151;margin:0 0 12px;">A veteran on their site asked about <strong>' + label + '</strong>, which requires the <strong>' + planNeeded + '</strong> plan or above.</p>'
+            + '<p style="font-size:13px;color:#6b7280;margin:0 0 16px;">Consider reaching out with a friendly note letting them know their visitors are asking about this topic.</p>'
+            + '<div style="background:#f9f7f3;border-radius:8px;padding:14px 16px;font-size:13px;color:#374151;border-left:3px solid #e8c84a;">'
+            + '<strong>Suggested outreach:</strong><br>"Hi [name], just a quick heads-up — veterans visiting your site have been asking about ' + label + '. Your ' + planNeeded + ' plan would cover this topic and more. Happy to walk you through it if you\'re interested!"'
+            + '</div></div></div>'
+        })
+      }).catch(function () {});
+    }
   }
 
   // ── TOPIC LABEL ────────────────────────────────────────────────────────────
@@ -1591,46 +1617,46 @@
 
   // ── TIER GATE FREE TEXT ────────────────────────────────────────────────────
   function gatedFreeText(text) {
-    if (IS_DEMO) return false;
+    if (IS_DEMO) return null;
     var checks = [
       // Tier 2 — Starter+
-      { level: 2, re: /pact act|burn pit|agent orange|toxic exposure|gulf war illness/i },
-      { level: 2, re: /voc rehab|vocational rehab|chapter 31|voc.*rehab/i },
-      { level: 2, re: /\bdic\b|dependency.*indemnity|surviving spouse.*compensation/i },
-      { level: 2, re: /champva/i },
-      { level: 2, re: /\bbdd\b|benefits delivery at discharge/i },
-      { level: 2, re: /how.*rating.*work|rating.*explained|what.*rating.*mean|disability.*rating.*percent/i },
-      { level: 2, re: /increase.*rating|higher rating|appeal.*rating|raise.*rating|improve.*rating/i },
-      { level: 2, re: /c&p exam|compensation.*pension exam|c and p exam|cp exam/i },
-      { level: 2, re: /apply.*gi bill|gi bill.*application|how.*use gi bill|gi bill.*how/i },
-      { level: 2, re: /transfer.*gi bill|gi bill.*transfer/i },
-      { level: 2, re: /apply.*va loan|va.*home loan.*apply|how.*get va loan|va loan.*apply/i },
-      { level: 2, re: /enroll.*va health|va.*healthcare.*enroll|sign up.*va health|register.*va/i },
-      { level: 2, re: /eligible.*va health|qualify.*va health|va health.*eligible|do i qualify.*va/i },
+      { topic: 'pact_act',              level: 2, re: /pact act|burn pit|agent orange|toxic exposure|gulf war illness/i },
+      { topic: 'voc_rehab',             level: 2, re: /voc rehab|vocational rehab|chapter 31|voc.*rehab/i },
+      { topic: 'dic',                   level: 2, re: /\bdic\b|dependency.*indemnity|surviving spouse.*compensation/i },
+      { topic: 'champva',               level: 2, re: /champva/i },
+      { topic: 'bdd',                   level: 2, re: /\bbdd\b|benefits delivery at discharge/i },
+      { topic: 'rating_explained',      level: 2, re: /how.*rating.*work|rating.*explained|what.*rating.*mean|disability.*rating.*percent/i },
+      { topic: 'rating_increase',       level: 2, re: /increase.*rating|higher rating|appeal.*rating|raise.*rating|improve.*rating/i },
+      { topic: 'cp_exam',               level: 2, re: /c&p exam|compensation.*pension exam|c and p exam|cp exam/i },
+      { topic: 'gi_bill_apply',         level: 2, re: /apply.*gi bill|gi bill.*application|how.*use gi bill|gi bill.*how/i },
+      { topic: 'gi_bill_transfer',      level: 2, re: /transfer.*gi bill|gi bill.*transfer/i },
+      { topic: 'home_loan_apply',       level: 2, re: /apply.*va loan|va.*home loan.*apply|how.*get va loan|va loan.*apply/i },
+      { topic: 'healthcare_enroll',     level: 2, re: /enroll.*va health|va.*healthcare.*enroll|sign up.*va health|register.*va/i },
+      { topic: 'healthcare_eligibility',level: 2, re: /eligible.*va health|qualify.*va health|va health.*eligible|do i qualify.*va/i },
       // Tier 3 — Standard+
-      { level: 3, re: /\btdiu\b|total disability|individual unemployability|unemployable/i },
-      { level: 3, re: /nexus letter|buddy statement|nexus.*letter/i },
-      { level: 3, re: /ptsd|mental health|counseling|vet center|therapy.*veteran|mst|military sexual/i },
-      { level: 3, re: /va pension|wartime.*pension|pension.*veteran/i },
-      { level: 3, re: /aid.*attendance|aid and attendance/i },
-      { level: 3, re: /burial benefit|funeral.*va|va.*burial|burial.*allowance/i },
-      { level: 3, re: /caregiver.*program|va.*caregiver|program of comprehensive/i },
-      { level: 3, re: /va dental|veteran.*dental|va vision|veteran.*vision/i },
-      { level: 3, re: /claim status|where.*my claim|check.*claim|track.*claim/i },
-      { level: 3, re: /va debt|overpayment.*va|va.*debt|owe.*va/i },
-      { level: 3, re: /\bmst\b|military sexual trauma/i },
-      { level: 3, re: /travel pay|mileage.*va|va.*travel reimburs|travel.*reimburs/i },
-      { level: 3, re: /community care|outside.*va.*doctor|non.*va.*care/i },
-      { level: 3, re: /sgli|vgli|life insurance.*veteran|veteran.*life insurance/i },
-      { level: 3, re: /hud.*vash|homeless.*veteran|veteran.*housing.*assist/i },
-      { level: 3, re: /women veteran|female veteran|va.*women/i },
-      { level: 3, re: /national guard|reserve.*benefit|guard.*benefit/i },
-      { level: 3, re: /va records|service record|military record|dd214/i }
+      { topic: 'tdiu',                  level: 3, re: /\btdiu\b|total disability|individual unemployability|unemployable/i },
+      { topic: 'nexus',                 level: 3, re: /nexus letter|buddy statement|nexus.*letter/i },
+      { topic: 'mental_health',         level: 3, re: /ptsd|mental health|counseling|vet center|therapy.*veteran|mst|military sexual/i },
+      { topic: 'pension',               level: 3, re: /va pension|wartime.*pension|pension.*veteran/i },
+      { topic: 'aid_attendance',        level: 3, re: /aid.*attendance|aid and attendance/i },
+      { topic: 'burial',                level: 3, re: /burial benefit|funeral.*va|va.*burial|burial.*allowance/i },
+      { topic: 'caregiver',             level: 3, re: /caregiver.*program|va.*caregiver|program of comprehensive/i },
+      { topic: 'dental_vision',         level: 3, re: /va dental|veteran.*dental|va vision|veteran.*vision/i },
+      { topic: 'claim_status',          level: 3, re: /claim status|where.*my claim|check.*claim|track.*claim/i },
+      { topic: 'va_debt',               level: 3, re: /va debt|overpayment.*va|va.*debt|owe.*va/i },
+      { topic: 'mst',                   level: 3, re: /\bmst\b|military sexual trauma/i },
+      { topic: 'travel_pay',            level: 3, re: /travel pay|mileage.*va|va.*travel reimburs|travel.*reimburs/i },
+      { topic: 'community_care',        level: 3, re: /community care|outside.*va.*doctor|non.*va.*care/i },
+      { topic: 'life_insurance',        level: 3, re: /sgli|vgli|life insurance.*veteran|veteran.*life insurance/i },
+      { topic: 'housing_help',          level: 3, re: /hud.*vash|homeless.*veteran|veteran.*housing.*assist/i },
+      { topic: 'women_veterans',        level: 3, re: /women veteran|female veteran|va.*women/i },
+      { topic: 'guard_reserve',         level: 3, re: /national guard|reserve.*benefit|guard.*benefit/i },
+      { topic: 'va_records',            level: 3, re: /va records|service record|military record|dd214/i }
     ];
     for (var i = 0; i < checks.length; i++) {
-      if (checks[i].re.test(text) && TIER_LVL < checks[i].level) return true;
+      if (checks[i].re.test(text) && TIER_LVL < checks[i].level) return checks[i].topic;
     }
-    return false;
+    return null;
   }
 
   // ── ROUTE TEXT ─────────────────────────────────────────────────────────────
@@ -1712,11 +1738,12 @@
     checkWarn();
     if (turnCount >= CONV_LIMIT) { setTimeout(showLimit, 600); return; }
     if (!key) {
-      if (gatedFreeText(text)) { setTimeout(renderGated, 400); return; }
+      var gatedTopic = gatedFreeText(text);
+      if (gatedTopic) { setTimeout(function () { renderGated(gatedTopic); }, 400); return; }
       callAI(text);
       return;
     }
-    if (!canAccess(key)) { setTimeout(renderGated, 400); return; }
+    if (!canAccess(key)) { setTimeout(function () { renderGated(key); }, 400); return; }
     setTimeout(function () { renderNode(key); }, 400);
   }
 
