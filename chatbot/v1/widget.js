@@ -1036,13 +1036,13 @@
 
     // Options area
     '#vnop{padding:8px 11px 10px;background:rgba(0,0,0,.25);',
-    'border-top:.5px solid var(--vbd);height:182px;min-height:182px;max-height:182px;',
+    'border-top:.5px solid var(--vbd);height:150px;min-height:150px;max-height:150px;',
     'overflow-y:auto}',
     '#vnop::-webkit-scrollbar{width:2px}',
     '#vnop::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}',
     '#vnol{font-size:10px;color:rgba(255,255,255,.3);letter-spacing:1px;',
     'text-transform:uppercase;margin-bottom:7px;display:none}',
-    '#vncd{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:6px}',
+    '#vncd{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px}',
     '.vnca{background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.12);',
     'border-radius:9px;padding:6px 7px;cursor:pointer;transition:background .15s;text-align:center}',
     '.vnca:hover{background:rgba(178,34,52,.25);border-color:rgba(178,34,52,.5)}',
@@ -1165,6 +1165,10 @@
     '#vnn{right:12px}}'
   ].join('');
 
+  // ── ADMIN URL GATE ─────────────────────────────────────────────────────────
+  // Admin Panel only shows when VSO adds ?vnadmin=1 to their site URL
+  var SHOW_ADMIN = /[?&]vnadmin=1(?:&|$)/i.test(window.location.search);
+
   // ── BUILD HTML ─────────────────────────────────────────────────────────────
   function buildHTML() {
     var langs = [
@@ -1184,10 +1188,10 @@
       + '<button class="vntb act" data-tab="chat">💬 Veteran Chat</button>'
       + '<button class="vntb" data-tab="feedback">📝 Feedback</button>'
       + '<button class="vntb" data-tab="support">🎧 Support</button>'
-      + (HAS_ADMIN ? '<button class="vntb" data-tab="admin">⚙️ Admin Panel</button>' : '')
+      + (HAS_ADMIN && SHOW_ADMIN ? '<button class="vntb" data-tab="admin">⚙️ Admin Panel</button>' : '')
       + '</div>';
 
-    var adm = HAS_ADMIN
+    var adm = HAS_ADMIN && SHOW_ADMIN
       ? '<div id="vnadp" class="vntp" data-panel="admin">'
         + '<div style="font-size:11px;color:rgba(232,200,74,.85);background:rgba(232,200,74,.07);border:1px solid rgba(232,200,74,.2);border-radius:8px;padding:9px 11px;margin-bottom:12px;line-height:1.5">Update your organization info below. Changes appear instantly in the chat.</div>'
         // Scan tabs
@@ -1237,7 +1241,7 @@
       + '<span class="vnstar" data-v="5">☆</span>'
       + '</div>'
       + '<textarea id="vnfbtx" placeholder="Share any thoughts, suggestions, or issues (optional)…" '
-      + 'style="width:100%;height:80px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.15);'
+      + 'style="width:100%;height:140px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.15);'
       + 'border-radius:8px;padding:8px 10px;font-size:12px;color:#fff;font-family:inherit;'
       + 'outline:none;resize:none;box-sizing:border-box;margin-bottom:10px"></textarea>'
       + '<button id="vnfbsb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);'
@@ -1260,7 +1264,7 @@
       + '<option value="documents">Document request</option>'
       + '<option value="other">Other</option>'
       + '</select>'
-      + '<textarea id="vnsmsg" placeholder="Describe your question or request…" style="width:100%;height:80px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;resize:none;box-sizing:border-box;margin-bottom:8px"></textarea>'
+      + '<textarea id="vnsmsg" placeholder="Describe your question or request…" style="width:100%;height:140px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;resize:none;box-sizing:border-box;margin-bottom:8px"></textarea>'
       + '<div id="vnserr" style="display:none;font-size:11px;color:rgba(255,100,100,.9);margin-bottom:6px"></div>'
       + '<button id="vnssb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Send Message</button>'
       + '</div>'
@@ -1718,16 +1722,29 @@
         max_tokens: 400,
         system:     'You are a warm, knowledgeable VA benefits assistant for ' + ORG_NAME
           + '. Your role is to help veterans understand and access their VA benefits.'
+          + '\n\nKey VA knowledge you must recognize without asking for clarification:'
+          + '\n- PACT Act (Promise to Address Comprehensive Toxics Act) — expanded VA healthcare and benefits for veterans exposed to burn pits, Agent Orange, and other toxic substances'
+          + '\n- TERA (Toxic Exposure Risk Activity) — allows post-9/11 combat veterans to enroll in VA healthcare'
+          + '\n- Camp Lejeune — water contamination 1953-1987, veterans and families can file claims'
+          + '\n- Agent Orange — herbicide used in Vietnam, linked to presumptive conditions for disability claims'
+          + '\n- Burn pits — open-air waste burning in Iraq/Afghanistan, covered under PACT Act'
+          + '\n- Blue Water Navy — Vietnam-era veterans who served offshore, eligible for Agent Orange presumptives'
+          + '\n- MST (Military Sexual Trauma) — VA provides free counseling and treatment regardless of discharge status'
+          + '\n- TDIU (Total Disability Individual Unemployability) — pays at 100% rate when disabilities prevent substantial employment'
+          + '\n- SMC (Special Monthly Compensation) — additional compensation for severe disabilities like loss of limb or blindness'
+          + '\n- C&P exam (Compensation & Pension) — medical exam used to evaluate disability claims'
           + '\n\nGuidelines:'
           + '\n- Be empathetic, respectful, and encouraging — many veterans find this process overwhelming'
           + '\n- Give clear, practical answers with specific next steps'
           + '\n- Include relevant dollar amounts, deadlines, or eligibility thresholds when helpful'
           + '\n- Always recommend a free VSO counselor for complex or personalized situations'
-          + '\n- If the question involves crisis, mental health, or safety — immediately provide the Veterans Crisis Line: dial 988 press 1'
+          + '\n- If the question involves crisis, mental health distress, or safety — immediately provide the Veterans Crisis Line: dial 988 press 1, text 838255, or chat at VeteransCrisisLine.net. Lead with empathy ("You are not alone"), keep it brief, do NOT ask probing questions or give clinical advice'
           + '\n- Keep responses focused but thorough — 4-8 sentences is ideal'
-          + '\n- End every response with one short, specific follow-up suggestion the veteran can tap'
-          + '\n- Format: answer first, then on a new line starting with Suggested next: followed by the suggestion'
-          + '\n- Only answer questions about VA benefits, veteran services, and related topics',
+          + '\n- End every response with one short follow-up topic the veteran can tap as a button (2-5 words max, a benefit topic only)'
+          + '\n- Format: answer first, then on a new line starting with Suggested next: followed by the short topic'
+          + '\n- The suggestion must be a short benefit topic like "PACT Act eligibility" or "File a disability claim" — NEVER a question, instruction, or sentence telling the user what to do'
+          + '\n- Only answer questions about VA benefits, veteran services, and related topics'
+          + '\n- If the question is off-topic (events, Post hours, membership, non-VA questions), keep your redirect to 1-2 sentences max — point them to the Post directly, then offer to help with VA benefits. Start with "For [org name]..." not with a preamble about what you can or cannot do',
         messages: [{ role: 'user', content: msg }]
       })
     })
@@ -1739,6 +1756,10 @@
       var pts  = txt.split(/Suggested next:/i);
       var ans  = pts[0].trim();
       var sug  = pts[1] ? pts[1].trim().replace(/^["']|["']$/g, '') : null;
+      // Chip guard: reject suggestions that are too long, look like questions, or are instructions
+      if (sug && (sug.length > 50 || /^(reply|tell|call|grab|click|try|go to|ask|contact|reach out)\b/i.test(sug) || /\?$/.test(sug))) {
+        sug = null;
+      }
       botMsg(ans);
       chatHistory.push({ topic: 'ai', text: ans.substring(0, 120) });
       clearOpts();
@@ -1755,9 +1776,33 @@
     });
   }
 
+  // ── CRISIS INTERCEPT ──────────────────────────────────────────────────────
+  var CRISIS_RE = /\b(kill\s*(my)?self|suicide|suicidal|end\s*(my|it|this)\s*(life)?|want\s*to\s*die|wanna\s*die|don'?t\s*want\s*to\s*(live|be\s*here|be\s*alive)|hurt\s*(my)?self|harm\s*(my)?self|self[- ]?harm|take\s*my\s*(own\s*)?life|no\s*reason\s*to\s*live|better\s*off\s*dead|can'?t\s*(go|do)\s*(this|it)\s*anymore|overdose|cut\s*(my)?self)\b/i;
+
+  var CRISIS_MSG = '<strong>You are not alone, and your life matters.</strong>'
+    + '\n\nIf you or someone you know is in crisis, please reach out now:'
+    + '\n\n🆘 <strong>Veterans Crisis Line</strong> — Dial <strong>988</strong>, then press <strong>1</strong>'
+    + '\n📱 Text <strong>838255</strong>'
+    + '\n💬 Chat at <strong>VeteransCrisisLine.net</strong>'
+    + '\n\nTrained responders are available <strong>24/7</strong> — free and confidential.'
+    + '\n\nYou\'ve already shown courage by reaching out. A real person is ready to listen right now.';
+
   // ── MAIN HANDLE ────────────────────────────────────────────────────────────
   function handle(text) {
     if (turnCount >= CONV_LIMIT) { showLimit(); return; }
+
+    // Crisis intercept — bypass routing and AI entirely
+    if (CRISIS_RE.test(text)) {
+      userMsg(text);
+      turnCount++;
+      setTimeout(function () {
+        clearOpts();
+        botMsg(CRISIS_MSG);
+        mkChips(['Veterans Crisis Line info', 'Talk about VA healthcare', 'Start over']);
+      }, 400);
+      return;
+    }
+
     var key = route(text);
     userMsg(text);
     turnCount++;
@@ -1924,7 +1969,7 @@
   }
 
   function populateAdmin() {
-    if (!HAS_ADMIN) return;
+    if (!HAS_ADMIN || !SHOW_ADMIN) return;
     ge('an').value = ORG_NAME;
     ge('ac').value = ORG_CITY;
     ge('ap').value = ORG_PHONE;
@@ -2010,8 +2055,8 @@
     // Restart
     ge('vnrs').addEventListener('click', restart);
 
-    // Admin panel wiring (Starter+)
-    if (HAS_ADMIN) {
+    // Admin panel wiring (Starter+ AND ?vnadmin=1)
+    if (HAS_ADMIN && SHOW_ADMIN) {
       ge('vnadde').addEventListener('click', vnAE);
       ge('vnadda').addEventListener('click', vnAL);
       ge('vnsv').addEventListener('click', vnSave);
