@@ -1,23 +1,21 @@
 /*!
- * VetNavigator AI — Embeddable Chatbot Widget v3.0
+ * VetNavigator AI — Embeddable Chatbot Widget v4.1
  * CDN: https://cdn.vetnavigator.ai/chatbot/v1/widget.js
  * © 2026 VetNavigator AI · Veteran-Made & Veteran-Owned
  *
  * INSTALL — paste before </body> on any website:
  *
+ *   ONE-LINE INSTALL (recommended — config loaded from server):
+ *   <script src="https://cdn.vetnavigator.ai/chatbot/v1/widget.js?key=VN-BASIC-XXXXX-XXXXX" defer></script>
+ *
+ *   MANUAL CONFIG (alternative — config inline):
  *   <script>
  *     window.VetNavigatorConfig = {
  *       licenseKey:  "VN-BASIC-XXXXX-XXXXX",
  *       orgName:     "VFW Post 1234",
  *       orgCity:     "Springfield, IL",
- *       orgAddress:  "123 Main St",
  *       orgPhone:    "(555) 123-4567",
- *       orgEmail:    "post1234@vfw.org",
- *       orgWeb:      "vfwpost1234.org",
- *       orgHours:    "Mon–Fri 9am–5pm",
- *       orgMission:  "Serving veterans since 1920",
- *       events:      ["Monthly Meeting — 1st Tuesday 7pm"],
- *       leaders:     ["Commander Jane Smith — (555) 999-0000"]
+ *       orgEmail:    "post1234@vfw.org"
  *     };
  *   </script>
  *   <script src="https://cdn.vetnavigator.ai/chatbot/v1/widget.js" defer></script>
@@ -35,33 +33,92 @@
   var SUPPORT_EMAIL = 'support@vetnavigator.ai';
   var BREVO_KEY     = (window.VN_CONFIG && window.VN_CONFIG.BREVO_API_KEY) || '';
 
-  // ── READ CUSTOMER CONFIG ───────────────────────────────────────────────────
-  var cfg         = window.VetNavigatorConfig || {};
-  var LICENSE_KEY = ((cfg.licenseKey || 'VN-DEMO') + '').toUpperCase().trim();
-  var ORG_NAME    = cfg.orgName    || 'Your VSO';
-  var ORG_CITY    = cfg.orgCity    || '';
-  var ORG_ADDR    = cfg.orgAddress || '';
-  var ORG_PHONE   = cfg.orgPhone   || '';
-  var ORG_EMAIL   = cfg.orgEmail   || '';
-  var ORG_WEB     = cfg.orgWeb     || '';
-  var ORG_HOURS   = cfg.orgHours   || '';
-  var ORG_MISSION = cfg.orgMission || '';
-  var ORG_EVENTS  = Array.isArray(cfg.events)  ? cfg.events  : [];
-  var ORG_LEADERS = Array.isArray(cfg.leaders) ? cfg.leaders : [];
-
-  // ── LICENSE / TIER ─────────────────────────────────────────────────────────
+  // ── CONFIG VARIABLES (populated by loadConfig) ────────────────────────────
+  var LICENSE_KEY, ORG_NAME, ORG_CITY, ORG_ADDR, ORG_PHONE, ORG_EMAIL;
+  var ORG_WEB, ORG_HOURS, ORG_MISSION, ORG_EVENTS, ORG_LEADERS;
   var TIER_MAP = { DEMO: 4, PREMIUM: 4, STANDARD: 3, STARTER: 2, BASIC: 1 };
-  var _parts   = LICENSE_KEY.split('-');
-  var TIER_STR = _parts.length >= 2 ? _parts[1] : 'BASIC';
-  var TIER_LVL = TIER_MAP[TIER_STR] !== undefined ? TIER_MAP[TIER_STR] : 1;
-  var IS_DEMO  = TIER_STR === 'DEMO';
-  var HAS_ML   = TIER_LVL >= 3 || IS_DEMO;   // Standard+: multilingual
-  var HAS_MIC  = TIER_LVL >= 3 || IS_DEMO;   // Standard+: microphone
-  var HAS_ADMIN = TIER_LVL >= 2 || IS_DEMO;  // Starter+: admin panel
+  var TIER_STR, TIER_LVL, IS_DEMO, HAS_ML, HAS_MIC, HAS_ADMIN;
+  var CONV_LIMIT, WARN_AT;
 
-  // Session limits
-  var CONV_LIMIT = (IS_DEMO || TIER_LVL >= 3) ? 999 : (TIER_LVL >= 2 ? 20 : 10);
-  var WARN_AT    = Math.ceil(CONV_LIMIT * 0.8);
+  // ── APPLY CONFIG (shared by both inline and fetched paths) ────────────────
+  function applyConfig(cfg) {
+    LICENSE_KEY = ((cfg.licenseKey || 'VN-DEMO') + '').toUpperCase().trim();
+    ORG_NAME    = cfg.orgName    || 'Your VSO';
+    ORG_CITY    = cfg.orgCity    || '';
+    ORG_ADDR    = cfg.orgAddress || '';
+    ORG_PHONE   = cfg.orgPhone   || '';
+    ORG_EMAIL   = cfg.orgEmail   || '';
+    ORG_WEB     = cfg.orgWeb     || '';
+    ORG_HOURS   = cfg.orgHours   || '';
+    ORG_MISSION = cfg.orgMission || '';
+    ORG_EVENTS  = Array.isArray(cfg.events)  ? cfg.events  : [];
+    ORG_LEADERS = Array.isArray(cfg.leaders) ? cfg.leaders : [];
+
+    var _parts = LICENSE_KEY.split('-');
+    TIER_STR   = _parts.length >= 2 ? _parts[1] : 'BASIC';
+    TIER_LVL   = TIER_MAP[TIER_STR] !== undefined ? TIER_MAP[TIER_STR] : 1;
+    IS_DEMO    = TIER_STR === 'DEMO';
+    HAS_ML     = TIER_LVL >= 3 || IS_DEMO;
+    HAS_MIC    = TIER_LVL >= 3 || IS_DEMO;
+    HAS_ADMIN  = TIER_LVL >= 2 || IS_DEMO;
+    CONV_LIMIT = (IS_DEMO || TIER_LVL >= 3) ? 999 : (TIER_LVL >= 2 ? 20 : 10);
+    WARN_AT    = Math.ceil(CONV_LIMIT * 0.8);
+  }
+
+  // ── DETECT KEY FROM SCRIPT TAG URL ────────────────────────────────────────
+  function getKeyFromScript() {
+    var scripts = document.querySelectorAll('script[src*="widget.js"]');
+    for (var i = 0; i < scripts.length; i++) {
+      var src = scripts[i].src || '';
+      var match = src.match(/[?&]key=([^&]+)/i);
+      if (match) return match[1].toUpperCase().trim();
+    }
+    return null;
+  }
+
+  // ── LOAD CONFIG (async fetch from Worker, or inline fallback) ─────────────
+  function loadConfig(callback) {
+    var inlineCfg = window.VetNavigatorConfig || {};
+    var scriptKey = getKeyFromScript();
+
+    // If inline config has org data, use it immediately (backward compatible)
+    if (inlineCfg.orgName && inlineCfg.orgName !== 'Your VSO') {
+      applyConfig(inlineCfg);
+      callback();
+      return;
+    }
+
+    // Determine the key to look up
+    var key = scriptKey || ((inlineCfg.licenseKey || '') + '').toUpperCase().trim();
+    if (!key || !key.startsWith('VN-') || key === 'VN-DEMO') {
+      // No key or demo mode — use inline config or defaults
+      applyConfig(inlineCfg);
+      callback();
+      return;
+    }
+
+    // Fetch config from Worker
+    fetch(VN_API + '/config?key=' + encodeURIComponent(key))
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data && data.orgName) {
+          // Server config found — use it (but keep license key from URL if provided)
+          data.licenseKey = data.licenseKey || key;
+          applyConfig(data);
+        } else {
+          // Server returned empty or error — fall back to inline
+          if (!inlineCfg.licenseKey) inlineCfg.licenseKey = key;
+          applyConfig(inlineCfg);
+        }
+        callback();
+      })
+      .catch(function () {
+        // Network error — fall back to inline config
+        if (!inlineCfg.licenseKey) inlineCfg.licenseKey = key;
+        applyConfig(inlineCfg);
+        callback();
+      });
+  }
 
   // ── SESSION STATE ──────────────────────────────────────────────────────────
   var lang        = 'en';
@@ -1774,6 +1831,23 @@
     buildVSO();
     ge('vnsvd').style.display = 'block';
     setTimeout(function () { ge('vnsvd').style.display = 'none'; }, 2500);
+
+    // Persist to server if we have a real license key
+    if (LICENSE_KEY && LICENSE_KEY.startsWith('VN-') && LICENSE_KEY !== 'VN-DEMO') {
+      fetch(VN_API + '/config?key=' + encodeURIComponent(LICENSE_KEY), {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orgName:    ORG_NAME,
+          orgCity:    ORG_CITY,
+          orgPhone:   ORG_PHONE,
+          orgEmail:   ORG_EMAIL,
+          orgHours:   ORG_HOURS,
+          events:     ORG_EVENTS,
+          leaders:    ORG_LEADERS
+        })
+      }).catch(function () { /* silent — local save still worked */ });
+    }
   }
 
   function populateAdmin() {
@@ -2064,10 +2138,16 @@
   }
 
   // ── BOOT ───────────────────────────────────────────────────────────────────
+  function boot() {
+    loadConfig(function () {
+      init();
+    });
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', boot);
   } else {
-    init();
+    boot();
   }
 
 })();
