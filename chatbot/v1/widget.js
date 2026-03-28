@@ -76,7 +76,7 @@
     crisis:1, vso:1, file_claim:1, documents:1, disability:1, gi_bill:1,
     home_loan:1, healthcare:1, benefits_menu:1, welcome:1, veteran:1,
     era:1, spouse:1, active_duty:1, denied:1, capabilities:1,
-    surviving_spouse:1, all_benefits:1, feedback:1,
+    surviving_spouse:1, all_benefits:1, feedback:1, empathy_intro:1,
     cat_money:1, cat_healthcare:1, cat_education:1,
     cat_housing:1, cat_family:1, cat_claims:1,
     // Tier 2 — Starter+
@@ -89,7 +89,9 @@
     housing_help:3, dental_vision:3, burial:3, caregiver:3,
     life_insurance:3, community_care:3, claim_status:3, va_debt:3,
     mst:3, travel_pay:3, women_veterans:3, guard_reserve:3,
-    adapted_housing:3, va_records:3
+    adapted_housing:3, va_records:3,
+    // Tier 4 — Premium
+    gi_bill_types:4
   };
 
   function canAccess(key) {
@@ -102,7 +104,7 @@
   var NODES = {
 
     welcome: {
-      bot: "Welcome! I'm your VA benefits guide. 🎖️\n\nI can help you understand benefits, file claims, and connect with your VSO counselor — all free.\n\nWhich best describes you?",
+      bot: null, // built dynamically in buildWelcome()
       cards: [
         { icon: '🎖️', title: 'Veteran',          desc: 'I served in the US military' },
         { icon: '⚔️', title: 'Active Duty',       desc: 'Currently serving' },
@@ -122,13 +124,13 @@
     },
 
     active_duty: {
-      bot: "Thank you for your service! 🇺🇸\n\nActive duty service members have access to VA programs before separation.\n\n<strong>Benefits Delivery at Discharge (BDD)</strong> — file your claim 90–180 days before you separate.\n\n<strong>TAP Program</strong> — free transition assistance for you and your family.",
-      chips: ['What is BDD?', 'See all benefits', 'Find a VSO counselor']
+      bot: "Thank you for your service and dedication. 🇺🇸 We honor your commitment to this nation.\n\n<strong>Preparing to separate or transition?</strong>\n\nHere are the key benefits to act on <em>before</em> you leave:\n\n— <strong>TAP Program</strong> — <a href='https://tapevents.mil' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>mandatory transition assistance, job prep</a>\n— <strong>Disability rating</strong> — file BEFORE you separate (<a href='https://va.gov/disability/how-to-file-claim/when-to-file/pre-discharge-claim' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>BDD program</a>)\n— <strong>GI Bill</strong> — education benefit active the day you separate\n— <strong>VA Healthcare</strong> — enroll within 5 years for free care\n— <strong>VA Home Loan</strong> — available immediately after separation\n\nFiling a disability claim before separation can save months of waiting.",
+      chips: ['Tell me about the BDD program', 'GI Bill', 'VA Home Loan', 'Find a VSO counselor']
     },
 
     spouse: {
-      bot: "Thank you for your support and sacrifice. 🤍\n\n<strong>Benefits available to veteran spouses and dependents:</strong>\n\n— <strong>CHAMPVA</strong> — free VA healthcare for qualifying dependents\n— <strong>DEA (Ch. 35)</strong> — education benefits\n— <strong>Survivors Pension</strong> — income support\n— <strong>DIC</strong> — monthly payment if veteran died from service-connected cause\n— <strong>VA Home Loan</strong> — surviving spouses may be eligible",
-      chips: ['Tell me about DIC', 'Tell me about CHAMPVA', 'Find a VSO counselor', 'See all benefits']
+      bot: "Thank you for your support and sacrifice. The strength behind every service member is their family. 🤍\n\n<strong>Benefits available to veteran spouses and dependents:</strong>\n\n— <strong>CHAMPVA</strong> — free VA healthcare for qualifying dependents\n— <strong>DEA (Ch. 35)</strong> — education benefits for dependents\n— <strong>Survivors Pension</strong> — income support for low-income surviving spouses\n— <strong>DIC</strong> — monthly payment if veteran died from service-connected cause\n— <strong>Home Loan</strong> — surviving spouses may be eligible\n\nEligibility depends on the veteran's service and discharge status.",
+      chips: ['Tell me about DIC', 'Tell me about CHAMPVA', 'Find a VSO counselor', 'See other benefits']
     },
 
     surviving_spouse: {
@@ -197,8 +199,8 @@
     // ── TIER 1 TOPICS ──────────────────────────────────────────────────────
 
     disability: {
-      bot: "<strong>VA Disability Compensation</strong>\n\nTax-free monthly pay for veterans with service-connected conditions.\n\n<strong>Approximate monthly pay:</strong>\n— 10% → ~$175/mo\n— 30% → ~$524/mo\n— 50% → ~$1,075/mo\n— 70% → ~$1,663/mo\n— 100% → ~$3,737/mo\n\nAny condition that started or worsened during service may qualify — including mental health, hearing loss, and chronic pain.",
-      chips: ['How do I file a claim?', 'How do I increase my rating?', 'What documents do I need?', 'Find a VSO counselor']
+      bot: "<strong>VA Disability Compensation</strong> — tax-free monthly pay for service-connected conditions.\n\n<strong>Avg payment:</strong> $1,500–$3,800/month\n<strong>Ratings:</strong> 10%–100%\n\nA 30% rating = ~$500/month tax-free for life.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Amounts are approximate and updated annually. Verify current rates at <a href='https://va.gov/disability/compensation-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
+      chips: ['How do I file a claim?', 'What documents do I need?', 'Find a VSO counselor', 'See other benefits']
     },
 
     gi_bill: {
@@ -217,13 +219,13 @@
     },
 
     file_claim: {
-      bot: "<strong>How to File a VA Disability Claim</strong>\n\n<strong>Step 1</strong> — Gather: DD-214, medical records, buddy statements\n<strong>Step 2</strong> — List every condition connected to your service\n<strong>Step 3</strong> — File at va.gov/disability or with a VSO (free)\n<strong>Step 4</strong> — Attend your C&P exam — describe your worst days\n<strong>Step 5</strong> — Wait for your rating decision (avg. 3–6 months)\n\nA VSO counselor files for free and significantly improves outcomes.",
-      chips: ['What documents do I need?', 'What is a C&P exam?', 'Find a VSO counselor', 'See all benefits']
+      bot: "<strong>How to file a VA disability claim:</strong>\n\n<strong>Step 1</strong> — Create account at <a href='https://va.gov' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>\n<strong>Step 2</strong> — Complete <a href='https://va.gov/find-forms/about-form-21-526ez' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA Form 21-526EZ</a>\n<strong>Step 3</strong> — Gather DD-214 and medical records\n<strong>Step 4</strong> — Submit online, by mail, or in person\n\n<strong>📬 By mail:</strong>\nDepartment of Veterans Affairs\nClaims Intake Center\nPO Box 4444, Janesville, WI 53547-4444\n\n<strong>🏥 In person:</strong> <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Find your nearest VA office →</a>",
+      chips: ['What documents do I need?', 'Find a VSO counselor', 'See other benefits', 'Start over']
     },
 
     documents: {
-      bot: "<strong>Documents Needed for a VA Claim</strong>\n\n<strong>Required:</strong>\n— DD-214 (discharge papers)\n— Military service records\n— Medical records showing your condition\n\n<strong>Strongly recommended:</strong>\n— Buddy statements from fellow veterans\n— Personal statement describing daily impact\n— Nexus letter from a doctor\n\nDon't have your DD-214? Request it free at archives.gov/veterans",
-      chips: ['How do I file a claim?', 'What is a nexus letter?', 'Find a VSO counselor']
+      bot: "<strong>Documents needed:</strong>\n\n— DD-214 (discharge papers)\n— Medical records\n— Social Security number\n— Buddy statements (recommended)\n— Nexus letter from doctor (recommended)\n\nMissing DD-214? Request free at <a href='https://archives.gov/veterans' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>archives.gov/veterans</a>",
+      chips: ['Find a VSO counselor', 'See other benefits', 'Start over']
     },
 
     denied: {
@@ -237,8 +239,8 @@
     },
 
     crisis: {
-      bot: "🚨 <strong>If you or someone is in crisis:</strong>\n\n<strong>Veterans Crisis Line</strong>\n📞 Dial <strong>988</strong>, Press <strong>1</strong>\n💬 Text <strong>838255</strong>\n🌐 veteranscrisisline.net\n\nConfidential support available 24/7 — free.\n\nYou are not alone. 🇺🇸",
-      chips: ['Mental health services', 'Find a VSO counselor', 'Start over']
+      bot: "<strong>🆘 If you are in crisis right now:</strong>\n\n<strong>Veterans Crisis Line</strong>\n— Dial <strong>988</strong>, then press <strong>1</strong>\n— Text <strong>838255</strong>\n— Chat: <a href='https://veteranscrisisline.net' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VeteransCrisisLine.net</a>\n— Available 24/7 — confidential — staffed by veterans\n\n<strong>Emergency:</strong> Call 911 or go to your nearest emergency room\n\n<strong>VA same-day mental health services:</strong>\nWalk in to any VA medical center — same-day care is available for mental health crises, no appointment needed.\n\n<strong>Vet Centers:</strong> Community-based, less formal, veteran-run counseling centers. Find yours at <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>va.gov/find-locations</a>\n\nYou are not alone. Help is always available. 🇺🇸",
+      chips: ['Mental health benefits', 'Find a VSO counselor', 'Start over']
     },
 
     vso: {
@@ -346,28 +348,28 @@
     },
 
     mental_health: {
-      bot: "<strong>VA Mental Health Services</strong>\n\nAvailable to all enrolled veterans:\n— PTSD treatment and counseling\n— Depression and anxiety care\n— Substance use treatment\n— MST-related care\n— Vet Centers (community-based)\n\n<strong>Veterans Crisis Line: Dial 988, Press 1</strong>\n\nMental health care is available even without a disability rating.",
-      chips: ['How do I enroll in VA healthcare?', 'Find a VSO counselor', 'See other benefits']
+      bot: "<strong>VA Mental Health Benefits:</strong>\n\n<strong>Covered services:</strong>\n— PTSD treatment (therapy + medication)\n— Depression, anxiety, MST counseling\n— Substance use treatment\n— Suicide prevention programs\n— Vet Centers (community-based, less formal than VA hospitals)\n\n<strong>Who qualifies:</strong> Any veteran who served on active duty — even without a disability rating.\n\n<strong>How to access:</strong>\n— Call the VA Mental Health helpline: <a href='tel:+18002738255' style='color:var(--gold);text-decoration:underline;'>1-800-273-8255</a> (Press 1)\n— Walk in to any VA medical center — no appointment needed for mental health crisis\n— Find a Vet Center at <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;'>va.gov/find-locations</a>\n\n<strong>Veterans Crisis Line:</strong> Dial 988, then Press 1",
+      chips: ['Do I qualify for VA Healthcare?', 'Find a VSO counselor', 'See other benefits']
     },
 
     pension: {
-      bot: "<strong>VA Pension</strong>\n\nIncome-based benefit for wartime veterans with limited income.\n\n<strong>2024 maximum annual rate:</strong> ~$14,753 (single veteran)\n\nAid & Attendance add-on available if you need help with daily activities.",
+      bot: "<strong>VA Pension — for low-income wartime veterans:</strong>\n\nA needs-based benefit for veterans with limited income and assets who served during a wartime period.\n\n<strong>Basic requirements:</strong>\n— 90+ days active duty (at least 1 day during wartime)\n— Income and assets below VA limits\n— Age 65+ OR permanently disabled\n\n<strong>Maximum annual pension rates (approx.):</strong>\n— Single veteran: ~$16,551/yr\n— With spouse: ~$21,674/yr\n— Aid & Attendance: up to ~$27,609/yr\n\n<strong>Aid & Attendance</strong> adds money if you need help with daily activities (bathing, dressing, meals).\n\n<strong>Apply with:</strong> VA Form 21P-527EZ",
       chips: ['What is Aid & Attendance?', 'Find a VSO counselor', 'See other benefits']
     },
 
     aid_attendance: {
-      bot: "<strong>Aid & Attendance</strong>\n\nAdditional pension payment for veterans who need help with daily activities — eating, bathing, dressing.\n\n<strong>Adds up to ~$2,714/mo</strong> on top of base pension.",
-      chips: ['Tell me about VA Pension', 'Find a VSO counselor', 'See other benefits']
+      bot: "<strong>Aid & Attendance (A&A):</strong>\n\nAn enhanced pension benefit for veterans (or surviving spouses) who need help with daily activities.\n\n<strong>You may qualify if you:</strong>\n— Need help bathing, dressing, eating, or using the bathroom\n— Are bedridden or in a nursing home\n— Have severe vision loss\n\n<strong>Additional monthly benefit:</strong>\n— Veteran alone: +~$912/mo above basic pension\n— With spouse: +~$1,176/mo\n— Surviving spouse: +~$589/mo\n\n<strong>Important:</strong> This benefit is significantly underused. Many elderly veterans in care facilities qualify but have never applied.\n\n<strong>Tip:</strong> A VSO counselor can help — this is a complex application.",
+      chips: ['What is VA Pension?', 'Find a VSO counselor', 'See other benefits']
     },
 
     burial: {
-      bot: "<strong>VA Burial & Memorial Benefits</strong>\n\n— Burial in a national cemetery (free)\n— Grave marker or headstone (free)\n— Presidential Memorial Certificate\n— Burial allowance up to $2,000 (service-connected death)",
-      chips: ['Find a VSO counselor', 'See other benefits']
+      bot: "<strong>VA Burial & Memorial Benefits:</strong>\n\nAll honorably discharged veterans are entitled to:\n\n<strong>National Cemetery burial</strong> — Free gravesite, opening/closing, perpetual care, and headstone or marker at any VA national cemetery with space available.\n\n<strong>Burial allowance</strong> — Up to $1,002 for funeral/burial costs (for deaths on or after Oct. 1, 2025). Surviving family or estate can apply.\n\n<strong>Burial flag</strong> — A U.S. flag to drape the casket or accompany the urn — free.\n\n<strong>Presidential Memorial Certificate</strong> — Signed certificate honoring the veteran's service — free.\n\n<strong>Pre-need eligibility:</strong> Veterans can apply in advance to confirm eligibility for national cemetery burial before it's needed.\n\n<strong>Apply with:</strong> VA Form 21P-530EZ (burial allowance) · 1-800-535-1117 (National Cemetery Scheduling)",
+      chips: ['Find a VSO counselor', 'Surviving spouse benefits', 'See other benefits']
     },
 
     caregiver: {
-      bot: "<strong>VA Caregiver Support Program (PCAFC)</strong>\n\nFor caregivers of seriously injured post-9/11 veterans:\n— Monthly stipend\n— Health insurance (if not otherwise covered)\n— Mental health counseling\n— Respite care (up to 30 days/year)",
-      chips: ['Find a VSO counselor', 'See other benefits']
+      bot: "<strong>VA Caregiver Support — PCAFC:</strong>\n\nThe <strong>Program of Comprehensive Assistance for Family Caregivers (PCAFC)</strong> supports family members caring for eligible post-9/11 veterans.\n\n<strong>Benefits include:</strong>\n— <strong>Monthly stipend</strong> (based on veteran's care needs and local wages)\n— <strong>Health insurance</strong> through CHAMPVA (if caregiver has no other coverage)\n— <strong>Mental health counseling</strong> and support services\n— <strong>Respite care</strong> — paid temporary relief for the caregiver\n— <strong>Caregiver training</strong> and education\n\n<strong>Who qualifies:</strong>\n— Caring for a veteran who served on or after 9/11/2001\n— Veteran has a serious injury requiring personal care services\n— Caregiver is a family member (spouse, parent, child, etc.) or close friend\n\n<strong>Apply:</strong> VA Form 10-10CG at va.gov/family-member-benefits/comprehensive-assistance-for-family-caregivers/\n\n<strong>Support line:</strong> <a href='tel:+18552603274' style='color:var(--gold);text-decoration:underline;'>1-855-260-3274</a>",
+      chips: ['Find a VSO counselor', 'VA Healthcare', 'See other benefits']
     },
 
     dental_vision: {
@@ -376,48 +378,48 @@
     },
 
     claim_status: {
-      bot: "<strong>Checking Your VA Claim Status</strong>\n\n<strong>Online:</strong> va.gov → 'Check your VA claim or appeal status'\n<strong>Phone:</strong> 1-800-827-1000\n\nAverage processing time: 3–6 months.",
+      bot: "<strong>How to Check Your VA Claim Status:</strong>\n\n<strong>Online (fastest):</strong>\n— Sign in at <a href='https://va.gov' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;'>VA.gov</a> → My VA → Track Claims\n— Shows real-time status, any requests for information, and estimated decision date\n\n<strong>By phone:</strong>\n— VA Benefits Hotline: <a href='tel:+18008271000' style='color:var(--gold);text-decoration:underline;'>1-800-827-1000</a> (Mon–Fri 8am–9pm ET)\n\n<strong>Claim stages:</strong>\n1. Claim received → 2. Initial review → 3. Evidence gathering → 4. Evidence review → 5. Rating decision → 6. Preparation for notification → 7. Complete\n\n<strong>Tip:</strong> If your claim has been in one stage for 30+ days without movement, contact your VSO for help.",
       chips: ['How do I file a claim?', 'Find a VSO counselor', 'See other benefits']
     },
 
     va_debt: {
-      bot: "<strong>VA Debt Help</strong>\n\nIf you've received a VA overpayment notice:\n— <strong>Waiver</strong> — request forgiveness if repayment causes hardship\n— <strong>Compromise</strong> — offer reduced amount\n— <strong>Extended payment plan</strong>\n\nContact VA Debt Management Center: 1-800-827-0648",
-      chips: ['Find a VSO counselor', 'See other benefits']
+      bot: "<strong>VA Debt & Overpayment Help:</strong>\n\nIf VA says you owe money — for education, compensation, or pension overpayments — you have options.\n\n<strong>Your rights:</strong>\n— Request a waiver (ask VA to forgive the debt)\n— Request a compromise (pay less than the full amount)\n— Request an extended repayment plan\n— Request a hearing to dispute the debt\n\n<strong>Act fast:</strong> You have <strong>180 days</strong> from the debt notice to request relief.\n\n<strong>Contact the Debt Management Center:</strong>\n— Phone: <a href='tel:+18008270648' style='color:var(--gold);text-decoration:underline;'>1-800-827-0648</a> (Mon–Fri 7:30am–7pm ET)\n— Online: <a href='https://va.gov/manage-va-debt' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;'>va.gov/manage-va-debt</a>\n\n<strong>Tip:</strong> A VSO counselor can help you write a waiver request — it significantly improves your chances.",
+      chips: ['Find a VSO counselor', 'See other benefits', 'Start over']
     },
 
     mst: {
-      bot: "<strong>Military Sexual Trauma (MST) Benefits</strong>\n\nVeterans who experienced MST may receive free VA mental health treatment — regardless of discharge status or whether the MST was reported.\n\nYou do not need a disability rating to receive MST-related care.\n\n<strong>Veterans Crisis Line: Dial 988, Press 1</strong>",
-      chips: ['Mental health services', 'Find a VSO counselor', 'See other benefits']
+      bot: "<strong>Military Sexual Trauma (MST) Support:</strong>\n\nIf you experienced sexual assault or harassment during military service, VA provides dedicated, free support — regardless of discharge status, disability rating, or whether you reported it at the time.\n\n<strong>Free services available:</strong>\n— Mental health counseling (no copay, ever)\n— Inpatient and outpatient MST treatment\n— Vet Center counseling (community-based, private)\n\n<strong>VA disability:</strong> PTSD, depression, or other conditions related to MST can qualify for disability compensation — and the standard of evidence is lower than for other conditions.\n\n<strong>Contact:</strong>\n— Every VA medical center has an MST Coordinator — you can ask to speak with them directly\n— Crisis line: Dial <strong>988</strong>, then Press 1\n\n<strong>You do not have to prove the incident occurred to receive care.</strong>",
+      chips: ['VA Healthcare', 'Mental health benefits', 'Find a VSO counselor']
     },
 
     travel_pay: {
-      bot: "<strong>VA Travel Pay</strong>\n\nReimbursement for travel to VA-approved medical care.\n\n<strong>Rate:</strong> ~$0.41/mile, minus deductible\n\nFile for reimbursement at the facility or online through AccessVA Travel Claim.",
-      chips: ['Find a VSO counselor', 'See other benefits']
+      bot: "<strong>VA Beneficiary Travel Pay:</strong>\n\nVA may reimburse your travel costs to and from VA medical appointments.\n\n<strong>Who qualifies:</strong>\n— 30%+ service-connected disability rating, OR\n— Travel to a VA facility for a service-connected condition, OR\n— Receiving a VA pension, OR\n— Income below the maximum annual pension rate\n\n<strong>What's covered:</strong>\n— Mileage reimbursement (currently ~$0.415/mile)\n— Public transportation costs\n— Lodging and meals for long-distance travel\n\n<strong>How to claim:</strong>\n— Submit online at <a href='https://va.gov/health-care/get-reimbursed-for-travel-pay' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;'>va.gov/travel-pay</a> (BTSSS system)\n— Or submit VA Form 10-3542 at the travel office at your VA facility\n— Must file within 30 days of the appointment",
+      chips: ['VA Healthcare', 'Find a VSO counselor', 'See other benefits']
     },
 
     community_care: {
-      bot: "<strong>VA Community Care</strong>\n\nAllows care from non-VA providers when:\n— VA cannot provide the care\n— VA wait time exceeds 20 days or 60 minutes drive\n— You live in a highly rural area",
-      chips: ['How do I enroll in VA healthcare?', 'Find a VSO counselor', 'See other benefits']
+      bot: "<strong>VA Community Care — Get Care Outside VA:</strong>\n\nIf VA cannot provide timely care, you may be eligible to see a community (non-VA) provider at VA's expense.\n\n<strong>You may qualify if:</strong>\n— Wait time exceeds 20 days for primary care or 28 days for specialty\n— Drive time exceeds 30 min for primary or 60 min for specialty\n— VA does not offer the service you need\n— It's in your best medical interest (per your VA provider)\n\n<strong>How to access:</strong>\n— Ask your VA provider for a community care referral\n— Call VA Community Care: <a href='tel:+18666068198' style='color:var(--gold);text-decoration:underline;'>1-866-606-8198</a>\n— Use the MISSION Act provider locator at va.gov/communitycare\n\n<strong>Important:</strong> You must get a VA referral first — don't go to a community provider without one or VA won't pay.",
+      chips: ['Find a VSO counselor', 'VA Healthcare', 'See other benefits']
     },
 
     life_insurance: {
-      bot: "<strong>VA Life Insurance</strong>\n\n<strong>SGLI</strong> — Up to $500K (active duty)\n<strong>VGLI</strong> — Post-separation (apply within 1 year and 120 days of separation)\n<strong>S-DVI</strong> — Service-Disabled Veterans' Life Insurance\n\n<strong>Key:</strong> Don't miss the VGLI application window.",
-      chips: ['Find a VSO counselor', 'See other benefits']
+      bot: "<strong>VA Life Insurance:</strong>\n\n<strong>SGLI (Servicemembers' Group Life Insurance)</strong>\n— Up to $500,000 coverage while on active duty\n— Must convert within 1 year + 120 days of separation — don't miss this window\n\n<strong>VGLI (Veterans' Group Life Insurance)</strong>\n— Convert your SGLI after separation — no medical exam required if applied within 240 days\n— Coverage up to $500,000, renewable for life\n— Apply at benefits.va.gov/insurance\n\n<strong>S-DVI (Service-Disabled Veterans Life Insurance)</strong>\n— For veterans with a new service-connected disability\n— Up to $10,000 coverage at low rates\n— Must apply within 2 years of your rating decision\n\n<strong>VMLI (Veterans' Mortgage Life Insurance)</strong>\n— Mortgage protection up to $200,000 for severely disabled veterans with adapted housing grants\n\n<strong>Important:</strong> Many veterans lose SGLI coverage without realizing it — act fast after separation.",
+      chips: ['Find a VSO counselor', 'See other benefits', 'Start over']
     },
 
     housing_help: {
-      bot: "<strong>VA Housing Assistance for Homeless Veterans</strong>\n\n<strong>HUD-VASH</strong> — Housing vouchers + case management\n<strong>SSVF</strong> — Rapid rehousing\n<strong>GPD</strong> — Transitional housing\n\nIf a veteran you know is homeless:\n<strong>Call 1-877-4AID-VET (1-877-424-3838)</strong>",
-      chips: ['Find a VSO counselor', 'See other benefits']
+      bot: "<strong>VA Housing Assistance Programs:</strong>\n\n<strong>HUD-VASH</strong> — Housing vouchers + case management for homeless veterans. Combines HUD Section 8 housing with VA supportive services.\n\n<strong>SSVF (Supportive Services for Veteran Families)</strong> — Rapid rehousing and eviction prevention for at-risk veterans.\n\n<strong>GPD (Grant & Per Diem)</strong> — Transitional housing programs through community organizations.\n\n<strong>How to access:</strong>\n— Call the National Call Center for Homeless Veterans: <a href='tel:+18774243838' style='color:var(--gold);text-decoration:underline;'>1-877-424-3838</a> (24/7)\n— Or walk in to any VA medical center\n\n<strong>You do not need an appointment or a disability rating to get help.</strong>",
+      chips: ['Find a VSO counselor', 'VA Home Loan', 'See other benefits']
     },
 
     women_veterans: {
-      bot: "<strong>Women Veterans Benefits</strong>\n\nAll VA benefits are available equally. Additionally:\n— Women's Health Program — gender-specific primary care\n— MST treatment — free, no service connection required\n— Maternity care\n\n<strong>Women Veterans Call Center: 1-855-VA-WOMEN</strong>",
-      chips: ['Mental health services', 'Find a VSO counselor', 'See other benefits']
+      bot: "<strong>Women Veterans Benefits:</strong>\n\nWomen are the fastest-growing segment of the veteran population. VA has expanded services significantly.\n\n<strong>Health services for women veterans:</strong>\n— Primary care with a designated Women Veterans Program Manager at every VA facility\n— Gynecology and reproductive health care\n— Maternity care (covered by VA)\n— Fertility treatment (IVF covered in some cases)\n— Mammography and cervical cancer screenings\n— MST counseling (Military Sexual Trauma)\n\n<strong>Benefits:</strong>\n— All standard VA disability, education, and housing benefits apply equally\n— Women Veterans who served during wartime may qualify for VA Pension\n\n<strong>Contact:</strong>\n— Women Veterans Call Center: <a href='tel:+18558292838' style='color:var(--gold);text-decoration:underline;'>1-855-829-6636</a> (Mon–Fri 8am–10pm, Sat 8am–6:30pm ET)",
+      chips: ['VA Healthcare', 'Mental health benefits', 'Find a VSO counselor']
     },
 
     guard_reserve: {
-      bot: "<strong>National Guard & Reserve Benefits</strong>\n\n<strong>Federally activated (Title 10):</strong> Full VA benefits\n<strong>State activated (Title 32):</strong> Limited — case by case\n\nKey threshold: 90+ days of active federal service generally qualifies for VA healthcare.",
-      chips: ['Find a VSO counselor', 'See other benefits']
+      bot: "<strong>National Guard & Reserve VA Benefits:</strong>\n\nEligibility for VA benefits depends on whether you were activated under federal orders (Title 10) vs. state orders (Title 32).\n\n<strong>You likely qualify for VA benefits if you:</strong>\n— Were called to active duty under Title 10 federal orders\n— Served 90+ continuous days on active duty\n— Have a service-connected disability from active duty\n— Deployed to a combat zone\n\n<strong>Healthcare:</strong> Generally requires 24 months of active duty or a service-connected condition\n\n<strong>GI Bill:</strong> Chapter 33 (Post-9/11) requires 90+ days active duty. Chapter 1606 (MGIB-SR) for Selected Reserve members.\n\n<strong>Home Loan:</strong> 6 years in Selected Reserve or National Guard qualifies\n\n<strong>Tip:</strong> Guard and Reserve eligibility is complex — a VSO counselor can review your specific service history.",
+      chips: ['VA Healthcare', 'GI Bill', 'Find a VSO counselor']
     },
 
     adapted_housing: {
@@ -426,8 +428,27 @@
     },
 
     va_records: {
-      bot: "<strong>Requesting VA & Military Records</strong>\n\n<strong>DD-214:</strong> archives.gov/veterans — free\n<strong>Military records:</strong> milConnect or National Archives\n<strong>VA medical records:</strong> va.gov/records or MyHealtheVet\n\nBlue Button on MyHealtheVet lets you download your complete VA health record.",
+      bot: "<strong>Requesting Your VA Records:</strong>\n\n<strong>Military Service Records (DD-214):</strong>\n— Request free at <a href='https://archives.gov/veterans/military-service-records' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>archives.gov/veterans</a>\n— Or submit SF-180 by mail to the National Personnel Records Center\n— Allow 10–30 business days\n\n<strong>VA Medical Records:</strong>\n— Access online via <a href='https://myhealth.va.gov' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>My HealtheVet</a>\n— Request copies at your local VA facility\n— Or submit a HIPAA authorization form\n\n<strong>VA Claims File (C-File):</strong>\n— Contains all documents VA used in your claim decisions\n— Request by submitting VA Form 20-10206\n— Crucial for appeals — your VSO can help\n\n<strong>Tip:</strong> Getting your C-File before an appeal can reveal evidence VA overlooked.",
       chips: ['How do I file a claim?', 'Find a VSO counselor', 'See other benefits']
+    },
+
+    // ── TIER 4 — PREMIUM ───────────────────────────────────────────────────
+
+    gi_bill_types: {
+      bot: "<strong>GI Bill — Choosing the right chapter:</strong>\n\n<strong>Chapter 33 — Post-9/11 GI Bill</strong> (most popular)\n— Served 90+ days after 9/10/2001\n— Covers full tuition at public schools, $26,042/yr cap at private\n— Includes monthly housing allowance (BAH rate)\n— Best for full-time students\n\n<strong>Chapter 30 — Montgomery GI Bill</strong>\n— Paid into during service ($1,200 contribution)\n— Monthly stipend paid directly to you (~$2,122/mo full-time)\n— More flexible — can be used for on-the-job training\n\n<strong>Chapter 31 — Voc Rehab</strong> (separate program)\n— For veterans with a service-connected disability\n— Covers school + living expenses + books\n\n<strong>Yellow Ribbon Program:</strong> Covers tuition above the Post-9/11 cap at private schools. School must participate.",
+      chips: ['How do I apply for GI Bill?', 'What is Voc Rehab?', 'Find a VSO counselor']
+    },
+
+    // ── EMPATHY ENTRY FLOW ─────────────────────────────────────────────────
+
+    empathy_intro: {
+      bot: "You've come to the right place, and you don't have to figure this out alone. 🇺\ud83c\uddf8\n\nMany veterans feel exactly the same way — the VA system is complex and it can be hard to know where to start. That's exactly why this assistant exists.\n\n<strong>Let's start simple.</strong> Which of these best describes what's on your mind?",
+      cards: [
+        { icon: '💰', title: 'Money & Benefits', desc: 'Disability pay, pension, financial help' },
+        { icon: '🏥', title: 'Healthcare',       desc: 'VA medical care, mental health' },
+        { icon: '📚', title: 'Education & Jobs', desc: 'GI Bill, career training' },
+        { icon: '👥', title: 'Talk to Someone',  desc: 'Connect with a VSO counselor' }
+      ]
     }
 
   }; // end NODES
@@ -480,50 +501,95 @@
     'How do I apply for BDD?':'bdd',
     'Find a VSO counselor':'vso',
     'What is BDD?':'bdd',
+    'Tell me about the BDD program':'bdd',
+    'GI Bill':'gi_bill',
+    'VA Home Loan':'home_loan',
+    'VA Healthcare':'healthcare',
+    'Mental health benefits':'mental_health',
+    'Do I qualify for VA Healthcare?':'healthcare_eligibility',
+    'Am I eligible for VA Healthcare?':'healthcare_eligibility',
+    'Surviving spouse benefits':'surviving_spouse',
+    'What is VA Pension?':'pension',
     'Start over':'welcome', 'Start Fresh →':'welcome',
-    'Contact Support':'feedback', 'VetNavigator Support':'feedback'
+    'Contact Support':'feedback', 'VetNavigator Support':'feedback',
+    // gi_bill_types chips
+    'What is Voc Rehab?':'voc_rehab',
+    'Can I transfer my GI Bill?':'gi_bill_transfer',
+    'Chapter 30 vs 33':'gi_bill_types', 'Montgomery GI Bill':'gi_bill_types',
+    'GI Bill types':'gi_bill_types', 'Yellow Ribbon':'gi_bill_types',
+    // empathy_intro card routes
+    'Money & Benefits':'benefits_menu', 'Talk to Someone':'vso',
+    'Education & Jobs':'cat_education',
+    // empathy trigger phrases
+    "I don't know where to start":'empathy_intro',
+    "I need help":'empathy_intro',
+    "I'm confused":'empathy_intro',
+    "I'm overwhelmed":'empathy_intro'
   };
 
   // ── KEYWORD ROUTING ────────────────────────────────────────────────────────
   var KW = [
-    [/\b(crisis|suicid|kill myself|end it all|hopeless)\b/i,           'crisis'],
-    [/\b(champva|champ va)\b/i,                                         'champva'],
-    [/\b(pact act|burn pit|agent orange|toxic exposure)\b/i,           'pact_act'],
-    [/\b(tdiu|individual unemployability|unemployable)\b/i,            'tdiu'],
-    [/\b(nexus letter|buddy statement)\b/i,                            'nexus'],
-    [/\b(c&p exam|c and p exam|compensation.*pension exam)\b/i,        'cp_exam'],
-    [/\b(voc rehab|vocational rehab|chapter 31)\b/i,                   'voc_rehab'],
-    [/\b(\bdic\b|dependency.*indemnity)\b/i,                           'dic'],
-    [/\b(bdd|benefits delivery at discharge)\b/i,                      'bdd'],
-    [/\b(ptsd|mental health|counseling|vet center)\b/i,                'mental_health'],
-    [/\b(mst|military sexual trauma)\b/i,                              'mst'],
-    [/\b(travel pay|mileage.*va)\b/i,                                  'travel_pay'],
-    [/\b(community care|outside.*va.*doctor)\b/i,                      'community_care'],
-    [/\b(caregiver|pcafc)\b/i,                                         'caregiver'],
-    [/\b(dental|vision.*va)\b/i,                                       'dental_vision'],
-    [/\b(claim status|where.*my claim|check.*claim)\b/i,               'claim_status'],
-    [/\b(va debt|overpayment|owe.*va)\b/i,                             'va_debt'],
-    [/\b(aid.*attendance)\b/i,                                         'aid_attendance'],
-    [/\b(pension|wartime.*pension)\b/i,                                'pension'],
-    [/\b(burial|funeral.*va)\b/i,                                      'burial'],
-    [/\b(life insurance|sgli|vgli)\b/i,                                'life_insurance'],
-    [/\b(housing.*assist|homeless.*vet|hud.*vash)\b/i,                 'housing_help'],
-    [/\b(women veteran|female veteran)\b/i,                            'women_veterans'],
-    [/\b(national guard|reserve.*benefit)\b/i,                         'guard_reserve'],
-    [/\b(adapted housing|wheelchair.*home|accessibility.*grant)\b/i,   'adapted_housing'],
-    [/\b(military record|service record|dd.?214)\b/i,                  'va_records'],
-    [/\b(disability|compensation|rating|file.*claim|how.*claim)\b/i,   'disability'],
-    [/\b(gi bill|chapter 33|post.9.11 education|education benefit)\b/i,'gi_bill'],
-    [/\b(home loan|va loan|mortgage|house.*va)\b/i,                    'home_loan'],
-    [/\b(healthcare|health care|medical.*va|enroll.*va)\b/i,           'healthcare'],
-    [/\b(document|dd214|paperwork|records needed)\b/i,                 'documents'],
-    [/\b(denied|denial|appeal|rejected)\b/i,                           'denied'],
-    [/\b(vso|counselor|service officer)\b/i,                           'vso'],
-    [/\b(what can you|capabilities|what do you help)\b/i,              'capabilities'],
-    [/\b(benefits|all benefits|see more)\b/i,                          'benefits_menu'],
-    [/\b(increase.*rating|higher rating|improve.*rating)\b/i,          'rating_increase'],
-    [/\b(how.*rating.*work|rating.*explain)\b/i,                       'rating_explained'],
-    [/\b(feedback|contact.*support|vetnav.*support|issue.*chatbot)\b/i,'feedback']
+    [/\b(crisis|suicid|harm myself|end my life|don.t want to live|988|crisis line)\b/i, 'crisis'],
+    // Ratings & claims
+    [/\b(rating|rated|disability rating|how.*rating|rating.*work|percent|percentage)\b/i, 'rating_explained'],
+    [/\b(increase.*rating|higher rating|raise.*rating|rating.*increase|re-?rate|rerate)\b/i, 'rating_increase'],
+    [/\b(c&?p exam|comp.*pen|compensation.*pension|c and p|dbq)\b/i,        'cp_exam'],
+    [/\b(tdiu|total disab|unemployab|can't work|cannot work|unable.*work)\b/i, 'tdiu'],
+    [/\b(nexus|buddy statement|lay statement|personal statement|doctor.*letter)\b/i, 'nexus'],
+    [/\b(appeal|appealing|board of appeals|bva|cavc|higher.?level review|supplemental claim|new evidence)\b/i, 'denied'],
+    [/\b(back pay|retro|retroactive|effective date|past.*benefits)\b/i,     'rating_increase'],
+    [/\b(file.*claim|submit.*claim|start.*claim|how.*claim|apply.*disab|526)\b/i, 'file_claim'],
+    [/\b(denied|rejection|rejected|claim.*denied|turned down)\b/i,         'denied'],
+    // Mental health
+    [/\b(ptsd|mental health|counseling|therapy|depression|anxiety|mst|suicide|crisis|vet center|psych)\b/i, 'mental_health'],
+    [/\b(mst|military sexual trauma|sexual assault|sexual harassment)\b/i,  'mst'],
+    // Healthcare
+    [/\b(eligible.*health|qualify.*health|health.*eligib|priority group)\b/i, 'healthcare_eligibility'],
+    [/\b(copay|co.?pay|how much.*health|cost.*health|health.*cost)\b/i,    'healthcare_eligibility'],
+    [/\b(healthcare|health care|medical|doctor|hospital|enroll.*health|health.*enroll)\b/i, 'healthcare'],
+    [/\b(medication|prescription|pharmacy|refill)\b/i,                     'healthcare'],
+    // GI Bill
+    [/\b(chapter 30|montgomery|mgib|chapter 31|voc.?rehab|vocational)\b/i, 'gi_bill_types'],
+    [/\b(bah|housing allowance|yellow ribbon|private school|transfer.*gi|gi.*transfer)\b/i, 'gi_bill_types'],
+    [/\b(apply.*gi|gi.*apply|how.*gi bill|education.*apply)\b/i,           'gi_bill_apply'],
+    [/\b(gi bill|gibill|chapter 33|post.?9.?11|education benefit|tuition|school)\b/i, 'gi_bill'],
+    // Housing
+    [/\b(home loan|va loan|house|mortgage|buy.*home|refinanc|irrrl|coe|certificate.*eligib)\b/i, 'home_loan'],
+    [/\b(homeless|housing help|hud.?vash|transitional housing|evict|shelter)\b/i, 'housing_help'],
+    [/\b(adapted housing|sah grant|sha grant|accessible home|wheelchair.*home)\b/i, 'adapted_housing'],
+    // Financial
+    [/\b(pension|low income|wartime|aid.*attend|aid and attend|in.?home care|assisted living|nursing home)\b/i, 'pension'],
+    [/\b(aid.*attend|attend.*aid|a&a|daily.*activ|help.*bathing|help.*dressing)\b/i, 'aid_attendance'],
+    [/\b(debt|owe.*va|va.*owe|overpayment|repay|waiver.*debt|pay back va)\b/i, 'va_debt'],
+    [/\b(travel pay|mileage|btsss|beneficiary travel|travel reimburs)\b/i, 'travel_pay'],
+    // PACT / toxic exposure
+    [/\b(pact act|burn pit|agent orange|radiation|toxic|gulf war|airborne hazard)\b/i, 'pact_act'],
+    // Family & survivors
+    [/\b(voc rehab|vocational rehab|chapter 31|career|employment.*disab|job.*disab)\b/i, 'voc_rehab'],
+    [/\b(dic|dependency indemnity|surviving spouse|widow|widower|spouse.*died|veteran.*died|death.*benefit)\b/i, 'dic'],
+    [/\b(champva|champ va|dependent.*health|family.*health|spouse.*insurance)\b/i, 'champva'],
+    [/\b(dea|survivors.*edu|dependent.*edu|education.*survivor|fry scholarship)\b/i, 'gi_bill_types'],
+    [/\b(bdd|benefits delivery at discharge)\b/i,                          'bdd'],
+    // Care & services
+    [/\b(community care|mission act|outside va|non.?va|community provider|triwest|optum)\b/i, 'community_care'],
+    [/\b(caregiver|pcafc|family.*caregiver|caregiver.*stipend|respite)\b/i, 'caregiver'],
+    [/\b(dental|va dental|vision.*va|veteran.*dental)\b/i,                 'dental_vision'],
+    [/\b(life.insur|sgli|vgli|s.dvi|vmli|convert.*insur|insurance.*separat)\b/i, 'life_insurance'],
+    [/\b(women veteran|female veteran|woman veteran|maternity|fertility|gynecol)\b/i, 'women_veterans'],
+    [/\b(national guard|guard.*benefit|reserve.*benefit|title 10|title 32)\b/i, 'guard_reserve'],
+    // Records & status
+    [/\b(claim status|check.*claim|where.*claim|track.*claim|how long.*claim|pending claim)\b/i, 'claim_status'],
+    [/\b(records request|c.file|cfile|service record|dd.?214|military record|medical record.*va|my healthevet)\b/i, 'va_records'],
+    [/\b(document|paperwork|records needed)\b/i,                           'documents'],
+    // Burial
+    [/\b(burial|cemetery|headstone|gravestone|memorial|funeral|interment|pre.need|national.cemetery)\b/i, 'burial'],
+    // Navigation
+    [/\b(vso|counselor|service officer|speak.*someone|talk.*someone)\b/i,  'vso'],
+    [/\b(benefits|what.*benefit|all benefit|other benefit|list.*benefit)\b/i, 'benefits_menu'],
+    [/\b(what can you|what do you|what.*cover|what.*help|capabilities|help with what|full list)\b/i, 'capabilities'],
+    [/\b(feedback|rate.*service|review.*bot|how.*doing|suggestion)\b/i,    'feedback'],
+    // Empathy entry — catches overwhelmed/lost veterans
+    [/\b(don.t know where|don.t know what|lost|confused|overwhelmed|struggling|not sure where|where do i start|where to start|help me|i need help|don.t understand|frustrated|give up|no idea)\b/i, 'empathy_intro']
   ];
 
   // ── i18n ───────────────────────────────────────────────────────────────────
@@ -738,7 +804,7 @@
 
     // Options area
     '#vnop{padding:8px 11px 10px;background:rgba(0,0,0,.25);',
-    'border-top:.5px solid var(--vbd);height:160px;min-height:160px;max-height:160px;',
+    'border-top:.5px solid var(--vbd);height:182px;min-height:182px;max-height:182px;',
     'overflow-y:auto}',
     '#vnop::-webkit-scrollbar{width:2px}',
     '#vnop::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}',
@@ -838,6 +904,19 @@
     '#vnsvd{display:none;text-align:center;font-size:12px;',
     'color:rgba(74,222,128,.9);padding:6px 0}',
 
+    // Scan tabs
+    '.vnsc{flex:1;padding:6px 8px;font-size:11px;font-weight:600;cursor:pointer;',
+    'border:none;background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);',
+    'font-family:inherit;transition:all .15s;text-align:center}',
+    '.vnsc.act{background:rgba(30,80,160,.55);color:#fff}',
+    '.vnsc:hover:not(.act){background:rgba(255,255,255,.08);color:rgba(255,255,255,.7)}',
+
+    // Feedback stars
+    '.vnstar{transition:color .1s;user-select:none}',
+    '.vnstar.on{color:var(--vg)}',
+    '#vnfbtx:focus{border-color:rgba(178,34,52,.5)}',
+    '#vnfbsb:hover{background:var(--vrd)}',
+
     // Support tab
     '#vnsup{padding:14px}',
 
@@ -853,21 +932,50 @@
 
   // ── BUILD HTML ─────────────────────────────────────────────────────────────
   function buildHTML() {
-    var langs = ['en', 'es', 'vi', 'ko', 'tl'];
-    var lbs = langs.map(function (c) {
-      var lk  = (!HAS_ML && c !== 'en') ? ' lk' : '';
-      var act = (c === 'en') ? ' act' : '';
-      return '<button class="vnlg' + lk + act + '" data-lang="' + c + '">' + c.toUpperCase() + '</button>';
+    var langs = [
+      { code: 'en', label: 'English' },
+      { code: 'es', label: 'Español' },
+      { code: 'vi', label: 'Tiếng Việt' },
+      { code: 'ko', label: '한국어' },
+      { code: 'tl', label: 'Filipino' }
+    ];
+    var lbs = langs.map(function (l) {
+      var lk  = (!HAS_ML && l.code !== 'en') ? ' lk' : '';
+      var act = (l.code === 'en') ? ' act' : '';
+      return '<button class="vnlg' + lk + act + '" data-lang="' + l.code + '">' + l.label + '</button>';
     }).join('');
 
     var tabs = '<div id="vntb">'
       + '<button class="vntb act" data-tab="chat">Benefits Chat</button>'
       + (HAS_ADMIN ? '<button class="vntb" data-tab="admin">Admin Panel</button>' : '')
-      + '<button class="vntb" data-tab="sup">Support</button>'
+      + '<button class="vntb" data-tab="feedback">Feedback</button>'
       + '</div>';
 
     var adm = HAS_ADMIN
       ? '<div id="vnadp" class="vntp" data-panel="admin">'
+        + '<div style="font-size:11px;color:rgba(232,200,74,.85);background:rgba(232,200,74,.07);border:1px solid rgba(232,200,74,.2);border-radius:8px;padding:9px 11px;margin-bottom:12px;line-height:1.5">Update your organization info below. Changes appear instantly in the chat.</div>'
+        // Scan tabs
+        + '<div id="vnsct" style="display:flex;gap:0;margin-bottom:8px;border-radius:8px;overflow:hidden;border:.5px solid rgba(255,255,255,.1)">'
+        + '<button class="vnsc act" data-sc="web">🌐 Website</button>'
+        + '<button class="vnsc" data-sc="fb">📘 Facebook</button>'
+        + '<button class="vnsc" data-sc="man">✏️ Manual</button>'
+        + '</div>'
+        // Website scan panel
+        + '<div id="vnscw">'
+        + '<div style="display:flex;gap:6px;margin-bottom:6px">'
+        + '<input id="vnscu" type="text" class="vnai" style="margin-bottom:0" placeholder="https://yourpost.org"/>'
+        + '<button id="vnscb" style="padding:6px 10px;border-radius:7px;border:.5px solid rgba(60,120,220,.4);background:rgba(30,80,160,.5);color:#fff;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:inherit">🔍 Scan</button>'
+        + '</div>'
+        + '<div id="vnscst" style="font-size:11px;min-height:14px;margin-bottom:8px;line-height:1.4"></div>'
+        + '</div>'
+        // Facebook scan panel
+        + '<div id="vnscf" style="display:none">'
+        + '<div style="font-size:10.5px;color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:6px">Facebook blocks auto-scanning. Go to your Facebook page → About tab → select all text → copy → paste below.</div>'
+        + '<textarea id="vnfbpa" placeholder="Paste your Facebook About page text here…" style="width:100%;height:75px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:7px;padding:7px 9px;font-size:11.5px;color:rgba(255,255,255,.85);font-family:inherit;resize:none;outline:none;box-sizing:border-box;margin-bottom:6px"></textarea>'
+        + '<button id="vnfbb" style="width:100%;padding:7px;border-radius:7px;border:.5px solid rgba(232,200,74,.3);background:rgba(100,70,0,.4);color:#fff;font-size:11.5px;font-weight:500;cursor:pointer;font-family:inherit">📘 Extract from Facebook Text</button>'
+        + '<div id="vnscst2" style="font-size:11px;min-height:14px;margin-top:6px;margin-bottom:4px;line-height:1.4"></div>'
+        + '</div>'
+        // Manual fields
         + '<span class="vnal">Organization Name</span><input class="vnai" id="an" type="text"/>'
         + '<span class="vnal">City</span><input class="vnai" id="ac" type="text"/>'
         + '<span class="vnal">Phone</span><input class="vnai" id="ap" type="text"/>'
@@ -882,12 +990,24 @@
         + '</div>'
       : '';
 
-    var sup = '<div id="vnsup" class="vntp" data-panel="sup">'
-      + '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:8px">VetNavigator Support</div>'
-      + '<div style="font-size:12px;color:var(--vs);line-height:1.6;margin-bottom:12px">For help with your chatbot, account, or billing — contact our team directly.</div>'
-      + '<div style="font-size:12px;color:var(--vt);margin-bottom:6px">📧 <a href="mailto:' + SUPPORT_EMAIL + '" style="color:var(--vg);text-decoration:none">' + SUPPORT_EMAIL + '</a></div>'
-      + '<div style="font-size:12px;color:var(--vs)">⏱ Response within 24 hours</div>'
-      + '<div style="font-size:11px;color:rgba(255,255,255,.25);margin-top:14px">License: ' + LICENSE_KEY.substring(0, 14) + '…</div>'
+    var fbk = '<div id="vnfbk" class="vntp" data-panel="feedback" style="padding:14px">'
+      + '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">How was your experience?</div>'
+      + '<div style="font-size:11.5px;color:var(--vs);margin-bottom:12px;line-height:1.5">Your feedback helps us improve this service for all veterans.</div>'
+      + '<div id="vnstars" style="display:flex;gap:8px;margin-bottom:14px;font-size:24px;cursor:pointer">'
+      + '<span class="vnstar" data-v="1">☆</span>'
+      + '<span class="vnstar" data-v="2">☆</span>'
+      + '<span class="vnstar" data-v="3">☆</span>'
+      + '<span class="vnstar" data-v="4">☆</span>'
+      + '<span class="vnstar" data-v="5">☆</span>'
+      + '</div>'
+      + '<textarea id="vnfbtx" placeholder="Share any thoughts, suggestions, or issues (optional)…" '
+      + 'style="width:100%;height:80px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.15);'
+      + 'border-radius:8px;padding:8px 10px;font-size:12px;color:#fff;font-family:inherit;'
+      + 'outline:none;resize:none;box-sizing:border-box;margin-bottom:10px"></textarea>'
+      + '<button id="vnfbsb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);'
+      + 'border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Submit Feedback</button>'
+      + '<div id="vnfbok" style="display:none;text-align:center;font-size:12px;'
+      + 'color:rgba(74,222,128,.9);margin-top:10px">✓ Thank you! Your feedback has been received.</div>'
       + '</div>';
 
     var mic = HAS_MIC
@@ -931,7 +1051,7 @@
       +       '<button id="vnsd"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>'
       +     '</div>'
       +   '</div>'
-      +   adm + sup
+      +   adm + fbk
       +   '<div id="vnft">Powered by VetNavigator AI · Veteran-Made &amp; Veteran-Owned</div>'
       + '</div>';
   }
@@ -1002,6 +1122,13 @@
   }
 
   function setProg(pct) { ge('vnpr').style.width = (pct || 0) + '%'; }
+
+  // ── WELCOME NODE ───────────────────────────────────────────────────────────
+  function buildWelcome() {
+    NODES.welcome.bot = 'Welcome to ' + ORG_NAME + '! 🎖️\n\n'
+      + "I'm your free VA benefits guide — here to help you understand what you've earned and how to claim it.\n\n"
+      + 'Who are you here for today?';
+  }
 
   // ── VSO NODE ───────────────────────────────────────────────────────────────
   function buildVSO() {
@@ -1171,10 +1298,44 @@
   // ── TIER GATE FREE TEXT ────────────────────────────────────────────────────
   function gatedFreeText(text) {
     if (IS_DEMO) return false;
-    var l2 = /pact act|burn pit|agent orange|voc rehab|vocational|chapter 31|\bdic\b|champva|\bbdd\b|benefits delivery|rating.*explain|increase.*rating|c&p exam|cp exam|apply.*gi bill|gi bill.*apply|transfer.*gi bill|apply.*va loan|enroll.*va health|eligible.*va health/i;
-    var l3 = /\btdiu\b|total disability|unemploy|nexus letter|buddy statement|ptsd|mental health|\bmst\b|military sexual|va pension|wartime pension|aid.*attendance|burial|caregiver|va dental|claim status|va debt|overpayment|travel pay|community care|sgli|vgli|life insurance.*vet|housing.*assist|homeless.*vet|women veteran|national guard|reserve.*benefit|adapted housing|military record|dd.?214/i;
-    if (l2.test(text) && TIER_LVL < 2) return true;
-    if (l3.test(text) && TIER_LVL < 3) return true;
+    var checks = [
+      // Tier 2 — Starter+
+      { level: 2, re: /pact act|burn pit|agent orange|toxic exposure|gulf war illness/i },
+      { level: 2, re: /voc rehab|vocational rehab|chapter 31|voc.*rehab/i },
+      { level: 2, re: /\bdic\b|dependency.*indemnity|surviving spouse.*compensation/i },
+      { level: 2, re: /champva/i },
+      { level: 2, re: /\bbdd\b|benefits delivery at discharge/i },
+      { level: 2, re: /how.*rating.*work|rating.*explained|what.*rating.*mean|disability.*rating.*percent/i },
+      { level: 2, re: /increase.*rating|higher rating|appeal.*rating|raise.*rating|improve.*rating/i },
+      { level: 2, re: /c&p exam|compensation.*pension exam|c and p exam|cp exam/i },
+      { level: 2, re: /apply.*gi bill|gi bill.*application|how.*use gi bill|gi bill.*how/i },
+      { level: 2, re: /transfer.*gi bill|gi bill.*transfer/i },
+      { level: 2, re: /apply.*va loan|va.*home loan.*apply|how.*get va loan|va loan.*apply/i },
+      { level: 2, re: /enroll.*va health|va.*healthcare.*enroll|sign up.*va health|register.*va/i },
+      { level: 2, re: /eligible.*va health|qualify.*va health|va health.*eligible|do i qualify.*va/i },
+      // Tier 3 — Standard+
+      { level: 3, re: /\btdiu\b|total disability|individual unemployability|unemployable/i },
+      { level: 3, re: /nexus letter|buddy statement|nexus.*letter/i },
+      { level: 3, re: /ptsd|mental health|counseling|vet center|therapy.*veteran|mst|military sexual/i },
+      { level: 3, re: /va pension|wartime.*pension|pension.*veteran/i },
+      { level: 3, re: /aid.*attendance|aid and attendance/i },
+      { level: 3, re: /burial benefit|funeral.*va|va.*burial|burial.*allowance/i },
+      { level: 3, re: /caregiver.*program|va.*caregiver|program of comprehensive/i },
+      { level: 3, re: /va dental|veteran.*dental|va vision|veteran.*vision/i },
+      { level: 3, re: /claim status|where.*my claim|check.*claim|track.*claim/i },
+      { level: 3, re: /va debt|overpayment.*va|va.*debt|owe.*va/i },
+      { level: 3, re: /\bmst\b|military sexual trauma/i },
+      { level: 3, re: /travel pay|mileage.*va|va.*travel reimburs|travel.*reimburs/i },
+      { level: 3, re: /community care|outside.*va.*doctor|non.*va.*care/i },
+      { level: 3, re: /sgli|vgli|life insurance.*veteran|veteran.*life insurance/i },
+      { level: 3, re: /hud.*vash|homeless.*veteran|veteran.*housing.*assist/i },
+      { level: 3, re: /women veteran|female veteran|va.*women/i },
+      { level: 3, re: /national guard|reserve.*benefit|guard.*benefit/i },
+      { level: 3, re: /va records|service record|military record|dd214/i }
+    ];
+    for (var i = 0; i < checks.length; i++) {
+      if (checks[i].re.test(text) && TIER_LVL < checks[i].level) return true;
+    }
     return false;
   }
 
@@ -1306,6 +1467,7 @@
     hideNotif();
     if (!chatStarted) {
       chatStarted = true;
+      buildWelcome();
       buildVSO();
       setTimeout(function () { renderNode('welcome'); }, 180);
     }
@@ -1444,13 +1606,195 @@
     // Restart
     ge('vnrs').addEventListener('click', restart);
 
-    // Admin buttons (event listeners instead of inline onclick)
+    // Admin panel wiring (Starter+)
     if (HAS_ADMIN) {
       ge('vnadde').addEventListener('click', vnAE);
       ge('vnadda').addEventListener('click', vnAL);
       ge('vnsv').addEventListener('click', vnSave);
       populateAdmin();
+
+      // Scan tab switching
+      document.querySelectorAll('.vnsc').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var sc = this.getAttribute('data-sc');
+          document.querySelectorAll('.vnsc').forEach(function (b) { b.classList.remove('act'); });
+          this.classList.add('act');
+          ge('vnscw').style.display  = sc === 'web' ? 'block' : 'none';
+          ge('vnscf').style.display  = sc === 'fb'  ? 'block' : 'none';
+        });
+      });
+
+      // Helper: fill scanned data into admin fields
+      function fillScanData(data, statusEl) {
+        var found = [];
+        if (data.orgName) { ge('an').value = data.orgName; found.push('name'); }
+        if (data.city)    { ge('ac').value = data.city;    found.push('city'); }
+        if (data.phone)   { ge('ap').value = data.phone;   found.push('phone'); }
+        if (data.email)   { ge('ae').value = data.email;   found.push('email'); }
+        if (data.hours)   { ge('ah').value = data.hours;   found.push('hours'); }
+        if (data.events && data.events.length) {
+          ge('aev').innerHTML = '';
+          data.events.forEach(function (e) {
+            if (!e) return;
+            var r = document.createElement('div'); r.className = 'vnadr';
+            r.innerHTML = '<input class="vnai" type="text" value="' + e.replace(/"/g, '&quot;') + '"/>'
+              + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
+            ge('aev').appendChild(r);
+          });
+          found.push(data.events.length + ' event(s)');
+        }
+        if (data.leaders && data.leaders.length) {
+          ge('ald').innerHTML = '';
+          data.leaders.forEach(function (l) {
+            if (!l) return;
+            var r = document.createElement('div'); r.className = 'vnadr';
+            r.innerHTML = '<input class="vnai" type="text" value="' + l.replace(/"/g, '&quot;') + '"/>'
+              + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
+            ge('ald').appendChild(r);
+          });
+          found.push(data.leaders.length + ' leader(s)');
+        }
+        if (found.length) {
+          statusEl.style.color = 'rgba(74,222,128,.9)';
+          statusEl.textContent = '✓ Found: ' + found.join(', ') + '. Review below and hit Save.';
+        } else {
+          statusEl.style.color = 'rgba(255,120,120,.85)';
+          statusEl.textContent = 'Could not extract details — fill in manually below.';
+        }
+      }
+
+      // Website scan
+      ge('vnscb').addEventListener('click', function () {
+        var url = ge('vnscu').value.trim();
+        if (!url) return;
+        if (!url.startsWith('http')) url = 'https://' + url;
+        var btn = this; btn.disabled = true;
+        var st  = ge('vnscst');
+        st.style.color = 'rgba(232,200,74,.85)';
+        st.textContent = '🔍 Fetching your website…';
+        fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url))
+          .then(function (r) { return r.json(); })
+          .then(function (j) {
+            var pageText = (j.contents || '')
+              .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+              .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+              .replace(/<[^>]+>/g, ' ')
+              .replace(/\s{3,}/g, '  ')
+              .substring(0, 6000);
+            if (!pageText || pageText.length < 80) {
+              st.style.color   = 'rgba(255,120,120,.85)';
+              st.textContent   = 'Page had little readable content. Fill in manually.';
+              btn.disabled = false; return;
+            }
+            st.textContent = '🤖 AI is reading your website…';
+            return fetch(VN_API, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                model: 'claude-haiku-4-5-20251001',
+                max_tokens: 600,
+                system: 'Extract VSO organization info from website text. Respond with valid JSON only — no markdown, no explanation. Keys: orgName, city, address, phone, email, hours, events (array max 6), leaders (array max 8). Empty string or [] if not found.',
+                messages: [{ role: 'user', content: pageText }]
+              })
+            });
+          })
+          .then(function (r) { return r && r.json(); })
+          .then(function (d) {
+            if (!d) return;
+            var txt = ((d.content || [])[0] || {}).text || '';
+            txt = txt.replace(/```json|```/g, '').trim();
+            try { fillScanData(JSON.parse(txt), ge('vnscst')); }
+            catch (e) {
+              ge('vnscst').style.color = 'rgba(255,120,120,.85)';
+              ge('vnscst').textContent = 'AI scan failed — fill in manually.';
+            }
+            btn.disabled = false;
+          })
+          .catch(function () {
+            ge('vnscst').style.color = 'rgba(255,120,120,.85)';
+            ge('vnscst').textContent = 'Could not reach website — fill in manually.';
+            btn.disabled = false;
+          });
+      });
+
+      // Facebook text scan
+      ge('vnfbb').addEventListener('click', function () {
+        var paste = ge('vnfbpa').value.trim();
+        if (!paste || paste.length < 40) {
+          ge('vnscst2').style.color   = 'rgba(255,120,120,.85)';
+          ge('vnscst2').textContent   = 'Please paste your Facebook About text first.';
+          return;
+        }
+        var btn = this; btn.disabled = true;
+        var st  = ge('vnscst2');
+        st.style.color = 'rgba(232,200,74,.85)';
+        st.textContent = '📘 AI is reading your Facebook info…';
+        fetch(VN_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-haiku-4-5-20251001',
+            max_tokens: 600,
+            system: 'Extract VSO organization info from pasted Facebook About page text. Respond with valid JSON only — no markdown, no explanation. Keys: orgName, city, address, phone, email, hours, events (array max 6), leaders (array as "Title – Name", max 8). Empty string or [] if not found.',
+            messages: [{ role: 'user', content: paste.substring(0, 6000) }]
+          })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          var txt = ((d.content || [])[0] || {}).text || '';
+          txt = txt.replace(/```json|```/g, '').trim();
+          try { fillScanData(JSON.parse(txt), ge('vnscst2')); }
+          catch (e) {
+            st.style.color = 'rgba(255,120,120,.85)';
+            st.textContent = 'Could not extract info — fill in manually.';
+          }
+          btn.disabled = false;
+        })
+        .catch(function () {
+          st.style.color = 'rgba(255,120,120,.85)';
+          st.textContent = 'Something went wrong — fill in manually.';
+          btn.disabled = false;
+        });
+      });
     }
+
+    // Star rating
+    var starRating = 0;
+    document.querySelectorAll('.vnstar').forEach(function (star) {
+      star.addEventListener('click', function () {
+        starRating = parseInt(this.getAttribute('data-v'));
+        document.querySelectorAll('.vnstar').forEach(function (s) {
+          var v = parseInt(s.getAttribute('data-v'));
+          s.textContent = v <= starRating ? '★' : '☆';
+          s.classList.toggle('on', v <= starRating);
+        });
+      });
+    });
+
+    // Feedback submit
+    ge('vnfbsb').addEventListener('click', function () {
+      var rating = starRating;
+      var text   = ge('vnfbtx').value.trim();
+      if (!rating && !text) return;
+      if (BREVO_KEY) {
+        var body = {
+          sender:      { name: 'VetNavigator Widget', email: SUPPORT_EMAIL },
+          to:          [{ email: SUPPORT_EMAIL }],
+          subject:     '⭐ Widget Feedback — ' + ORG_NAME + ' (' + rating + '/5)',
+          htmlContent: '<p><strong>Rating:</strong> ' + rating + '/5</p>'
+            + '<p><strong>Post:</strong> ' + ORG_NAME + '</p>'
+            + '<p><strong>License:</strong> ' + LICENSE_KEY + '</p>'
+            + (text ? '<p><strong>Comments:</strong><br>' + text + '</p>' : '<p><em>No written feedback</em></p>')
+        };
+        fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
+          body: JSON.stringify(body)
+        });
+      }
+      ge('vnfbsb').style.display = 'none';
+      ge('vnfbok').style.display = 'block';
+    });
 
     // Microphone
     initMic();
