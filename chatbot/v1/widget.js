@@ -1181,9 +1181,10 @@
     }).join('');
 
     var tabs = '<div id="vntb">'
-      + '<button class="vntb act" data-tab="chat">Benefits Chat</button>'
-      + (HAS_ADMIN ? '<button class="vntb" data-tab="admin">Admin Panel</button>' : '')
-      + '<button class="vntb" data-tab="feedback">Feedback</button>'
+      + '<button class="vntb act" data-tab="chat">💬 Veteran Chat</button>'
+      + '<button class="vntb" data-tab="feedback">📝 Feedback</button>'
+      + '<button class="vntb" data-tab="support">🎧 Support</button>'
+      + (HAS_ADMIN ? '<button class="vntb" data-tab="admin">⚙️ Admin Panel</button>' : '')
       + '</div>';
 
     var adm = HAS_ADMIN
@@ -1245,6 +1246,31 @@
       + 'color:rgba(74,222,128,.9);margin-top:10px">✓ Thank you! Your feedback has been received.</div>'
       + '</div>';
 
+    var sup = '<div id="vnsup" class="vntp" data-panel="support" style="padding:14px">'
+      + '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">Contact Our Team</div>'
+      + '<div style="font-size:11.5px;color:var(--vs);margin-bottom:12px;line-height:1.5">Send us a message and we\'ll follow up with you directly.</div>'
+      + '<div id="vnsupf">'
+      + '<input id="vnsn" type="text" placeholder="Your name" style="width:100%;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
+      + '<input id="vnse" type="email" placeholder="Your email address" style="width:100%;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
+      + '<select id="vnsy" style="width:100%;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.7);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
+      + '<option value="">Select topic...</option>'
+      + '<option value="benefits">VA Benefits Question</option>'
+      + '<option value="claim">Help with my claim</option>'
+      + '<option value="appointment">Schedule an appointment</option>'
+      + '<option value="documents">Document request</option>'
+      + '<option value="other">Other</option>'
+      + '</select>'
+      + '<textarea id="vnsmsg" placeholder="Describe your question or request…" style="width:100%;height:80px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;resize:none;box-sizing:border-box;margin-bottom:8px"></textarea>'
+      + '<div id="vnserr" style="display:none;font-size:11px;color:rgba(255,100,100,.9);margin-bottom:6px"></div>'
+      + '<button id="vnssb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Send Message</button>'
+      + '</div>'
+      + '<div id="vnstk" style="display:none;text-align:center;padding:12px">'
+      + '<div style="font-size:24px;margin-bottom:6px">✅</div>'
+      + '<div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.9)">Message sent!</div>'
+      + '<div style="font-size:11.5px;color:var(--vs);margin-top:4px;line-height:1.5">Our team will follow up with you by email.</div>'
+      + '</div>'
+      + '</div>';
+
     var mic = HAS_MIC
       ? '<button id="vnmc" title="Voice input"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 3.57-3.38 6-5.91 6s-5.42-2.43-5.91-6H4c.49 4.12 3.73 7.38 7.75 7.9V21h.5v-2.1C16.27 18.38 19.51 15.12 20 11h-2.09z"/></svg></button>'
       : '';
@@ -1261,9 +1287,9 @@
       +   '<div id="vnh"><div id="vnhi">🎖️</div>'
       +   '<div style="flex:1"><div id="vnon">' + ORG_NAME + '</div>'
       +   '<div id="vnst"><span class="vnd"></span> <span id="vnstx">Online · Free · 24/7</span></div></div></div>'
-      +   '<div id="vnpb"><div id="vnpr"></div></div>'
-      +   '<div id="vnlb">' + lbs + '</div>'
       +   tabs
+      +   '<div id="vnlb">' + lbs + '</div>'
+      +   '<div id="vnpb"><div id="vnpr"></div></div>'
       +   '<div id="vnchat" class="vntp act" data-panel="chat">'
       +     '<div id="vnms"></div>'
       +     '<div id="vnwn"></div>'
@@ -1286,7 +1312,7 @@
       +       '<button id="vnsd"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>'
       +     '</div>'
       +   '</div>'
-      +   adm + fbk
+      +   adm + fbk + sup
       +   '<div id="vnft">Powered by VetNavigator AI · Veteran-Made &amp; Veteran-Owned</div>'
       + '</div>';
   }
@@ -2155,6 +2181,41 @@
       }
       ge('vnfbsb').style.display = 'none';
       ge('vnfbok').style.display = 'block';
+    });
+
+    // Support form submit
+    ge('vnssb').addEventListener('click', function () {
+      var name  = ge('vnsn').value.trim();
+      var email = ge('vnse').value.trim();
+      var topic = ge('vnsy').value;
+      var msg   = ge('vnsmsg').value.trim();
+      var errEl = ge('vnserr');
+      errEl.style.display = 'none';
+      if (!name || !email || !msg) {
+        errEl.textContent = 'Please fill in your name, email, and message.';
+        errEl.style.display = 'block';
+        return;
+      }
+      if (BREVO_KEY) {
+        var body = {
+          sender:      { name: 'VetNavigator Widget', email: SUPPORT_EMAIL },
+          to:          [{ email: SUPPORT_EMAIL }],
+          replyTo:     { name: name, email: email },
+          subject:     '🎧 Support Request — ' + ORG_NAME + (topic ? ' (' + topic + ')' : ''),
+          htmlContent: '<p><strong>From:</strong> ' + name + ' (' + email + ')</p>'
+            + '<p><strong>Post:</strong> ' + ORG_NAME + '</p>'
+            + '<p><strong>License:</strong> ' + LICENSE_KEY + '</p>'
+            + (topic ? '<p><strong>Topic:</strong> ' + topic + '</p>' : '')
+            + '<p><strong>Message:</strong><br>' + msg.replace(/\n/g, '<br>') + '</p>'
+        };
+        fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
+          body: JSON.stringify(body)
+        });
+      }
+      ge('vnsupf').style.display = 'none';
+      ge('vnstk').style.display  = 'block';
     });
 
     // Microphone
