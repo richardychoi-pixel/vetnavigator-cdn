@@ -1005,7 +1005,7 @@
     'border-bottom:2px solid transparent;transition:all .15s;font-family:inherit}',
     '.vntb:hover{color:rgba(255,255,255,.8)}',
     '.vntb.act{color:#fff;border-bottom-color:var(--vr)}',
-    '.vntp{display:none;height:var(--vn-panel);overflow:hidden}',
+    '.vntp{display:none;height:var(--vn-panel);overflow:hidden;box-sizing:border-box}',
     '.vntp.act{display:block;overflow-y:auto}',
     '#vnchat.act{display:flex;flex-direction:column;overflow:hidden}',
 
