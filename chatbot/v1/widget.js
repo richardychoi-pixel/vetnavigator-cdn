@@ -2196,9 +2196,10 @@
   }
 
   // ── EMBED MODE ──────────────────────────────────────────────────────────────
-  var EMBED_TARGET = window.__vnEmbedTarget || null;
 
   function init() {
+    var EMBED_TARGET = window.__vnEmbedTarget || null;
+
     // Build and inject widget HTML
     var root = document.createElement('div');
     root.id  = 'vn-root';
@@ -2254,16 +2255,18 @@
     ge('vnstx').textContent = s('online');
     ge('vnon').textContent  = ORG_NAME;
 
-    // FAB + panel toggle
-    ge('vnb').addEventListener('click', function () {
-      panelOpen ? closePanel() : openPanel();
-    });
+    // FAB + panel toggle (skip in embed mode)
+    if (!EMBED_TARGET) {
+      ge('vnb').addEventListener('click', function () {
+        panelOpen ? closePanel() : openPanel();
+      });
 
-    // Notification bubble — clicking it opens the panel
-    ge('vnn').addEventListener('click', function () {
-      hideNotif();
-      openPanel();
-    });
+      // Notification bubble — clicking it opens the panel
+      ge('vnn').addEventListener('click', function () {
+        hideNotif();
+        openPanel();
+      });
+    }
 
     // Tabs
     document.querySelectorAll('.vntb').forEach(function (t) {
@@ -2519,8 +2522,10 @@
     // Microphone
     initMic();
 
-    // Notif bubble after 4s
-    setTimeout(showNotif, 4000);
+    // Notif bubble after 4s (skip in embed mode)
+    if (!EMBED_TARGET) {
+      setTimeout(showNotif, 4000);
+    }
   }
 
   // ── BOOT ───────────────────────────────────────────────────────────────────
