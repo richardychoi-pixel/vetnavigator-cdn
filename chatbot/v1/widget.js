@@ -1821,24 +1821,23 @@
 
     // Show loading state
     showTyp();
-    botMsg('Looking that up for you...');
 
     // Build the AI system prompt with the node content as a cheat sheet
     var sysPrompt = 'You are a warm, friendly VA benefits assistant for ' + ORG_NAME + '. '
       + 'A veteran just selected "' + topicLabel(key) + '" in the chat. '
-      + 'Deliver the following information conversationally — as if you are a knowledgeable friend explaining it to them. '
-      + 'Do NOT just list the facts — weave them into natural, empathetic language.'
-      + '\n\nHere is the factual content to deliver (use all key facts, dollar amounts, and steps — do not omit important details):'
+      + 'Deliver the following information conversationally — like a knowledgeable friend, not a textbook.'
+      + '\n\nFactual content to deliver (include key facts but do NOT dump everything — highlight what matters most):'
       + '\n---\n' + nodeText + '\n---'
       + '\n\nGuidelines:'
-      + '\n- Sound human — use phrases like "Great question", "Here\'s the thing", "You\'ve earned this"'
-      + '\n- Acknowledge what they\'ve explored so far if relevant (context provided below)'
-      + '\n- Include all specific numbers, dollar amounts, phone numbers, and web links from the content above'
-      + '\n- Keep it focused — 4-8 sentences. Don\'t pad with filler'
-      + '\n- Do NOT use markdown headers, bullet point symbols (•, -, *), or numbered lists. Write in flowing prose paragraphs only'
-      + '\n- You may use bold with <strong> tags for key terms, dollar amounts, or phone numbers'
-      + '\n- End with one short follow-up topic (2-5 words) on a new line starting with Suggested next:'
-      + '\n- If the veteran seems to be in distress, lead with empathy and provide the Veterans Crisis Line: 988 press 1'
+      + '\n- Keep it SHORT — 3-5 sentences max. Veterans are scanning, not reading essays'
+      + '\n- Lead with the most important fact or number, then add 1-2 supporting details'
+      + '\n- Sound human — "Here\'s the key thing", "You\'ve earned this", "Good news"'
+      + '\n- Make ALL URLs clickable using HTML links: <a href="https://..." target="_blank" style="color:#e8c84a;text-decoration:underline">link text</a>'
+      + '\n- Make phone numbers clickable: <a href="tel:+1XXXXXXXXXX" style="color:#e8c84a;text-decoration:underline">number</a>'
+      + '\n- Use <strong> tags for key terms and dollar amounts'
+      + '\n- Do NOT use bullet points, numbered lists, dashes, or markdown. Flowing prose only'
+      + '\n- Acknowledge what they\'ve explored if relevant'
+      + '\n- End with one short follow-up topic (2-5 words) on a new line: Suggested next: topic'
       + buildContext()
       + langInstruction();
 
@@ -1847,14 +1846,13 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model:      'claude-haiku-4-5-20251001',
-        max_tokens: 500,
+        max_tokens: 300,
         system:     sysPrompt,
         messages:   [{ role: 'user', content: 'Tell me about ' + topicLabel(key) }]
       })
     })
     .then(function (r) { return r.json(); })
     .then(function (d) {
-      removeLookingUp();
       hideTyp();
       var txt = ((d.content || [])[0] || {}).text || '';
       if (!txt) {
@@ -1896,7 +1894,6 @@
     })
     .catch(function () {
       // API error — fall back to static node rendering
-      removeLookingUp();
       hideTyp();
       renderNode(key);
     });
