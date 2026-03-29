@@ -1039,7 +1039,7 @@
 
     // Options area
     '#vnop{padding:8px 11px 10px;background:rgba(0,0,0,.25);',
-    'border-top:.5px solid var(--vbd);flex-shrink:0;',
+    'border-top:.5px solid var(--vbd);flex-shrink:0;max-height:200px;',
     'overflow-y:auto}',
     '#vnop::-webkit-scrollbar{width:2px}',
     '#vnop::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}',
