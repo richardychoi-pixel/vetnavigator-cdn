@@ -2240,8 +2240,8 @@
         panel.style.opacity = '1';
         panel.style.pointerEvents = 'all';
       }
-      // Set panel height to fill container
-      document.documentElement.style.setProperty('--vn-panel', 'calc(100vh - 180px)');
+      // Set panel height to fill container without overflow
+      document.documentElement.style.setProperty('--vn-panel', 'calc(100vh - 260px)');
       // Auto-start chat
       panelOpen = true;
       chatStarted = true;
