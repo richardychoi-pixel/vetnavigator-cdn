@@ -1795,6 +1795,113 @@
     });
   }
 
+  // ── HYBRID AI RENDER ───────────────────────────────────────────────────────
+  // Strips HTML tags from node content to create a plain-text cheat sheet for the AI
+  function stripHTML(html) {
+    return html.replace(/<[^>]+>/g, '').replace(/\n{3,}/g, '\n\n').trim();
+  }
+
+  // Build conversation context string from chatHistory (last 6 topics max)
+  function buildContext() {
+    var recent = chatHistory.slice(-6);
+    if (!recent.length) return '';
+    var lines = recent.map(function (h) { return '- ' + topicLabel(h.topic) + ': ' + h.text; });
+    return '\n\nTopics the veteran has already explored this session:\n' + lines.join('\n');
+  }
+
+  // Language instruction for non-English sessions
+  function langInstruction() {
+    var names = { es: 'Spanish', vi: 'Vietnamese', ko: 'Korean', tl: 'Filipino (Tagalog)' };
+    return names[lang] ? '\n\nIMPORTANT: Respond in ' + names[lang] + '. The veteran is using the ' + names[lang] + ' interface.' : '';
+  }
+
+  function aiRenderNode(key) {
+    var node = getNode(key); if (!node) return;
+    var nodeText = node.bot ? stripHTML(node.bot) : '';
+
+    // Show loading state
+    showTyp();
+    botMsg('Looking that up for you...');
+
+    // Build the AI system prompt with the node content as a cheat sheet
+    var sysPrompt = 'You are a warm, friendly VA benefits assistant for ' + ORG_NAME + '. '
+      + 'A veteran just selected "' + topicLabel(key) + '" in the chat. '
+      + 'Deliver the following information conversationally — as if you are a knowledgeable friend explaining it to them. '
+      + 'Do NOT just list the facts — weave them into natural, empathetic language.'
+      + '\n\nHere is the factual content to deliver (use all key facts, dollar amounts, and steps — do not omit important details):'
+      + '\n---\n' + nodeText + '\n---'
+      + '\n\nGuidelines:'
+      + '\n- Sound human — use phrases like "Great question", "Here\'s the thing", "You\'ve earned this"'
+      + '\n- Acknowledge what they\'ve explored so far if relevant (context provided below)'
+      + '\n- Include all specific numbers, dollar amounts, phone numbers, and web links from the content above'
+      + '\n- Keep it focused — 4-8 sentences. Don\'t pad with filler'
+      + '\n- Do NOT use markdown headers, bullet point symbols (•, -, *), or numbered lists. Write in flowing prose paragraphs only'
+      + '\n- You may use bold with <strong> tags for key terms, dollar amounts, or phone numbers'
+      + '\n- End with one short follow-up topic (2-5 words) on a new line starting with Suggested next:'
+      + '\n- If the veteran seems to be in distress, lead with empathy and provide the Veterans Crisis Line: 988 press 1'
+      + buildContext()
+      + langInstruction();
+
+    fetch(VN_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model:      'claude-haiku-4-5-20251001',
+        max_tokens: 500,
+        system:     sysPrompt,
+        messages:   [{ role: 'user', content: 'Tell me about ' + topicLabel(key) }]
+      })
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      removeLookingUp();
+      hideTyp();
+      var txt = ((d.content || [])[0] || {}).text || '';
+      if (!txt) {
+        // AI returned empty — fall back to static node
+        renderNode(key);
+        return;
+      }
+      var pts = txt.split(/Suggested next:/i);
+      var ans = pts[0].trim();
+      var sug = pts[1] ? pts[1].trim().replace(/^["']|["']$/g, '') : null;
+      if (sug && (sug.length > 50 || /^(reply|tell|call|grab|click|try|go to|ask|contact|reach out)\b/i.test(sug) || /\?$/.test(sug))) {
+        sug = null;
+      }
+      botMsg(ans);
+      chatHistory.push({ topic: key, text: ans.substring(0, 120) });
+      clearOpts();
+      // Use the node's own chips/cards — AI only handles the text
+      var chips = (node.chips || []).slice();
+      var skipStartOver = ['welcome','benefits_menu','all_benefits','empathy_intro',
+        'cat_money','cat_healthcare','cat_education','cat_housing','cat_family','cat_claims'];
+      if (skipStartOver.indexOf(key) === -1) {
+        var startOverLabel = (lang === 'es') ? 'Empezar de nuevo'
+          : (lang === 'vi') ? 'Bắt đầu lại'
+          : (lang === 'ko') ? '처음으로'
+          : (lang === 'tl') ? 'Magsimula muli'
+          : 'Start over';
+        var hasIt = chips.some(function (c) { return c === startOverLabel || c === 'Start over' || c === 'Start Fresh →'; });
+        if (!hasIt) chips.push(startOverLabel);
+      }
+      // Add AI suggestion as first chip if valid
+      if (sug) chips.unshift(sug);
+      if (node.cards && node.cards.length) {
+        mkCards(node.cards);
+        if (chips.length) mkChips(chips);
+      } else if (chips.length) {
+        mkChips(chips);
+      }
+      if (node.pct !== undefined) setProg(node.pct);
+    })
+    .catch(function () {
+      // API error — fall back to static node rendering
+      removeLookingUp();
+      hideTyp();
+      renderNode(key);
+    });
+  }
+
   // ── CRISIS INTERCEPT ──────────────────────────────────────────────────────
   var CRISIS_RE = /\b(kill\s*(my)?self|suicide|suicidal|end\s*(my|it|this)\s*(life)?|want\s*to\s*die|wanna\s*die|don'?t\s*want\s*to\s*(live|be\s*here|be\s*alive)|hurt\s*(my)?self|harm\s*(my)?self|self[- ]?harm|take\s*my\s*(own\s*)?life|no\s*reason\s*to\s*live|better\s*off\s*dead|can'?t\s*(go|do)\s*(this|it)\s*anymore|overdose|cut\s*(my)?self)\b/i;
 
@@ -1839,7 +1946,7 @@
       setTimeout(showSummaryPrompt, 400);
       return;
     }
-    setTimeout(function () { renderNode(key); }, 400);
+    setTimeout(function () { aiRenderNode(key); }, 400);
   }
 
   // ── SEND TEXT ──────────────────────────────────────────────────────────────
