@@ -1010,7 +1010,7 @@
     '#vnchat.act{display:flex;flex-direction:column;overflow:hidden}',
 
     // Chat messages
-    '#vnms{padding:12px 11px;flex:1;',
+    '#vnms{padding:12px 11px;flex:1;min-height:180px;',
     'overflow-y:auto;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}',
     '#vnms::-webkit-scrollbar{width:2px}',
     '#vnms::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}',
