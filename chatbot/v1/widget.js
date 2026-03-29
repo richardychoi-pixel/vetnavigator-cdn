@@ -961,7 +961,7 @@
     '@keyframes vnF{to{opacity:0;transform:translateY(8px)}}',
 
     // Panel
-    '#vnp{position:fixed;bottom:94px;right:24px;z-index:2147483638;width:370px;',
+    '#vnp{position:fixed;bottom:94px;right:24px;z-index:2147483638;width:420px;',
     'background:var(--vbg);border:1px solid var(--vbd);border-radius:18px;',
     'overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.55);',
     'transform:scale(.92) translateY(16px);transform-origin:bottom right;',
@@ -1162,7 +1162,7 @@
     '#vnft{text-align:center;padding:5px 0 6px;font-size:10px;color:rgba(255,255,255,.18)}',
 
     // Mobile
-    '@media(max-width:420px){',
+    '@media(max-width:460px){',
     '#vnp{width:calc(100vw - 24px);right:12px;bottom:80px}',
     '#vnb{right:12px;bottom:12px}',
     '#vnn{right:12px}}'
