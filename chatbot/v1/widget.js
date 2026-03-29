@@ -2246,7 +2246,10 @@
       }
       // Tab panels fill remaining space
       var style = document.createElement('style');
-      style.textContent = '#vnp .vntp{flex:1;height:auto;min-height:0}#vn-root{height:100%;display:flex;flex-direction:column}';
+      style.textContent = '#vn-root{height:100%;display:flex;flex-direction:column}'
+        + '#vnp{flex:1;min-height:0}'
+        + '#vnp .vntp{flex:1;height:0;min-height:0}'
+        + '#vnchat.act{display:flex;flex-direction:column;height:0;flex:1;min-height:0}';
       document.head.appendChild(style);
       // Auto-start chat
       panelOpen = true;
