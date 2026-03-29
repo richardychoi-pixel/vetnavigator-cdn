@@ -2195,15 +2195,59 @@
     document.documentElement.style.setProperty('--vn-panel', panel + 'px');
   }
 
+  // ── EMBED MODE ──────────────────────────────────────────────────────────────
+  var EMBED_TARGET = window.__vnEmbedTarget || null;
+
   function init() {
     // Build and inject widget HTML
     var root = document.createElement('div');
     root.id  = 'vn-root';
     root.innerHTML = buildHTML();
-    document.body.appendChild(root);
+
+    if (EMBED_TARGET) {
+      // Embedded mode — render into target container, panel always visible
+      var target = document.getElementById(EMBED_TARGET);
+      if (target) {
+        target.innerHTML = '';
+        target.appendChild(root);
+      } else {
+        document.body.appendChild(root);
+      }
+    } else {
+      document.body.appendChild(root);
+    }
 
     // Set fixed panel dimensions based on screen height — runs once, never again
     setSizeForScreen();
+
+    // Embedded mode overrides — panel is always open, no FAB, no notification
+    if (EMBED_TARGET) {
+      var fab = ge('vnb'); if (fab) fab.style.display = 'none';
+      var notif = ge('vnn'); if (notif) notif.style.display = 'none';
+      var panel = ge('vnp');
+      if (panel) {
+        panel.classList.add('open');
+        panel.style.position = 'static';
+        panel.style.width = '100%';
+        panel.style.height = '100%';
+        panel.style.bottom = 'auto';
+        panel.style.right = 'auto';
+        panel.style.borderRadius = '0';
+        panel.style.border = 'none';
+        panel.style.boxShadow = 'none';
+        panel.style.transform = 'none';
+        panel.style.opacity = '1';
+        panel.style.pointerEvents = 'all';
+      }
+      // Set panel height to fill container
+      document.documentElement.style.setProperty('--vn-panel', 'calc(100vh - 180px)');
+      // Auto-start chat
+      panelOpen = true;
+      chatStarted = true;
+      buildWelcome();
+      buildVSO();
+      setTimeout(function () { renderNode('welcome'); }, 200);
+    }
 
     // Set initial text
     ge('vntx').placeholder  = s('ph');
