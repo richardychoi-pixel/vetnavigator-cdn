@@ -931,7 +931,7 @@
     ':root{--vr:#B22234;--vrd:#8b1a26;--vn:#0a1628;--vg:#e8c84a;',
     '--vbg:rgba(8,18,36,.97);--vbd:rgba(255,255,255,.1);',
     '--vt:rgba(255,255,255,.88);--vs:rgba(255,255,255,.45);',
-    '--vn-msgs:300px;--vn-opts:150px;--vn-panel:526px}',
+    '--vn-panel:520px}',
 
     // FAB button
     '#vnb{position:fixed;bottom:24px;right:24px;z-index:2147483640;',
@@ -1005,10 +1005,12 @@
     'border-bottom:2px solid transparent;transition:all .15s;font-family:inherit}',
     '.vntb:hover{color:rgba(255,255,255,.8)}',
     '.vntb.act{color:#fff;border-bottom-color:var(--vr)}',
-    '.vntp{display:none;height:var(--vn-panel);overflow-y:auto}.vntp.act{display:block}',
+    '.vntp{display:none;height:var(--vn-panel);overflow:hidden}',
+    '.vntp.act{display:block;overflow-y:auto}',
+    '#vnchat.act{display:flex;flex-direction:column;overflow:hidden}',
 
     // Chat messages
-    '#vnms{padding:12px 11px;height:var(--vn-msgs);min-height:var(--vn-msgs);max-height:var(--vn-msgs);',
+    '#vnms{padding:12px 11px;flex:1;',
     'overflow-y:auto;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}',
     '#vnms::-webkit-scrollbar{width:2px}',
     '#vnms::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}',
@@ -1037,7 +1039,7 @@
 
     // Options area
     '#vnop{padding:8px 11px 10px;background:rgba(0,0,0,.25);',
-    'border-top:.5px solid var(--vbd);height:var(--vn-opts);min-height:var(--vn-opts);max-height:var(--vn-opts);',
+    'border-top:.5px solid var(--vbd);flex-shrink:0;',
     'overflow-y:auto}',
     '#vnop::-webkit-scrollbar{width:2px}',
     '#vnop::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:2px}',
@@ -1057,7 +1059,7 @@
     '.vncp:hover{background:rgba(178,34,52,.3);border-color:rgba(178,34,52,.5);color:#fff}',
 
     // Input row
-    '#vnir{display:flex;gap:6px;padding:8px 11px;',
+    '#vnir{display:flex;gap:6px;padding:8px 11px;flex-shrink:0;',
     'background:rgba(0,0,0,.3);border-top:.5px solid var(--vbd)}',
     '#vntx{flex:1;font-size:11.5px;padding:6px 10px;border-radius:18px;',
     'border:.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);',
@@ -2010,21 +2012,15 @@
   // Size tiers — detected once on boot, never changes during session
   function setSizeForScreen() {
     var vh = window.innerHeight;
-    var msgs, opts, panel;
+    var panel;
     if (vh >= 800) {
-      // Large screens — more room for messages
-      msgs = 380; opts = 170; panel = 620;
+      panel = 620;
     } else if (vh >= 600) {
-      // Medium screens — current default
-      msgs = 300; opts = 150; panel = 526;
+      panel = 520;
     } else {
-      // Small screens — compact
-      msgs = 200; opts = 130; panel = 400;
+      panel = 400;
     }
-    var root = document.documentElement;
-    root.style.setProperty('--vn-msgs', msgs + 'px');
-    root.style.setProperty('--vn-opts', opts + 'px');
-    root.style.setProperty('--vn-panel', panel + 'px');
+    document.documentElement.style.setProperty('--vn-panel', panel + 'px');
   }
 
   function init() {
