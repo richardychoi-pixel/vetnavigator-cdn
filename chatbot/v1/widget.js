@@ -1618,6 +1618,9 @@
       + '<p style="font-size:13px;color:#374151;margin:8px 0 0;line-height:1.6">'
       + ORG_NAME + (ORG_PHONE ? ' · ' + ORG_PHONE : '') + (ORG_HOURS ? '<br>' + ORG_HOURS : '')
       + '</p></div>'
+      + '<div style="background:#fffbeb;border-radius:10px;padding:14px 16px;margin-top:12px;border:1px solid #fde68a">'
+      + '<p style="font-size:12px;color:#92400e;margin:0;line-height:1.6">'
+      + '<strong>Tip:</strong> Share this summary with your VSO counselor — they can use it to help you take the next steps at no cost to you.</p></div>'
       + '<p style="font-size:12px;color:#9ca3af;margin-top:16px;text-align:center">'
       + 'Powered by VetNavigator AI · <a href="https://vetnavigator.ai" style="color:#B22234">vetnavigator.ai</a>'
       + '</p></div></div>';
@@ -1818,6 +1821,11 @@
       return;
     }
     if (!canAccess(key)) { setTimeout(function () { renderGated(key); }, 400); return; }
+    // Intercept "Start over" — offer summary if 2+ topics explored
+    if (key === 'welcome' && countTopics() >= 2) {
+      setTimeout(showSummaryPrompt, 400);
+      return;
+    }
     setTimeout(function () { renderNode(key); }, 400);
   }
 
@@ -1990,6 +1998,56 @@
         + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
       ge('ald').appendChild(r);
     });
+  }
+
+  // ── SUMMARY PROMPT (shown on "Start over" when 2+ topics explored) ────────
+  function countTopics() {
+    var seen = {};
+    var count = 0;
+    chatHistory.forEach(function (h) {
+      if (!seen[h.topic] && h.topic !== 'welcome' && h.topic !== 'ai') {
+        seen[h.topic] = true;
+        count++;
+      }
+    });
+    return count;
+  }
+
+  function showSummaryPrompt() {
+    clearOpts();
+    botMsg('<strong>Before you go —</strong> would you like a summary of the topics you explored sent to your email? You can share it with your VSO counselor for follow-up.');
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'display:flex;flex-direction:column;gap:6px;padding:4px 0';
+    var row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:6px';
+    var inp = document.createElement('input');
+    inp.type = 'email';
+    inp.placeholder = 'your@email.com';
+    inp.style.cssText = 'flex:1;font-size:11.5px;padding:6px 10px;border-radius:8px;'
+      + 'border:.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);'
+      + 'color:rgba(255,255,255,.9);font-family:inherit;outline:none';
+    var btn = document.createElement('button');
+    btn.textContent = 'Send →';
+    btn.style.cssText = 'padding:6px 14px;border-radius:8px;background:var(--vr);border:none;'
+      + 'color:#fff;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap';
+    btn.addEventListener('click', function () {
+      var em = inp.value.trim();
+      if (!em || em.indexOf('@') === -1) { inp.style.borderColor = 'rgba(255,80,80,.6)'; return; }
+      sendSummary(em);
+      wrap.innerHTML = '<div style="font-size:12px;color:rgba(74,222,128,.9);text-align:center;padding:6px 0">'
+        + '✓ Summary sent! Check your inbox.</div>';
+      setTimeout(restart, 1500);
+    });
+    row.appendChild(inp);
+    row.appendChild(btn);
+    wrap.appendChild(row);
+    var skip = document.createElement('button');
+    skip.textContent = 'No thanks, start fresh';
+    skip.style.cssText = 'padding:6px;border-radius:8px;border:.5px solid rgba(255,255,255,.12);'
+      + 'background:transparent;color:rgba(255,255,255,.5);font-size:11px;cursor:pointer;font-family:inherit';
+    skip.addEventListener('click', restart);
+    wrap.appendChild(skip);
+    ge('vnch').appendChild(wrap);
   }
 
   // ── RESTART ────────────────────────────────────────────────────────────────
