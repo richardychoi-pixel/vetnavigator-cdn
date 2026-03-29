@@ -1762,7 +1762,8 @@
           + '\n- End every response with one short follow-up topic the veteran can tap as a button (2-5 words max, a benefit topic only)'
           + '\n- Format: answer first, then on a new line starting with Suggested next: followed by the short topic'
           + '\n- The suggestion must be a short benefit topic like "PACT Act eligibility" or "File a disability claim" — NEVER a question, instruction, or sentence telling the user what to do'
-          + '\n- Only answer questions about VA benefits, veteran services, and related topics'
+          + '\n- Only answer questions about VA benefits, Veteran services, and related topics'
+          + '\n- Always capitalize the word "Veteran" — it is a title of respect'
           + '\n- If the question is off-topic (events, Post hours, membership, non-VA questions), keep your redirect to 1-2 sentences max — point them to the Post directly, then offer to help with VA benefits. Start with "For [org name]..." not with a preamble about what you can or cannot do',
         messages: [{ role: 'user', content: msg }]
       })
@@ -1836,6 +1837,7 @@
       + '\n- Make phone numbers clickable: <a href="tel:+1XXXXXXXXXX" style="color:#e8c84a;text-decoration:underline">number</a>'
       + '\n- Use <strong> tags for key terms and dollar amounts'
       + '\n- Do NOT use bullet points, numbered lists, dashes, or markdown. Flowing prose only'
+      + '\n- Always capitalize the word "Veteran" — it is a title of respect, not a generic noun'
       + '\n- Acknowledge what they\'ve explored if relevant'
       + '\n- End with one short follow-up topic (2-5 words) on a new line: Suggested next: topic'
       + buildContext()
@@ -2239,9 +2241,13 @@
         panel.style.transform = 'none';
         panel.style.opacity = '1';
         panel.style.pointerEvents = 'all';
+        panel.style.display = 'flex';
+        panel.style.flexDirection = 'column';
       }
-      // Set panel height to fill container without overflow
-      document.documentElement.style.setProperty('--vn-panel', 'calc(100vh - 260px)');
+      // Tab panels fill remaining space
+      var style = document.createElement('style');
+      style.textContent = '#vnp .vntp{flex:1;height:auto;min-height:0}#vn-root{height:100%;display:flex;flex-direction:column}';
+      document.head.appendChild(style);
       // Auto-start chat
       panelOpen = true;
       chatStarted = true;
