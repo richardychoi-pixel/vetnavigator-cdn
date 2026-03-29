@@ -1484,11 +1484,24 @@
       chatHistory.push({ topic: key, text: plain.substring(0, 120) });
     }
     clearOpts();
+    // Build chips list — auto-append "Start over" if not present
+    var chips = (node.chips || []).slice();
+    var skipStartOver = ['welcome','benefits_menu','all_benefits','empathy_intro',
+      'cat_money','cat_healthcare','cat_education','cat_housing','cat_family','cat_claims'];
+    if (skipStartOver.indexOf(key) === -1) {
+      var startOverLabel = (lang === 'es') ? 'Empezar de nuevo'
+        : (lang === 'vi') ? 'Bắt đầu lại'
+        : (lang === 'ko') ? '처음으로'
+        : (lang === 'tl') ? 'Magsimula muli'
+        : 'Start over';
+      var hasIt = chips.some(function (c) { return c === startOverLabel || c === 'Start over' || c === 'Start Fresh →'; });
+      if (!hasIt) chips.push(startOverLabel);
+    }
     if (node.cards && node.cards.length) {
       mkCards(node.cards);
-      if (node.chips && node.chips.length) mkChips(node.chips);
-    } else if (node.chips && node.chips.length) {
-      mkChips(node.chips);
+      if (chips.length) mkChips(chips);
+    } else if (chips.length) {
+      mkChips(chips);
     }
     if (node.pct !== undefined) setProg(node.pct);
   }
@@ -2016,38 +2029,35 @@
   function showSummaryPrompt() {
     clearOpts();
     botMsg('<strong>Before you go —</strong> would you like a summary of the topics you explored sent to your email? You can share it with your VSO counselor for follow-up.');
-    var wrap = document.createElement('div');
-    wrap.style.cssText = 'display:flex;flex-direction:column;gap:6px;padding:4px 0';
+    // Build email form as a bot message so it appears in the scrollable chat area
+    var ms = ge('vnms');
     var row = document.createElement('div');
-    row.style.cssText = 'display:flex;gap:6px';
-    var inp = document.createElement('input');
-    inp.type = 'email';
-    inp.placeholder = 'your@email.com';
-    inp.style.cssText = 'flex:1;font-size:11.5px;padding:6px 10px;border-radius:8px;'
+    row.className = 'vnr';
+    row.innerHTML = '<div class="vnav b">VN</div>'
+      + '<div class="vnbb b" style="width:100%">'
+      + '<div style="display:flex;gap:6px;margin-bottom:8px">'
+      + '<input id="vnssem" type="email" placeholder="your@email.com" style="flex:1;font-size:11.5px;padding:6px 10px;border-radius:8px;'
       + 'border:.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);'
-      + 'color:rgba(255,255,255,.9);font-family:inherit;outline:none';
-    var btn = document.createElement('button');
-    btn.textContent = 'Send →';
-    btn.style.cssText = 'padding:6px 14px;border-radius:8px;background:var(--vr);border:none;'
-      + 'color:#fff;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap';
-    btn.addEventListener('click', function () {
-      var em = inp.value.trim();
-      if (!em || em.indexOf('@') === -1) { inp.style.borderColor = 'rgba(255,80,80,.6)'; return; }
+      + 'color:rgba(255,255,255,.9);font-family:inherit;outline:none"/>'
+      + '<button id="vnsseb" style="padding:6px 14px;border-radius:8px;background:var(--vr);border:none;'
+      + 'color:#fff;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Send →</button>'
+      + '</div>'
+      + '<button id="vnsskip" style="width:100%;padding:6px;border-radius:8px;border:.5px solid rgba(255,255,255,.12);'
+      + 'background:transparent;color:rgba(255,255,255,.5);font-size:11px;cursor:pointer;font-family:inherit">'
+      + 'No thanks, start fresh</button>'
+      + '</div>';
+    ms.appendChild(row);
+    ms.scrollTop = ms.scrollHeight;
+    // Wire up buttons
+    ge('vnsseb').addEventListener('click', function () {
+      var em = ge('vnssem').value.trim();
+      if (!em || em.indexOf('@') === -1) { ge('vnssem').style.borderColor = 'rgba(255,80,80,.6)'; return; }
       sendSummary(em);
-      wrap.innerHTML = '<div style="font-size:12px;color:rgba(74,222,128,.9);text-align:center;padding:6px 0">'
+      row.querySelector('.vnbb').innerHTML = '<div style="font-size:12px;color:rgba(74,222,128,.9);text-align:center;padding:4px 0">'
         + '✓ Summary sent! Check your inbox.</div>';
       setTimeout(restart, 1500);
     });
-    row.appendChild(inp);
-    row.appendChild(btn);
-    wrap.appendChild(row);
-    var skip = document.createElement('button');
-    skip.textContent = 'No thanks, start fresh';
-    skip.style.cssText = 'padding:6px;border-radius:8px;border:.5px solid rgba(255,255,255,.12);'
-      + 'background:transparent;color:rgba(255,255,255,.5);font-size:11px;cursor:pointer;font-family:inherit';
-    skip.addEventListener('click', restart);
-    wrap.appendChild(skip);
-    ge('vnch').appendChild(wrap);
+    ge('vnsskip').addEventListener('click', restart);
   }
 
   // ── RESTART ────────────────────────────────────────────────────────────────
