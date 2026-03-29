@@ -1831,7 +1831,7 @@
       + '\n\nGuidelines:'
       + '\n- Keep it SHORT — 3-5 sentences max. Veterans are scanning, not reading essays'
       + '\n- Lead with the most important fact or number, then add 1-2 supporting details'
-      + '\n- Sound human — "Here\'s the key thing", "You\'ve earned this", "Good news"'
+      + '\n- Sound like a real person, not a bot. Vary your openings — never start two responses the same way'
       + '\n- Make ALL URLs clickable using HTML links: <a href="https://..." target="_blank" style="color:#e8c84a;text-decoration:underline">link text</a>'
       + '\n- Make phone numbers clickable: <a href="tel:+1XXXXXXXXXX" style="color:#e8c84a;text-decoration:underline">number</a>'
       + '\n- Use <strong> tags for key terms and dollar amounts'
