@@ -1881,7 +1881,7 @@
 
     // Build the AI system prompt with the node content as a cheat sheet
     var sysPrompt = 'You are a warm, friendly VA benefits assistant for ' + ORG_NAME + '. '
-      + 'A veteran just selected "' + topicLabel(key) + '" in the chat. '
+      + 'A veteran clicked on "' + topicLabel(key) + '" from a menu in the chat. '
       + 'Deliver the following information conversationally — like a knowledgeable friend, not a textbook.'
       + '\n\nFactual content to deliver (include key facts but do NOT dump everything — highlight what matters most):'
       + '\n---\n' + nodeText + '\n---'
@@ -1889,12 +1889,12 @@
       + '\n- Keep it SHORT — 2-3 sentences max, under 80 words total. Veterans are scanning, not reading essays'
       + '\n- Lead with the most important fact or number, then add 1-2 supporting details'
       + '\n- Sound like a real person, not a bot. Vary your openings — never start two responses the same way'
+      + '\n- NEVER say "Great question", "Good choice", "Great choice", "Excellent question", or similar filler. The veteran clicked a button, they did not ask a question. Jump straight into the information'
       + '\n- Make ALL URLs clickable using HTML links: <a href="https://..." target="_blank" style="color:#e8c84a;text-decoration:underline">link text</a>'
       + '\n- Make phone numbers clickable: <a href="tel:+1XXXXXXXXXX" style="color:#e8c84a;text-decoration:underline">number</a>'
       + '\n- Use <strong> tags for key terms and dollar amounts'
       + '\n- Do NOT use bullet points, numbered lists, dashes, or markdown. Flowing prose only'
       + '\n- Always capitalize the word "Veteran" — it is a title of respect, not a generic noun'
-      + '\n- Acknowledge what they\'ve explored if relevant'
       + '\n- End with one short follow-up topic (2-5 words) on a new line: Suggested next: topic'
       + buildContext()
       + langInstruction();
@@ -1906,7 +1906,7 @@
         model:      'claude-haiku-4-5-20251001',
         max_tokens: 200,
         system:     sysPrompt,
-        messages:   [{ role: 'user', content: 'Tell me about ' + topicLabel(key) }]
+        messages:   [{ role: 'user', content: 'Selected: ' + topicLabel(key) }]
       })
     })
     .then(function (r) { return r.json(); })
