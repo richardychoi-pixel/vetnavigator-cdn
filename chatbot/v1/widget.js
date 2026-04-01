@@ -196,7 +196,7 @@
 
     surviving_spouse: {
       pct: 48,
-      bot: "We are deeply sorry for your loss. 🙏\n\nAs a surviving spouse, you may be eligible for:\n\n— <strong>DIC</strong> — monthly tax-free payment\n— <strong>Survivors Pension</strong> — income-based support\n— <strong>CHAMPVA</strong> — healthcare coverage\n— <strong>VA Home Loan</strong> — may be available\n— <strong>Burial benefits</strong> — reimbursement and honors\n\nA VSO counselor can review your situation at no cost.",
+      bot: "We are deeply sorry for your loss. 🙏\n\nAs a surviving spouse, you may be eligible for:\n\n— <strong>DIC</strong> — $1,699/month tax-free (2026 rate)\n— <strong>Survivors Pension</strong> — up to $974/month (income-based)\n— <strong>CHAMPVA</strong> — healthcare coverage\n— <strong>VA Home Loan</strong> — may be available\n— <strong>Burial benefits</strong> — reimbursement and honors\n\nA VSO counselor can review your situation at no cost.",
       chips: ['Tell me about DIC', 'Tell me about CHAMPVA', 'Find a VSO counselor', 'See all benefits']
     },
 
@@ -272,14 +272,14 @@
 
     disability: {
       pct: 62,
-      bot: "<strong>VA Disability Compensation</strong> — tax-free monthly pay for service-connected conditions.\n\n<strong>Avg payment:</strong> $1,500–$3,800/month\n<strong>Ratings:</strong> 10%–100%\n\nA 30% rating = ~$500/month tax-free for life.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Amounts are approximate and updated annually. Verify current rates at <a href='https://va.gov/disability/compensation-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
+      bot: "<strong>VA Disability Compensation</strong> — tax-free monthly pay for service-connected conditions.\n\n<strong>2026 monthly rates (veteran alone, no dependents):</strong>\n— 10%: $180 | 20%: $357 | 30%: $552\n— 40%: $796 | 50%: $1,133 | 60%: $1,435\n— 70%: $1,808 | 80%: $2,102\n— 90%: $2,362 | 100%: $3,939\n\nRates increase with dependents. <strong>TDIU</strong> pays at the 100% rate if your disabilities prevent you from working.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates effective Dec 2025 (2.8% COLA). Verify at <a href='https://va.gov/disability/compensation-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
       chips: ['How do I file a claim?', 'What documents do I need?', 'Find a VSO counselor', 'See other benefits']
     },
 
     gi_bill: {
       pct: 62,
-      bot: "<strong>Post-9/11 GI Bill</strong> covers:\n\n<strong>Tuition:</strong> Full at public universities\n<strong>Housing:</strong> ~$1,800–$2,400/month stipend\n<strong>Books:</strong> Up to $1,000/year\n<strong>Duration:</strong> Up to 36 months",
-      chips: ['How do I apply?', 'Find a VSO counselor', 'See other benefits']
+      bot: "<strong>Post-9/11 GI Bill</strong> covers:\n\n<strong>Tuition:</strong> Full at public universities\n<strong>Housing:</strong> $1,169–$4,400+/month (based on school ZIP code)\n<strong>Online-only housing:</strong> $1,169/month flat rate\n<strong>Books:</strong> Up to $1,000/year\n<strong>Duration:</strong> Up to 36 months\n\nMust have 90+ days active duty after 9/10/2001.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Housing rates for 2025–2026 academic year. Verify at <a href='https://va.gov/education/benefit-rates/post-9-11-gi-bill-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
+      chips: ['How do I apply?', 'Can I transfer my GI Bill?', 'Find a VSO counselor', 'See other benefits']
     },
 
     home_loan: {
@@ -352,7 +352,7 @@
 
     rating_explained: {
       pct: 55,
-      bot: "<strong>How VA disability ratings work:</strong>\n\nThe VA assigns a rating from <strong>0% to 100%</strong> based on how much your service-connected condition affects your daily life.\n\n<strong>What each level means (approx. monthly pay, veteran only):</strong>\n— 10% → ~$175/mo\n— 30% → ~$524/mo\n— 50% → ~$1,075/mo\n— 70% → ~$1,663/mo\n— 100% → ~$3,737/mo\n\n<strong>Combined ratings</strong> use \"whole person\" math — two 50% ratings don't equal 100%.\n\n<strong>Tip:</strong> A VSO counselor can review your records and identify conditions you may have missed.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates approximate and updated annually. Verify at <a href='https://va.gov/disability/compensation-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
+      bot: "<strong>How VA disability ratings work:</strong>\n\nThe VA assigns a rating from <strong>0% to 100%</strong> based on how much your service-connected condition affects your daily life.\n\n<strong>2026 monthly pay (veteran alone, no dependents):</strong>\n— 10%: $180 | 30%: $552 | 50%: $1,133\n— 70%: $1,808 | 100%: $3,939\n\n<strong>Combined ratings</strong> use \"whole person\" math — two 50% ratings don't equal 100%.\n\n<strong>Tip:</strong> A VSO counselor can review your records and identify conditions you may have missed.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates effective Dec 2025 (2.8% COLA). Verify at <a href='https://va.gov/disability/compensation-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
       chips: ['How do I file a claim?', 'How do I increase my rating?', 'What is TDIU?', 'Find a VSO counselor']
     },
 
@@ -400,7 +400,7 @@
 
     dic: {
       pct: 62,
-      bot: "We are deeply grateful for your family\u2019s service and sacrifice. We are here to support you every step of the way. 🇺🇸\n\n<strong>Dependency and Indemnity Compensation (DIC):</strong>\n\nMonthly tax-free payment to surviving spouses and dependents when a veteran dies from a service-connected condition.\n\n<strong>2024 base rate:</strong> $1,612/month\n<strong>Additional amounts</strong> for dependent children, housebound status, and A&A need\n\n<strong>Who qualifies:</strong>\n— Surviving spouse married to veteran for 1+ year\n— Veteran died from service-connected disease or injury\n— Or veteran was 100% P&T rated for 10+ years before death\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Amounts approximate and updated annually. Verify at <a href='https://va.gov/disability/compensation-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
+      bot: "We are deeply grateful for your family\u2019s service and sacrifice. We are here to support you every step of the way. 🇺🇸\n\n<strong>Dependency and Indemnity Compensation (DIC):</strong>\n\nMonthly tax-free payment to surviving spouses and dependents when a veteran dies from a service-connected condition.\n\n<strong>2026 base rate:</strong> $1,699/month\n<strong>8-year add-on:</strong> +$361/month (if married 8+ years while veteran was 100% rated)\n<strong>Per child:</strong> +$421/month\n\n<strong>Who qualifies:</strong>\n— Surviving spouse married to veteran for 1+ year\n— Veteran died from service-connected disease or injury\n— Or veteran was 100% P&T rated for 10+ years before death\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates effective Dec 2025 (2.8% COLA). Verify at <a href='https://va.gov/disability/compensation-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
       chips: ['How do I apply for DIC?', 'Find a VSO counselor', 'See other benefits']
     },
 
@@ -412,7 +412,7 @@
 
     champva: {
       pct: 62,
-      bot: "<strong>CHAMPVA — VA Healthcare for Dependents:</strong>\n\nFree healthcare coverage for spouses and children of veterans who are:\n— 100% permanently and totally (P&T) disabled, OR\n— Died from a service-connected condition\n\n<strong>Covers:</strong> Doctor visits, hospital care, prescriptions, mental health\n<strong>Cost:</strong> No premium. Small copays only.\n\nApply with <a href='https://va.gov/find-forms/about-form-10-10d' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA Form 10-10d</a> at <a href='https://va.gov/health-care/family-caregiver-benefits/champva' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>",
+      bot: "<strong>CHAMPVA — VA Healthcare for Dependents:</strong>\n\nHealthcare coverage for spouses and children of veterans who are:\n— 100% permanently and totally (P&T) disabled, OR\n— Died from a service-connected condition\n\n<strong>Covers:</strong> Doctor visits, hospital care, prescriptions, mental health\n<strong>Cost:</strong> No monthly premium. $50/year deductible ($100 family max). 25% cost-share on most services. $3,000/year out-of-pocket cap.\n<strong>Meds by Mail:</strong> $0 copay for maintenance prescriptions (if no other Rx coverage)\n\n<strong>Important:</strong> If age 65+, must have Medicare Parts A & B to keep CHAMPVA.\n\nApply with <a href='https://va.gov/find-forms/about-form-10-10d' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA Form 10-10d</a> at <a href='https://va.gov/health-care/family-caregiver-benefits/champva' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>",
       chips: ['Find a VSO counselor', 'See other benefits', 'Start over']
     },
 
@@ -438,7 +438,7 @@
 
     tdiu: {
       pct: 62,
-      bot: "<strong>TDIU — Total Disability Based on Individual Unemployability:</strong>\n\nIf your service-connected disabilities prevent you from working, you may receive <strong>100% disability pay even with a lower rating</strong>.\n\n<strong>General requirements:</strong>\n— One condition rated 60%+ OR\n— Multiple conditions totaling 70%+ (with one at 40%+)\n— Unable to maintain substantially gainful employment\n\n<strong>Pay:</strong> Same as 100% rating (~$3,737/mo)\n\n<strong>Apply with:</strong> VA Form 21-8940 (available at <a href='https://va.gov/find-forms' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>va.gov/find-forms</a>)\n\n<strong>Tip:</strong> Many veterans qualify but don't know about TDIU. A VSO counselor can assess your eligibility.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Amounts approximate — verify current rates at <a href='https://va.gov/disability/compensation-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
+      bot: "<strong>TDIU — Total Disability Based on Individual Unemployability:</strong>\n\nIf your service-connected disabilities prevent you from working, you may receive <strong>100% disability pay even with a lower rating</strong>.\n\n<strong>General requirements:</strong>\n— One condition rated 60%+ OR\n— Multiple conditions totaling 70%+ (with one at 40%+)\n— Unable to maintain substantially gainful employment\n\n<strong>Pay:</strong> Same as 100% rating ($3,939/mo for 2026)\n\n<strong>Apply with:</strong> VA Form 21-8940 (available at <a href='https://va.gov/find-forms' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>va.gov/find-forms</a>)\n\n<strong>Tip:</strong> Many veterans qualify but don't know about TDIU. A VSO counselor can assess your eligibility.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Amounts approximate — verify current rates at <a href='https://va.gov/disability/compensation-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
       chips: ['How do I file a claim?', 'Find a VSO counselor', 'See other benefits']
     },
 
@@ -456,14 +456,20 @@
 
     pension: {
       pct: 50,
-      bot: "<strong>VA Pension — for low-income wartime veterans:</strong>\n\nA needs-based benefit for veterans with limited income and assets who served during a wartime period.\n\n<strong>Basic requirements:</strong>\n— 90+ days active duty (at least 1 day during wartime)\n— Income and assets below VA limits\n— Age 65+ OR permanently disabled\n\n<strong>Maximum annual pension rates (approx.):</strong>\n— Single veteran: ~$16,551/yr\n— With spouse: ~$21,674/yr\n— Aid & Attendance: up to ~$27,609/yr\n\n<strong>Aid & Attendance</strong> adds money if you need help with daily activities (bathing, dressing, meals).\n\n<strong>Apply with:</strong> VA Form 21P-527EZ",
+      bot: "<strong>VA Pension — for low-income wartime veterans:</strong>\n\nA needs-based, tax-free benefit for veterans with limited income who served during a wartime period.\n\n<strong>Basic requirements:</strong>\n— 90+ days active duty (at least 1 day during wartime)\n— Income and assets below VA limits\n— Age 65+ OR permanently disabled\n\n<strong>2026 maximum annual pension rates (MAPR):</strong>\n— Single veteran: $17,441/yr ($1,453/mo)\n— With spouse: $22,839/yr ($1,903/mo)\n— With Aid & Attendance: $29,093/yr ($2,424/mo)\n— A&A with spouse: $34,488/yr ($2,874/mo)\n— Each additional child: +$2,984/yr\n\n<strong>Net worth limit:</strong> $163,699 (includes assets + income)\n\n<strong>Apply with:</strong> VA Form 21P-527EZ\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates effective Dec 2025 (2.8% COLA). Verify at <a href='https://va.gov/pension/veterans-pension-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
       chips: ['What is Aid & Attendance?', 'Find a VSO counselor', 'See other benefits']
     },
 
     aid_attendance: {
       pct: 55,
-      bot: "<strong>Aid & Attendance (A&A):</strong>\n\nAn enhanced pension benefit for veterans (or surviving spouses) who need help with daily activities.\n\n<strong>You may qualify if you:</strong>\n— Need help bathing, dressing, eating, or using the bathroom\n— Are bedridden or in a nursing home\n— Have severe vision loss\n\n<strong>Additional monthly benefit:</strong>\n— Veteran alone: +~$912/mo above basic pension\n— With spouse: +~$1,176/mo\n— Surviving spouse: +~$589/mo\n\n<strong>Important:</strong> This benefit is significantly underused. Many elderly veterans in care facilities qualify but have never applied.\n\n<strong>Tip:</strong> A VSO counselor can help — this is a complex application.",
+      bot: "<strong>Aid & Attendance (A&A):</strong>\n\nAn enhanced pension benefit for veterans (or surviving spouses) who need help with daily activities.\n\n<strong>You may qualify if you:</strong>\n— Need help bathing, dressing, eating, or using the bathroom\n— Are bedridden or in a nursing home\n— Have severe vision loss\n\n<strong>2026 maximum pension with A&A (MAPR):</strong>\n— Veteran alone: $29,093/yr ($2,424/mo)\n— Veteran with spouse: $34,488/yr ($2,874/mo)\n— Surviving spouse: ~$22,304/yr (~$1,858/mo)\n\n<strong>Net worth limit:</strong> $163,699\n\n<strong>Important:</strong> This benefit is significantly underused. Many elderly veterans in care facilities qualify but have never applied.\n\n<strong>Tip:</strong> A VSO counselor can help — this is a complex application.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates effective Dec 2025 (2.8% COLA). Verify at <a href='https://va.gov/pension/veterans-pension-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
       chips: ['What is VA Pension?', 'Find a VSO counselor', 'See other benefits']
+    },
+
+    survivors_pension: {
+      pct: 55,
+      bot: "<strong>Survivors Pension (Death Pension):</strong>\n\nA tax-free, needs-based benefit for the unremarried surviving spouse or unmarried children of a deceased wartime veteran.\n\n<strong>2026 maximum annual pension rates (MAPR):</strong>\n— Surviving spouse, no dependents: $11,699/yr ($974/mo)\n— Surviving spouse with 1 child: $15,311/yr ($1,275/mo)\n— With Aid & Attendance: ~$22,304/yr (~$1,858/mo)\n— Each additional child: +$2,984/yr\n\n<strong>Net worth limit:</strong> $163,699\n\n<strong>Eligibility:</strong>\n— Veteran served 90+ days active duty (at least 1 day during wartime)\n— Surviving spouse has not remarried\n— Income and assets below VA limits\n\n<strong>This is different from DIC.</strong> DIC is for service-connected deaths. Survivors Pension is income-based and does not require the death to be service-connected.\n\n<strong>Apply with:</strong> VA Form 21P-534EZ\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates effective Dec 2025 (2.8% COLA). Verify at <a href='https://va.gov/family-and-caregiver-benefits/survivor-compensation/survivors-pension/rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
+      chips: ['Tell me about DIC', 'What is Aid & Attendance?', 'Find a VSO counselor', 'See other benefits']
     },
 
     burial: {
@@ -581,7 +587,7 @@
       veteran: { pct:18, bot:null, cards:[{icon:"🏜️",title:"Post-11 de Sep.",desc:"2001 al presente"},{icon:"🌊",title:"Guerra del Golfo",desc:"1990–2001"},{icon:"🌿",title:"Era de Vietnam",desc:"1964–1975"},{icon:"🔵",title:"Otra Era",desc:"Corea, Guerra Fría, etc."}] },
       era: { pct:32, bot:"¿Tiene actualmente una calificación de discapacidad del VA?", cards:[{icon:"✅",title:"Sí — calificado",desc:"Tengo un porcentaje"},{icon:"📝",title:"No — todavía no",desc:"Nunca presenté"},{icon:"❌",title:"Fue denegado",desc:"Mi reclamo fue negado"},{icon:"❓",title:"No estoy seguro",desc:"Necesito verificar"}] },
       benefits_menu: { pct:48, bot:"Estos son los principales beneficios. ¿Cuál le interesa más?", cards:[{icon:"💰",title:"Pago por Discapacidad",desc:"Pago mensual libre de impuestos"},{icon:"🎓",title:"GI Bill",desc:"Financiamiento educativo"},{icon:"🏠",title:"Préstamo VA",desc:"Sin pago inicial"},{icon:"☢️",title:"Ley PACT",desc:"Exposición tóxica"},{icon:"🏥",title:"Atención Médica",desc:"Atención médica del VA"},{icon:"👔",title:"Rehabilitación Voc.",desc:"Capacitación laboral"}] },
-      disability: { pct:62, bot:"<strong>Compensación por Discapacidad del VA</strong> — pago mensual libre de impuestos por condiciones relacionadas con el servicio.\n\n<strong>Pago promedio:</strong> $1,500–$3,800/mes\n<strong>Calificaciones:</strong> 10%–100%", chips:["¿Cómo presento un reclamo?","¿Qué documentos necesito?","Buscar consejero VSO","Ver otros beneficios"] },
+      disability: { pct:62, bot:"<strong>Compensación por Discapacidad del VA</strong> — pago mensual libre de impuestos por condiciones relacionadas con el servicio.\n\n<strong>Tasas 2026 (veterano solo):</strong> 10%: $180 | 50%: $1,133 | 100%: $3,939/mes\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Tasas vigentes dic 2025 (COLA 2.8%). Verifique en VA.gov.</em>", chips:["¿Cómo presento un reclamo?","¿Qué documentos necesito?","Buscar consejero VSO","Ver otros beneficios"] },
       gi_bill: { pct:62, bot:"<strong>GI Bill Post-11 de Sep.</strong> cubre:\n\n<strong>Matrícula:</strong> Completa en universidades públicas\n<strong>Vivienda:</strong> ~$1,800–$2,400/mes\n<strong>Libros:</strong> Hasta $1,000/año\n<strong>Duración:</strong> Hasta 36 meses", chips:["¿Cómo solicito?","Buscar consejero VSO","Ver otros beneficios"] },
       home_loan: { pct:62, bot:"<strong>Préstamo para Vivienda VA</strong>:\n\n<strong>Sin pago inicial requerido</strong>\n<strong>Sin seguro hipotecario (PMI)</strong>\n<strong>Tasas de interés competitivas</strong>\n<strong>Reutilizable de por vida</strong>", chips:["¿Soy elegible?","Buscar consejero VSO","Ver otros beneficios"] },
       pact_act: { pct:62, bot:"<strong>Ley PACT (2022)</strong> — la mayor expansión de beneficios del VA en décadas.\n\nCubre: Fosos de quema, Agente Naranja, Enfermedad de la Guerra del Golfo.\n\nMás de 5 millones de veteranos pueden calificar ahora.", chips:["¿Califico?","Buscar consejero VSO","Ver otros beneficios"] },
@@ -600,7 +606,7 @@
       veteran: { pct:18, bot:null, cards:[{icon:"\uD83C\uDFDC\uFE0F",title:"Sau 11/9",desc:"2001 \u0111\u1EBFn nay"},{icon:"\uD83C\uDF0A",title:"Chi\u1EBFn tranh V\xF9ng V\u1ECBnh",desc:"1990\u20132001"},{icon:"\uD83C\uDF3F",title:"Th\u1EDDi k\u1EF3 Vi\u1EC7t Nam",desc:"1964\u20131975"},{icon:"\uD83D\uDD35",title:"Th\u1EDDi k\u1EF3 kh\xE1c",desc:"H\xE0n Qu\u1ED1c, Chi\u1EBFn tranh L\u1EA1nh, v.v."}] },
       era: { pct:32, bot:"B\u1EA1n hi\u1EC7n c\xF3 x\u1EBFp h\u1EA1ng khuy\u1EBFt t\u1EADt VA kh\xF4ng?", cards:[{icon:"\u2705",title:"C\xF3 \u2014 \u0111\xE3 x\u1EBFp h\u1EA1ng",desc:"T\xF4i c\xF3 t\u1EF7 l\u1EC7 %"},{icon:"\uD83D\uDCDD",title:"Ch\u01B0a \u2014 ch\u01B0a n\u1ED9p",desc:"Ch\u01B0a bao gi\u1EDD n\u1ED9p \u0111\u01A1n"},{icon:"\u274C",title:"B\u1ECB t\u1EEB ch\u1ED1i",desc:"\u0110\u01A1n c\u1EE7a t\xF4i b\u1ECB t\u1EEB ch\u1ED1i"},{icon:"\u2753",title:"Kh\xF4ng ch\u1EAFc",desc:"T\xF4i c\u1EA7n ki\u1EC3m tra"}] },
       benefits_menu: { pct:48, bot:"\u0110\xE2y l\xE0 nh\u1EEFng ph\xFAc l\u1EE3i h\xE0ng \u0111\u1EA7u. B\u1EA1n quan t\xE2m \u0111i\u1EC1u n\xE0o nh\u1EA5t?", cards:[{icon:"\uD83D\uDCB0",title:"Tr\u1EE3 c\u1EA5p khuy\u1EBFt t\u1EADt",desc:"Ti\u1EC1n h\xE0ng th\xE1ng mi\u1EC5n thu\u1EBF"},{icon:"\uD83C\uDF93",title:"GI Bill",desc:"T\xE0i tr\u1EE3 gi\xE1o d\u1EE5c"},{icon:"\uD83C\uDFE0",title:"Vay mua nh\xE0 VA",desc:"Kh\xF4ng c\u1EA7n tr\u1EA3 tr\u01B0\u1EDBc"},{icon:"\u2622\uFE0F",title:"\u0110\u1EA1o lu\u1EADt PACT",desc:"Ph\u01A1i nhi\u1EC5m \u0111\u1ED9c h\u1EA1i"},{icon:"\uD83C\uDFE5",title:"Ch\u0103m s\xF3c s\u1EE9c kh\u1ECFe",desc:"Ch\u0103m s\xF3c y t\u1EBF VA"},{icon:"\uD83D\uDC54",title:"Ph\u1EE5c h\u1ED3i ngh\u1EC1 nghi\u1EC7p",desc:"\u0110\xE0o t\u1EA1o vi\u1EC7c l\xE0m"}] },
-      disability: { pct:62, bot:"<strong>B\u1ED3i th\u01B0\u1EDDng Khuy\u1EBFt t\u1EADt VA</strong> \u2014 ti\u1EC1n h\xE0ng th\xE1ng mi\u1EC5n thu\u1EBF cho c\xE1c t\xECnh tr\u1EA1ng li\xEAn quan \u0111\u1EBFn ph\u1EE5c v\u1EE5.\n\n<strong>Thanh to\xE1n trung b\xECnh:</strong> $1,500\u2013$3,800/th\xE1ng\n<strong>X\u1EBFp h\u1EA1ng:</strong> 10%\u2013100%", chips:["L\xE0m th\u1EBF n\xE0o \u0111\u1EC3 n\u1ED9p \u0111\u01A1n?","C\u1EA7n nh\u1EEFng gi\u1EA5y t\u1EDD g\xEC?","T\xECm t\u01B0 v\u1EA5n vi\xEAn VSO","Xem c\xE1c ph\xFAc l\u1EE3i kh\xE1c"] },
+      disability: { pct:62, bot:"<strong>B\u1ED3i th\u01B0\u1EDDng Khuy\u1EBFt t\u1EADt VA</strong> \u2014 ti\u1EC1n h\xE0ng th\xE1ng mi\u1EC5n thu\u1EBF cho c\xE1c t\xECnh tr\u1EA1ng li\xEAn quan \u0111\u1EBFn ph\u1EE5c v\u1EE5.\n\n<strong>M\u1EE9c 2026 (c\u1EF1u chi\u1EBFn binh, kh\xF4ng ng\u01B0\u1EDDi ph\u1EE5 thu\u1ED9c):</strong> 10%: $180 | 50%: $1,133 | 100%: $3,939/th\xE1ng\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>C\xF3 hi\u1EC7u l\u1EF1c th\xE1ng 12/2025 (COLA 2.8%). X\xE1c minh t\u1EA1i VA.gov.</em>", chips:["L\xE0m th\u1EBF n\xE0o \u0111\u1EC3 n\u1ED9p \u0111\u01A1n?","C\u1EA7n nh\u1EEFng gi\u1EA5y t\u1EDD g\xEC?","T\xECm t\u01B0 v\u1EA5n vi\xEAn VSO","Xem c\xE1c ph\xFAc l\u1EE3i kh\xE1c"] },
       gi_bill: { pct:62, bot:"<strong>GI Bill Sau 11/9</strong> bao g\u1ED3m:\n\n<strong>H\u1ECDc ph\xED:</strong> To\xE0n b\u1ED9 t\u1EA1i tr\u01B0\u1EDDng c\xF4ng\n<strong>Nh\xE0 \u1EDF:</strong> ~$1,800\u2013$2,400/th\xE1ng\n<strong>S\xE1ch:</strong> L\xEAn \u0111\u1EBFn $1,000/n\u0103m\n<strong>Th\u1EDDi h\u1EA1n:</strong> L\xEAn \u0111\u1EBFn 36 th\xE1ng", chips:["L\xE0m th\u1EBF n\xE0o \u0111\u1EC3 \u0111\u0103ng k\xFD?","T\xECm t\u01B0 v\u1EA5n vi\xEAn VSO","Xem c\xE1c ph\xFAc l\u1EE3i kh\xE1c"] },
       home_loan: { pct:62, bot:"<strong>Vay Mua Nh\xE0 VA</strong>:\n\n<strong>Kh\xF4ng c\u1EA7n tr\u1EA3 tr\u01B0\u1EDBc</strong>\n<strong>Kh\xF4ng b\u1EA3o hi\u1EC3m th\u1EBF ch\u1EA5p (PMI)</strong>\n<strong>L\xE3i su\u1EA5t c\u1EA1nh tranh</strong>\n<strong>S\u1EED d\u1EE5ng \u0111\u01B0\u1EE3c su\u1ED1t \u0111\u1EDDi</strong>", chips:["T\xF4i c\xF3 \u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n kh\xF4ng?","T\xECm t\u01B0 v\u1EA5n vi\xEAn VSO","Xem c\xE1c ph\xFAc l\u1EE3i kh\xE1c"] },
       healthcare: { pct:62, bot:"<strong>Ch\u0103m S\xF3c S\u1EE9c Kh\u1ECFe VA</strong>:\n\nBao g\u1ED3m ch\u0103m s\xF3c ban \u0111\u1EA7u, s\u1EE9c kh\u1ECFe t\xE2m th\u1EA7n, thu\u1ED1c.\nMi\u1EC5n ph\xED cho nhi\u1EC1u c\u1EF1u chi\u1EBFn binh.\n\n\u0110\u0103ng k\xFD t\u1EA1i VA.gov ho\u1EB7c g\u1ECDi 1-877-222-8387.", chips:["L\xE0m th\u1EBF n\xE0o \u0111\u1EC3 \u0111\u0103ng k\xFD?","T\xECm t\u01B0 v\u1EA5n vi\xEAn VSO","Xem c\xE1c ph\xFAc l\u1EE3i kh\xE1c"] },
@@ -614,7 +620,7 @@
       veteran: { pct:18, bot:null, cards:[{icon:"\uD83C\uDFDC\uFE0F",title:"9/11 \uC774\uD6C4",desc:"2001\uB144\uBD80\uD130 \uD604\uC7AC"},{icon:"\uD83C\uDF0A",title:"\uAC78\uD504\uC804",desc:"1990\u20132001"},{icon:"\uD83C\uDF3F",title:"\uBCA0\uD2B8\uB0A8 \uC2DC\uB300",desc:"1964\u20131975"},{icon:"\uD83D\uDD35",title:"\uAE30\uD0C0 \uC2DC\uB300",desc:"\uD55C\uAD6D\uC804, \uB0C9\uC804 \uB4F1"}] },
       era: { pct:32, bot:"\uD604\uC7AC VA \uC7A5\uC560 \uB4F1\uAE09\uC774 \uC788\uC2B5\uB2C8\uAE4C?", cards:[{icon:"\u2705",title:"\uC608 \u2014 \uB4F1\uAE09 \uC788\uC74C",desc:"\uB4F1\uAE09 %\uAC00 \uC788\uC2B5\uB2C8\uB2E4"},{icon:"\uD83D\uDCDD",title:"\uC544\uB2C8\uC624 \u2014 \uC544\uC9C1",desc:"\uCCAD\uAD6C\uD55C \uC801 \uC5C6\uC74C"},{icon:"\u274C",title:"\uAC70\uBD80\uB428",desc:"\uCCAD\uAD6C\uAC00 \uAC70\uBD80\uB428"},{icon:"\u2753",title:"\uC798 \uBAA8\uB984",desc:"\uD655\uC778\uC774 \uD544\uC694\uD569\uB2C8\uB2E4"}] },
       benefits_menu: { pct:48, bot:"\uC8FC\uC694 \uD61C\uD0DD\uC785\uB2C8\uB2E4. \uC5B4\uB5A4 \uAC83\uC774 \uAD00\uC2EC\uC774\uC2ED\uB2C8\uAE4C?", cards:[{icon:"\uD83D\uDCB0",title:"\uC7A5\uC560 \uAE09\uC5EC",desc:"\uBE44\uACFC\uC138 \uC6D4\uBCC4 \uAE09\uC5EC"},{icon:"\uD83C\uDF93",title:"GI Bill",desc:"\uAD50\uC721 \uC790\uAE08"},{icon:"\uD83C\uDFE0",title:"VA \uC8FC\uD0DD \uB300\uCD9C",desc:"\uACC4\uC57D\uAE08 \uC5C6\uC74C"},{icon:"\u2622\uFE0F",title:"PACT\uBC95",desc:"\uB3C5\uC131 \uB178\uCD9C"},{icon:"\uD83C\uDFE5",title:"\uC758\uB8CC \uC11C\uBE44\uC2A4",desc:"VA \uC758\uB8CC"},{icon:"\uD83D\uDC54",title:"\uC9C1\uC5C5 \uC7AC\uD65C",desc:"\uC9C1\uC5C5 \uD6C8\uB828"}] },
-      disability: { pct:62, bot:"<strong>VA \uC7A5\uC560 \uBCF4\uC0C1</strong> \u2014 \uBCF5\uBB34 \uAD00\uB828 \uC0C1\uD0DC\uC5D0 \uB300\uD55C \uBE44\uACFC\uC138 \uC6D4\uBCC4 \uAE09\uC5EC.\n\n<strong>\uD3C9\uADE0 \uC9C0\uAE09\uC561:</strong> $1,500\u2013$3,800/\uC6D4\n<strong>\uB4F1\uAE09:</strong> 10%\u2013100%", chips:["\uCCAD\uAD6C \uBC29\uBC95\uC740?","\uC5B4\uB5A4 \uC11C\uB958\uAC00 \uD544\uC694\uD569\uB2C8\uAE4C?","VSO \uC0C1\uB2F4\uC0AC \uCC3E\uAE30","\uB2E4\uB978 \uD61C\uD0DD \uBCF4\uAE30"] },
+      disability: { pct:62, bot:"<strong>VA \uC7A5\uC560 \uBCF4\uC0C1</strong> \u2014 \uBCF5\uBB34 \uAD00\uB828 \uC0C1\uD0DC\uC5D0 \uB300\uD55C \uBE44\uACFC\uC138 \uC6D4\uBCC4 \uAE09\uC5EC.\n\n<strong>2026\uB144 \uC694\uC728 (\uCC38\uC804\uC6A9\uC0AC, \uBD80\uC591\uAC00\uC871 \uC5C6\uC74C):</strong> 10%: $180 | 50%: $1,133 | 100%: $3,939/\uC6D4\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>2025\uB144 12\uC6D4\uBD80\uD130 \uC801\uC6A9 (COLA 2.8%). VA.gov\uC5D0\uC11C \uD655\uC778\uD558\uC138\uC694.</em>", chips:["\uCCAD\uAD6C \uBC29\uBC95\uC740?","\uC5B4\uB5A4 \uC11C\uB958\uAC00 \uD544\uC694\uD569\uB2C8\uAE4C?","VSO \uC0C1\uB2F4\uC0AC \uCC3E\uAE30","\uB2E4\uB978 \uD61C\uD0DD \uBCF4\uAE30"] },
       file_claim: { pct:76, bot:"<strong>VA \uC7A5\uC560 \uCCAD\uAD6C \uBC29\uBC95:</strong>\n\n<strong>1\uB2E8\uACC4</strong> \u2014 VA.gov\uC5D0\uC11C \uACC4\uC815 \uC0DD\uC131\n<strong>2\uB2E8\uACC4</strong> \u2014 VA \uC591\uC2DD 21-526EZ \uC791\uC131\n<strong>3\uB2E8\uACC4</strong> \u2014 DD-214 \uBC0F \uC758\uB8CC \uAE30\uB85D \uC900\uBE44\n<strong>4\uB2E8\uACC4</strong> \u2014 \uC628\uB77C\uC778, \uC6B0\uD3B8 \uB610\uB294 \uC9C1\uC811 \uC81C\uCD9C", chips:["\uC5B4\uB5A4 \uC11C\uB958\uAC00 \uD544\uC694\uD569\uB2C8\uAE4C?","VSO \uC0C1\uB2F4\uC0AC \uCC3E\uAE30","\uB2E4\uB978 \uD61C\uD0DD \uBCF4\uAE30","\uCC98\uC74C\uC73C\uB85C"] },
       documents: { pct:82, bot:"<strong>\uD544\uC694\uD55C \uC11C\uB958:</strong>\n\n\u2014 DD-214\n\u2014 \uC758\uB8CC \uAE30\uB85D\n\u2014 \uBCF5\uBB34 \uCE58\uB8CC \uAE30\uB85D\n\u2014 \uB3D9\uB8CC \uC9C4\uC220\uC11C (\uAD8C\uC7A5)\n\u2014 \uC758\uC0AC\uC758 Nexus \uD3B8\uC9C0 (\uAD8C\uC7A5)\n\n<em>\uC774 \uCC57\uBD07\uC5D0 \uC8FC\ubbFC\uB4F1\uB85D\uBC88\uD638 \uB4F1 \uAC1C\uC778\uC815\uBCF4\uB97C \uC785\uB825\uD558\uC9C0 \uB9C8\uC138\uC694 \u2014 VA.gov\uC5D0\uC11C \uC548\uC804\uD558\uAC8C \uC81C\uCD9C\uD558\uC138\uC694.</em>", chips:["VSO \uC0C1\uB2F4\uC0AC \uCC3E\uAE30","\uB2E4\uB978 \uD61C\uD0DD \uBCF4\uAE30","\uCC98\uC74C\uC73C\uB85C"] },
       vso: { pct:92, bot:null, chips:["\uCCAD\uAD6C \uBC29\uBC95\uC740?","\uBAA8\uB4E0 \uD61C\uD0DD \uBCF4\uAE30","\uCC98\uC74C\uC73C\uB85C"] },
@@ -625,7 +631,7 @@
       veteran: { pct:18, bot:null, cards:[{icon:"\uD83C\uDFDC\uFE0F",title:"Post-9/11",desc:"2001 hanggang kasalukuyan"},{icon:"\uD83C\uDF0A",title:"Digmaang Gulpo",desc:"1990\u20132001"},{icon:"\uD83C\uDF3F",title:"Panahon ng Vietnam",desc:"1964\u20131975"},{icon:"\uD83D\uDD35",title:"Ibang Panahon",desc:"Korea, Cold War, atbp."}] },
       era: { pct:32, bot:"Mayroon ka bang VA disability rating sa kasalukuyan?", cards:[{icon:"\u2705",title:"Oo \u2014 may rating",desc:"Mayroon akong rating %"},{icon:"\uD83D\uDCDD",title:"Hindi \u2014 hindi pa",desc:"Hindi pa nag-file"},{icon:"\u274C",title:"Tinanggihan",desc:"Tinanggihan ang aking claim"},{icon:"\u2753",title:"Hindi sigurado",desc:"Kailangan kong suriin"}] },
       benefits_menu: { pct:48, bot:"Narito ang mga pangunahing benepisyo. Alin ang interesado ka?", cards:[{icon:"\uD83D\uDCB0",title:"Bayad sa Kapansanan",desc:"Buwanang bayad na walang buwis"},{icon:"\uD83C\uDF93",title:"GI Bill",desc:"Pondo sa edukasyon"},{icon:"\uD83C\uDFE0",title:"VA Home Loan",desc:"Walang down payment"},{icon:"\u2622\uFE0F",title:"PACT Act",desc:"Toxic exposure"},{icon:"\uD83C\uDFE5",title:"Pangangalagang Pangkalusugan",desc:"VA medical care"},{icon:"\uD83D\uDC54",title:"Voc Rehab",desc:"Pagsasanay sa trabaho"}] },
-      disability: { pct:62, bot:"<strong>VA Disability Compensation</strong> \u2014 buwanang bayad na walang buwis para sa mga kondisyong konektado sa serbisyo.\n\n<strong>Average na bayad:</strong> $1,500\u2013$3,800/buwan\n<strong>Rating:</strong> 10%\u2013100%", chips:["Paano mag-file ng claim?","Anong mga dokumento ang kailangan?","Humanap ng VSO counselor","Tingnan ang ibang benepisyo"] },
+      disability: { pct:62, bot:"<strong>VA Disability Compensation</strong> \u2014 buwanang bayad na walang buwis para sa mga kondisyong konektado sa serbisyo.\n\n<strong>2026 na rate (beterano, walang dependent):</strong> 10%: $180 | 50%: $1,133 | 100%: $3,939/buwan\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Epektibo Dis 2025 (COLA 2.8%). I-verify sa VA.gov.</em>", chips:["Paano mag-file ng claim?","Anong mga dokumento ang kailangan?","Humanap ng VSO counselor","Tingnan ang ibang benepisyo"] },
       file_claim: { pct:76, bot:"<strong>Paano mag-file ng claim sa kapansanan:</strong>\n\n<strong>Hakbang 1</strong> \u2014 Gumawa ng account sa VA.gov\n<strong>Hakbang 2</strong> \u2014 Kumpletuhin ang VA Form 21-526EZ\n<strong>Hakbang 3</strong> \u2014 Tipunin ang DD-214 at mga medikal na rekord\n<strong>Hakbang 4</strong> \u2014 Isumite online, sa pamamagitan ng koreo, o personal", chips:["Anong mga dokumento ang kailangan?","Humanap ng VSO counselor","Tingnan ang ibang benepisyo","Magsimula muli"] },
       documents: { pct:82, bot:"<strong>Mga dokumentong kailangan:</strong>\n\n\u2014 DD-214\n\u2014 Mga medikal na rekord\n\u2014 Mga rekord ng serbisyo sa militar\n\u2014 Buddy statements (inirerekomenda)\n\u2014 Nexus letter mula sa doktor (inirerekomenda)\n\n<em>Huwag ibahagi ang personal na impormasyon tulad ng Social Security number sa chat na ito \u2014 gamitin ang VA.gov para magsumite ng mga dokumento nang ligtas.</em>", chips:["Humanap ng VSO counselor","Tingnan ang ibang benepisyo","Magsimula muli"] },
       vso: { pct:92, bot:null, chips:["Paano mag-file ng claim?","Tingnan ang lahat ng benepisyo","Magsimula muli"] },
@@ -708,7 +714,7 @@
     'Community Care':'community_care', 'Dental & Vision':'dental_vision',
     'Caregiver Program':'caregiver', 'Voc Rehab':'voc_rehab',
     'BDD Program':'bdd', 'Adapted Housing':'adapted_housing',
-    'Housing Assistance':'housing_help', 'DIC':'dic', 'Survivors Pension':'pension',
+    'Housing Assistance':'housing_help', 'DIC':'dic', 'Survivors Pension':'survivors_pension',
     'Aid & Attendance':'aid_attendance', 'Life Insurance':'life_insurance',
     'Burial Benefits':'burial', 'File a Claim':'file_claim',
     'Claim Status':'claim_status', 'Denied Claim':'denied',
@@ -793,6 +799,7 @@
     [/\b(homeless|housing help|hud.?vash|transitional housing|evict|shelter)\b/i, 'housing_help'],
     [/\b(adapted housing|sah grant|sha grant|accessible home|wheelchair.*home)\b/i, 'adapted_housing'],
     // Financial
+    [/\b(survivors?.pension|death.pension|surviving.*spouse.*pension|widow.*pension)\b/i, 'survivors_pension'],
     [/\b(pension|low income|wartime|aid.*attend|aid and attend|in.?home care|assisted living|nursing home)\b/i, 'pension'],
     [/\b(aid.*attend|attend.*aid|a&a|daily.*activ|help.*bathing|help.*dressing)\b/i, 'aid_attendance'],
     [/\b(debt|owe.*va|va.*owe|overpayment|repay|waiver.*debt|pay back va)\b/i, 'va_debt'],
@@ -1168,396 +1175,6 @@
     '#vnn{right:12px}}'
   ].join('');
 
-  // ── ADMIN URL GATE ─────────────────────────────────────────────────────────
-  // Admin Panel only shows when VSO adds ?vnadmin=1 to their site URL
-  var SHOW_ADMIN = /[?&]vnadmin=1(?:&|$)/i.test(window.location.search);
-
-  // ── BUILD HTML ─────────────────────────────────────────────────────────────
-  function buildHTML() {
-    var langs = [
-      { code: 'en', label: 'English' },
-      { code: 'es', label: 'Español' },
-      { code: 'vi', label: 'Tiếng Việt' },
-      { code: 'ko', label: '한국어' },
-      { code: 'tl', label: 'Filipino' }
-    ];
-    var lbs = langs.map(function (l) {
-      var lk  = (!HAS_ML && l.code !== 'en') ? ' lk' : '';
-      var act = (l.code === 'en') ? ' act' : '';
-      return '<button class="vnlg' + lk + act + '" data-lang="' + l.code + '">' + l.label + '</button>';
-    }).join('');
-
-    var tabs = '<div id="vntb">'
-      + '<button class="vntb act" data-tab="chat">💬 Veteran Chat</button>'
-      + '<button class="vntb" data-tab="feedback">📝 Feedback</button>'
-      + '<button class="vntb" data-tab="support">🎧 Support</button>'
-      + (HAS_ADMIN && SHOW_ADMIN ? '<button class="vntb" data-tab="admin">⚙️ Admin Panel</button>' : '')
-      + '</div>';
-
-    var adm = HAS_ADMIN && SHOW_ADMIN
-      ? '<div id="vnadp" class="vntp" data-panel="admin">'
-        + '<div style="font-size:11px;color:rgba(232,200,74,.85);background:rgba(232,200,74,.07);border:1px solid rgba(232,200,74,.2);border-radius:8px;padding:9px 11px;margin-bottom:12px;line-height:1.5">Update your organization info below. Changes appear instantly in the chat.</div>'
-        // Scan tabs
-        + '<div id="vnsct" style="display:flex;gap:0;margin-bottom:8px;border-radius:8px;overflow:hidden;border:.5px solid rgba(255,255,255,.1)">'
-        + '<button class="vnsc act" data-sc="web">🌐 Website</button>'
-        + '<button class="vnsc" data-sc="fb">📘 Facebook</button>'
-        + '<button class="vnsc" data-sc="man">✏️ Manual</button>'
-        + '</div>'
-        // Website scan panel
-        + '<div id="vnscw">'
-        + '<div style="display:flex;gap:6px;margin-bottom:6px">'
-        + '<input id="vnscu" type="text" class="vnai" style="margin-bottom:0" placeholder="https://yourpost.org"/>'
-        + '<button id="vnscb" style="padding:6px 10px;border-radius:7px;border:.5px solid rgba(60,120,220,.4);background:rgba(30,80,160,.5);color:#fff;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:inherit">🔍 Scan</button>'
-        + '</div>'
-        + '<div id="vnscst" style="font-size:11px;min-height:14px;margin-bottom:8px;line-height:1.4"></div>'
-        + '</div>'
-        // Facebook scan panel
-        + '<div id="vnscf" style="display:none">'
-        + '<div style="font-size:10.5px;color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:6px">Facebook blocks auto-scanning. Go to your Facebook page → About tab → select all text → copy → paste below.</div>'
-        + '<textarea id="vnfbpa" placeholder="Paste your Facebook About page text here…" style="width:100%;height:75px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:7px;padding:7px 9px;font-size:11.5px;color:rgba(255,255,255,.85);font-family:inherit;resize:none;outline:none;box-sizing:border-box;margin-bottom:6px"></textarea>'
-        + '<button id="vnfbb" style="width:100%;padding:7px;border-radius:7px;border:.5px solid rgba(232,200,74,.3);background:rgba(100,70,0,.4);color:#fff;font-size:11.5px;font-weight:500;cursor:pointer;font-family:inherit">📘 Extract from Facebook Text</button>'
-        + '<div id="vnscst2" style="font-size:11px;min-height:14px;margin-top:6px;margin-bottom:4px;line-height:1.4"></div>'
-        + '</div>'
-        // Manual fields
-        + '<span class="vnal">Organization Name</span><input class="vnai" id="an" type="text"/>'
-        + '<span class="vnal">City</span><input class="vnai" id="ac" type="text"/>'
-        + '<span class="vnal">Phone</span><input class="vnai" id="ap" type="text"/>'
-        + '<span class="vnal">Email</span><input class="vnai" id="ae" type="email"/>'
-        + '<span class="vnal">Office Hours</span><input class="vnai" id="ah" type="text"/>'
-        + '<span class="vnal">Upcoming Events</span><div id="aev"></div>'
-        + '<button class="vnadd" id="vnadde">+ Add Event</button>'
-        + '<span class="vnal">Leadership & Counselors</span><div id="ald"></div>'
-        + '<button class="vnadd" id="vnadda">+ Add Person</button>'
-        + '<button id="vnsv">Save Changes</button>'
-        + '<div id="vnsvd">✓ Saved!</div>'
-        + '</div>'
-      : '';
-
-    var fbk = '<div id="vnfbk" class="vntp" data-panel="feedback" style="padding:14px">'
-      + '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">How was your experience?</div>'
-      + '<div style="font-size:11.5px;color:var(--vs);margin-bottom:12px;line-height:1.5">Your feedback helps us improve this service for all veterans.</div>'
-      + '<div id="vnstars" style="display:flex;gap:8px;margin-bottom:14px;font-size:24px;cursor:pointer">'
-      + '<span class="vnstar" data-v="1">☆</span>'
-      + '<span class="vnstar" data-v="2">☆</span>'
-      + '<span class="vnstar" data-v="3">☆</span>'
-      + '<span class="vnstar" data-v="4">☆</span>'
-      + '<span class="vnstar" data-v="5">☆</span>'
-      + '</div>'
-      + '<textarea id="vnfbtx" placeholder="Share any thoughts, suggestions, or issues (optional)…" '
-      + 'style="width:100%;height:140px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.15);'
-      + 'border-radius:8px;padding:8px 10px;font-size:12px;color:#fff;font-family:inherit;'
-      + 'outline:none;resize:none;box-sizing:border-box;margin-bottom:10px"></textarea>'
-      + '<button id="vnfbsb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);'
-      + 'border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Submit Feedback</button>'
-      + '<div id="vnfbok" style="display:none;text-align:center;font-size:12px;'
-      + 'color:rgba(74,222,128,.9);margin-top:10px">✓ Thank you! Your feedback has been received.</div>'
-      + '</div>';
-
-    var sup = '<div id="vnsup" class="vntp" data-panel="support" style="padding:14px">'
-      + '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">Contact Our Team</div>'
-      + '<div style="font-size:11.5px;color:var(--vs);margin-bottom:12px;line-height:1.5">Send us a message and we\'ll follow up with you directly.</div>'
-      + '<div id="vnsupf">'
-      + '<input id="vnsn" type="text" placeholder="Your name" style="width:100%;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
-      + '<input id="vnse" type="email" placeholder="Your email address" style="width:100%;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
-      + '<select id="vnsy" style="width:100%;background:#1a2340;border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
-      + '<option value="">Select topic...</option>'
-      + '<option value="benefits">VA Benefits Question</option>'
-      + '<option value="claim">Help with my claim</option>'
-      + '<option value="appointment">Schedule an appointment</option>'
-      + '<option value="documents">Document request</option>'
-      + '<option value="other">Other</option>'
-      + '</select>'
-      + '<textarea id="vnsmsg" placeholder="Describe your question or request…" style="width:100%;height:140px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;resize:none;box-sizing:border-box;margin-bottom:8px"></textarea>'
-      + '<div id="vnserr" style="display:none;font-size:11px;color:rgba(255,100,100,.9);margin-bottom:6px"></div>'
-      + '<button id="vnssb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Send Message</button>'
-      + '</div>'
-      + '<div id="vnstk" style="display:none;text-align:center;padding:12px">'
-      + '<div style="font-size:24px;margin-bottom:6px">✅</div>'
-      + '<div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.9)">Message sent!</div>'
-      + '<div style="font-size:11.5px;color:var(--vs);margin-top:4px;line-height:1.5">Our team will follow up with you by email.</div>'
-      + '</div>'
-      + '</div>';
-
-    var mic = HAS_MIC
-      ? '<button id="vnmc" title="Voice input"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 3.57-3.38 6-5.91 6s-5.42-2.43-5.91-6H4c.49 4.12 3.73 7.38 7.75 7.9V21h.5v-2.1C16.27 18.38 19.51 15.12 20 11h-2.09z"/></svg></button>'
-      : '';
-
-    return '<style id="vns">' + CSS + '</style>'
-      + '<button id="vnb" aria-label="Open VA Benefits Assistant">'
-      + '<svg class="vnc" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>'
-      + '<svg class="vnx" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>'
-      + '</button>'
-      + '<div id="vnn" style="display:none"><span style="font-size:15px;flex-shrink:0">🎖️</span>'
-      + '<span>Need help with VA benefits? I\'m here — 24/7, free.</span>'
-      + '</div>'
-      + '<div id="vnp">'
-      +   '<div id="vnh"><div id="vnhi"><img src="data:image/png;base64,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" style="width:32px;height:32px;object-fit:contain;border-radius:4px;" alt="VetNavigator AI"></div>'
-      +   '<div style="flex:1"><div id="vnon">' + ORG_NAME + '</div>'
-      +   '<div id="vnst"><span class="vnd"></span> <span id="vnstx">Online · Free · 24/7</span></div></div></div>'
-      +   tabs
-      +   '<div id="vnlb">' + lbs + '</div>'
-      +   '<div id="vnpb"><div id="vnpr"></div></div>'
-      +   '<div id="vnchat" class="vntp act" data-panel="chat">'
-      +     '<div id="vnms"></div>'
-      +     '<div id="vnwn"></div>'
-      +     '<div id="vnlm">'
-      +       '<h3>🎖️ <span id="vnlt"></span></h3>'
-      +       '<p id="vnlmg"></p>'
-      +       '<p id="vnltl" style="font-size:11px;color:var(--vg);font-weight:600;margin-bottom:4px"></p>'
-      +       '<ul id="vnltp"></ul>'
-      +       '<p id="vnsp" style="font-size:12px;color:var(--vs);margin-bottom:8px"></p>'
-      +       '<div id="vnser"><input id="vnsem" type="email"/><button id="vnseb"></button></div>'
-      +       '<div id="vnset"></div>'
-      +       '<p id="vnvl" style="font-size:11px;color:var(--vg);font-weight:600;margin-bottom:6px"></p>'
-      +       '<div class="vnvb" id="vnvb"></div>'
-      +       '<button id="vnrs"></button>'
-      +     '</div>'
-      +     '<div id="vnop"><div id="vnol"></div><div id="vncd"></div><div id="vnch"></div></div>'
-      +     '<div id="vnir">'
-      +       '<input id="vntx" type="text" autocomplete="off"/>'
-      +       mic
-      +       '<button id="vnsd"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>'
-      +     '</div>'
-      +   '</div>'
-      +   adm + fbk + sup
-      +   '<div id="vnft">Powered by VetNavigator AI · Veteran-Made &amp; Veteran-Owned</div>'
-      + '</div>';
-  }
-
-  // ── DOM HELPERS ────────────────────────────────────────────────────────────
-  function ge(id) { return document.getElementById(id); }
-
-  function botMsg(html) {
-    var row = document.createElement('div'); row.className = 'vnr';
-    var av  = document.createElement('div'); av.className  = 'vnav b'; av.textContent = 'VN';
-    var bb  = document.createElement('div'); bb.className  = 'vnbb b';
-    bb.innerHTML = html.replace(/\n/g, '<br>');
-    row.appendChild(av); row.appendChild(bb);
-    ge('vnms').appendChild(row);
-    ge('vnms').scrollTop = row.offsetTop - ge('vnms').offsetTop;
-    return bb.textContent || bb.innerText || '';
-  }
-
-  function userMsg(text) {
-    var row = document.createElement('div'); row.className = 'vnr';
-    row.style.justifyContent = 'flex-end';
-    var bb = document.createElement('div'); bb.className = 'vnbb u'; bb.textContent = text;
-    row.appendChild(bb);
-    ge('vnms').appendChild(row);
-    ge('vnms').scrollTop = ge('vnms').scrollHeight;
-  }
-
-  function showTyp() {
-    var row = document.createElement('div'); row.className = 'vnr'; row.id = 'vntyp';
-    var av  = document.createElement('div'); av.className  = 'vnav b'; av.textContent = 'VN';
-    var ty  = document.createElement('div'); ty.className  = 'vnty';
-    ty.innerHTML = '<span></span><span></span><span></span>';
-    row.appendChild(av); row.appendChild(ty);
-    ge('vnms').appendChild(row);
-    ge('vnms').scrollTop = ge('vnms').scrollHeight;
-  }
-
-  function hideTyp() { var t = ge('vntyp'); if (t) t.remove(); }
-
-  function clearOpts() {
-    ge('vncd').innerHTML = '';
-    ge('vnch').innerHTML = '';
-    ge('vnol').style.display = 'none';
-  }
-
-  function mkCards(cards) {
-    clearOpts();
-    if (!cards || !cards.length) return;
-    ge('vnol').style.display = 'block';
-    ge('vnol').textContent = s('choose');
-    cards.forEach(function (c) {
-      var d = document.createElement('div'); d.className = 'vnca';
-      d.innerHTML = '<div class="vnci">' + c.icon + '</div>'
-        + '<div class="vnct">' + c.title + '</div>'
-        + (c.desc ? '<div class="vncd">' + c.desc + '</div>' : '');
-      d.addEventListener('click', function () { handle(c.title); });
-      ge('vncd').appendChild(d);
-    });
-  }
-
-  function mkChips(chips) {
-    if (!chips || !chips.length) return;
-    chips.forEach(function (ch) {
-      var b = document.createElement('button'); b.className = 'vncp'; b.textContent = ch;
-      b.addEventListener('click', function () { handle(ch); });
-      ge('vnch').appendChild(b);
-    });
-  }
-
-  function setProg(pct) { ge('vnpr').style.width = (pct || 0) + '%'; }
-
-  // ── WELCOME NODE ───────────────────────────────────────────────────────────
-  function buildWelcome() {
-    var loc = ORG_CITY ? '\n📍 Serving veterans in ' + ORG_CITY : '';
-    NODES.welcome.bot = 'Welcome to ' + ORG_NAME + '!' + loc + '\n\n'
-      + "We're here to help you find and claim every benefit you've earned. This assistant is provided by your VSO — available 24/7 and speaks your language.\n\n"
-      + "ℹ️ *General VA benefits information only — not legal advice. Never enter personal info like SSNs in this chat.*\n\n"
-      + "Let's get started. Which best describes you?";
-    NODES.veteran.bot = 'Thank you for your service. 🇺🇸\n\n'
-      + ORG_NAME + ' is proud to support you. When did you serve?';
-    // Spanish
-    if (NODES_I18N.es) {
-      var locEs = ORG_CITY ? '\n📍 Sirviendo a veteranos en ' + ORG_CITY : '';
-      NODES_I18N.es.welcome.bot = '¡Bienvenido a ' + ORG_NAME + '!' + locEs + '\n\nEstamos aqu\xED para ayudarle a encontrar y reclamar cada beneficio que se ha ganado. Este asistente es gratuito, disponible 24/7 y habla su idioma.\n\n\u2139\uFE0F *Solo informaci\xF3n general sobre beneficios VA \u2014 no asesoramiento legal. Nunca ingrese informaci\xF3n personal en este chat.*\n\n\xBFCu\xE1l le describe mejor?';
-      NODES_I18N.es.veteran.bot = 'Gracias por su servicio. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' se enorgullece de apoyarle. \xBFCu\xE1ndo sirvi\xF3?';
-    }
-    // Vietnamese
-    if (NODES_I18N.vi) {
-      var locVi = ORG_CITY ? '\n📍 Ph\u1EE5c v\u1EE5 c\u1EF1u chi\u1EBFn binh t\u1EA1i ' + ORG_CITY : '';
-      NODES_I18N.vi.welcome.bot = 'Ch\xE0o m\u1EEBng \u0111\u1EBFn v\u1EDBi ' + ORG_NAME + '!' + locVi + '\n\nCh\xFAng t\xF4i \u1EDF \u0111\xE2y \u0111\u1EC3 gi\xFAp b\u1EA1n t\xECm v\xE0 nh\u1EADn m\u1ECDi quy\u1EC1n l\u1EE3i b\u1EA1n \u0111\xE3 x\u1EE9ng \u0111\xE1ng. Tr\u1EE3 l\xFD n\xE0y mi\u1EC5n ph\xED, ho\u1EA1t \u0111\u1ED9ng 24/7 v\xE0 n\xF3i ng\xF4n ng\u1EEF c\u1EE7a b\u1EA1n.\n\n\u2139\uFE0F *Ch\u1EC9 cung c\u1EA5p th\xF4ng tin chung v\u1EC1 ph\xFAc l\u1EE3i VA \u2014 kh\xF4ng ph\u1EA3i t\u01B0 v\u1EA5n ph\xE1p l\xFD. Kh\xF4ng bao gi\u1EDD nh\u1EADp th\xF4ng tin c\xE1 nh\xE2n nh\u01B0 s\u1ED1 An sinh X\xE3 h\u1ED9i v\xE0o chat n\xE0y.*\n\n\u0110i\u1EC1u n\xE0o m\xF4 t\u1EA3 \u0111\xFAng nh\u1EA5t v\u1EC1 b\u1EA1n?';
-      NODES_I18N.vi.veteran.bot = 'C\u1EA3m \u01A1n b\u1EA1n \u0111\xE3 ph\u1EE5c v\u1EE5 \u0111\u1EA5t n\u01B0\u1EDBc. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' t\u1EF1 h\xE0o \u0111\u01B0\u1EE3c h\u1ED7 tr\u1EE3 b\u1EA1n. B\u1EA1n ph\u1EE5c v\u1EE5 khi n\xE0o?';
-    }
-    // Korean
-    if (NODES_I18N.ko) {
-      var locKo = ORG_CITY ? '\n📍 ' + ORG_CITY + ' \uC7AC\uD5A5\uAD70\uC778 \uC9C0\uC6D0' : '';
-      NODES_I18N.ko.welcome.bot = ORG_NAME + '\uC5D0 \uC624\uC2E0 \uAC83\uC744 \uD658\uC601\uD569\uB2C8\uB2E4!' + locKo + '\n\n\uC800\uD76C\uB294 \uADC0\uD558\uAC00 \uBC1B\uC744 \uC790\uACA9\uC774 \uC788\uB294 \uBAA8\uB4E0 \uD61C\uD0DD\uC744 \uCC3E\uACE0 \uC2E0\uCCAD\uD558\uB294 \uB370 \uB3C4\uC6C0\uC744 \uB4DC\uB9AC\uAE30 \uC704\uD574 \uC5EC\uAE30 \uC788\uC2B5\uB2C8\uB2E4. \uC774 \uC548\uB0B4\uC790\uB294 \uBB34\uB8CC\uC774\uBA70 24/7 \uC774\uC6A9 \uAC00\uB2A5\uD569\uB2C8\uB2E4.\n\n\u2139\uFE0F *VA \uD61C\uD0DD \uC77C\uBC18 \uC815\uBCF4\uB9CC \uC81C\uACF5 \u2014 \uBC95\uC801 \uC870\uC5B8 \uC544\uB2D9\uB2C8\uB2E4. \uC8FC\uBBFC\uB4F1\uB85D\uBC88\uD638 \uB4F1 \uAC1C\uC778\uC815\uBCF4\uB97C \uC774 \uCC57\uBD07\uC5D0 \uC785\uB825\uD558\uC9C0 \uB9C8\uC138\uC694.*\n\n\uADC0\uD558\uC5D0\uAC8C \uAC00\uC7A5 \uC798 \uB9DE\uB294 \uAC83\uC740 \uBB34\uC5C7\uC785\uB2C8\uAE4C?';
-      NODES_I18N.ko.veteran.bot = '\uADC0\uD558\uC758 \uBD09\uC0AC\uC5D0 \uAC10\uC0AC\uB4DC\uB9BD\uB2C8\uB2E4. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + '\uC740 \uADC0\uD558\uB97C \uC9C0\uC6D0\uD558\uAC8C \uB418\uC5B4 \uC790\uB791\uC2A4\uB7FD\uC2B5\uB2C8\uB2E4. \uC5B8\uC81C \uBCF5\uBB34\uD558\uC168\uC2B5\uB2C8\uAE4C?';
-    }
-    // Filipino
-    if (NODES_I18N.tl) {
-      var locTl = ORG_CITY ? '\n📍 Naglilingkod sa mga beterano sa ' + ORG_CITY : '';
-      NODES_I18N.tl.welcome.bot = 'Maligayang pagdating sa ' + ORG_NAME + '!' + locTl + '\n\nNandito kami para tulungan kang mahanap at makuha ang bawat benepisyong iyong nakamit. Ang assistant na ito ay libre, available 24/7, at nagsasalita ng iyong wika.\n\n\u2139\uFE0F *Pangkalahatang impormasyon lamang tungkol sa mga benepisyo ng VA \u2014 hindi legal na payo. Huwag maglagay ng personal na impormasyon tulad ng SSN sa chat na ito.*\n\nAlin ang pinaka-angkop sa iyo?';
-      NODES_I18N.tl.veteran.bot = 'Salamat sa iyong serbisyo. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' ay ipinagmamalaki na suportahan kayo. Kailan kayo naglingkod?';
-    }
-  }
-
-  // ── VSO NODE ───────────────────────────────────────────────────────────────
-  function buildVSO() {
-    var c = '';
-    if (ORG_MISSION) c += ORG_MISSION + '\n\n';
-    if (ORG_ADDR)  c += '📍 ' + ORG_ADDR + (ORG_CITY ? ', ' + ORG_CITY : '') + '\n';
-    if (ORG_HOURS) c += '🕐 ' + ORG_HOURS + '\n';
-    if (ORG_PHONE) c += '📞 ' + ORG_PHONE + '\n';
-    if (ORG_EMAIL) c += '✉️ ' + ORG_EMAIL + '\n';
-    if (ORG_WEB)   c += '🌐 ' + ORG_WEB;
-    var ld = ORG_LEADERS.length
-      ? '\n\n<strong>Leadership:</strong>\n' + ORG_LEADERS.map(function (l) { return '• ' + l; }).join('\n')
-      : '';
-    var nextEvent = ORG_EVENTS.length ? ORG_EVENTS[0] : null;
-    var evLine = nextEvent ? '\n\n📅 <strong>Next event:</strong> ' + nextEvent : '';
-    NODES.vso.bot = 'Your VSO counselors are here to help — free of charge.\n\n<strong>'
-      + ORG_NAME + '</strong>\n'
-      + (c || 'Contact your local VSO office.') + ld + evLine
-      + '\n\n100% free. Walk-ins welcome. 🇺🇸';
-    NODES.vso.chips = ORG_EVENTS.length
-      ? ['Upcoming events', 'How do I file a claim?', 'See all benefits']
-      : ['How do I file a claim?', 'See all benefits', 'Start over'];
-
-    // ── org_events node ──────────────────────────────────────────────────────
-    if (ORG_EVENTS.length) {
-      NODES.org_events = {
-        pct: 10,
-        bot: '📅 <strong>Upcoming events at ' + ORG_NAME + ':</strong>\n\n'
-          + ORG_EVENTS.map(function (e, i) { return (i === 0 ? '⭐ ' : '• ') + e; }).join('\n')
-          + '\n\n<strong>All events are open to veterans, family members, and the community.</strong>\n\nStop by — no appointment needed. Our counselors are here to help.',
-        chips: ['Find a VSO counselor', 'See all benefits', 'Start over']
-      };
-      CHIP_MAP['Upcoming events'] = 'org_events';
-    }
-  }
-
-  // ── RENDER NODE ────────────────────────────────────────────────────────────
-  function getNode(key) {
-    // Check for language-specific override, fall back to English NODES
-    if (lang !== 'en' && NODES_I18N[lang] && NODES_I18N[lang][key]) {
-      // Merge: translated node overrides English, but inherit missing fields
-      var base = NODES[key] || {};
-      var tr   = NODES_I18N[lang][key];
-      return {
-        pct:   tr.pct   !== undefined ? tr.pct   : base.pct,
-        bot:   tr.bot   !== undefined ? tr.bot   : base.bot,
-        cards: tr.cards !== undefined ? tr.cards : base.cards,
-        chips: tr.chips !== undefined ? tr.chips : base.chips
-      };
-    }
-    return NODES[key];
-  }
-
-  function renderNode(key) {
-    var node = getNode(key); if (!node) return;
-    if (node.bot) {
-      var plain = botMsg(node.bot);
-      chatHistory.push({ topic: key, text: plain.substring(0, 120) });
-    }
-    clearOpts();
-    // Build chips list — auto-append "Start over" if not present
-    var chips = (node.chips || []).slice();
-    var skipStartOver = ['welcome','benefits_menu','all_benefits','empathy_intro',
-      'cat_money','cat_healthcare','cat_education','cat_housing','cat_family','cat_claims'];
-    if (skipStartOver.indexOf(key) === -1) {
-      var startOverLabel = (lang === 'es') ? 'Empezar de nuevo'
-        : (lang === 'vi') ? 'Bắt đầu lại'
-        : (lang === 'ko') ? '처음으로'
-        : (lang === 'tl') ? 'Magsimula muli'
-        : 'Start over';
-      var hasIt = chips.some(function (c) { return c === startOverLabel || c === 'Start over' || c === 'Start Fresh →'; });
-      if (!hasIt) chips.push(startOverLabel);
-    }
-    if (node.cards && node.cards.length) {
-      mkCards(node.cards);
-      if (chips.length) mkChips(chips);
-    } else if (chips.length) {
-      mkChips(chips);
-    }
-    if (node.pct !== undefined) setProg(node.pct);
-  }
-
-  function renderGated(key) {
-    var label = key ? topicLabel(key) : 'that topic';
-    botMsg("I'd love to help with <strong>" + label + "</strong>.\n\nFor this topic, I'd recommend speaking directly with your VSO counselor — they can give you personalized guidance at no cost and walk you through the details step by step.");
-    clearOpts();
-    mkChips(['Find a VSO counselor', 'See all benefits', 'Start over']);
-
-    // Silent upsell notification to VetNavigator
-    if (BREVO_KEY && ORG_EMAIL) {
-      var tierNeeded = TOPIC_TIERS[key] || 2;
-      var planNeeded = tierNeeded >= 3 ? 'Standard' : 'Starter';
-      fetch('https://api.brevo.com/v3/smtp/email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
-        body: JSON.stringify({
-          sender:  { name: 'VetNavigator AI', email: SUPPORT_EMAIL },
-          to:      [{ email: SUPPORT_EMAIL }],
-          subject: '📊 Upgrade Opportunity — ' + ORG_NAME + ' · ' + label,
-          htmlContent: '<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;">'
-            + '<div style="background:#1a3a6b;padding:20px 24px;border-radius:10px 10px 0 0;color:#fff;">'
-            + '<h2 style="margin:0;font-size:18px;">📊 Veteran Requested Gated Topic</h2></div>'
-            + '<div style="padding:20px 24px;background:#fff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;">'
-            + '<p style="font-size:14px;color:#374151;margin:0 0 12px;"><strong>' + ORG_NAME + '</strong> (License: ' + LICENSE_KEY + ')</p>'
-            + '<p style="font-size:14px;color:#374151;margin:0 0 12px;">A veteran on their site asked about <strong>' + label + '</strong>, which requires the <strong>' + planNeeded + '</strong> plan or above.</p>'
-            + '<p style="font-size:13px;color:#6b7280;margin:0 0 16px;">Consider reaching out with a friendly note letting them know their visitors are asking about this topic.</p>'
-            + '<div style="background:#f9f7f3;border-radius:8px;padding:14px 16px;font-size:13px;color:#374151;border-left:3px solid #e8c84a;">'
-            + '<strong>Suggested outreach:</strong><br>"Hi [name], just a quick heads-up — veterans visiting your site have been asking about ' + label + '. Your ' + planNeeded + ' plan would cover this topic and more. Happy to walk you through it if you\'re interested!"'
-            + '</div></div></div>'
-        })
-      }).catch(function () {});
-    }
-  }
-
-  // ── TOPIC LABEL ────────────────────────────────────────────────────────────
-  function topicLabel(k) {
-    var m = {
-      disability:'VA Disability Pay', gi_bill:'GI Bill', home_loan:'VA Home Loan',
-      healthcare:'VA Healthcare', file_claim:'Filing a Claim', documents:'Required Documents',
-      denied:'Denied Claims', vso:'VSO Counselors', pact_act:'PACT Act', tdiu:'TDIU',
-      nexus:'Nexus Letters', mental_health:'Mental Health', pension:'VA Pension',
-      voc_rehab:'Vocational Rehab', rating_increase:'Rating Increase', cp_exam:'C&P Exam',
-      dic:'DIC Benefits', champva:'CHAMPVA', burial:'Burial Benefits',
-      caregiver:'Caregiver Program', claim_status:'Claim Status', va_records:'VA Records',
-      mst:'Military Sexual Trauma', travel_pay:'Travel Pay', community_care:'Community Care',
-      life_insurance:'Life Insurance', housing_help:'Housing Assistance',
-      women_veterans:'Women Veterans', guard_reserve:'Guard & Reserve',
-      adapted_housing:'Adapted Housing', va_debt:'VA Debt Help',
-      aid_attendance:'Aid & Attendance'
-    };
-    return m[k] || k.replace(/_/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
-  }
-
   // ── SESSION WARNING ────────────────────────────────────────────────────────
   function checkWarn() {
     var rem = CONV_LIMIT - turnCount;
@@ -1810,6 +1427,15 @@
           + '\n- Be empathetic, respectful, and encouraging — many veterans find this process overwhelming'
           + '\n- Give clear, practical answers with specific next steps'
           + '\n- Include relevant dollar amounts, deadlines, or eligibility thresholds when helpful'
+          + '\n- IMPORTANT — 2026 VA RATES: Use ONLY the following rates (effective Dec 1, 2025, 2.8% COLA). Do NOT use rates from your training data — they are outdated.'
+          + '\n  Disability (veteran alone): 10%=$180, 20%=$357, 30%=$552, 40%=$796, 50%=$1,133, 60%=$1,435, 70%=$1,808, 80%=$2,102, 90%=$2,362, 100%=$3,939'
+          + '\n  TDIU: $3,939/mo (pays at 100% rate). SMC-K: $140/mo additional'
+          + '\n  DIC (surviving spouse): Base $1,699/mo, 8-yr add-on +$361/mo, per child +$421/mo'
+          + '\n  VA Pension MAPR: Single vet $17,441/yr ($1,453/mo), with spouse $22,839/yr ($1,903/mo), A&A single $29,093/yr ($2,424/mo), A&A with spouse $34,488/yr ($2,874/mo)'
+          + '\n  Survivors Pension MAPR: Spouse alone $11,699/yr ($974/mo), with child $15,311/yr ($1,275/mo). Net worth limit: $163,699'
+          + '\n  GI Bill housing: $1,169-$4,400+/mo (varies by school ZIP), online-only $1,169/mo flat. Books up to $1,000/yr'
+          + '\n  CHAMPVA: No premium, $50/yr deductible ($100 family), 25% cost-share, $3,000/yr cap, Meds by Mail $0 copay'
+          + '\n  Always say "Rates effective December 2025" or "2026 rates" when citing amounts. Always recommend verifying at VA.gov'
           + '\n- Always recommend a free VSO counselor for complex or personalized situations'
           + '\n- If the question involves crisis, mental health distress, or safety — immediately provide the Veterans Crisis Line: dial 988 press 1, text 838255, or chat at VeteransCrisisLine.net. Lead with empathy ("You are not alone"), keep it brief, do NOT ask probing questions or give clinical advice'
           + '\n- NEVER ask for, request, encourage, or repeat back any personal identifying information — including name, Social Security number, claim number, date of birth, address, phone number, medical diagnosis, or service records. If a Veteran volunteers this information, do not reference or repeat it — simply continue helping with their benefits question'
@@ -1891,6 +1517,7 @@
       + '\n- Sound like a real person, not a bot. Vary your openings — never start two responses the same way'
       + '\n- NEVER say "Great question", "Good choice", "Great choice", "Excellent question", or similar filler. The veteran clicked a button, they did not ask a question. Jump straight into the information'
       + '\n- Make ALL URLs clickable using HTML links: <a href="https://..." target="_blank" style="color:#e8c84a;text-decoration:underline">link text</a>'
+      + '\n- When mentioning dollar amounts, use ONLY the rates provided in the factual content above — never use rates from your training data. If rates are not in the content, say "verify current rates at VA.gov" instead of guessing'
       + '\n- Make phone numbers clickable: <a href="tel:+1XXXXXXXXXX" style="color:#e8c84a;text-decoration:underline">number</a>'
       + '\n- Use <strong> tags for key terms and dollar amounts'
       + '\n- Do NOT use bullet points, numbered lists, dashes, or markdown. Flowing prose only'
@@ -2622,3 +2249,393 @@
   }
 
 })();
+  // ── ADMIN URL GATE ─────────────────────────────────────────────────────────
+  // Admin Panel only shows when VSO adds ?vnadmin=1 to their site URL
+  var SHOW_ADMIN = /[?&]vnadmin=1(?:&|$)/i.test(window.location.search);
+
+  // ── BUILD HTML ─────────────────────────────────────────────────────────────
+  function buildHTML() {
+    var langs = [
+      { code: 'en', label: 'English' },
+      { code: 'es', label: 'Español' },
+      { code: 'vi', label: 'Tiếng Việt' },
+      { code: 'ko', label: '한국어' },
+      { code: 'tl', label: 'Filipino' }
+    ];
+    var lbs = langs.map(function (l) {
+      var lk  = (!HAS_ML && l.code !== 'en') ? ' lk' : '';
+      var act = (l.code === 'en') ? ' act' : '';
+      return '<button class="vnlg' + lk + act + '" data-lang="' + l.code + '">' + l.label + '</button>';
+    }).join('');
+
+    var tabs = '<div id="vntb">'
+      + '<button class="vntb act" data-tab="chat">💬 Veteran Chat</button>'
+      + '<button class="vntb" data-tab="feedback">📝 Feedback</button>'
+      + '<button class="vntb" data-tab="support">🎧 Support</button>'
+      + (HAS_ADMIN && SHOW_ADMIN ? '<button class="vntb" data-tab="admin">⚙️ Admin Panel</button>' : '')
+      + '</div>';
+
+    var adm = HAS_ADMIN && SHOW_ADMIN
+      ? '<div id="vnadp" class="vntp" data-panel="admin">'
+        + '<div style="font-size:11px;color:rgba(232,200,74,.85);background:rgba(232,200,74,.07);border:1px solid rgba(232,200,74,.2);border-radius:8px;padding:9px 11px;margin-bottom:12px;line-height:1.5">Update your organization info below. Changes appear instantly in the chat.</div>'
+        // Scan tabs
+        + '<div id="vnsct" style="display:flex;gap:0;margin-bottom:8px;border-radius:8px;overflow:hidden;border:.5px solid rgba(255,255,255,.1)">'
+        + '<button class="vnsc act" data-sc="web">🌐 Website</button>'
+        + '<button class="vnsc" data-sc="fb">📘 Facebook</button>'
+        + '<button class="vnsc" data-sc="man">✏️ Manual</button>'
+        + '</div>'
+        // Website scan panel
+        + '<div id="vnscw">'
+        + '<div style="display:flex;gap:6px;margin-bottom:6px">'
+        + '<input id="vnscu" type="text" class="vnai" style="margin-bottom:0" placeholder="https://yourpost.org"/>'
+        + '<button id="vnscb" style="padding:6px 10px;border-radius:7px;border:.5px solid rgba(60,120,220,.4);background:rgba(30,80,160,.5);color:#fff;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:inherit">🔍 Scan</button>'
+        + '</div>'
+        + '<div id="vnscst" style="font-size:11px;min-height:14px;margin-bottom:8px;line-height:1.4"></div>'
+        + '</div>'
+        // Facebook scan panel
+        + '<div id="vnscf" style="display:none">'
+        + '<div style="font-size:10.5px;color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:6px">Facebook blocks auto-scanning. Go to your Facebook page → About tab → select all text → copy → paste below.</div>'
+        + '<textarea id="vnfbpa" placeholder="Paste your Facebook About page text here…" style="width:100%;height:75px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:7px;padding:7px 9px;font-size:11.5px;color:rgba(255,255,255,.85);font-family:inherit;resize:none;outline:none;box-sizing:border-box;margin-bottom:6px"></textarea>'
+        + '<button id="vnfbb" style="width:100%;padding:7px;border-radius:7px;border:.5px solid rgba(232,200,74,.3);background:rgba(100,70,0,.4);color:#fff;font-size:11.5px;font-weight:500;cursor:pointer;font-family:inherit">📘 Extract from Facebook Text</button>'
+        + '<div id="vnscst2" style="font-size:11px;min-height:14px;margin-top:6px;margin-bottom:4px;line-height:1.4"></div>'
+        + '</div>'
+        // Manual fields
+        + '<span class="vnal">Organization Name</span><input class="vnai" id="an" type="text"/>'
+        + '<span class="vnal">City</span><input class="vnai" id="ac" type="text"/>'
+        + '<span class="vnal">Phone</span><input class="vnai" id="ap" type="text"/>'
+        + '<span class="vnal">Email</span><input class="vnai" id="ae" type="email"/>'
+        + '<span class="vnal">Office Hours</span><input class="vnai" id="ah" type="text"/>'
+        + '<span class="vnal">Upcoming Events</span><div id="aev"></div>'
+        + '<button class="vnadd" id="vnadde">+ Add Event</button>'
+        + '<span class="vnal">Leadership & Counselors</span><div id="ald"></div>'
+        + '<button class="vnadd" id="vnadda">+ Add Person</button>'
+        + '<button id="vnsv">Save Changes</button>'
+        + '<div id="vnsvd">✓ Saved!</div>'
+        + '</div>'
+      : '';
+
+    var fbk = '<div id="vnfbk" class="vntp" data-panel="feedback" style="padding:14px">'
+      + '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">How was your experience?</div>'
+      + '<div style="font-size:11.5px;color:var(--vs);margin-bottom:12px;line-height:1.5">Your feedback helps us improve this service for all veterans.</div>'
+      + '<div id="vnstars" style="display:flex;gap:8px;margin-bottom:14px;font-size:24px;cursor:pointer">'
+      + '<span class="vnstar" data-v="1">☆</span>'
+      + '<span class="vnstar" data-v="2">☆</span>'
+      + '<span class="vnstar" data-v="3">☆</span>'
+      + '<span class="vnstar" data-v="4">☆</span>'
+      + '<span class="vnstar" data-v="5">☆</span>'
+      + '</div>'
+      + '<textarea id="vnfbtx" placeholder="Share any thoughts, suggestions, or issues (optional)…" '
+      + 'style="width:100%;height:140px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.15);'
+      + 'border-radius:8px;padding:8px 10px;font-size:12px;color:#fff;font-family:inherit;'
+      + 'outline:none;resize:none;box-sizing:border-box;margin-bottom:10px"></textarea>'
+      + '<button id="vnfbsb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);'
+      + 'border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Submit Feedback</button>'
+      + '<div id="vnfbok" style="display:none;text-align:center;font-size:12px;'
+      + 'color:rgba(74,222,128,.9);margin-top:10px">✓ Thank you! Your feedback has been received.</div>'
+      + '</div>';
+
+    var sup = '<div id="vnsup" class="vntp" data-panel="support" style="padding:14px">'
+      + '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">Contact Our Team</div>'
+      + '<div style="font-size:11.5px;color:var(--vs);margin-bottom:12px;line-height:1.5">Send us a message and we\'ll follow up with you directly.</div>'
+      + '<div id="vnsupf">'
+      + '<input id="vnsn" type="text" placeholder="Your name" style="width:100%;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
+      + '<input id="vnse" type="email" placeholder="Your email address" style="width:100%;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
+      + '<select id="vnsy" style="width:100%;background:#1a2340;border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
+      + '<option value="">Select topic...</option>'
+      + '<option value="benefits">VA Benefits Question</option>'
+      + '<option value="claim">Help with my claim</option>'
+      + '<option value="appointment">Schedule an appointment</option>'
+      + '<option value="documents">Document request</option>'
+      + '<option value="other">Other</option>'
+      + '</select>'
+      + '<textarea id="vnsmsg" placeholder="Describe your question or request…" style="width:100%;height:140px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;resize:none;box-sizing:border-box;margin-bottom:8px"></textarea>'
+      + '<div id="vnserr" style="display:none;font-size:11px;color:rgba(255,100,100,.9);margin-bottom:6px"></div>'
+      + '<button id="vnssb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Send Message</button>'
+      + '</div>'
+      + '<div id="vnstk" style="display:none;text-align:center;padding:12px">'
+      + '<div style="font-size:24px;margin-bottom:6px">✅</div>'
+      + '<div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.9)">Message sent!</div>'
+      + '<div style="font-size:11.5px;color:var(--vs);margin-top:4px;line-height:1.5">Our team will follow up with you by email.</div>'
+      + '</div>'
+      + '</div>';
+
+    var mic = HAS_MIC
+      ? '<button id="vnmc" title="Voice input"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 3.57-3.38 6-5.91 6s-5.42-2.43-5.91-6H4c.49 4.12 3.73 7.38 7.75 7.9V21h.5v-2.1C16.27 18.38 19.51 15.12 20 11h-2.09z"/></svg></button>'
+      : '';
+
+    return '<style id="vns">' + CSS + '</style>'
+      + '<button id="vnb" aria-label="Open VA Benefits Assistant">'
+      + '<svg class="vnc" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>'
+      + '<svg class="vnx" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>'
+      + '</button>'
+      + '<div id="vnn" style="display:none"><span style="font-size:15px;flex-shrink:0">🎖️</span>'
+      + '<span>Need help with VA benefits? I\'m here — 24/7, free.</span>'
+      + '</div>'
+      + '<div id="vnp">'
+      +   '<div id="vnh"><div id="vnhi"><img src="data:image/png;base64,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" style="width:32px;height:32px;object-fit:contain;border-radius:4px;" alt="VetNavigator AI"></div>'
+      +   '<div style="flex:1"><div id="vnon">' + ORG_NAME + '</div>'
+      +   '<div id="vnst"><span class="vnd"></span> <span id="vnstx">Online · Free · 24/7</span></div></div></div>'
+      +   tabs
+      +   '<div id="vnlb">' + lbs + '</div>'
+      +   '<div id="vnpb"><div id="vnpr"></div></div>'
+      +   '<div id="vnchat" class="vntp act" data-panel="chat">'
+      +     '<div id="vnms"></div>'
+      +     '<div id="vnwn"></div>'
+      +     '<div id="vnlm">'
+      +       '<h3>🎖️ <span id="vnlt"></span></h3>'
+      +       '<p id="vnlmg"></p>'
+      +       '<p id="vnltl" style="font-size:11px;color:var(--vg);font-weight:600;margin-bottom:4px"></p>'
+      +       '<ul id="vnltp"></ul>'
+      +       '<p id="vnsp" style="font-size:12px;color:var(--vs);margin-bottom:8px"></p>'
+      +       '<div id="vnser"><input id="vnsem" type="email"/><button id="vnseb"></button></div>'
+      +       '<div id="vnset"></div>'
+      +       '<p id="vnvl" style="font-size:11px;color:var(--vg);font-weight:600;margin-bottom:6px"></p>'
+      +       '<div class="vnvb" id="vnvb"></div>'
+      +       '<button id="vnrs"></button>'
+      +     '</div>'
+      +     '<div id="vnop"><div id="vnol"></div><div id="vncd"></div><div id="vnch"></div></div>'
+      +     '<div id="vnir">'
+      +       '<input id="vntx" type="text" autocomplete="off"/>'
+      +       mic
+      +       '<button id="vnsd"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>'
+      +     '</div>'
+      +   '</div>'
+      +   adm + fbk + sup
+      +   '<div id="vnft">Powered by VetNavigator AI · Veteran-Made &amp; Veteran-Owned</div>'
+      + '</div>';
+  }
+
+  // ── DOM HELPERS ────────────────────────────────────────────────────────────
+  function ge(id) { return document.getElementById(id); }
+
+  function botMsg(html) {
+    var row = document.createElement('div'); row.className = 'vnr';
+    var av  = document.createElement('div'); av.className  = 'vnav b'; av.textContent = 'VN';
+    var bb  = document.createElement('div'); bb.className  = 'vnbb b';
+    bb.innerHTML = html.replace(/\n/g, '<br>');
+    row.appendChild(av); row.appendChild(bb);
+    ge('vnms').appendChild(row);
+    ge('vnms').scrollTop = row.offsetTop - ge('vnms').offsetTop;
+    return bb.textContent || bb.innerText || '';
+  }
+
+  function userMsg(text) {
+    var row = document.createElement('div'); row.className = 'vnr';
+    row.style.justifyContent = 'flex-end';
+    var bb = document.createElement('div'); bb.className = 'vnbb u'; bb.textContent = text;
+    row.appendChild(bb);
+    ge('vnms').appendChild(row);
+    ge('vnms').scrollTop = ge('vnms').scrollHeight;
+  }
+
+  function showTyp() {
+    var row = document.createElement('div'); row.className = 'vnr'; row.id = 'vntyp';
+    var av  = document.createElement('div'); av.className  = 'vnav b'; av.textContent = 'VN';
+    var ty  = document.createElement('div'); ty.className  = 'vnty';
+    ty.innerHTML = '<span></span><span></span><span></span>';
+    row.appendChild(av); row.appendChild(ty);
+    ge('vnms').appendChild(row);
+    ge('vnms').scrollTop = ge('vnms').scrollHeight;
+  }
+
+  function hideTyp() { var t = ge('vntyp'); if (t) t.remove(); }
+
+  function clearOpts() {
+    ge('vncd').innerHTML = '';
+    ge('vnch').innerHTML = '';
+    ge('vnol').style.display = 'none';
+  }
+
+  function mkCards(cards) {
+    clearOpts();
+    if (!cards || !cards.length) return;
+    ge('vnol').style.display = 'block';
+    ge('vnol').textContent = s('choose');
+    cards.forEach(function (c) {
+      var d = document.createElement('div'); d.className = 'vnca';
+      d.innerHTML = '<div class="vnci">' + c.icon + '</div>'
+        + '<div class="vnct">' + c.title + '</div>'
+        + (c.desc ? '<div class="vncd">' + c.desc + '</div>' : '');
+      d.addEventListener('click', function () { handle(c.title); });
+      ge('vncd').appendChild(d);
+    });
+  }
+
+  function mkChips(chips) {
+    if (!chips || !chips.length) return;
+    chips.forEach(function (ch) {
+      var b = document.createElement('button'); b.className = 'vncp'; b.textContent = ch;
+      b.addEventListener('click', function () { handle(ch); });
+      ge('vnch').appendChild(b);
+    });
+  }
+
+  function setProg(pct) { ge('vnpr').style.width = (pct || 0) + '%'; }
+
+  // ── WELCOME NODE ───────────────────────────────────────────────────────────
+  function buildWelcome() {
+    var loc = ORG_CITY ? '\n📍 Serving veterans in ' + ORG_CITY : '';
+    NODES.welcome.bot = 'Welcome to ' + ORG_NAME + '!' + loc + '\n\n'
+      + "We're here to help you find and claim every benefit you've earned. This assistant is provided by your VSO — available 24/7 and speaks your language.\n\n"
+      + "ℹ️ *General VA benefits information only — not legal advice. Never enter personal info like SSNs in this chat.*\n\n"
+      + "Let's get started. Which best describes you?";
+    NODES.veteran.bot = 'Thank you for your service. 🇺🇸\n\n'
+      + ORG_NAME + ' is proud to support you. When did you serve?';
+    // Spanish
+    if (NODES_I18N.es) {
+      var locEs = ORG_CITY ? '\n📍 Sirviendo a veteranos en ' + ORG_CITY : '';
+      NODES_I18N.es.welcome.bot = '¡Bienvenido a ' + ORG_NAME + '!' + locEs + '\n\nEstamos aqu\xED para ayudarle a encontrar y reclamar cada beneficio que se ha ganado. Este asistente es gratuito, disponible 24/7 y habla su idioma.\n\n\u2139\uFE0F *Solo informaci\xF3n general sobre beneficios VA \u2014 no asesoramiento legal. Nunca ingrese informaci\xF3n personal en este chat.*\n\n\xBFCu\xE1l le describe mejor?';
+      NODES_I18N.es.veteran.bot = 'Gracias por su servicio. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' se enorgullece de apoyarle. \xBFCu\xE1ndo sirvi\xF3?';
+    }
+    // Vietnamese
+    if (NODES_I18N.vi) {
+      var locVi = ORG_CITY ? '\n📍 Ph\u1EE5c v\u1EE5 c\u1EF1u chi\u1EBFn binh t\u1EA1i ' + ORG_CITY : '';
+      NODES_I18N.vi.welcome.bot = 'Ch\xE0o m\u1EEBng \u0111\u1EBFn v\u1EDBi ' + ORG_NAME + '!' + locVi + '\n\nCh\xFAng t\xF4i \u1EDF \u0111\xE2y \u0111\u1EC3 gi\xFAp b\u1EA1n t\xECm v\xE0 nh\u1EADn m\u1ECDi quy\u1EC1n l\u1EE3i b\u1EA1n \u0111\xE3 x\u1EE9ng \u0111\xE1ng. Tr\u1EE3 l\xFD n\xE0y mi\u1EC5n ph\xED, ho\u1EA1t \u0111\u1ED9ng 24/7 v\xE0 n\xF3i ng\xF4n ng\u1EEF c\u1EE7a b\u1EA1n.\n\n\u2139\uFE0F *Ch\u1EC9 cung c\u1EA5p th\xF4ng tin chung v\u1EC1 ph\xFAc l\u1EE3i VA \u2014 kh\xF4ng ph\u1EA3i t\u01B0 v\u1EA5n ph\xE1p l\xFD. Kh\xF4ng bao gi\u1EDD nh\u1EADp th\xF4ng tin c\xE1 nh\xE2n nh\u01B0 s\u1ED1 An sinh X\xE3 h\u1ED9i v\xE0o chat n\xE0y.*\n\n\u0110i\u1EC1u n\xE0o m\xF4 t\u1EA3 \u0111\xFAng nh\u1EA5t v\u1EC1 b\u1EA1n?';
+      NODES_I18N.vi.veteran.bot = 'C\u1EA3m \u01A1n b\u1EA1n \u0111\xE3 ph\u1EE5c v\u1EE5 \u0111\u1EA5t n\u01B0\u1EDBc. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' t\u1EF1 h\xE0o \u0111\u01B0\u1EE3c h\u1ED7 tr\u1EE3 b\u1EA1n. B\u1EA1n ph\u1EE5c v\u1EE5 khi n\xE0o?';
+    }
+    // Korean
+    if (NODES_I18N.ko) {
+      var locKo = ORG_CITY ? '\n📍 ' + ORG_CITY + ' \uC7AC\uD5A5\uAD70\uC778 \uC9C0\uC6D0' : '';
+      NODES_I18N.ko.welcome.bot = ORG_NAME + '\uC5D0 \uC624\uC2E0 \uAC83\uC744 \uD658\uC601\uD569\uB2C8\uB2E4!' + locKo + '\n\n\uC800\uD76C\uB294 \uADC0\uD558\uAC00 \uBC1B\uC744 \uC790\uACA9\uC774 \uC788\uB294 \uBAA8\uB4E0 \uD61C\uD0DD\uC744 \uCC3E\uACE0 \uC2E0\uCCAD\uD558\uB294 \uB370 \uB3C4\uC6C0\uC744 \uB4DC\uB9AC\uAE30 \uC704\uD574 \uC5EC\uAE30 \uC788\uC2B5\uB2C8\uB2E4. \uC774 \uC548\uB0B4\uC790\uB294 \uBB34\uB8CC\uC774\uBA70 24/7 \uC774\uC6A9 \uAC00\uB2A5\uD569\uB2C8\uB2E4.\n\n\u2139\uFE0F *VA \uD61C\uD0DD \uC77C\uBC18 \uC815\uBCF4\uB9CC \uC81C\uACF5 \u2014 \uBC95\uC801 \uC870\uC5B8 \uC544\uB2D9\uB2C8\uB2E4. \uC8FC\uBBFC\uB4F1\uB85D\uBC88\uD638 \uB4F1 \uAC1C\uC778\uC815\uBCF4\uB97C \uC774 \uCC57\uBD07\uC5D0 \uC785\uB825\uD558\uC9C0 \uB9C8\uC138\uC694.*\n\n\uADC0\uD558\uC5D0\uAC8C \uAC00\uC7A5 \uC798 \uB9DE\uB294 \uAC83\uC740 \uBB34\uC5C7\uC785\uB2C8\uAE4C?';
+      NODES_I18N.ko.veteran.bot = '\uADC0\uD558\uC758 \uBD09\uC0AC\uC5D0 \uAC10\uC0AC\uB4DC\uB9BD\uB2C8\uB2E4. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + '\uC740 \uADC0\uD558\uB97C \uC9C0\uC6D0\uD558\uAC8C \uB418\uC5B4 \uC790\uB791\uC2A4\uB7FD\uC2B5\uB2C8\uB2E4. \uC5B8\uC81C \uBCF5\uBB34\uD558\uC168\uC2B5\uB2C8\uAE4C?';
+    }
+    // Filipino
+    if (NODES_I18N.tl) {
+      var locTl = ORG_CITY ? '\n📍 Naglilingkod sa mga beterano sa ' + ORG_CITY : '';
+      NODES_I18N.tl.welcome.bot = 'Maligayang pagdating sa ' + ORG_NAME + '!' + locTl + '\n\nNandito kami para tulungan kang mahanap at makuha ang bawat benepisyong iyong nakamit. Ang assistant na ito ay libre, available 24/7, at nagsasalita ng iyong wika.\n\n\u2139\uFE0F *Pangkalahatang impormasyon lamang tungkol sa mga benepisyo ng VA \u2014 hindi legal na payo. Huwag maglagay ng personal na impormasyon tulad ng SSN sa chat na ito.*\n\nAlin ang pinaka-angkop sa iyo?';
+      NODES_I18N.tl.veteran.bot = 'Salamat sa iyong serbisyo. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' ay ipinagmamalaki na suportahan kayo. Kailan kayo naglingkod?';
+    }
+  }
+
+  // ── VSO NODE ───────────────────────────────────────────────────────────────
+  function buildVSO() {
+    var c = '';
+    if (ORG_MISSION) c += ORG_MISSION + '\n\n';
+    if (ORG_ADDR)  c += '📍 ' + ORG_ADDR + (ORG_CITY ? ', ' + ORG_CITY : '') + '\n';
+    if (ORG_HOURS) c += '🕐 ' + ORG_HOURS + '\n';
+    if (ORG_PHONE) c += '📞 ' + ORG_PHONE + '\n';
+    if (ORG_EMAIL) c += '✉️ ' + ORG_EMAIL + '\n';
+    if (ORG_WEB)   c += '🌐 ' + ORG_WEB;
+    var ld = ORG_LEADERS.length
+      ? '\n\n<strong>Leadership:</strong>\n' + ORG_LEADERS.map(function (l) { return '• ' + l; }).join('\n')
+      : '';
+    var nextEvent = ORG_EVENTS.length ? ORG_EVENTS[0] : null;
+    var evLine = nextEvent ? '\n\n📅 <strong>Next event:</strong> ' + nextEvent : '';
+    NODES.vso.bot = 'Your VSO counselors are here to help — free of charge.\n\n<strong>'
+      + ORG_NAME + '</strong>\n'
+      + (c || 'Contact your local VSO office.') + ld + evLine
+      + '\n\n100% free. Walk-ins welcome. 🇺🇸';
+    NODES.vso.chips = ORG_EVENTS.length
+      ? ['Upcoming events', 'How do I file a claim?', 'See all benefits']
+      : ['How do I file a claim?', 'See all benefits', 'Start over'];
+
+    // ── org_events node ──────────────────────────────────────────────────────
+    if (ORG_EVENTS.length) {
+      NODES.org_events = {
+        pct: 10,
+        bot: '📅 <strong>Upcoming events at ' + ORG_NAME + ':</strong>\n\n'
+          + ORG_EVENTS.map(function (e, i) { return (i === 0 ? '⭐ ' : '• ') + e; }).join('\n')
+          + '\n\n<strong>All events are open to veterans, family members, and the community.</strong>\n\nStop by — no appointment needed. Our counselors are here to help.',
+        chips: ['Find a VSO counselor', 'See all benefits', 'Start over']
+      };
+      CHIP_MAP['Upcoming events'] = 'org_events';
+    }
+  }
+
+  // ── RENDER NODE ────────────────────────────────────────────────────────────
+  function getNode(key) {
+    // Check for language-specific override, fall back to English NODES
+    if (lang !== 'en' && NODES_I18N[lang] && NODES_I18N[lang][key]) {
+      // Merge: translated node overrides English, but inherit missing fields
+      var base = NODES[key] || {};
+      var tr   = NODES_I18N[lang][key];
+      return {
+        pct:   tr.pct   !== undefined ? tr.pct   : base.pct,
+        bot:   tr.bot   !== undefined ? tr.bot   : base.bot,
+        cards: tr.cards !== undefined ? tr.cards : base.cards,
+        chips: tr.chips !== undefined ? tr.chips : base.chips
+      };
+    }
+    return NODES[key];
+  }
+
+  function renderNode(key) {
+    var node = getNode(key); if (!node) return;
+    if (node.bot) {
+      var plain = botMsg(node.bot);
+      chatHistory.push({ topic: key, text: plain.substring(0, 120) });
+    }
+    clearOpts();
+    // Build chips list — auto-append "Start over" if not present
+    var chips = (node.chips || []).slice();
+    var skipStartOver = ['welcome','benefits_menu','all_benefits','empathy_intro',
+      'cat_money','cat_healthcare','cat_education','cat_housing','cat_family','cat_claims'];
+    if (skipStartOver.indexOf(key) === -1) {
+      var startOverLabel = (lang === 'es') ? 'Empezar de nuevo'
+        : (lang === 'vi') ? 'Bắt đầu lại'
+        : (lang === 'ko') ? '처음으로'
+        : (lang === 'tl') ? 'Magsimula muli'
+        : 'Start over';
+      var hasIt = chips.some(function (c) { return c === startOverLabel || c === 'Start over' || c === 'Start Fresh →'; });
+      if (!hasIt) chips.push(startOverLabel);
+    }
+    if (node.cards && node.cards.length) {
+      mkCards(node.cards);
+      if (chips.length) mkChips(chips);
+    } else if (chips.length) {
+      mkChips(chips);
+    }
+    if (node.pct !== undefined) setProg(node.pct);
+  }
+
+  function renderGated(key) {
+    var label = key ? topicLabel(key) : 'that topic';
+    botMsg("I'd love to help with <strong>" + label + "</strong>.\n\nFor this topic, I'd recommend speaking directly with your VSO counselor — they can give you personalized guidance at no cost and walk you through the details step by step.");
+    clearOpts();
+    mkChips(['Find a VSO counselor', 'See all benefits', 'Start over']);
+
+    // Silent upsell notification to VetNavigator
+    if (BREVO_KEY && ORG_EMAIL) {
+      var tierNeeded = TOPIC_TIERS[key] || 2;
+      var planNeeded = tierNeeded >= 3 ? 'Standard' : 'Starter';
+      fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
+        body: JSON.stringify({
+          sender:  { name: 'VetNavigator AI', email: SUPPORT_EMAIL },
+          to:      [{ email: SUPPORT_EMAIL }],
+          subject: '📊 Upgrade Opportunity — ' + ORG_NAME + ' · ' + label,
+          htmlContent: '<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;">'
+            + '<div style="background:#1a3a6b;padding:20px 24px;border-radius:10px 10px 0 0;color:#fff;">'
+            + '<h2 style="margin:0;font-size:18px;">📊 Veteran Requested Gated Topic</h2></div>'
+            + '<div style="padding:20px 24px;background:#fff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;">'
+            + '<p style="font-size:14px;color:#374151;margin:0 0 12px;"><strong>' + ORG_NAME + '</strong> (License: ' + LICENSE_KEY + ')</p>'
+            + '<p style="font-size:14px;color:#374151;margin:0 0 12px;">A veteran on their site asked about <strong>' + label + '</strong>, which requires the <strong>' + planNeeded + '</strong> plan or above.</p>'
+            + '<p style="font-size:13px;color:#6b7280;margin:0 0 16px;">Consider reaching out with a friendly note letting them know their visitors are asking about this topic.</p>'
+            + '<div style="background:#f9f7f3;border-radius:8px;padding:14px 16px;font-size:13px;color:#374151;border-left:3px solid #e8c84a;">'
+            + '<strong>Suggested outreach:</strong><br>"Hi [name], just a quick heads-up — veterans visiting your site have been asking about ' + label + '. Your ' + planNeeded + ' plan would cover this topic and more. Happy to walk you through it if you\'re interested!"'
+            + '</div></div></div>'
+        })
+      }).catch(function () {});
+    }
+  }
+
+  // ── TOPIC LABEL ────────────────────────────────────────────────────────────
+  function topicLabel(k) {
+    var m = {
+      disability:'VA Disability Pay', gi_bill:'GI Bill', home_loan:'VA Home Loan',
+      healthcare:'VA Healthcare', file_claim:'Filing a Claim', documents:'Required Documents',
+      denied:'Denied Claims', vso:'VSO Counselors', pact_act:'PACT Act', tdiu:'TDIU',
+      nexus:'Nexus Letters', mental_health:'Mental Health', pension:'VA Pension',
+      voc_rehab:'Vocational Rehab', rating_increase:'Rating Increase', cp_exam:'C&P Exam',
+      dic:'DIC Benefits', champva:'CHAMPVA', burial:'Burial Benefits',
+      caregiver:'Caregiver Program', claim_status:'Claim Status', va_records:'VA Records',
+      mst:'Military Sexual Trauma', travel_pay:'Travel Pay', community_care:'Community Care',
+      life_insurance:'Life Insurance', housing_help:'Housing Assistance',
+      women_veterans:'Women Veterans', guard_reserve:'Guard & Reserve',
+      adapted_housing:'Adapted Housing', va_debt:'VA Debt Help',
+      aid_attendance:'Aid & Attendance'
+    };
+    return m[k] || k.replace(/_/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+  }
+
