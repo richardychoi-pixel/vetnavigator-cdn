@@ -2235,20 +2235,6 @@
     }
   }
 
-  // ── BOOT ───────────────────────────────────────────────────────────────────
-  function boot() {
-    loadConfig(function () {
-      init();
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
-  } else {
-    boot();
-  }
-
-})();
   // ── ADMIN URL GATE ─────────────────────────────────────────────────────────
   // Admin Panel only shows when VSO adds ?vnadmin=1 to their site URL
   var SHOW_ADMIN = /[?&]vnadmin=1(?:&|$)/i.test(window.location.search);
@@ -2634,8 +2620,23 @@
       life_insurance:'Life Insurance', housing_help:'Housing Assistance',
       women_veterans:'Women Veterans', guard_reserve:'Guard & Reserve',
       adapted_housing:'Adapted Housing', va_debt:'VA Debt Help',
-      aid_attendance:'Aid & Attendance'
+      aid_attendance:'Aid & Attendance',
+      survivors_pension:'Survivors Pension'
     };
     return m[k] || k.replace(/_/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
   }
 
+  // ── BOOT ───────────────────────────────────────────────────────────────────
+  function boot() {
+    loadConfig(function () {
+      init();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+
+})();
