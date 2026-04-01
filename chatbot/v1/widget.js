@@ -1886,7 +1886,7 @@
       + '\n\nFactual content to deliver (include key facts but do NOT dump everything — highlight what matters most):'
       + '\n---\n' + nodeText + '\n---'
       + '\n\nGuidelines:'
-      + '\n- Keep it SHORT — 3-5 sentences max. Veterans are scanning, not reading essays'
+      + '\n- Keep it SHORT — 2-3 sentences max, under 80 words total. Veterans are scanning, not reading essays'
       + '\n- Lead with the most important fact or number, then add 1-2 supporting details'
       + '\n- Sound like a real person, not a bot. Vary your openings — never start two responses the same way'
       + '\n- Make ALL URLs clickable using HTML links: <a href="https://..." target="_blank" style="color:#e8c84a;text-decoration:underline">link text</a>'
@@ -1904,7 +1904,7 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model:      'claude-haiku-4-5-20251001',
-        max_tokens: 300,
+        max_tokens: 200,
         system:     sysPrompt,
         messages:   [{ role: 'user', content: 'Tell me about ' + topicLabel(key) }]
       })
@@ -1999,6 +1999,14 @@
     // Intercept "Start over" — offer summary if 2+ topics explored
     if (key === 'welcome' && countTopics() >= 2) {
       setTimeout(showSummaryPrompt, 400);
+      return;
+    }
+    // Navigation/menu nodes — render instantly without AI call
+    var SKIP_AI = ['welcome','benefits_menu','all_benefits','empathy_intro',
+      'cat_money','cat_healthcare','cat_education','cat_housing','cat_family','cat_claims',
+      'veteran','era'];
+    if (SKIP_AI.indexOf(key) !== -1) {
+      setTimeout(function () { renderNode(key); }, 400);
       return;
     }
     setTimeout(function () { aiRenderNode(key); }, 400);
