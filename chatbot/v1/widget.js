@@ -1589,8 +1589,6 @@
   } else {
     boot();
   }
-
-})();
   // ── SESSION WARNING ────────────────────────────────────────────────────────
   function checkWarn() {
     var rem = CONV_LIMIT - turnCount;
@@ -2650,4 +2648,6 @@
       setTimeout(showNotif, 4000);
     }
   }
+
+})();
 
