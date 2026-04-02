@@ -6,12 +6,12 @@
  * INSTALL — paste before </body> on any website:
  *
  *   ONE-LINE INSTALL (recommended — config loaded from server):
- *   <script src="https://cdn.vetnavigator.ai/chatbot/v1/widget.js?key=VN-BASIC-XXXXX-XXXXX" defer></script>
+ *   <script src="https://cdn.vetnavigator.ai/chatbot/v1/widget.js?key=VN-XXXXX-XXXXX" defer></script>
  *
- *   MANUAL CONFIG (alternative — config inline):
+ *   MANUAL CONFIG (alternative — config inline, used for additional chapter sites):
  *   <script>
  *     window.VetNavigatorConfig = {
- *       licenseKey:  "VN-BASIC-XXXXX-XXXXX",
+ *       licenseKey:  "VN-XXXXX-XXXXX",
  *       orgName:     "VFW Post 1234",
  *       orgCity:     "Springfield, IL",
  *       orgPhone:    "(555) 123-4567",
@@ -54,8 +54,14 @@
     ORG_EVENTS  = Array.isArray(cfg.events)  ? cfg.events  : [];
     ORG_LEADERS = Array.isArray(cfg.leaders) ? cfg.leaders : [];
 
-    var _parts = LICENSE_KEY.split('-');
-    TIER_STR   = _parts.length >= 2 ? _parts[1] : 'BASIC';
+    // Tier: read from KV config (authoritative), fall back to key parsing for legacy keys
+    if (cfg.tier && TIER_MAP[cfg.tier.toUpperCase()] !== undefined) {
+      TIER_STR = cfg.tier.toUpperCase();
+    } else {
+      // Backward compat: old VN-TIER-XXXXX format — parse tier from key
+      var _parts = LICENSE_KEY.split('-');
+      TIER_STR   = (_parts.length >= 2 && TIER_MAP[_parts[1]] !== undefined) ? _parts[1] : 'BASIC';
+    }
     TIER_LVL   = TIER_MAP[TIER_STR] !== undefined ? TIER_MAP[TIER_STR] : 1;
     IS_DEMO    = TIER_STR === 'DEMO';
     HAS_ML     = TIER_LVL >= 3 || IS_DEMO;
