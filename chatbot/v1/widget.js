@@ -1531,7 +1531,7 @@
     clearOpts();
     mkChips(['Find a VSO counselor', 'See all benefits', 'Start over']);
 
-    // Silent upsell notification to VetNavigator
+    // Silent upsell notification to VetNavigator (internal)
     if (BREVO_KEY && ORG_EMAIL) {
       var tierNeeded = TOPIC_TIERS[key] || 2;
       var planNeeded = tierNeeded >= 3 ? 'Standard' : 'Starter';
@@ -1552,6 +1552,20 @@
             + '<div style="background:#f9f7f3;border-radius:8px;padding:14px 16px;font-size:13px;color:#374151;border-left:3px solid #e8c84a;">'
             + '<strong>Suggested outreach:</strong><br>"Hi [name], just a quick heads-up — veterans visiting your site have been asking about ' + label + '. Your ' + planNeeded + ' plan would cover this topic and more. Happy to walk you through it if you\'re interested!"'
             + '</div></div></div>'
+        })
+      }).catch(function () {});
+
+      // Update customer's Brevo contact with gated topic for weekly digest automation
+      fetch('https://api.brevo.com/v3/contacts/' + encodeURIComponent(ORG_EMAIL), {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
+        body: JSON.stringify({
+          attributes: {
+            GATED_TOPICS:       label,
+            GATED_PLAN_NEEDED:  planNeeded,
+            GATED_LAST_DATE:    new Date().toISOString().split('T')[0],
+            GATED_COUNT:        1
+          }
         })
       }).catch(function () {});
     }
