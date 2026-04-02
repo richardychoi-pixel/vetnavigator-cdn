@@ -66,7 +66,12 @@
     IS_DEMO    = TIER_STR === 'DEMO';
     HAS_ML     = TIER_LVL >= 3 || IS_DEMO;
     HAS_MIC    = TIER_LVL >= 3 || IS_DEMO;
-    HAS_ADMIN  = (TIER_LVL >= 2 || IS_DEMO) && (new URLSearchParams(window.location.search).get('vnadmin') === '1');
+    // Admin access: token in URL must match adminToken from KV (demo bypasses)
+    var _urlAdmin = new URLSearchParams(window.location.search).get('vnadmin') || '';
+    var _cfgToken = (cfg.adminToken || '').trim();
+    HAS_ADMIN  = IS_DEMO
+      ? (_urlAdmin === '1' || (_cfgToken && _urlAdmin === _cfgToken))
+      : (TIER_LVL >= 2 && _cfgToken && _urlAdmin === _cfgToken);
     CONV_LIMIT = (IS_DEMO || TIER_LVL >= 3) ? 999 : (TIER_LVL >= 2 ? 20 : 10);
     WARN_AT    = Math.ceil(CONV_LIMIT * 0.8);
   }
@@ -1181,6 +1186,411 @@
     '#vnn{right:12px}}'
   ].join('');
 
+  // ── ADMIN URL GATE ─────────────────────────────────────────────────────────
+  // Admin Panel only shows when VSO adds ?vnadmin=1 to their site URL
+  var SHOW_ADMIN = /[?&]vnadmin=1(?:&|$)/i.test(window.location.search);
+
+  // ── BUILD HTML ─────────────────────────────────────────────────────────────
+  function buildHTML() {
+    var langs = [
+      { code: 'en', label: 'English' },
+      { code: 'es', label: 'Español' },
+      { code: 'vi', label: 'Tiếng Việt' },
+      { code: 'ko', label: '한국어' },
+      { code: 'tl', label: 'Filipino' }
+    ];
+    var lbs = langs.map(function (l) {
+      var lk  = (!HAS_ML && l.code !== 'en') ? ' lk' : '';
+      var act = (l.code === 'en') ? ' act' : '';
+      return '<button class="vnlg' + lk + act + '" data-lang="' + l.code + '">' + l.label + '</button>';
+    }).join('');
+
+    var tabs = '<div id="vntb">'
+      + '<button class="vntb act" data-tab="chat">💬 Veteran Chat</button>'
+      + '<button class="vntb" data-tab="feedback">📝 Feedback</button>'
+      + '<button class="vntb" data-tab="support">🎧 Support</button>'
+      + (HAS_ADMIN && SHOW_ADMIN ? '<button class="vntb" data-tab="admin">⚙️ Admin Panel</button>' : '')
+      + '</div>';
+
+    var adm = HAS_ADMIN && SHOW_ADMIN
+      ? '<div id="vnadp" class="vntp" data-panel="admin">'
+        + '<div style="font-size:11px;color:rgba(232,200,74,.85);background:rgba(232,200,74,.07);border:1px solid rgba(232,200,74,.2);border-radius:8px;padding:9px 11px;margin-bottom:12px;line-height:1.5">Update your organization info below. Changes appear instantly in the chat.</div>'
+        // Scan tabs
+        + '<div id="vnsct" style="display:flex;gap:0;margin-bottom:8px;border-radius:8px;overflow:hidden;border:.5px solid rgba(255,255,255,.1)">'
+        + '<button class="vnsc act" data-sc="web">🌐 Website</button>'
+        + '<button class="vnsc" data-sc="fb">📘 Facebook</button>'
+        + '<button class="vnsc" data-sc="man">✏️ Manual</button>'
+        + '</div>'
+        // Website scan panel
+        + '<div id="vnscw">'
+        + '<div style="display:flex;gap:6px;margin-bottom:6px">'
+        + '<input id="vnscu" type="text" class="vnai" style="margin-bottom:0" placeholder="https://yourpost.org"/>'
+        + '<button id="vnscb" style="padding:6px 10px;border-radius:7px;border:.5px solid rgba(60,120,220,.4);background:rgba(30,80,160,.5);color:#fff;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:inherit">🔍 Scan</button>'
+        + '</div>'
+        + '<div id="vnscst" style="font-size:11px;min-height:14px;margin-bottom:8px;line-height:1.4"></div>'
+        + '</div>'
+        // Facebook scan panel
+        + '<div id="vnscf" style="display:none">'
+        + '<div style="font-size:10.5px;color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:6px">Facebook blocks auto-scanning. Go to your Facebook page → About tab → select all text → copy → paste below.</div>'
+        + '<textarea id="vnfbpa" placeholder="Paste your Facebook About page text here…" style="width:100%;height:75px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:7px;padding:7px 9px;font-size:11.5px;color:rgba(255,255,255,.85);font-family:inherit;resize:none;outline:none;box-sizing:border-box;margin-bottom:6px"></textarea>'
+        + '<button id="vnfbb" style="width:100%;padding:7px;border-radius:7px;border:.5px solid rgba(232,200,74,.3);background:rgba(100,70,0,.4);color:#fff;font-size:11.5px;font-weight:500;cursor:pointer;font-family:inherit">📘 Extract from Facebook Text</button>'
+        + '<div id="vnscst2" style="font-size:11px;min-height:14px;margin-top:6px;margin-bottom:4px;line-height:1.4"></div>'
+        + '</div>'
+        // Manual fields
+        + '<span class="vnal">Organization Name</span><input class="vnai" id="an" type="text"/>'
+        + '<span class="vnal">City</span><input class="vnai" id="ac" type="text"/>'
+        + '<span class="vnal">Phone</span><input class="vnai" id="ap" type="text"/>'
+        + '<span class="vnal">Email</span><input class="vnai" id="ae" type="email"/>'
+        + '<span class="vnal">Office Hours</span><input class="vnai" id="ah" type="text"/>'
+        + '<span class="vnal">Upcoming Events</span><div id="aev"></div>'
+        + '<button class="vnadd" id="vnadde">+ Add Event</button>'
+        + '<span class="vnal">Leadership & Counselors</span><div id="ald"></div>'
+        + '<button class="vnadd" id="vnadda">+ Add Person</button>'
+        + '<button id="vnsv">Save Changes</button>'
+        + '<div id="vnsvd">✓ Saved!</div>'
+        + '</div>'
+      : '';
+
+    var fbk = '<div id="vnfbk" class="vntp" data-panel="feedback" style="padding:14px">'
+      + '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">How was your experience?</div>'
+      + '<div style="font-size:11.5px;color:var(--vs);margin-bottom:12px;line-height:1.5">Your feedback helps us improve this service for all veterans.</div>'
+      + '<div id="vnstars" style="display:flex;gap:8px;margin-bottom:14px;font-size:24px;cursor:pointer">'
+      + '<span class="vnstar" data-v="1">☆</span>'
+      + '<span class="vnstar" data-v="2">☆</span>'
+      + '<span class="vnstar" data-v="3">☆</span>'
+      + '<span class="vnstar" data-v="4">☆</span>'
+      + '<span class="vnstar" data-v="5">☆</span>'
+      + '</div>'
+      + '<textarea id="vnfbtx" placeholder="Share any thoughts, suggestions, or issues (optional)…" '
+      + 'style="width:100%;height:140px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.15);'
+      + 'border-radius:8px;padding:8px 10px;font-size:12px;color:#fff;font-family:inherit;'
+      + 'outline:none;resize:none;box-sizing:border-box;margin-bottom:10px"></textarea>'
+      + '<button id="vnfbsb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);'
+      + 'border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Submit Feedback</button>'
+      + '<div id="vnfbok" style="display:none;text-align:center;font-size:12px;'
+      + 'color:rgba(74,222,128,.9);margin-top:10px">✓ Thank you! Your feedback has been received.</div>'
+      + '</div>';
+
+    var sup = '<div id="vnsup" class="vntp" data-panel="support" style="padding:14px">'
+      + '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">Contact Our Team</div>'
+      + '<div style="font-size:11.5px;color:var(--vs);margin-bottom:12px;line-height:1.5">Send us a message and we\'ll follow up with you directly.</div>'
+      + '<div id="vnsupf">'
+      + '<input id="vnsn" type="text" placeholder="Your name" style="width:100%;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
+      + '<input id="vnse" type="email" placeholder="Your email address" style="width:100%;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
+      + '<select id="vnsy" style="width:100%;background:#1a2340;border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
+      + '<option value="">Select topic...</option>'
+      + '<option value="benefits">VA Benefits Question</option>'
+      + '<option value="claim">Help with my claim</option>'
+      + '<option value="appointment">Schedule an appointment</option>'
+      + '<option value="documents">Document request</option>'
+      + '<option value="other">Other</option>'
+      + '</select>'
+      + '<textarea id="vnsmsg" placeholder="Describe your question or request…" style="width:100%;height:140px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;resize:none;box-sizing:border-box;margin-bottom:8px"></textarea>'
+      + '<div id="vnserr" style="display:none;font-size:11px;color:rgba(255,100,100,.9);margin-bottom:6px"></div>'
+      + '<button id="vnssb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Send Message</button>'
+      + '</div>'
+      + '<div id="vnstk" style="display:none;text-align:center;padding:12px">'
+      + '<div style="font-size:24px;margin-bottom:6px">✅</div>'
+      + '<div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.9)">Message sent!</div>'
+      + '<div style="font-size:11.5px;color:var(--vs);margin-top:4px;line-height:1.5">Our team will follow up with you by email.</div>'
+      + '</div>'
+      + '</div>';
+
+    var mic = HAS_MIC
+      ? '<button id="vnmc" title="Voice input"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 3.57-3.38 6-5.91 6s-5.42-2.43-5.91-6H4c.49 4.12 3.73 7.38 7.75 7.9V21h.5v-2.1C16.27 18.38 19.51 15.12 20 11h-2.09z"/></svg></button>'
+      : '';
+
+    return '<style id="vns">' + CSS + '</style>'
+      + '<button id="vnb" aria-label="Open VA Benefits Assistant">'
+      + '<svg class="vnc" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>'
+      + '<svg class="vnx" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>'
+      + '</button>'
+      + '<div id="vnn" style="display:none"><span style="font-size:15px;flex-shrink:0">🎖️</span>'
+      + '<span>Need help with VA benefits? I\'m here — 24/7, free.</span>'
+      + '</div>'
+      + '<div id="vnp">'
+      +   '<div id="vnh"><div id="vnhi"><img src="data:image/png;base64,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" style="width:32px;height:32px;object-fit:contain;border-radius:4px;" alt="VetNavigator AI"></div>'
+      +   '<div style="flex:1"><div id="vnon">' + ORG_NAME + '</div>'
+      +   '<div id="vnst"><span class="vnd"></span> <span id="vnstx">Online · Free · 24/7</span></div></div></div>'
+      +   tabs
+      +   '<div id="vnlb">' + lbs + '</div>'
+      +   '<div id="vnpb"><div id="vnpr"></div></div>'
+      +   '<div id="vnchat" class="vntp act" data-panel="chat">'
+      +     '<div id="vnms"></div>'
+      +     '<div id="vnwn"></div>'
+      +     '<div id="vnlm">'
+      +       '<h3>🎖️ <span id="vnlt"></span></h3>'
+      +       '<p id="vnlmg"></p>'
+      +       '<p id="vnltl" style="font-size:11px;color:var(--vg);font-weight:600;margin-bottom:4px"></p>'
+      +       '<ul id="vnltp"></ul>'
+      +       '<p id="vnsp" style="font-size:12px;color:var(--vs);margin-bottom:8px"></p>'
+      +       '<div id="vnser"><input id="vnsem" type="email"/><button id="vnseb"></button></div>'
+      +       '<div id="vnset"></div>'
+      +       '<p id="vnvl" style="font-size:11px;color:var(--vg);font-weight:600;margin-bottom:6px"></p>'
+      +       '<div class="vnvb" id="vnvb"></div>'
+      +       '<button id="vnrs"></button>'
+      +     '</div>'
+      +     '<div id="vnop"><div id="vnol"></div><div id="vncd"></div><div id="vnch"></div></div>'
+      +     '<div id="vnir">'
+      +       '<input id="vntx" type="text" autocomplete="off"/>'
+      +       mic
+      +       '<button id="vnsd"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>'
+      +     '</div>'
+      +   '</div>'
+      +   adm + fbk + sup
+      +   '<div id="vnft">Powered by VetNavigator AI · Veteran-Made &amp; Veteran-Owned</div>'
+      + '</div>';
+  }
+
+  // ── DOM HELPERS ────────────────────────────────────────────────────────────
+  function ge(id) { return document.getElementById(id); }
+
+  function botMsg(html) {
+    var row = document.createElement('div'); row.className = 'vnr';
+    var av  = document.createElement('div'); av.className  = 'vnav b'; av.textContent = 'VN';
+    var bb  = document.createElement('div'); bb.className  = 'vnbb b';
+    bb.innerHTML = html.replace(/\n/g, '<br>');
+    row.appendChild(av); row.appendChild(bb);
+    ge('vnms').appendChild(row);
+    ge('vnms').scrollTop = row.offsetTop - ge('vnms').offsetTop;
+    return bb.textContent || bb.innerText || '';
+  }
+
+  function userMsg(text) {
+    var row = document.createElement('div'); row.className = 'vnr';
+    row.style.justifyContent = 'flex-end';
+    var bb = document.createElement('div'); bb.className = 'vnbb u'; bb.textContent = text;
+    row.appendChild(bb);
+    ge('vnms').appendChild(row);
+    ge('vnms').scrollTop = ge('vnms').scrollHeight;
+  }
+
+  function showTyp() {
+    var row = document.createElement('div'); row.className = 'vnr'; row.id = 'vntyp';
+    var av  = document.createElement('div'); av.className  = 'vnav b'; av.textContent = 'VN';
+    var ty  = document.createElement('div'); ty.className  = 'vnty';
+    ty.innerHTML = '<span></span><span></span><span></span>';
+    row.appendChild(av); row.appendChild(ty);
+    ge('vnms').appendChild(row);
+    ge('vnms').scrollTop = ge('vnms').scrollHeight;
+  }
+
+  function hideTyp() { var t = ge('vntyp'); if (t) t.remove(); }
+
+  function clearOpts() {
+    ge('vncd').innerHTML = '';
+    ge('vnch').innerHTML = '';
+    ge('vnol').style.display = 'none';
+  }
+
+  function mkCards(cards) {
+    clearOpts();
+    if (!cards || !cards.length) return;
+    ge('vnol').style.display = 'block';
+    ge('vnol').textContent = s('choose');
+    cards.forEach(function (c) {
+      var d = document.createElement('div'); d.className = 'vnca';
+      d.innerHTML = '<div class="vnci">' + c.icon + '</div>'
+        + '<div class="vnct">' + c.title + '</div>'
+        + (c.desc ? '<div class="vncd">' + c.desc + '</div>' : '');
+      d.addEventListener('click', function () { handle(c.title); });
+      ge('vncd').appendChild(d);
+    });
+  }
+
+  function mkChips(chips) {
+    if (!chips || !chips.length) return;
+    chips.forEach(function (ch) {
+      var b = document.createElement('button'); b.className = 'vncp'; b.textContent = ch;
+      b.addEventListener('click', function () { handle(ch); });
+      ge('vnch').appendChild(b);
+    });
+  }
+
+  function setProg(pct) { ge('vnpr').style.width = (pct || 0) + '%'; }
+
+  // ── WELCOME NODE ───────────────────────────────────────────────────────────
+  function buildWelcome() {
+    var loc = ORG_CITY ? '\n📍 Serving veterans in ' + ORG_CITY : '';
+    NODES.welcome.bot = 'Welcome to ' + ORG_NAME + '!' + loc + '\n\n'
+      + "We're here to help you find and claim every benefit you've earned. This assistant is provided by your VSO — available 24/7 and speaks your language.\n\n"
+      + "ℹ️ *General VA benefits information only — not legal advice. Never enter personal info like SSNs in this chat.*\n\n"
+      + "Let's get started. Which best describes you?";
+    NODES.veteran.bot = 'Thank you for your service. 🇺🇸\n\n'
+      + ORG_NAME + ' is proud to support you. When did you serve?';
+    // Spanish
+    if (NODES_I18N.es) {
+      var locEs = ORG_CITY ? '\n📍 Sirviendo a veteranos en ' + ORG_CITY : '';
+      NODES_I18N.es.welcome.bot = '¡Bienvenido a ' + ORG_NAME + '!' + locEs + '\n\nEstamos aqu\xED para ayudarle a encontrar y reclamar cada beneficio que se ha ganado. Este asistente es gratuito, disponible 24/7 y habla su idioma.\n\n\u2139\uFE0F *Solo informaci\xF3n general sobre beneficios VA \u2014 no asesoramiento legal. Nunca ingrese informaci\xF3n personal en este chat.*\n\n\xBFCu\xE1l le describe mejor?';
+      NODES_I18N.es.veteran.bot = 'Gracias por su servicio. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' se enorgullece de apoyarle. \xBFCu\xE1ndo sirvi\xF3?';
+    }
+    // Vietnamese
+    if (NODES_I18N.vi) {
+      var locVi = ORG_CITY ? '\n📍 Ph\u1EE5c v\u1EE5 c\u1EF1u chi\u1EBFn binh t\u1EA1i ' + ORG_CITY : '';
+      NODES_I18N.vi.welcome.bot = 'Ch\xE0o m\u1EEBng \u0111\u1EBFn v\u1EDBi ' + ORG_NAME + '!' + locVi + '\n\nCh\xFAng t\xF4i \u1EDF \u0111\xE2y \u0111\u1EC3 gi\xFAp b\u1EA1n t\xECm v\xE0 nh\u1EADn m\u1ECDi quy\u1EC1n l\u1EE3i b\u1EA1n \u0111\xE3 x\u1EE9ng \u0111\xE1ng. Tr\u1EE3 l\xFD n\xE0y mi\u1EC5n ph\xED, ho\u1EA1t \u0111\u1ED9ng 24/7 v\xE0 n\xF3i ng\xF4n ng\u1EEF c\u1EE7a b\u1EA1n.\n\n\u2139\uFE0F *Ch\u1EC9 cung c\u1EA5p th\xF4ng tin chung v\u1EC1 ph\xFAc l\u1EE3i VA \u2014 kh\xF4ng ph\u1EA3i t\u01B0 v\u1EA5n ph\xE1p l\xFD. Kh\xF4ng bao gi\u1EDD nh\u1EADp th\xF4ng tin c\xE1 nh\xE2n nh\u01B0 s\u1ED1 An sinh X\xE3 h\u1ED9i v\xE0o chat n\xE0y.*\n\n\u0110i\u1EC1u n\xE0o m\xF4 t\u1EA3 \u0111\xFAng nh\u1EA5t v\u1EC1 b\u1EA1n?';
+      NODES_I18N.vi.veteran.bot = 'C\u1EA3m \u01A1n b\u1EA1n \u0111\xE3 ph\u1EE5c v\u1EE5 \u0111\u1EA5t n\u01B0\u1EDBc. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' t\u1EF1 h\xE0o \u0111\u01B0\u1EE3c h\u1ED7 tr\u1EE3 b\u1EA1n. B\u1EA1n ph\u1EE5c v\u1EE5 khi n\xE0o?';
+    }
+    // Korean
+    if (NODES_I18N.ko) {
+      var locKo = ORG_CITY ? '\n📍 ' + ORG_CITY + ' \uC7AC\uD5A5\uAD70\uC778 \uC9C0\uC6D0' : '';
+      NODES_I18N.ko.welcome.bot = ORG_NAME + '\uC5D0 \uC624\uC2E0 \uAC83\uC744 \uD658\uC601\uD569\uB2C8\uB2E4!' + locKo + '\n\n\uC800\uD76C\uB294 \uADC0\uD558\uAC00 \uBC1B\uC744 \uC790\uACA9\uC774 \uC788\uB294 \uBAA8\uB4E0 \uD61C\uD0DD\uC744 \uCC3E\uACE0 \uC2E0\uCCAD\uD558\uB294 \uB370 \uB3C4\uC6C0\uC744 \uB4DC\uB9AC\uAE30 \uC704\uD574 \uC5EC\uAE30 \uC788\uC2B5\uB2C8\uB2E4. \uC774 \uC548\uB0B4\uC790\uB294 \uBB34\uB8CC\uC774\uBA70 24/7 \uC774\uC6A9 \uAC00\uB2A5\uD569\uB2C8\uB2E4.\n\n\u2139\uFE0F *VA \uD61C\uD0DD \uC77C\uBC18 \uC815\uBCF4\uB9CC \uC81C\uACF5 \u2014 \uBC95\uC801 \uC870\uC5B8 \uC544\uB2D9\uB2C8\uB2E4. \uC8FC\uBBFC\uB4F1\uB85D\uBC88\uD638 \uB4F1 \uAC1C\uC778\uC815\uBCF4\uB97C \uC774 \uCC57\uBD07\uC5D0 \uC785\uB825\uD558\uC9C0 \uB9C8\uC138\uC694.*\n\n\uADC0\uD558\uC5D0\uAC8C \uAC00\uC7A5 \uC798 \uB9DE\uB294 \uAC83\uC740 \uBB34\uC5C7\uC785\uB2C8\uAE4C?';
+      NODES_I18N.ko.veteran.bot = '\uADC0\uD558\uC758 \uBD09\uC0AC\uC5D0 \uAC10\uC0AC\uB4DC\uB9BD\uB2C8\uB2E4. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + '\uC740 \uADC0\uD558\uB97C \uC9C0\uC6D0\uD558\uAC8C \uB418\uC5B4 \uC790\uB791\uC2A4\uB7FD\uC2B5\uB2C8\uB2E4. \uC5B8\uC81C \uBCF5\uBB34\uD558\uC168\uC2B5\uB2C8\uAE4C?';
+    }
+    // Filipino
+    if (NODES_I18N.tl) {
+      var locTl = ORG_CITY ? '\n📍 Naglilingkod sa mga beterano sa ' + ORG_CITY : '';
+      NODES_I18N.tl.welcome.bot = 'Maligayang pagdating sa ' + ORG_NAME + '!' + locTl + '\n\nNandito kami para tulungan kang mahanap at makuha ang bawat benepisyong iyong nakamit. Ang assistant na ito ay libre, available 24/7, at nagsasalita ng iyong wika.\n\n\u2139\uFE0F *Pangkalahatang impormasyon lamang tungkol sa mga benepisyo ng VA \u2014 hindi legal na payo. Huwag maglagay ng personal na impormasyon tulad ng SSN sa chat na ito.*\n\nAlin ang pinaka-angkop sa iyo?';
+      NODES_I18N.tl.veteran.bot = 'Salamat sa iyong serbisyo. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' ay ipinagmamalaki na suportahan kayo. Kailan kayo naglingkod?';
+    }
+  }
+
+  // ── VSO NODE ───────────────────────────────────────────────────────────────
+  function buildVSO() {
+    var c = '';
+    if (ORG_MISSION) c += ORG_MISSION + '\n\n';
+    if (ORG_ADDR)  c += '📍 ' + ORG_ADDR + (ORG_CITY ? ', ' + ORG_CITY : '') + '\n';
+    if (ORG_HOURS) c += '🕐 ' + ORG_HOURS + '\n';
+    if (ORG_PHONE) c += '📞 ' + ORG_PHONE + '\n';
+    if (ORG_EMAIL) c += '✉️ ' + ORG_EMAIL + '\n';
+    if (ORG_WEB)   c += '🌐 ' + ORG_WEB;
+    var ld = ORG_LEADERS.length
+      ? '\n\n<strong>Leadership:</strong>\n' + ORG_LEADERS.map(function (l) { return '• ' + l; }).join('\n')
+      : '';
+    var nextEvent = ORG_EVENTS.length ? ORG_EVENTS[0] : null;
+    var evLine = nextEvent ? '\n\n📅 <strong>Next event:</strong> ' + nextEvent : '';
+    NODES.vso.bot = 'Your VSO counselors are here to help — free of charge.\n\n<strong>'
+      + ORG_NAME + '</strong>\n'
+      + (c || 'Contact your local VSO office.') + ld + evLine
+      + '\n\n100% free. Walk-ins welcome. 🇺🇸';
+    NODES.vso.chips = ORG_EVENTS.length
+      ? ['Upcoming events', 'How do I file a claim?', 'See all benefits']
+      : ['How do I file a claim?', 'See all benefits', 'Start over'];
+
+    // ── org_events node ──────────────────────────────────────────────────────
+    if (ORG_EVENTS.length) {
+      NODES.org_events = {
+        pct: 10,
+        bot: '📅 <strong>Upcoming events at ' + ORG_NAME + ':</strong>\n\n'
+          + ORG_EVENTS.map(function (e, i) { return (i === 0 ? '⭐ ' : '• ') + e; }).join('\n')
+          + '\n\n<strong>All events are open to veterans, family members, and the community.</strong>\n\nStop by — no appointment needed. Our counselors are here to help.',
+        chips: ['Find a VSO counselor', 'See all benefits', 'Start over']
+      };
+      CHIP_MAP['Upcoming events'] = 'org_events';
+    }
+  }
+
+  // ── RENDER NODE ────────────────────────────────────────────────────────────
+  function getNode(key) {
+    // Check for language-specific override, fall back to English NODES
+    if (lang !== 'en' && NODES_I18N[lang] && NODES_I18N[lang][key]) {
+      // Merge: translated node overrides English, but inherit missing fields
+      var base = NODES[key] || {};
+      var tr   = NODES_I18N[lang][key];
+      return {
+        pct:   tr.pct   !== undefined ? tr.pct   : base.pct,
+        bot:   tr.bot   !== undefined ? tr.bot   : base.bot,
+        cards: tr.cards !== undefined ? tr.cards : base.cards,
+        chips: tr.chips !== undefined ? tr.chips : base.chips
+      };
+    }
+    return NODES[key];
+  }
+
+  function renderNode(key) {
+    var node = getNode(key); if (!node) return;
+    if (node.bot) {
+      var plain = botMsg(node.bot);
+      chatHistory.push({ topic: key, text: plain.substring(0, 120) });
+    }
+    clearOpts();
+    // Build chips list — auto-append "Start over" if not present
+    var chips = (node.chips || []).slice();
+    var skipStartOver = ['welcome','benefits_menu','all_benefits','empathy_intro',
+      'cat_money','cat_healthcare','cat_education','cat_housing','cat_family','cat_claims'];
+    if (skipStartOver.indexOf(key) === -1) {
+      var startOverLabel = (lang === 'es') ? 'Empezar de nuevo'
+        : (lang === 'vi') ? 'Bắt đầu lại'
+        : (lang === 'ko') ? '처음으로'
+        : (lang === 'tl') ? 'Magsimula muli'
+        : 'Start over';
+      var hasIt = chips.some(function (c) { return c === startOverLabel || c === 'Start over' || c === 'Start Fresh →'; });
+      if (!hasIt) chips.push(startOverLabel);
+    }
+    if (node.cards && node.cards.length) {
+      mkCards(node.cards);
+      if (chips.length) mkChips(chips);
+    } else if (chips.length) {
+      mkChips(chips);
+    }
+    if (node.pct !== undefined) setProg(node.pct);
+  }
+
+  function renderGated(key) {
+    var label = key ? topicLabel(key) : 'that topic';
+    botMsg("I'd love to help with <strong>" + label + "</strong>.\n\nFor this topic, I'd recommend speaking directly with your VSO counselor — they can give you personalized guidance at no cost and walk you through the details step by step.");
+    clearOpts();
+    mkChips(['Find a VSO counselor', 'See all benefits', 'Start over']);
+
+    // Silent upsell notification to VetNavigator
+    if (BREVO_KEY && ORG_EMAIL) {
+      var tierNeeded = TOPIC_TIERS[key] || 2;
+      var planNeeded = tierNeeded >= 3 ? 'Standard' : 'Starter';
+      fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
+        body: JSON.stringify({
+          sender:  { name: 'VetNavigator AI', email: SUPPORT_EMAIL },
+          to:      [{ email: SUPPORT_EMAIL }],
+          subject: '📊 Upgrade Opportunity — ' + ORG_NAME + ' · ' + label,
+          htmlContent: '<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;">'
+            + '<div style="background:#1a3a6b;padding:20px 24px;border-radius:10px 10px 0 0;color:#fff;">'
+            + '<h2 style="margin:0;font-size:18px;">📊 Veteran Requested Gated Topic</h2></div>'
+            + '<div style="padding:20px 24px;background:#fff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;">'
+            + '<p style="font-size:14px;color:#374151;margin:0 0 12px;"><strong>' + ORG_NAME + '</strong> (License: ' + LICENSE_KEY + ')</p>'
+            + '<p style="font-size:14px;color:#374151;margin:0 0 12px;">A veteran on their site asked about <strong>' + label + '</strong>, which requires the <strong>' + planNeeded + '</strong> plan or above.</p>'
+            + '<p style="font-size:13px;color:#6b7280;margin:0 0 16px;">Consider reaching out with a friendly note letting them know their visitors are asking about this topic.</p>'
+            + '<div style="background:#f9f7f3;border-radius:8px;padding:14px 16px;font-size:13px;color:#374151;border-left:3px solid #e8c84a;">'
+            + '<strong>Suggested outreach:</strong><br>"Hi [name], just a quick heads-up — veterans visiting your site have been asking about ' + label + '. Your ' + planNeeded + ' plan would cover this topic and more. Happy to walk you through it if you\'re interested!"'
+            + '</div></div></div>'
+        })
+      }).catch(function () {});
+    }
+  }
+
+  // ── TOPIC LABEL ────────────────────────────────────────────────────────────
+  function topicLabel(k) {
+    var m = {
+      disability:'VA Disability Pay', gi_bill:'GI Bill', home_loan:'VA Home Loan',
+      healthcare:'VA Healthcare', file_claim:'Filing a Claim', documents:'Required Documents',
+      denied:'Denied Claims', vso:'VSO Counselors', pact_act:'PACT Act', tdiu:'TDIU',
+      nexus:'Nexus Letters', mental_health:'Mental Health', pension:'VA Pension',
+      voc_rehab:'Vocational Rehab', rating_increase:'Rating Increase', cp_exam:'C&P Exam',
+      dic:'DIC Benefits', champva:'CHAMPVA', burial:'Burial Benefits',
+      caregiver:'Caregiver Program', claim_status:'Claim Status', va_records:'VA Records',
+      mst:'Military Sexual Trauma', travel_pay:'Travel Pay', community_care:'Community Care',
+      life_insurance:'Life Insurance', housing_help:'Housing Assistance',
+      women_veterans:'Women Veterans', guard_reserve:'Guard & Reserve',
+      adapted_housing:'Adapted Housing', va_debt:'VA Debt Help',
+      aid_attendance:'Aid & Attendance',
+      survivors_pension:'Survivors Pension'
+    };
+    return m[k] || k.replace(/_/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+  }
+
+  // ── BOOT ───────────────────────────────────────────────────────────────────
+  function boot() {
+    loadConfig(function () {
+      init();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+
+})();
   // ── SESSION WARNING ────────────────────────────────────────────────────────
   function checkWarn() {
     var rem = CONV_LIMIT - turnCount;
@@ -2241,408 +2651,3 @@
     }
   }
 
-  // ── ADMIN URL GATE ─────────────────────────────────────────────────────────
-  // Admin Panel only shows when VSO adds ?vnadmin=1 to their site URL
-  var SHOW_ADMIN = /[?&]vnadmin=1(?:&|$)/i.test(window.location.search);
-
-  // ── BUILD HTML ─────────────────────────────────────────────────────────────
-  function buildHTML() {
-    var langs = [
-      { code: 'en', label: 'English' },
-      { code: 'es', label: 'Español' },
-      { code: 'vi', label: 'Tiếng Việt' },
-      { code: 'ko', label: '한국어' },
-      { code: 'tl', label: 'Filipino' }
-    ];
-    var lbs = langs.map(function (l) {
-      var lk  = (!HAS_ML && l.code !== 'en') ? ' lk' : '';
-      var act = (l.code === 'en') ? ' act' : '';
-      return '<button class="vnlg' + lk + act + '" data-lang="' + l.code + '">' + l.label + '</button>';
-    }).join('');
-
-    var tabs = '<div id="vntb">'
-      + '<button class="vntb act" data-tab="chat">💬 Veteran Chat</button>'
-      + '<button class="vntb" data-tab="feedback">📝 Feedback</button>'
-      + '<button class="vntb" data-tab="support">🎧 Support</button>'
-      + (HAS_ADMIN && SHOW_ADMIN ? '<button class="vntb" data-tab="admin">⚙️ Admin Panel</button>' : '')
-      + '</div>';
-
-    var adm = HAS_ADMIN && SHOW_ADMIN
-      ? '<div id="vnadp" class="vntp" data-panel="admin">'
-        + '<div style="font-size:11px;color:rgba(232,200,74,.85);background:rgba(232,200,74,.07);border:1px solid rgba(232,200,74,.2);border-radius:8px;padding:9px 11px;margin-bottom:12px;line-height:1.5">Update your organization info below. Changes appear instantly in the chat.</div>'
-        // Scan tabs
-        + '<div id="vnsct" style="display:flex;gap:0;margin-bottom:8px;border-radius:8px;overflow:hidden;border:.5px solid rgba(255,255,255,.1)">'
-        + '<button class="vnsc act" data-sc="web">🌐 Website</button>'
-        + '<button class="vnsc" data-sc="fb">📘 Facebook</button>'
-        + '<button class="vnsc" data-sc="man">✏️ Manual</button>'
-        + '</div>'
-        // Website scan panel
-        + '<div id="vnscw">'
-        + '<div style="display:flex;gap:6px;margin-bottom:6px">'
-        + '<input id="vnscu" type="text" class="vnai" style="margin-bottom:0" placeholder="https://yourpost.org"/>'
-        + '<button id="vnscb" style="padding:6px 10px;border-radius:7px;border:.5px solid rgba(60,120,220,.4);background:rgba(30,80,160,.5);color:#fff;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:inherit">🔍 Scan</button>'
-        + '</div>'
-        + '<div id="vnscst" style="font-size:11px;min-height:14px;margin-bottom:8px;line-height:1.4"></div>'
-        + '</div>'
-        // Facebook scan panel
-        + '<div id="vnscf" style="display:none">'
-        + '<div style="font-size:10.5px;color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:6px">Facebook blocks auto-scanning. Go to your Facebook page → About tab → select all text → copy → paste below.</div>'
-        + '<textarea id="vnfbpa" placeholder="Paste your Facebook About page text here…" style="width:100%;height:75px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:7px;padding:7px 9px;font-size:11.5px;color:rgba(255,255,255,.85);font-family:inherit;resize:none;outline:none;box-sizing:border-box;margin-bottom:6px"></textarea>'
-        + '<button id="vnfbb" style="width:100%;padding:7px;border-radius:7px;border:.5px solid rgba(232,200,74,.3);background:rgba(100,70,0,.4);color:#fff;font-size:11.5px;font-weight:500;cursor:pointer;font-family:inherit">📘 Extract from Facebook Text</button>'
-        + '<div id="vnscst2" style="font-size:11px;min-height:14px;margin-top:6px;margin-bottom:4px;line-height:1.4"></div>'
-        + '</div>'
-        // Manual fields
-        + '<span class="vnal">Organization Name</span><input class="vnai" id="an" type="text"/>'
-        + '<span class="vnal">City</span><input class="vnai" id="ac" type="text"/>'
-        + '<span class="vnal">Phone</span><input class="vnai" id="ap" type="text"/>'
-        + '<span class="vnal">Email</span><input class="vnai" id="ae" type="email"/>'
-        + '<span class="vnal">Office Hours</span><input class="vnai" id="ah" type="text"/>'
-        + '<span class="vnal">Upcoming Events</span><div id="aev"></div>'
-        + '<button class="vnadd" id="vnadde">+ Add Event</button>'
-        + '<span class="vnal">Leadership & Counselors</span><div id="ald"></div>'
-        + '<button class="vnadd" id="vnadda">+ Add Person</button>'
-        + '<button id="vnsv">Save Changes</button>'
-        + '<div id="vnsvd">✓ Saved!</div>'
-        + '</div>'
-      : '';
-
-    var fbk = '<div id="vnfbk" class="vntp" data-panel="feedback" style="padding:14px">'
-      + '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">How was your experience?</div>'
-      + '<div style="font-size:11.5px;color:var(--vs);margin-bottom:12px;line-height:1.5">Your feedback helps us improve this service for all veterans.</div>'
-      + '<div id="vnstars" style="display:flex;gap:8px;margin-bottom:14px;font-size:24px;cursor:pointer">'
-      + '<span class="vnstar" data-v="1">☆</span>'
-      + '<span class="vnstar" data-v="2">☆</span>'
-      + '<span class="vnstar" data-v="3">☆</span>'
-      + '<span class="vnstar" data-v="4">☆</span>'
-      + '<span class="vnstar" data-v="5">☆</span>'
-      + '</div>'
-      + '<textarea id="vnfbtx" placeholder="Share any thoughts, suggestions, or issues (optional)…" '
-      + 'style="width:100%;height:140px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.15);'
-      + 'border-radius:8px;padding:8px 10px;font-size:12px;color:#fff;font-family:inherit;'
-      + 'outline:none;resize:none;box-sizing:border-box;margin-bottom:10px"></textarea>'
-      + '<button id="vnfbsb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);'
-      + 'border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Submit Feedback</button>'
-      + '<div id="vnfbok" style="display:none;text-align:center;font-size:12px;'
-      + 'color:rgba(74,222,128,.9);margin-top:10px">✓ Thank you! Your feedback has been received.</div>'
-      + '</div>';
-
-    var sup = '<div id="vnsup" class="vntp" data-panel="support" style="padding:14px">'
-      + '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">Contact Our Team</div>'
-      + '<div style="font-size:11.5px;color:var(--vs);margin-bottom:12px;line-height:1.5">Send us a message and we\'ll follow up with you directly.</div>'
-      + '<div id="vnsupf">'
-      + '<input id="vnsn" type="text" placeholder="Your name" style="width:100%;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
-      + '<input id="vnse" type="email" placeholder="Your email address" style="width:100%;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
-      + '<select id="vnsy" style="width:100%;background:#1a2340;border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
-      + '<option value="">Select topic...</option>'
-      + '<option value="benefits">VA Benefits Question</option>'
-      + '<option value="claim">Help with my claim</option>'
-      + '<option value="appointment">Schedule an appointment</option>'
-      + '<option value="documents">Document request</option>'
-      + '<option value="other">Other</option>'
-      + '</select>'
-      + '<textarea id="vnsmsg" placeholder="Describe your question or request…" style="width:100%;height:140px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;resize:none;box-sizing:border-box;margin-bottom:8px"></textarea>'
-      + '<div id="vnserr" style="display:none;font-size:11px;color:rgba(255,100,100,.9);margin-bottom:6px"></div>'
-      + '<button id="vnssb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Send Message</button>'
-      + '</div>'
-      + '<div id="vnstk" style="display:none;text-align:center;padding:12px">'
-      + '<div style="font-size:24px;margin-bottom:6px">✅</div>'
-      + '<div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.9)">Message sent!</div>'
-      + '<div style="font-size:11.5px;color:var(--vs);margin-top:4px;line-height:1.5">Our team will follow up with you by email.</div>'
-      + '</div>'
-      + '</div>';
-
-    var mic = HAS_MIC
-      ? '<button id="vnmc" title="Voice input"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 3.57-3.38 6-5.91 6s-5.42-2.43-5.91-6H4c.49 4.12 3.73 7.38 7.75 7.9V21h.5v-2.1C16.27 18.38 19.51 15.12 20 11h-2.09z"/></svg></button>'
-      : '';
-
-    return '<style id="vns">' + CSS + '</style>'
-      + '<button id="vnb" aria-label="Open VA Benefits Assistant">'
-      + '<svg class="vnc" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>'
-      + '<svg class="vnx" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>'
-      + '</button>'
-      + '<div id="vnn" style="display:none"><span style="font-size:15px;flex-shrink:0">🎖️</span>'
-      + '<span>Need help with VA benefits? I\'m here — 24/7, free.</span>'
-      + '</div>'
-      + '<div id="vnp">'
-      +   '<div id="vnh"><div id="vnhi"><img src="data:image/png;base64,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" style="width:32px;height:32px;object-fit:contain;border-radius:4px;" alt="VetNavigator AI"></div>'
-      +   '<div style="flex:1"><div id="vnon">' + ORG_NAME + '</div>'
-      +   '<div id="vnst"><span class="vnd"></span> <span id="vnstx">Online · Free · 24/7</span></div></div></div>'
-      +   tabs
-      +   '<div id="vnlb">' + lbs + '</div>'
-      +   '<div id="vnpb"><div id="vnpr"></div></div>'
-      +   '<div id="vnchat" class="vntp act" data-panel="chat">'
-      +     '<div id="vnms"></div>'
-      +     '<div id="vnwn"></div>'
-      +     '<div id="vnlm">'
-      +       '<h3>🎖️ <span id="vnlt"></span></h3>'
-      +       '<p id="vnlmg"></p>'
-      +       '<p id="vnltl" style="font-size:11px;color:var(--vg);font-weight:600;margin-bottom:4px"></p>'
-      +       '<ul id="vnltp"></ul>'
-      +       '<p id="vnsp" style="font-size:12px;color:var(--vs);margin-bottom:8px"></p>'
-      +       '<div id="vnser"><input id="vnsem" type="email"/><button id="vnseb"></button></div>'
-      +       '<div id="vnset"></div>'
-      +       '<p id="vnvl" style="font-size:11px;color:var(--vg);font-weight:600;margin-bottom:6px"></p>'
-      +       '<div class="vnvb" id="vnvb"></div>'
-      +       '<button id="vnrs"></button>'
-      +     '</div>'
-      +     '<div id="vnop"><div id="vnol"></div><div id="vncd"></div><div id="vnch"></div></div>'
-      +     '<div id="vnir">'
-      +       '<input id="vntx" type="text" autocomplete="off"/>'
-      +       mic
-      +       '<button id="vnsd"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>'
-      +     '</div>'
-      +   '</div>'
-      +   adm + fbk + sup
-      +   '<div id="vnft">Powered by VetNavigator AI · Veteran-Made &amp; Veteran-Owned</div>'
-      + '</div>';
-  }
-
-  // ── DOM HELPERS ────────────────────────────────────────────────────────────
-  function ge(id) { return document.getElementById(id); }
-
-  function botMsg(html) {
-    var row = document.createElement('div'); row.className = 'vnr';
-    var av  = document.createElement('div'); av.className  = 'vnav b'; av.textContent = 'VN';
-    var bb  = document.createElement('div'); bb.className  = 'vnbb b';
-    bb.innerHTML = html.replace(/\n/g, '<br>');
-    row.appendChild(av); row.appendChild(bb);
-    ge('vnms').appendChild(row);
-    ge('vnms').scrollTop = row.offsetTop - ge('vnms').offsetTop;
-    return bb.textContent || bb.innerText || '';
-  }
-
-  function userMsg(text) {
-    var row = document.createElement('div'); row.className = 'vnr';
-    row.style.justifyContent = 'flex-end';
-    var bb = document.createElement('div'); bb.className = 'vnbb u'; bb.textContent = text;
-    row.appendChild(bb);
-    ge('vnms').appendChild(row);
-    ge('vnms').scrollTop = ge('vnms').scrollHeight;
-  }
-
-  function showTyp() {
-    var row = document.createElement('div'); row.className = 'vnr'; row.id = 'vntyp';
-    var av  = document.createElement('div'); av.className  = 'vnav b'; av.textContent = 'VN';
-    var ty  = document.createElement('div'); ty.className  = 'vnty';
-    ty.innerHTML = '<span></span><span></span><span></span>';
-    row.appendChild(av); row.appendChild(ty);
-    ge('vnms').appendChild(row);
-    ge('vnms').scrollTop = ge('vnms').scrollHeight;
-  }
-
-  function hideTyp() { var t = ge('vntyp'); if (t) t.remove(); }
-
-  function clearOpts() {
-    ge('vncd').innerHTML = '';
-    ge('vnch').innerHTML = '';
-    ge('vnol').style.display = 'none';
-  }
-
-  function mkCards(cards) {
-    clearOpts();
-    if (!cards || !cards.length) return;
-    ge('vnol').style.display = 'block';
-    ge('vnol').textContent = s('choose');
-    cards.forEach(function (c) {
-      var d = document.createElement('div'); d.className = 'vnca';
-      d.innerHTML = '<div class="vnci">' + c.icon + '</div>'
-        + '<div class="vnct">' + c.title + '</div>'
-        + (c.desc ? '<div class="vncd">' + c.desc + '</div>' : '');
-      d.addEventListener('click', function () { handle(c.title); });
-      ge('vncd').appendChild(d);
-    });
-  }
-
-  function mkChips(chips) {
-    if (!chips || !chips.length) return;
-    chips.forEach(function (ch) {
-      var b = document.createElement('button'); b.className = 'vncp'; b.textContent = ch;
-      b.addEventListener('click', function () { handle(ch); });
-      ge('vnch').appendChild(b);
-    });
-  }
-
-  function setProg(pct) { ge('vnpr').style.width = (pct || 0) + '%'; }
-
-  // ── WELCOME NODE ───────────────────────────────────────────────────────────
-  function buildWelcome() {
-    var loc = ORG_CITY ? '\n📍 Serving veterans in ' + ORG_CITY : '';
-    NODES.welcome.bot = 'Welcome to ' + ORG_NAME + '!' + loc + '\n\n'
-      + "We're here to help you find and claim every benefit you've earned. This assistant is provided by your VSO — available 24/7 and speaks your language.\n\n"
-      + "ℹ️ *General VA benefits information only — not legal advice. Never enter personal info like SSNs in this chat.*\n\n"
-      + "Let's get started. Which best describes you?";
-    NODES.veteran.bot = 'Thank you for your service. 🇺🇸\n\n'
-      + ORG_NAME + ' is proud to support you. When did you serve?';
-    // Spanish
-    if (NODES_I18N.es) {
-      var locEs = ORG_CITY ? '\n📍 Sirviendo a veteranos en ' + ORG_CITY : '';
-      NODES_I18N.es.welcome.bot = '¡Bienvenido a ' + ORG_NAME + '!' + locEs + '\n\nEstamos aqu\xED para ayudarle a encontrar y reclamar cada beneficio que se ha ganado. Este asistente es gratuito, disponible 24/7 y habla su idioma.\n\n\u2139\uFE0F *Solo informaci\xF3n general sobre beneficios VA \u2014 no asesoramiento legal. Nunca ingrese informaci\xF3n personal en este chat.*\n\n\xBFCu\xE1l le describe mejor?';
-      NODES_I18N.es.veteran.bot = 'Gracias por su servicio. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' se enorgullece de apoyarle. \xBFCu\xE1ndo sirvi\xF3?';
-    }
-    // Vietnamese
-    if (NODES_I18N.vi) {
-      var locVi = ORG_CITY ? '\n📍 Ph\u1EE5c v\u1EE5 c\u1EF1u chi\u1EBFn binh t\u1EA1i ' + ORG_CITY : '';
-      NODES_I18N.vi.welcome.bot = 'Ch\xE0o m\u1EEBng \u0111\u1EBFn v\u1EDBi ' + ORG_NAME + '!' + locVi + '\n\nCh\xFAng t\xF4i \u1EDF \u0111\xE2y \u0111\u1EC3 gi\xFAp b\u1EA1n t\xECm v\xE0 nh\u1EADn m\u1ECDi quy\u1EC1n l\u1EE3i b\u1EA1n \u0111\xE3 x\u1EE9ng \u0111\xE1ng. Tr\u1EE3 l\xFD n\xE0y mi\u1EC5n ph\xED, ho\u1EA1t \u0111\u1ED9ng 24/7 v\xE0 n\xF3i ng\xF4n ng\u1EEF c\u1EE7a b\u1EA1n.\n\n\u2139\uFE0F *Ch\u1EC9 cung c\u1EA5p th\xF4ng tin chung v\u1EC1 ph\xFAc l\u1EE3i VA \u2014 kh\xF4ng ph\u1EA3i t\u01B0 v\u1EA5n ph\xE1p l\xFD. Kh\xF4ng bao gi\u1EDD nh\u1EADp th\xF4ng tin c\xE1 nh\xE2n nh\u01B0 s\u1ED1 An sinh X\xE3 h\u1ED9i v\xE0o chat n\xE0y.*\n\n\u0110i\u1EC1u n\xE0o m\xF4 t\u1EA3 \u0111\xFAng nh\u1EA5t v\u1EC1 b\u1EA1n?';
-      NODES_I18N.vi.veteran.bot = 'C\u1EA3m \u01A1n b\u1EA1n \u0111\xE3 ph\u1EE5c v\u1EE5 \u0111\u1EA5t n\u01B0\u1EDBc. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' t\u1EF1 h\xE0o \u0111\u01B0\u1EE3c h\u1ED7 tr\u1EE3 b\u1EA1n. B\u1EA1n ph\u1EE5c v\u1EE5 khi n\xE0o?';
-    }
-    // Korean
-    if (NODES_I18N.ko) {
-      var locKo = ORG_CITY ? '\n📍 ' + ORG_CITY + ' \uC7AC\uD5A5\uAD70\uC778 \uC9C0\uC6D0' : '';
-      NODES_I18N.ko.welcome.bot = ORG_NAME + '\uC5D0 \uC624\uC2E0 \uAC83\uC744 \uD658\uC601\uD569\uB2C8\uB2E4!' + locKo + '\n\n\uC800\uD76C\uB294 \uADC0\uD558\uAC00 \uBC1B\uC744 \uC790\uACA9\uC774 \uC788\uB294 \uBAA8\uB4E0 \uD61C\uD0DD\uC744 \uCC3E\uACE0 \uC2E0\uCCAD\uD558\uB294 \uB370 \uB3C4\uC6C0\uC744 \uB4DC\uB9AC\uAE30 \uC704\uD574 \uC5EC\uAE30 \uC788\uC2B5\uB2C8\uB2E4. \uC774 \uC548\uB0B4\uC790\uB294 \uBB34\uB8CC\uC774\uBA70 24/7 \uC774\uC6A9 \uAC00\uB2A5\uD569\uB2C8\uB2E4.\n\n\u2139\uFE0F *VA \uD61C\uD0DD \uC77C\uBC18 \uC815\uBCF4\uB9CC \uC81C\uACF5 \u2014 \uBC95\uC801 \uC870\uC5B8 \uC544\uB2D9\uB2C8\uB2E4. \uC8FC\uBBFC\uB4F1\uB85D\uBC88\uD638 \uB4F1 \uAC1C\uC778\uC815\uBCF4\uB97C \uC774 \uCC57\uBD07\uC5D0 \uC785\uB825\uD558\uC9C0 \uB9C8\uC138\uC694.*\n\n\uADC0\uD558\uC5D0\uAC8C \uAC00\uC7A5 \uC798 \uB9DE\uB294 \uAC83\uC740 \uBB34\uC5C7\uC785\uB2C8\uAE4C?';
-      NODES_I18N.ko.veteran.bot = '\uADC0\uD558\uC758 \uBD09\uC0AC\uC5D0 \uAC10\uC0AC\uB4DC\uB9BD\uB2C8\uB2E4. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + '\uC740 \uADC0\uD558\uB97C \uC9C0\uC6D0\uD558\uAC8C \uB418\uC5B4 \uC790\uB791\uC2A4\uB7FD\uC2B5\uB2C8\uB2E4. \uC5B8\uC81C \uBCF5\uBB34\uD558\uC168\uC2B5\uB2C8\uAE4C?';
-    }
-    // Filipino
-    if (NODES_I18N.tl) {
-      var locTl = ORG_CITY ? '\n📍 Naglilingkod sa mga beterano sa ' + ORG_CITY : '';
-      NODES_I18N.tl.welcome.bot = 'Maligayang pagdating sa ' + ORG_NAME + '!' + locTl + '\n\nNandito kami para tulungan kang mahanap at makuha ang bawat benepisyong iyong nakamit. Ang assistant na ito ay libre, available 24/7, at nagsasalita ng iyong wika.\n\n\u2139\uFE0F *Pangkalahatang impormasyon lamang tungkol sa mga benepisyo ng VA \u2014 hindi legal na payo. Huwag maglagay ng personal na impormasyon tulad ng SSN sa chat na ito.*\n\nAlin ang pinaka-angkop sa iyo?';
-      NODES_I18N.tl.veteran.bot = 'Salamat sa iyong serbisyo. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' ay ipinagmamalaki na suportahan kayo. Kailan kayo naglingkod?';
-    }
-  }
-
-  // ── VSO NODE ───────────────────────────────────────────────────────────────
-  function buildVSO() {
-    var c = '';
-    if (ORG_MISSION) c += ORG_MISSION + '\n\n';
-    if (ORG_ADDR)  c += '📍 ' + ORG_ADDR + (ORG_CITY ? ', ' + ORG_CITY : '') + '\n';
-    if (ORG_HOURS) c += '🕐 ' + ORG_HOURS + '\n';
-    if (ORG_PHONE) c += '📞 ' + ORG_PHONE + '\n';
-    if (ORG_EMAIL) c += '✉️ ' + ORG_EMAIL + '\n';
-    if (ORG_WEB)   c += '🌐 ' + ORG_WEB;
-    var ld = ORG_LEADERS.length
-      ? '\n\n<strong>Leadership:</strong>\n' + ORG_LEADERS.map(function (l) { return '• ' + l; }).join('\n')
-      : '';
-    var nextEvent = ORG_EVENTS.length ? ORG_EVENTS[0] : null;
-    var evLine = nextEvent ? '\n\n📅 <strong>Next event:</strong> ' + nextEvent : '';
-    NODES.vso.bot = 'Your VSO counselors are here to help — free of charge.\n\n<strong>'
-      + ORG_NAME + '</strong>\n'
-      + (c || 'Contact your local VSO office.') + ld + evLine
-      + '\n\n100% free. Walk-ins welcome. 🇺🇸';
-    NODES.vso.chips = ORG_EVENTS.length
-      ? ['Upcoming events', 'How do I file a claim?', 'See all benefits']
-      : ['How do I file a claim?', 'See all benefits', 'Start over'];
-
-    // ── org_events node ──────────────────────────────────────────────────────
-    if (ORG_EVENTS.length) {
-      NODES.org_events = {
-        pct: 10,
-        bot: '📅 <strong>Upcoming events at ' + ORG_NAME + ':</strong>\n\n'
-          + ORG_EVENTS.map(function (e, i) { return (i === 0 ? '⭐ ' : '• ') + e; }).join('\n')
-          + '\n\n<strong>All events are open to veterans, family members, and the community.</strong>\n\nStop by — no appointment needed. Our counselors are here to help.',
-        chips: ['Find a VSO counselor', 'See all benefits', 'Start over']
-      };
-      CHIP_MAP['Upcoming events'] = 'org_events';
-    }
-  }
-
-  // ── RENDER NODE ────────────────────────────────────────────────────────────
-  function getNode(key) {
-    // Check for language-specific override, fall back to English NODES
-    if (lang !== 'en' && NODES_I18N[lang] && NODES_I18N[lang][key]) {
-      // Merge: translated node overrides English, but inherit missing fields
-      var base = NODES[key] || {};
-      var tr   = NODES_I18N[lang][key];
-      return {
-        pct:   tr.pct   !== undefined ? tr.pct   : base.pct,
-        bot:   tr.bot   !== undefined ? tr.bot   : base.bot,
-        cards: tr.cards !== undefined ? tr.cards : base.cards,
-        chips: tr.chips !== undefined ? tr.chips : base.chips
-      };
-    }
-    return NODES[key];
-  }
-
-  function renderNode(key) {
-    var node = getNode(key); if (!node) return;
-    if (node.bot) {
-      var plain = botMsg(node.bot);
-      chatHistory.push({ topic: key, text: plain.substring(0, 120) });
-    }
-    clearOpts();
-    // Build chips list — auto-append "Start over" if not present
-    var chips = (node.chips || []).slice();
-    var skipStartOver = ['welcome','benefits_menu','all_benefits','empathy_intro',
-      'cat_money','cat_healthcare','cat_education','cat_housing','cat_family','cat_claims'];
-    if (skipStartOver.indexOf(key) === -1) {
-      var startOverLabel = (lang === 'es') ? 'Empezar de nuevo'
-        : (lang === 'vi') ? 'Bắt đầu lại'
-        : (lang === 'ko') ? '처음으로'
-        : (lang === 'tl') ? 'Magsimula muli'
-        : 'Start over';
-      var hasIt = chips.some(function (c) { return c === startOverLabel || c === 'Start over' || c === 'Start Fresh →'; });
-      if (!hasIt) chips.push(startOverLabel);
-    }
-    if (node.cards && node.cards.length) {
-      mkCards(node.cards);
-      if (chips.length) mkChips(chips);
-    } else if (chips.length) {
-      mkChips(chips);
-    }
-    if (node.pct !== undefined) setProg(node.pct);
-  }
-
-  function renderGated(key) {
-    var label = key ? topicLabel(key) : 'that topic';
-    botMsg("I'd love to help with <strong>" + label + "</strong>.\n\nFor this topic, I'd recommend speaking directly with your VSO counselor — they can give you personalized guidance at no cost and walk you through the details step by step.");
-    clearOpts();
-    mkChips(['Find a VSO counselor', 'See all benefits', 'Start over']);
-
-    // Silent upsell notification to VetNavigator
-    if (BREVO_KEY && ORG_EMAIL) {
-      var tierNeeded = TOPIC_TIERS[key] || 2;
-      var planNeeded = tierNeeded >= 3 ? 'Standard' : 'Starter';
-      fetch('https://api.brevo.com/v3/smtp/email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
-        body: JSON.stringify({
-          sender:  { name: 'VetNavigator AI', email: SUPPORT_EMAIL },
-          to:      [{ email: SUPPORT_EMAIL }],
-          subject: '📊 Upgrade Opportunity — ' + ORG_NAME + ' · ' + label,
-          htmlContent: '<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;">'
-            + '<div style="background:#1a3a6b;padding:20px 24px;border-radius:10px 10px 0 0;color:#fff;">'
-            + '<h2 style="margin:0;font-size:18px;">📊 Veteran Requested Gated Topic</h2></div>'
-            + '<div style="padding:20px 24px;background:#fff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;">'
-            + '<p style="font-size:14px;color:#374151;margin:0 0 12px;"><strong>' + ORG_NAME + '</strong> (License: ' + LICENSE_KEY + ')</p>'
-            + '<p style="font-size:14px;color:#374151;margin:0 0 12px;">A veteran on their site asked about <strong>' + label + '</strong>, which requires the <strong>' + planNeeded + '</strong> plan or above.</p>'
-            + '<p style="font-size:13px;color:#6b7280;margin:0 0 16px;">Consider reaching out with a friendly note letting them know their visitors are asking about this topic.</p>'
-            + '<div style="background:#f9f7f3;border-radius:8px;padding:14px 16px;font-size:13px;color:#374151;border-left:3px solid #e8c84a;">'
-            + '<strong>Suggested outreach:</strong><br>"Hi [name], just a quick heads-up — veterans visiting your site have been asking about ' + label + '. Your ' + planNeeded + ' plan would cover this topic and more. Happy to walk you through it if you\'re interested!"'
-            + '</div></div></div>'
-        })
-      }).catch(function () {});
-    }
-  }
-
-  // ── TOPIC LABEL ────────────────────────────────────────────────────────────
-  function topicLabel(k) {
-    var m = {
-      disability:'VA Disability Pay', gi_bill:'GI Bill', home_loan:'VA Home Loan',
-      healthcare:'VA Healthcare', file_claim:'Filing a Claim', documents:'Required Documents',
-      denied:'Denied Claims', vso:'VSO Counselors', pact_act:'PACT Act', tdiu:'TDIU',
-      nexus:'Nexus Letters', mental_health:'Mental Health', pension:'VA Pension',
-      voc_rehab:'Vocational Rehab', rating_increase:'Rating Increase', cp_exam:'C&P Exam',
-      dic:'DIC Benefits', champva:'CHAMPVA', burial:'Burial Benefits',
-      caregiver:'Caregiver Program', claim_status:'Claim Status', va_records:'VA Records',
-      mst:'Military Sexual Trauma', travel_pay:'Travel Pay', community_care:'Community Care',
-      life_insurance:'Life Insurance', housing_help:'Housing Assistance',
-      women_veterans:'Women Veterans', guard_reserve:'Guard & Reserve',
-      adapted_housing:'Adapted Housing', va_debt:'VA Debt Help',
-      aid_attendance:'Aid & Attendance',
-      survivors_pension:'Survivors Pension'
-    };
-    return m[k] || k.replace(/_/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
-  }
-
-  // ── BOOT ───────────────────────────────────────────────────────────────────
-  function boot() {
-    loadConfig(function () {
-      init();
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
-  } else {
-    boot();
-  }
-
-})();
