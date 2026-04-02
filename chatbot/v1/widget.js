@@ -1561,10 +1561,10 @@
         headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
         body: JSON.stringify({
           attributes: {
-            GATED_TOPICS:       label,
+            LAST_GATED_TOPIC:   label,
             GATED_PLAN_NEEDED:  planNeeded,
-            GATED_LAST_DATE:    new Date().toISOString().split('T')[0],
-            GATED_COUNT:        1
+            LAST_GATED_AT:      new Date().toISOString().split('T')[0],
+            GATED_TOPIC_COUNT:  1
           }
         })
       }).catch(function () {});
