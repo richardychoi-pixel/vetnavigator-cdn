@@ -1287,6 +1287,7 @@
       + '</select>'
       + '<textarea id="vnsmsg" placeholder="Describe your question or request…" style="width:100%;height:140px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;resize:none;box-sizing:border-box;margin-bottom:8px"></textarea>'
       + '<div id="vnserr" style="display:none;font-size:11px;color:rgba(255,100,100,.9);margin-bottom:6px"></div>'
+      + '<p style="font-size:10px;color:rgba(255,255,255,.35);line-height:1.5;margin:0 0 8px">Your name and email are used only to respond to your request. They are not stored, shared, or used for marketing.</p>'
       + '<button id="vnssb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Send Message</button>'
       + '</div>'
       + '<div id="vnstk" style="display:none;text-align:center;padding:12px">'
@@ -1758,7 +1759,7 @@
       headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
       body: JSON.stringify(Object.assign({}, payload, {
         to: [{ email: SUPPORT_EMAIL }],
-        subject: '📋 Session Summary CC — ' + ORG_NAME + ' · ' + email
+        subject: '📋 Session Summary CC — ' + ORG_NAME
       }))
     });
   }
@@ -1805,6 +1806,15 @@
       if (checks[i].re.test(text) && TIER_LVL < checks[i].level) return checks[i].topic;
     }
     return null;
+  }
+
+  // ── PII INTERCEPT ──────────────────────────────────────────────────────────
+  var PII_RE = /\b(\d{3}[-\s]?\d{2}[-\s]?\d{4})\b|\b(c\d{7,9})\b|\b(\d{10})\b|\b(va\s*file\s*(number|#|no)?[\s:]*\d+)\b|\b(claim\s*(number|#|no)?[\s:]*\d+)\b|\b(dob|date\s*of\s*birth)[\s:]+\d/i;
+
+  var PII_WARNING = 'For your privacy and security, please do not enter personal information like Social Security numbers, claim numbers, dates of birth, or VA file numbers in this chat.\n\nI can still help you with general VA benefits information — what would you like to know?';
+
+  function containsPII(text) {
+    return PII_RE.test(text);
   }
 
   // ── ROUTE TEXT ─────────────────────────────────────────────────────────────
@@ -1891,7 +1901,7 @@
         sug = null;
       }
       botMsg(ans);
-      chatHistory.push({ topic: 'ai', text: ans.substring(0, 120) });
+      chatHistory.push({ topic: 'ai', text: ans.replace(PII_RE, '[redacted]').substring(0, 120) });
       clearOpts();
       var chips = s('fallbackChips').slice();
       if (sug) chips.unshift(sug);
@@ -1980,7 +1990,7 @@
         sug = null;
       }
       botMsg(ans);
-      chatHistory.push({ topic: key, text: ans.substring(0, 120) });
+      chatHistory.push({ topic: key, text: ans.replace(PII_RE, '[redacted]').substring(0, 120) });
       clearOpts();
       // Use the node's own chips/cards — AI only handles the text
       var chips = (node.chips || []).slice();
@@ -2035,6 +2045,19 @@
         clearOpts();
         botMsg(CRISIS_MSG);
         mkChips(['Veterans Crisis Line info', 'Talk about VA healthcare', 'Start over']);
+      }, 400);
+      return;
+    }
+
+    // PII intercept — warn veteran before sending to AI
+    if (containsPII(text)) {
+      userMsg(text);
+      turnCount++;
+      checkWarn();
+      setTimeout(function () {
+        clearOpts();
+        botMsg(PII_WARNING);
+        mkChips(s('fallbackChips'));
       }, 400);
       return;
     }
