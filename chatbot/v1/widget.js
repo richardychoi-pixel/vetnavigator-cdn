@@ -861,7 +861,7 @@
       sumSent: '✓ Summary sent! Check your inbox.',
       contVSO: 'Continue with your VSO counselor:',
       startFresh: 'Start Fresh →',
-      gated: 'This topic is available on Starter plans and above. Contact your VSO counselor for personalized help — free.',
+      gated: 'For this topic, we recommend speaking directly with your VSO counselor — they can provide personalized guidance at no cost.',
       fallback: "Great question. For the most accurate guidance I'd recommend speaking with a free VSO counselor.",
       fallbackChips: ['Find a VSO counselor', 'See all benefits', 'Start over']
     },
@@ -879,7 +879,7 @@
       sumSent: '✓ ¡Resumen enviado!',
       contVSO: 'Continúe con su consejero VSO:',
       startFresh: 'Comenzar de Nuevo →',
-      gated: 'Este tema está disponible en planes Starter y superiores.',
+      gated: 'Para este tema, recomendamos hablar directamente con su consejero VSO — pueden brindar orientación personalizada sin costo.',
       fallback: '¡Buena pregunta! Recomiendo hablar con un consejero VSO gratuito.',
       fallbackChips: ['Buscar consejero VSO', 'Ver todos los beneficios', 'Empezar de nuevo']
     },
@@ -897,7 +897,7 @@
       sumSent: '✓ Đã gửi tóm tắt!',
       contVSO: 'Tiếp tục với cố vấn VSO:',
       startFresh: 'Bắt Đầu Lại →',
-      gated: 'Chủ đề này có sẵn trên các gói Starter trở lên.',
+      gated: 'Đối với chủ đề này, chúng tôi khuyên bạn nên nói chuyện trực tiếp với cố vấn VSO — họ có thể cung cấp hướng dẫn cá nhân miễn phí.',
       fallback: 'Câu hỏi hay! Tôi khuyên nên nói chuyện với cố vấn VSO miễn phí.',
       fallbackChips: ['Tìm cố vấn VSO', 'Xem tất cả phúc lợi', 'Bắt đầu lại']
     },
@@ -915,7 +915,7 @@
       sumSent: '✓ 요약이 전송되었습니다!',
       contVSO: 'VSO 상담사와 계속하기:',
       startFresh: '처음으로 →',
-      gated: '이 주제는 Starter 이상 플랜에서 이용 가능합니다.',
+      gated: '이 주제에 대해서는 VSO 상담사와 직접 상담하시기를 권장합니다 — 무료로 개인 맞춤 안내를 받으실 수 있습니다.',
       fallback: '좋은 질문입니다! 무료 VSO 상담사와 상담하시기를 권장합니다.',
       fallbackChips: ['VSO 상담사 찾기', '모든 혜택 보기', '처음으로']
     },
@@ -933,7 +933,7 @@
       sumSent: '✓ Naipadala na ang buod!',
       contVSO: 'Magpatuloy sa iyong VSO counselor:',
       startFresh: 'Magsimula Muli →',
-      gated: 'Ang paksang ito ay available sa mga Starter plan at mas mataas.',
+      gated: 'Para sa paksang ito, inirerekomenda naming makipag-usap nang direkta sa iyong VSO counselor — maaari silang magbigay ng personal na gabay nang walang bayad.',
       fallback: 'Magandang tanong! Inirerekomenda ang pakikipag-usap sa libreng VSO counselor.',
       fallbackChips: ['Humanap ng VSO counselor', 'Tingnan ang lahat ng benepisyo', 'Magsimula muli']
     }
