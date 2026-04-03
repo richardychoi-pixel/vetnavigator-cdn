@@ -1334,11 +1334,6 @@
       +   '<div id="vnlb">' + lbs + '</div>'
       +   '<div id="vnpb"><div id="vnpr"></div></div>'
       +   '<div id="vnchat" class="vntp act" data-panel="chat">'
-      +     '<div id="vndc" style="display:none;position:absolute;inset:0;z-index:999;background:#0a1628;border-radius:inherit;overflow-y:auto;padding:20px 18px;box-sizing:border-box;flex-direction:column;justify-content:center">'
-      +       '<div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:14px;line-height:1.4" id="vndct"></div>'
-      +       '<div style="font-size:12px;color:rgba(255,255,255,.75);line-height:1.7;margin-bottom:18px" id="vndcb"></div>'
-      +       '<button style="width:100%;padding:11px;border-radius:9px;background:#B22234;border:none;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.3px" id="vnack"></button>'
-      +     '</div>'
       +     '<div id="vnms"></div>'
       +     '<div id="vnwn"></div>'
       +     '<div id="vnlm">'
@@ -1638,21 +1633,22 @@
   // ── DISCLAIMER SCREEN ──────────────────────────────────────────────────────
   function showDisclaimer(queuedVal) {
     queuedInput = queuedVal || null;
-    var dc = ge('vndc');
-    if (!dc) return;
-    ge('vndct').textContent  = s('disclaimerTitle');
-    ge('vndcb').innerHTML    = s('disclaimerBody').replace(/\n/g, '<br>');
-    ge('vnack').textContent  = s('disclaimerBtn');
-    dc.style.display         = 'flex';
-    ge('vnack').onclick = function () {
+    clearOpts();
+    botMsg('<strong>' + s('disclaimerTitle') + '</strong>\n\n' + s('disclaimerBody'));
+    var btnLabel = s('disclaimerBtn');
+    var b = document.createElement('button');
+    b.className   = 'vncp';
+    b.textContent = btnLabel;
+    b.addEventListener('click', function () {
       disclaimerAcked = true;
-      dc.style.display = 'none';
+      clearOpts();
       if (queuedInput !== null) {
         var val = queuedInput;
         queuedInput = null;
         handle(val);
       }
-    };
+    });
+    ge('vnch').appendChild(b);
   }
 
   // ── LIMIT SCREEN ───────────────────────────────────────────────────────────
@@ -2077,8 +2073,9 @@
 
   // ── MAIN HANDLE ────────────────────────────────────────────────────────────
   function handle(text) {
-    // Disclaimer gate — all entry paths
-    if (!disclaimerAcked) {
+    // Disclaimer gate — fires only when veteran selects one of the 4 welcome identity cards
+    var DISCLAIMER_TRIGGERS = ['Veteran', 'Active Duty', 'Spouse / Family', 'Surviving Spouse'];
+    if (!disclaimerAcked && DISCLAIMER_TRIGGERS.indexOf(text) !== -1) {
       showDisclaimer(text);
       return;
     }
