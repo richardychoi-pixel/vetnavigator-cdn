@@ -1849,7 +1849,7 @@
   // ── PII INTERCEPT ──────────────────────────────────────────────────────────
   var PII_RE = /\b(\d{3}[-\s]?\d{2}[-\s]?\d{4})\b|\b(c\d{7,9})\b|\b(\d{10})\b|\b(va\s*file\s*(number|#|no)?[\s:]*\d+)\b|\b(claim\s*(number|#|no)?[\s:]*\d+)\b|\b(dob|date\s*of\s*birth)[\s:]+\d/i;
 
-  var PII_WARNING = 'For your privacy and security, please do not enter personal information like Social Security numbers, claim numbers, dates of birth, or VA file numbers in this chat.\n\nI can still help you with general VA benefits information — what would you like to know?';
+  var PII_WARNING = 'For your privacy and security, please do not enter personal information like Social Security numbers, claim numbers, dates of birth, or VA file numbers in this chat.\n\nYour message has not been saved or shared.\n\nI can still help you with general VA benefits information — what would you like to know?';
 
   function containsPII(text) {
     return PII_RE.test(text);
