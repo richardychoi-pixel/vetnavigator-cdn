@@ -135,8 +135,10 @@
   var lang        = 'en';
   var turnCount   = 0;
   var chatHistory = [];
-  var panelOpen   = false;
-  var chatStarted = false;
+  var panelOpen       = false;
+  var chatStarted     = false;
+  var disclaimerAcked = false;
+  var queuedInput     = null;
 
   // ── TOPIC TIER GATES ───────────────────────────────────────────────────────
   var TOPIC_TIERS = {
@@ -863,7 +865,10 @@
       startFresh: 'Start Fresh →',
       gated: 'For this topic, we recommend speaking directly with your VSO counselor — they can provide personalized guidance at no cost.',
       fallback: "Great question. For the most accurate guidance I'd recommend speaking with a free VSO counselor.",
-      fallbackChips: ['Find a VSO counselor', 'See all benefits', 'Start over']
+      fallbackChips: ['Find a VSO counselor', 'See all benefits', 'Start over'],
+      disclaimerTitle: 'Before we get started',
+      disclaimerBody: 'VetNavigator provides general VA benefits information only.\n\nThis chatbot is not a lawyer, claims agent, or VSO counselor. Information shared here is for guidance purposes and may not reflect your specific situation.\n\nFor personalized help, contact your local VSO counselor.\n\nDo not share personal information such as your Social Security Number, VA file number, date of birth, or financial details in this chat.\n\nFor further details, please review our <a href="https://vetnavigator.ai/privacy.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Privacy Policy</a> and <a href="https://vetnavigator.ai/terms.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Terms of Service</a>.',
+      disclaimerBtn: 'I Understand — Let\'s Go'
     },
     es: {
       ph: 'Escriba una pregunta o toque una opción…',
@@ -881,7 +886,10 @@
       startFresh: 'Comenzar de Nuevo →',
       gated: 'Para este tema, recomendamos hablar directamente con su consejero VSO — pueden brindar orientación personalizada sin costo.',
       fallback: '¡Buena pregunta! Recomiendo hablar con un consejero VSO gratuito.',
-      fallbackChips: ['Buscar consejero VSO', 'Ver todos los beneficios', 'Empezar de nuevo']
+      fallbackChips: ['Buscar consejero VSO', 'Ver todos los beneficios', 'Empezar de nuevo'],
+      disclaimerTitle: 'Antes de comenzar',
+      disclaimerBody: 'VetNavigator proporciona información general sobre beneficios del VA únicamente.\n\nEste chatbot no es un abogado, agente de reclamaciones ni consejero VSO. La información compartida aquí es orientativa y puede no reflejar su situación específica.\n\nPara ayuda personalizada, comuníquese con su consejero VSO local.\n\nNo comparta información personal como su Número de Seguro Social, número de archivo del VA, fecha de nacimiento o detalles financieros en este chat.\n\nPara más detalles, consulte nuestra <a href="https://vetnavigator.ai/privacy.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Política de Privacidad</a> y <a href="https://vetnavigator.ai/terms.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Términos de Servicio</a>.',
+      disclaimerBtn: 'Entiendo — ¡Comencemos!'
     },
     vi: {
       ph: 'Nhập câu hỏi hoặc chọn tùy chọn…',
@@ -899,7 +907,10 @@
       startFresh: 'Bắt Đầu Lại →',
       gated: 'Đối với chủ đề này, chúng tôi khuyên bạn nên nói chuyện trực tiếp với cố vấn VSO — họ có thể cung cấp hướng dẫn cá nhân miễn phí.',
       fallback: 'Câu hỏi hay! Tôi khuyên nên nói chuyện với cố vấn VSO miễn phí.',
-      fallbackChips: ['Tìm cố vấn VSO', 'Xem tất cả phúc lợi', 'Bắt đầu lại']
+      fallbackChips: ['Tìm cố vấn VSO', 'Xem tất cả phúc lợi', 'Bắt đầu lại'],
+      disclaimerTitle: 'Trước khi bắt đầu',
+      disclaimerBody: 'VetNavigator chỉ cung cấp thông tin chung về phúc lợi VA.\n\nChatbot này không phải là luật sư, đại lý yêu cầu, hay cố vấn VSO. Thông tin được chia sẻ ở đây chỉ mang tính hướng dẫn và có thể không phản ánh tình huống cụ thể của bạn.\n\nĐể được hỗ trợ cá nhân, hãy liên hệ với cố vấn VSO địa phương của bạn.\n\nKhông chia sẻ thông tin cá nhân như Số An sinh Xã hội, số hồ sơ VA, ngày sinh hoặc thông tin tài chính trong chat này.\n\nĐể biết thêm chi tiết, vui lòng xem <a href="https://vetnavigator.ai/privacy.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Chính sách Quyền riêng tư</a> và <a href="https://vetnavigator.ai/terms.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Điều khoản Dịch vụ</a> của chúng tôi.',
+      disclaimerBtn: 'Tôi hiểu — Bắt đầu nào!'
     },
     ko: {
       ph: '질문을 입력하거나 옵션을 탭하세요…',
@@ -917,7 +928,10 @@
       startFresh: '처음으로 →',
       gated: '이 주제에 대해서는 VSO 상담사와 직접 상담하시기를 권장합니다 — 무료로 개인 맞춤 안내를 받으실 수 있습니다.',
       fallback: '좋은 질문입니다! 무료 VSO 상담사와 상담하시기를 권장합니다.',
-      fallbackChips: ['VSO 상담사 찾기', '모든 혜택 보기', '처음으로']
+      fallbackChips: ['VSO 상담사 찾기', '모든 혜택 보기', '처음으로'],
+      disclaimerTitle: '시작하기 전에',
+      disclaimerBody: 'VetNavigator는 VA 혜택에 관한 일반적인 정보만 제공합니다.\n\n이 챗봇은 변호사, 청구 대리인 또는 VSO 상담사가 아닙니다. 여기서 공유되는 정보는 안내 목적이며 귀하의 특정 상황을 반영하지 않을 수 있습니다.\n\n개인 맞춤 도움을 받으려면 지역 VSO 상담사에게 문의하십시오.\n\n이 채팅에서 주민등록번호, VA 파일 번호, 생년월일 또는 재정 정보와 같은 개인 정보를 공유하지 마십시오.\n\n자세한 내용은 <a href="https://vetnavigator.ai/privacy.html" target="_blank" style="color:#e8c84a;text-decoration:underline">개인정보 보호정책</a> 및 <a href="https://vetnavigator.ai/terms.html" target="_blank" style="color:#e8c84a;text-decoration:underline">서비스 약관</a>을 검토하십시오.',
+      disclaimerBtn: '이해합니다 — 시작하겠습니다!'
     },
     tl: {
       ph: 'Mag-type ng tanong o mag-tap ng opsyon…',
@@ -935,7 +949,10 @@
       startFresh: 'Magsimula Muli →',
       gated: 'Para sa paksang ito, inirerekomenda naming makipag-usap nang direkta sa iyong VSO counselor — maaari silang magbigay ng personal na gabay nang walang bayad.',
       fallback: 'Magandang tanong! Inirerekomenda ang pakikipag-usap sa libreng VSO counselor.',
-      fallbackChips: ['Humanap ng VSO counselor', 'Tingnan ang lahat ng benepisyo', 'Magsimula muli']
+      fallbackChips: ['Humanap ng VSO counselor', 'Tingnan ang lahat ng benepisyo', 'Magsimula muli'],
+      disclaimerTitle: 'Bago tayo magsimula',
+      disclaimerBody: 'Ang VetNavigator ay nagbibigay lamang ng pangkalahatang impormasyon tungkol sa mga benepisyo ng VA.\n\nAng chatbot na ito ay hindi isang abogado, ahente ng claims, o VSO counselor. Ang impormasyong ibinabahagi dito ay para sa gabay lamang at maaaring hindi sumasalamin sa iyong partikular na sitwasyon.\n\nPara sa personalized na tulong, makipag-ugnayan sa iyong lokal na VSO counselor.\n\nHuwag ibahagi ang personal na impormasyon tulad ng iyong Social Security Number, VA file number, petsa ng kapanganakan, o mga detalyeng pinansyal sa chat na ito.\n\nPara sa karagdagang detalye, mangyaring suriin ang aming <a href="https://vetnavigator.ai/privacy.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Patakaran sa Privacy</a> at <a href="https://vetnavigator.ai/terms.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Mga Tuntunin ng Serbisyo</a>.',
+      disclaimerBtn: 'Naiintindihan ko — Magsimula na!'
     }
   };
 
@@ -1317,6 +1334,11 @@
       +   '<div id="vnlb">' + lbs + '</div>'
       +   '<div id="vnpb"><div id="vnpr"></div></div>'
       +   '<div id="vnchat" class="vntp act" data-panel="chat">'
+      +     '<div id="vndc" style="display:none;position:absolute;inset:0;z-index:999;background:#0a1628;border-radius:inherit;overflow-y:auto;padding:20px 18px;box-sizing:border-box;flex-direction:column;justify-content:center">'
+      +       '<div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:14px;line-height:1.4" id="vndct"></div>'
+      +       '<div style="font-size:12px;color:rgba(255,255,255,.75);line-height:1.7;margin-bottom:18px" id="vndcb"></div>'
+      +       '<button style="width:100%;padding:11px;border-radius:9px;background:#B22234;border:none;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.3px" id="vnack"></button>'
+      +     '</div>'
       +     '<div id="vnms"></div>'
       +     '<div id="vnwn"></div>'
       +     '<div id="vnlm">'
@@ -1611,6 +1633,26 @@
       ge('vnwn').style.display = 'block';
       ge('vnwn').textContent = s('warn')(rem);
     }
+  }
+
+  // ── DISCLAIMER SCREEN ──────────────────────────────────────────────────────
+  function showDisclaimer(queuedVal) {
+    queuedInput = queuedVal || null;
+    var dc = ge('vndc');
+    if (!dc) return;
+    ge('vndct').textContent  = s('disclaimerTitle');
+    ge('vndcb').innerHTML    = s('disclaimerBody').replace(/\n/g, '<br>');
+    ge('vnack').textContent  = s('disclaimerBtn');
+    dc.style.display         = 'flex';
+    ge('vnack').onclick = function () {
+      disclaimerAcked = true;
+      dc.style.display = 'none';
+      if (queuedInput !== null) {
+        var val = queuedInput;
+        queuedInput = null;
+        handle(val);
+      }
+    };
   }
 
   // ── LIMIT SCREEN ───────────────────────────────────────────────────────────
@@ -2035,6 +2077,11 @@
 
   // ── MAIN HANDLE ────────────────────────────────────────────────────────────
   function handle(text) {
+    // Disclaimer gate — all entry paths
+    if (!disclaimerAcked) {
+      showDisclaimer(text);
+      return;
+    }
     if (turnCount >= CONV_LIMIT) { showLimit(); return; }
 
     // Crisis intercept — bypass routing and AI entirely
@@ -2110,8 +2157,14 @@
     rec.continuous     = false;
     rec.interimResults = false;
     rec.onresult = function (e) {
-      ge('vntx').value = e.results[0][0].transcript;
+      var transcript = e.results[0][0].transcript;
       m.classList.remove('on');
+      if (!disclaimerAcked) {
+        ge('vntx').value = '';
+        showDisclaimer(transcript);
+      } else {
+        ge('vntx').value = transcript;
+      }
     };
     rec.onend = function () { m.classList.remove('on'); };
     m.addEventListener('click', function () {
