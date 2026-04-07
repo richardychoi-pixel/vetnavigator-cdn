@@ -2436,6 +2436,9 @@
   function init() {
     var EMBED_TARGET = window.__vnEmbedTarget || null;
 
+    // Set SHOW_BRANDING before buildHTML so the panel HTML is included
+    SHOW_BRANDING = (TIER_LVL >= 4 || IS_DEMO);
+
     // Build and inject widget HTML
     var root = document.createElement('div');
     root.id  = 'vn-root';
@@ -2492,9 +2495,6 @@
       buildVSO();
       setTimeout(function () { renderNode('welcome'); }, 200);
     }
-
-    // Enable branding tab for Premium/Demo
-    SHOW_BRANDING = (TIER_LVL >= 4 || IS_DEMO);
 
     // Apply Premium accent color if set
     if (ORG_ACCENT) {
