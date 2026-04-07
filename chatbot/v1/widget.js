@@ -1291,11 +1291,15 @@
         + '<div id="vnbrwc" style="font-size:10px;color:rgba(255,255,255,.3);text-align:right;margin-bottom:14px">0 / 120</div>'
         // Accent color section
         + '<div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Accent Color</div>'
-        + '<div style="font-size:10.5px;color:rgba(255,255,255,.35);margin-bottom:8px;line-height:1.5">Applied to header, send button, and interactive elements.</div>'
-        + '<div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">'
-        + '<input id="vnbrcb" type="color" value="#B22234" style="width:44px;height:36px;border-radius:8px;border:.5px solid rgba(255,255,255,.15);background:none;cursor:pointer;padding:2px">'
-        + '<input id="vnbrch" type="text" maxlength="7" placeholder="#B22234" style="flex:1;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 10px;font-size:13px;color:rgba(255,255,255,.85);font-family:monospace;outline:none">'
-        + '<div id="vnbrcp" style="width:36px;height:36px;border-radius:8px;border:.5px solid rgba(255,255,255,.1);background:#B22234"></div>'
+        + '<div style="font-size:10.5px;color:rgba(255,255,255,.35);margin-bottom:8px;line-height:1.5">Applied to the header and interactive elements. Click a color to preview.</div>'
+        + '<div id="vnbrswatches" style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:14px">'
+        + ['#B22234','#1a6bbf','#1a8f4e','#c45e00','#6b3fa0','#0e7c8a','#b8860b','#c0392b','#2e7d32','#1565a0','#b84300','#7b3f6e'].map(function(c){
+            return '<div class="vnbrsw" data-color="' + c + '" style="height:32px;border-radius:8px;background:' + c + ';cursor:pointer;border:2px solid transparent;transition:border-color .15s" title="' + c + '"></div>';
+          }).join('')
+        + '</div>'
+        + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">'
+        + '<div id="vnbrcp" style="width:32px;height:32px;border-radius:6px;border:.5px solid rgba(255,255,255,.2);background:#B22234;flex-shrink:0"></div>'
+        + '<span id="vnbrch" style="font-size:12px;color:rgba(255,255,255,.5);font-family:monospace">#B22234 selected</span>'
         + '</div>'
         // Save button
         + '<button id="vnbrsv" style="width:100%;padding:10px;border-radius:8px;background:var(--vr);border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Save Branding</button>'
@@ -2284,6 +2288,28 @@
     window.removeEventListener('scroll', hideNotif);
   }
 
+  // ── ACCENT COLOR HELPER ────────────────────────────────────────────────────
+  function applyAccent(hex) {
+    // Update --vr CSS variable
+    var accentStyle = document.getElementById('vns');
+    if (accentStyle) {
+      accentStyle.textContent = accentStyle.textContent.replace(/--vr\s*:\s*[^;]+;/, '--vr:' + hex + ';');
+    }
+    // Update header gradient — lighten the color slightly for gradient end stop
+    var hdr = document.getElementById('vnh');
+    if (hdr) {
+      // Parse hex to RGB and lighten by 15% for gradient end
+      var r = parseInt(hex.slice(1,3),16);
+      var g = parseInt(hex.slice(3,5),16);
+      var b = parseInt(hex.slice(5,7),16);
+      var r2 = Math.min(255, Math.round(r + (255-r)*0.15));
+      var g2 = Math.min(255, Math.round(g + (255-g)*0.15));
+      var b2 = Math.min(255, Math.round(b + (255-b)*0.15));
+      var hex2 = '#' + [r2,g2,b2].map(function(x){return x.toString(16).padStart(2,'0');}).join('');
+      hdr.style.background = 'linear-gradient(135deg,' + hex + ',' + hex2 + ')';
+    }
+  }
+
   // ── ADMIN ──────────────────────────────────────────────────────────────────
   function vnAE() {
     var r = document.createElement('div'); r.className = 'vnadr';
@@ -2497,12 +2523,7 @@
     }
 
     // Apply Premium accent color if set
-    if (ORG_ACCENT) {
-      var accentStyle = document.getElementById('vns');
-      if (accentStyle) {
-        accentStyle.textContent = accentStyle.textContent.replace(/--vr\s*:\s*[^;]+;/, '--vr:' + ORG_ACCENT + ';');
-      }
-    }
+    if (ORG_ACCENT) { applyAccent(ORG_ACCENT); }
 
     // Set initial text
     ge('vntx').placeholder  = s('ph');
@@ -2555,7 +2576,13 @@
     if (SHOW_BRANDING) {
       // Populate current values on open
       if (ORG_WELCOME) ge('vnbrwm').value = ORG_WELCOME;
-      if (ORG_ACCENT)  { ge('vnbrcb').value = ORG_ACCENT; ge('vnbrch').value = ORG_ACCENT; ge('vnbrcp').style.background = ORG_ACCENT; }
+      var selectedAccent = ORG_ACCENT || '#B22234';
+      if (ORG_ACCENT) {
+        ge('vnbrcp').style.background = ORG_ACCENT;
+        ge('vnbrch').textContent = ORG_ACCENT + ' selected';
+        var activeSw = document.querySelector('.vnbrsw[data-color="' + ORG_ACCENT + '"]');
+        if (activeSw) activeSw.style.borderColor = '#fff';
+      }
       if (ORG_LOGO)    { ge('vnbrli').src = ORG_LOGO; ge('vnbrl').style.display = 'block'; }
 
       // Welcome message character counter
@@ -2563,19 +2590,20 @@
         ge('vnbrwc').textContent = this.value.length + ' / 120';
       });
 
-      // Color picker → hex input sync
-      ge('vnbrcb').addEventListener('input', function () {
-        ge('vnbrch').value = this.value;
-        ge('vnbrcp').style.background = this.value;
-      });
-
-      // Hex input → color picker sync
-      ge('vnbrch').addEventListener('input', function () {
-        var v = this.value.trim();
-        if (/^#[0-9a-fA-F]{6}$/.test(v)) {
-          ge('vnbrcb').value = v;
-          ge('vnbrcp').style.background = v;
-        }
+      // Swatch click handler
+      document.querySelectorAll('.vnbrsw').forEach(function (sw) {
+        sw.addEventListener('click', function () {
+          var color = this.getAttribute('data-color');
+          selectedAccent = color;
+          // Update preview
+          ge('vnbrcp').style.background = color;
+          ge('vnbrch').textContent = color + ' selected';
+          // Highlight selected swatch, clear others
+          document.querySelectorAll('.vnbrsw').forEach(function (s) { s.style.borderColor = 'transparent'; });
+          this.style.borderColor = '#fff';
+          // Live preview
+          applyAccent(color);
+        });
       });
 
       // Logo file picker trigger
@@ -2622,13 +2650,7 @@
       // Save welcome message + accent color
       ge('vnbrsv').addEventListener('click', function () {
         var welcome = ge('vnbrwm').value.trim();
-        var accent  = ge('vnbrch').value.trim();
-        if (accent && !/^#[0-9a-fA-F]{6}$/.test(accent)) {
-          ge('vnbrsvd').style.display = 'block';
-          ge('vnbrsvd').style.color = 'rgba(255,120,120,.85)';
-          ge('vnbrsvd').textContent = '✗ Invalid hex color — use format #RRGGBB';
-          return;
-        }
+        var accent = selectedAccent || '';
         // Apply live immediately
         if (welcome) {
           ORG_WELCOME = welcome;
@@ -2636,10 +2658,7 @@
         }
         if (accent) {
           ORG_ACCENT = accent;
-          var accentStyle = document.getElementById('vns');
-          if (accentStyle) {
-            accentStyle.textContent = accentStyle.textContent.replace(/--vr\s*:\s*[^;]+;/, '--vr:' + accent + ';');
-          }
+          applyAccent(accent);
         }
         // Persist to server
         if (LICENSE_KEY && LICENSE_KEY.startsWith('VN-') && LICENSE_KEY !== 'VN-DEMO') {
