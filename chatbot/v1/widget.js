@@ -1663,6 +1663,130 @@
   } else {
     boot();
   }
+  // ── ACCENT COLOR HELPER ────────────────────────────────────────────────────
+  function applyAccent(hex) {
+    // Update --vr CSS variable
+    var accentStyle = document.getElementById('vns');
+    if (accentStyle) {
+      accentStyle.textContent = accentStyle.textContent.replace(/--vr\s*:\s*[^;]+;/, '--vr:' + hex + ';');
+    }
+    // Update header gradient — lighten the color slightly for gradient end stop
+    var hdr = document.getElementById('vnh');
+    if (hdr) {
+      var r = parseInt(hex.slice(1,3),16);
+      var g = parseInt(hex.slice(3,5),16);
+      var b = parseInt(hex.slice(5,7),16);
+      var r2 = Math.min(255, Math.round(r + (255-r)*0.15));
+      var g2 = Math.min(255, Math.round(g + (255-g)*0.15));
+      var b2 = Math.min(255, Math.round(b + (255-b)*0.15));
+      var hex2 = '#' + [r2,g2,b2].map(function(x){return x.toString(16).padStart(2,'0');}).join('');
+      hdr.style.background = 'linear-gradient(135deg,' + hex + ',' + hex2 + ')';
+    }
+  }
+
+  // ── BRANDING PANEL WIRING ─────────────────────────────────────────────────
+  // Called from init() in widget-engine.js after DOM is ready
+  function initBranding() {
+    if (!SHOW_BRANDING) return;
+
+    // Populate current values on open
+    if (ORG_WELCOME) ge('vnbrwm').value = ORG_WELCOME;
+    if (ORG_LOGO)    { ge('vnbrli').src = ORG_LOGO; ge('vnbrl').style.display = 'block'; }
+
+    var selectedAccent = ORG_ACCENT || '#B22234';
+    if (ORG_ACCENT) {
+      ge('vnbrcp').style.background = ORG_ACCENT;
+      ge('vnbrch').textContent = ORG_ACCENT + ' selected';
+      var activeSw = document.querySelector('.vnbrsw[data-color="' + ORG_ACCENT + '"]');
+      if (activeSw) activeSw.style.borderColor = '#fff';
+    }
+
+    // Welcome message character counter
+    ge('vnbrwm').addEventListener('input', function () {
+      ge('vnbrwc').textContent = this.value.length + ' / 120';
+    });
+
+    // Swatch click handler
+    document.querySelectorAll('.vnbrsw').forEach(function (sw) {
+      sw.addEventListener('click', function () {
+        var color = this.getAttribute('data-color');
+        selectedAccent = color;
+        ge('vnbrcp').style.background = color;
+        ge('vnbrch').textContent = color + ' selected';
+        document.querySelectorAll('.vnbrsw').forEach(function (s) { s.style.borderColor = 'transparent'; });
+        this.style.borderColor = '#fff';
+        applyAccent(color);
+      });
+    });
+
+    // Logo file picker trigger
+    ge('vnbrub').addEventListener('click', function () { ge('vnbrf').click(); });
+
+    // Logo file selected — upload immediately
+    ge('vnbrf').addEventListener('change', function () {
+      var file = this.files && this.files[0];
+      if (!file) return;
+      var st = ge('vnbrst');
+      st.style.color = 'rgba(232,200,74,.85)';
+      st.textContent = '⏳ Uploading logo…';
+      ge('vnbrub').disabled = true;
+      var fd = new FormData();
+      fd.append('logo', file);
+      fetch(VN_API + '/logo?key=' + encodeURIComponent(LICENSE_KEY), {
+        method: 'POST',
+        body: fd
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.logoUrl) {
+          ORG_LOGO = d.logoUrl;
+          ge('vnbrli').src = d.logoUrl;
+          ge('vnbrl').style.display = 'block';
+          var hdrImg = ge('vn-org-logo');
+          if (hdrImg) { hdrImg.src = d.logoUrl; hdrImg.style.display = ''; }
+          st.style.color = 'rgba(74,222,128,.9)';
+          st.textContent = '✓ Logo uploaded successfully!';
+        } else {
+          st.style.color = 'rgba(255,120,120,.85)';
+          st.textContent = '✗ ' + (d.error || 'Upload failed — try again.');
+        }
+        ge('vnbrub').disabled = false;
+      })
+      .catch(function () {
+        ge('vnbrst').style.color = 'rgba(255,120,120,.85)';
+        ge('vnbrst').textContent = '✗ Upload failed — check your connection.';
+        ge('vnbrub').disabled = false;
+      });
+    });
+
+    // Save welcome message + accent color
+    ge('vnbrsv').addEventListener('click', function () {
+      var welcome = ge('vnbrwm').value.trim();
+      var accent = selectedAccent || '';
+      if (welcome) {
+        ORG_WELCOME = welcome;
+        buildWelcome();
+      }
+      if (accent) {
+        ORG_ACCENT = accent;
+        applyAccent(accent);
+      }
+      if (LICENSE_KEY && LICENSE_KEY.startsWith('VN-') && LICENSE_KEY !== 'VN-DEMO') {
+        fetch(VN_API + '/config?key=' + encodeURIComponent(LICENSE_KEY), {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orgWelcome:     welcome || '',
+            orgAccentColor: accent  || ''
+          })
+        }).catch(function () {});
+      }
+      ge('vnbrsvd').style.display = 'block';
+      ge('vnbrsvd').style.color = 'rgba(74,222,128,.9)';
+      ge('vnbrsvd').textContent = '✓ Branding saved!';
+      setTimeout(function () { ge('vnbrsvd').style.display = 'none'; }, 2500);
+    });
+  }
   // ── SESSION WARNING ────────────────────────────────────────────────────────
   function checkWarn() {
     var rem = CONV_LIMIT - turnCount;
@@ -2288,28 +2412,6 @@
     window.removeEventListener('scroll', hideNotif);
   }
 
-  // ── ACCENT COLOR HELPER ────────────────────────────────────────────────────
-  function applyAccent(hex) {
-    // Update --vr CSS variable
-    var accentStyle = document.getElementById('vns');
-    if (accentStyle) {
-      accentStyle.textContent = accentStyle.textContent.replace(/--vr\s*:\s*[^;]+;/, '--vr:' + hex + ';');
-    }
-    // Update header gradient — lighten the color slightly for gradient end stop
-    var hdr = document.getElementById('vnh');
-    if (hdr) {
-      // Parse hex to RGB and lighten by 15% for gradient end
-      var r = parseInt(hex.slice(1,3),16);
-      var g = parseInt(hex.slice(3,5),16);
-      var b = parseInt(hex.slice(5,7),16);
-      var r2 = Math.min(255, Math.round(r + (255-r)*0.15));
-      var g2 = Math.min(255, Math.round(g + (255-g)*0.15));
-      var b2 = Math.min(255, Math.round(b + (255-b)*0.15));
-      var hex2 = '#' + [r2,g2,b2].map(function(x){return x.toString(16).padStart(2,'0');}).join('');
-      hdr.style.background = 'linear-gradient(135deg,' + hex + ',' + hex2 + ')';
-    }
-  }
-
   // ── ADMIN ──────────────────────────────────────────────────────────────────
   function vnAE() {
     var r = document.createElement('div'); r.className = 'vnadr';
@@ -2572,111 +2674,7 @@
     // Restart
     ge('vnrs').addEventListener('click', restart);
 
-    // Branding panel wiring (Premium only)
-    if (SHOW_BRANDING) {
-      // Populate current values on open
-      if (ORG_WELCOME) ge('vnbrwm').value = ORG_WELCOME;
-      var selectedAccent = ORG_ACCENT || '#B22234';
-      if (ORG_ACCENT) {
-        ge('vnbrcp').style.background = ORG_ACCENT;
-        ge('vnbrch').textContent = ORG_ACCENT + ' selected';
-        var activeSw = document.querySelector('.vnbrsw[data-color="' + ORG_ACCENT + '"]');
-        if (activeSw) activeSw.style.borderColor = '#fff';
-      }
-      if (ORG_LOGO)    { ge('vnbrli').src = ORG_LOGO; ge('vnbrl').style.display = 'block'; }
-
-      // Welcome message character counter
-      ge('vnbrwm').addEventListener('input', function () {
-        ge('vnbrwc').textContent = this.value.length + ' / 120';
-      });
-
-      // Swatch click handler
-      document.querySelectorAll('.vnbrsw').forEach(function (sw) {
-        sw.addEventListener('click', function () {
-          var color = this.getAttribute('data-color');
-          selectedAccent = color;
-          // Update preview
-          ge('vnbrcp').style.background = color;
-          ge('vnbrch').textContent = color + ' selected';
-          // Highlight selected swatch, clear others
-          document.querySelectorAll('.vnbrsw').forEach(function (s) { s.style.borderColor = 'transparent'; });
-          this.style.borderColor = '#fff';
-          // Live preview
-          applyAccent(color);
-        });
-      });
-
-      // Logo file picker trigger
-      ge('vnbrub').addEventListener('click', function () { ge('vnbrf').click(); });
-
-      // Logo file selected — upload immediately
-      ge('vnbrf').addEventListener('change', function () {
-        var file = this.files && this.files[0];
-        if (!file) return;
-        var st = ge('vnbrst');
-        st.style.color = 'rgba(232,200,74,.85)';
-        st.textContent = '⏳ Uploading logo…';
-        ge('vnbrub').disabled = true;
-        var fd = new FormData();
-        fd.append('logo', file);
-        fetch(VN_API + '/logo?key=' + encodeURIComponent(LICENSE_KEY), {
-          method: 'POST',
-          body: fd
-        })
-        .then(function (r) { return r.json(); })
-        .then(function (d) {
-          if (d.logoUrl) {
-            ORG_LOGO = d.logoUrl;
-            ge('vnbrli').src = d.logoUrl;
-            ge('vnbrl').style.display = 'block';
-            // Apply logo live in header
-            var hdrImg = ge('vn-org-logo');
-            if (hdrImg) { hdrImg.src = d.logoUrl; hdrImg.style.display = ''; }
-            st.style.color = 'rgba(74,222,128,.9)';
-            st.textContent = '✓ Logo uploaded successfully!';
-          } else {
-            st.style.color = 'rgba(255,120,120,.85)';
-            st.textContent = '✗ ' + (d.error || 'Upload failed — try again.');
-          }
-          ge('vnbrub').disabled = false;
-        })
-        .catch(function () {
-          ge('vnbrst').style.color = 'rgba(255,120,120,.85)';
-          ge('vnbrst').textContent = '✗ Upload failed — check your connection.';
-          ge('vnbrub').disabled = false;
-        });
-      });
-
-      // Save welcome message + accent color
-      ge('vnbrsv').addEventListener('click', function () {
-        var welcome = ge('vnbrwm').value.trim();
-        var accent = selectedAccent || '';
-        // Apply live immediately
-        if (welcome) {
-          ORG_WELCOME = welcome;
-          buildWelcome();
-        }
-        if (accent) {
-          ORG_ACCENT = accent;
-          applyAccent(accent);
-        }
-        // Persist to server
-        if (LICENSE_KEY && LICENSE_KEY.startsWith('VN-') && LICENSE_KEY !== 'VN-DEMO') {
-          fetch(VN_API + '/config?key=' + encodeURIComponent(LICENSE_KEY), {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              orgWelcome:     welcome || '',
-              orgAccentColor: accent  || ''
-            })
-          }).catch(function () {});
-        }
-        ge('vnbrsvd').style.display = 'block';
-        ge('vnbrsvd').style.color = 'rgba(74,222,128,.9)';
-        ge('vnbrsvd').textContent = '✓ Branding saved!';
-        setTimeout(function () { ge('vnbrsvd').style.display = 'none'; }, 2500);
-      });
-    }
+    initBranding();
 
     // Admin panel wiring (Starter+ AND ?vnadmin=1)
     if (HAS_ADMIN && SHOW_ADMIN) {
