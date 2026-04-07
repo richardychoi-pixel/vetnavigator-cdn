@@ -1210,6 +1210,7 @@
   // ── ADMIN URL GATE ─────────────────────────────────────────────────────────
   // Admin Panel only shows when VSO adds ?vnadmin=1 to their site URL
   var SHOW_ADMIN = /[?&]vnadmin=1(?:&|$)/i.test(window.location.search);
+  var SHOW_BRANDING = false; // set to true in applyConfig after tier confirmed
 
   // ── BUILD HTML ─────────────────────────────────────────────────────────────
   function buildHTML() {
@@ -1231,6 +1232,7 @@
       + '<button class="vntb" data-tab="feedback">📝 Feedback</button>'
       + '<button class="vntb" data-tab="support">🎧 Support</button>'
       + (HAS_ADMIN && SHOW_ADMIN ? '<button class="vntb" data-tab="admin">⚙️ Admin Panel</button>' : '')
+      + (SHOW_BRANDING ? '<button class="vntb" data-tab="branding">🎨 Branding</button>' : '')
       + '</div>';
 
     var adm = HAS_ADMIN && SHOW_ADMIN
@@ -1269,6 +1271,35 @@
         + '<button class="vnadd" id="vnadda">+ Add Person</button>'
         + '<button id="vnsv">Save Changes</button>'
         + '<div id="vnsvd">✓ Saved!</div>'
+        + '</div>'
+      : '';
+
+    var brd = SHOW_BRANDING
+      ? '<div id="vnbrd" class="vntp" data-panel="branding" style="padding:14px;overflow-y:auto">'
+        + '<div style="font-size:11px;color:rgba(232,200,74,.85);background:rgba(232,200,74,.07);border:1px solid rgba(232,200,74,.2);border-radius:8px;padding:9px 11px;margin-bottom:14px;line-height:1.5">✨ Premium feature — customize your chatbot\'s look and feel.</div>'
+        // Logo section
+        + '<div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Organization Logo</div>'
+        + '<div id="vnbrl" style="margin-bottom:8px;display:none"><img id="vnbrli" src="" style="max-height:48px;max-width:120px;object-fit:contain;border-radius:6px;border:1px solid rgba(255,255,255,.1)" alt="Current logo"></div>'
+        + '<div style="font-size:10.5px;color:rgba(255,255,255,.35);margin-bottom:8px;line-height:1.5">PNG, JPG, SVG or WebP · Max 500KB · Displays in chatbot header</div>'
+        + '<input id="vnbrf" type="file" accept="image/png,image/jpeg,image/gif,image/svg+xml,image/webp" style="display:none">'
+        + '<button id="vnbrub" style="width:100%;padding:8px;border-radius:8px;border:.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.8);font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;margin-bottom:4px">📁 Choose Logo File</button>'
+        + '<div id="vnbrst" style="font-size:11px;min-height:14px;margin-bottom:14px;line-height:1.4"></div>'
+        // Welcome message section
+        + '<div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Custom Welcome Message</div>'
+        + '<div style="font-size:10.5px;color:rgba(255,255,255,.35);margin-bottom:6px;line-height:1.5">Replaces the default opening line veterans see. Keep it warm and brief.</div>'
+        + '<textarea id="vnbrwm" maxlength="120" placeholder="e.g. Welcome to VFW Post 1234 — we\'re here to help you get every benefit you\'ve earned." style="width:100%;height:72px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;resize:none;outline:none;box-sizing:border-box;margin-bottom:4px"></textarea>'
+        + '<div id="vnbrwc" style="font-size:10px;color:rgba(255,255,255,.3);text-align:right;margin-bottom:14px">0 / 120</div>'
+        // Accent color section
+        + '<div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Accent Color</div>'
+        + '<div style="font-size:10.5px;color:rgba(255,255,255,.35);margin-bottom:8px;line-height:1.5">Applied to header, send button, and interactive elements.</div>'
+        + '<div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">'
+        + '<input id="vnbrcb" type="color" value="#B22234" style="width:44px;height:36px;border-radius:8px;border:.5px solid rgba(255,255,255,.15);background:none;cursor:pointer;padding:2px">'
+        + '<input id="vnbrch" type="text" maxlength="7" placeholder="#B22234" style="flex:1;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 10px;font-size:13px;color:rgba(255,255,255,.85);font-family:monospace;outline:none">'
+        + '<div id="vnbrcp" style="width:36px;height:36px;border-radius:8px;border:.5px solid rgba(255,255,255,.1);background:#B22234"></div>'
+        + '</div>'
+        // Save button
+        + '<button id="vnbrsv" style="width:100%;padding:10px;border-radius:8px;background:var(--vr);border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Save Branding</button>'
+        + '<div id="vnbrsvd" style="display:none;text-align:center;font-size:12px;color:rgba(74,222,128,.9);margin-top:8px">✓ Branding saved!</div>'
         + '</div>'
       : '';
 
@@ -1359,7 +1390,7 @@
       +       '<button id="vnsd"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>'
       +     '</div>'
       +   '</div>'
-      +   adm + fbk + sup
+      +   adm + brd + fbk + sup
       +   '<div id="vnft">Powered by VetNavigator AI · Veteran-Made &amp; Veteran-Owned</div>'
       + '</div>';
   }
@@ -2462,6 +2493,9 @@
       setTimeout(function () { renderNode('welcome'); }, 200);
     }
 
+    // Enable branding tab for Premium/Demo
+    SHOW_BRANDING = (TIER_LVL >= 4 || IS_DEMO);
+
     // Apply Premium accent color if set
     if (ORG_ACCENT) {
       var accentStyle = document.getElementById('vns');
@@ -2516,6 +2550,114 @@
 
     // Restart
     ge('vnrs').addEventListener('click', restart);
+
+    // Branding panel wiring (Premium only)
+    if (SHOW_BRANDING) {
+      // Populate current values on open
+      if (ORG_WELCOME) ge('vnbrwm').value = ORG_WELCOME;
+      if (ORG_ACCENT)  { ge('vnbrcb').value = ORG_ACCENT; ge('vnbrch').value = ORG_ACCENT; ge('vnbrcp').style.background = ORG_ACCENT; }
+      if (ORG_LOGO)    { ge('vnbrli').src = ORG_LOGO; ge('vnbrl').style.display = 'block'; }
+
+      // Welcome message character counter
+      ge('vnbrwm').addEventListener('input', function () {
+        ge('vnbrwc').textContent = this.value.length + ' / 120';
+      });
+
+      // Color picker → hex input sync
+      ge('vnbrcb').addEventListener('input', function () {
+        ge('vnbrch').value = this.value;
+        ge('vnbrcp').style.background = this.value;
+      });
+
+      // Hex input → color picker sync
+      ge('vnbrch').addEventListener('input', function () {
+        var v = this.value.trim();
+        if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+          ge('vnbrcb').value = v;
+          ge('vnbrcp').style.background = v;
+        }
+      });
+
+      // Logo file picker trigger
+      ge('vnbrub').addEventListener('click', function () { ge('vnbrf').click(); });
+
+      // Logo file selected — upload immediately
+      ge('vnbrf').addEventListener('change', function () {
+        var file = this.files && this.files[0];
+        if (!file) return;
+        var st = ge('vnbrst');
+        st.style.color = 'rgba(232,200,74,.85)';
+        st.textContent = '⏳ Uploading logo…';
+        ge('vnbrub').disabled = true;
+        var fd = new FormData();
+        fd.append('logo', file);
+        fetch(VN_API + '/logo?key=' + encodeURIComponent(LICENSE_KEY), {
+          method: 'POST',
+          body: fd
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d.logoUrl) {
+            ORG_LOGO = d.logoUrl;
+            ge('vnbrli').src = d.logoUrl;
+            ge('vnbrl').style.display = 'block';
+            // Apply logo live in header
+            var hdrImg = ge('vn-org-logo');
+            if (hdrImg) { hdrImg.src = d.logoUrl; hdrImg.style.display = ''; }
+            st.style.color = 'rgba(74,222,128,.9)';
+            st.textContent = '✓ Logo uploaded successfully!';
+          } else {
+            st.style.color = 'rgba(255,120,120,.85)';
+            st.textContent = '✗ ' + (d.error || 'Upload failed — try again.');
+          }
+          ge('vnbrub').disabled = false;
+        })
+        .catch(function () {
+          ge('vnbrst').style.color = 'rgba(255,120,120,.85)';
+          ge('vnbrst').textContent = '✗ Upload failed — check your connection.';
+          ge('vnbrub').disabled = false;
+        });
+      });
+
+      // Save welcome message + accent color
+      ge('vnbrsv').addEventListener('click', function () {
+        var welcome = ge('vnbrwm').value.trim();
+        var accent  = ge('vnbrch').value.trim();
+        if (accent && !/^#[0-9a-fA-F]{6}$/.test(accent)) {
+          ge('vnbrsvd').style.display = 'block';
+          ge('vnbrsvd').style.color = 'rgba(255,120,120,.85)';
+          ge('vnbrsvd').textContent = '✗ Invalid hex color — use format #RRGGBB';
+          return;
+        }
+        // Apply live immediately
+        if (welcome) {
+          ORG_WELCOME = welcome;
+          buildWelcome();
+        }
+        if (accent) {
+          ORG_ACCENT = accent;
+          var accentStyle = document.getElementById('vns');
+          if (accentStyle) {
+            accentStyle.textContent = accentStyle.textContent.replace(/--vr\s*:\s*[^;]+;/, '--vr:' + accent + ';');
+          }
+        }
+        // Persist to server
+        if (LICENSE_KEY && LICENSE_KEY.startsWith('VN-') && LICENSE_KEY !== 'VN-DEMO') {
+          fetch(VN_API + '/config?key=' + encodeURIComponent(LICENSE_KEY), {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              orgWelcome:     welcome || '',
+              orgAccentColor: accent  || ''
+            })
+          }).catch(function () {});
+        }
+        ge('vnbrsvd').style.display = 'block';
+        ge('vnbrsvd').style.color = 'rgba(74,222,128,.9)';
+        ge('vnbrsvd').textContent = '✓ Branding saved!';
+        setTimeout(function () { ge('vnbrsvd').style.display = 'none'; }, 2500);
+      });
+    }
 
     // Admin panel wiring (Starter+ AND ?vnadmin=1)
     if (HAS_ADMIN && SHOW_ADMIN) {
