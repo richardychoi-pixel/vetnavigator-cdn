@@ -54,9 +54,6 @@
     ORG_MISSION = cfg.orgMission || '';
     ORG_EVENTS  = Array.isArray(cfg.events)  ? cfg.events  : [];
     ORG_LEADERS = Array.isArray(cfg.leaders) ? cfg.leaders : [];
-    ORG_LOGO    = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgLogo    || '') : '';
-    ORG_WELCOME = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgWelcome || '') : '';
-    ORG_ACCENT  = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgAccentColor || '') : '';
 
     // Tier: read from KV config (authoritative), fall back to key parsing for legacy keys
     if (cfg.tier && TIER_MAP[cfg.tier.toUpperCase()] !== undefined) {
@@ -78,6 +75,9 @@
       : (TIER_LVL >= 2 && _cfgToken && _urlAdmin === _cfgToken);
     CONV_LIMIT = (IS_DEMO || TIER_LVL >= 3) ? 999 : (TIER_LVL >= 2 ? 20 : 10);
     WARN_AT    = Math.ceil(CONV_LIMIT * 0.8);
+    ORG_LOGO    = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgLogo          || '') : '';
+    ORG_WELCOME = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgWelcome        || '') : '';
+    ORG_ACCENT  = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgAccentColor    || '') : '';
   }
 
   // ── DETECT KEY FROM SCRIPT TAG URL ────────────────────────────────────────
