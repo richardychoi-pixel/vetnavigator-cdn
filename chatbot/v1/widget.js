@@ -2565,7 +2565,7 @@
     var EMBED_TARGET = window.__vnEmbedTarget || null;
 
     // Set SHOW_BRANDING before buildHTML so the panel HTML is included
-    SHOW_BRANDING = (TIER_LVL >= 4 || IS_DEMO);
+    SHOW_BRANDING = (TIER_LVL >= 4 || IS_DEMO) && HAS_ADMIN;
 
     // Build and inject widget HTML
     var root = document.createElement('div');
