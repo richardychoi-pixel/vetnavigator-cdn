@@ -251,37 +251,37 @@
 
     cat_money: {
       pct: 48,
-      bot: "Money & Pay benefits:",
+      bot: "Here are your Money & Pay options — tap any topic to learn more:",
       chips: ['VA Disability Pay', 'VA Pension', 'TDIU', 'Travel Pay', 'VA Debt Help', 'Back to Categories']
     },
 
     cat_healthcare: {
       pct: 48,
-      bot: "Healthcare benefits:",
+      bot: "Here are your Healthcare options — tap any topic to learn more:",
       chips: ['VA Healthcare', 'CHAMPVA', 'Mental Health', 'Community Care', 'Dental & Vision', 'Caregiver Program', 'Back to Categories']
     },
 
     cat_education: {
       pct: 48,
-      bot: "Education & Jobs benefits:",
+      bot: "Here are your Education & Jobs options — tap any topic to learn more:",
       chips: ['GI Bill', 'Voc Rehab', 'BDD Program', 'Back to Categories']
     },
 
     cat_housing: {
       pct: 48,
-      bot: "Housing benefits:",
+      bot: "Here are your Housing options — tap any topic to learn more:",
       chips: ['VA Home Loan', 'Adapted Housing', 'Housing Assistance', 'Back to Categories']
     },
 
     cat_family: {
       pct: 48,
-      bot: "Family & Survivors benefits:",
+      bot: "Here are your Family & Survivors options — tap any topic to learn more:",
       chips: ['DIC', 'CHAMPVA', 'Survivors Pension', 'Aid & Attendance', 'Life Insurance', 'Burial Benefits', 'Back to Categories']
     },
 
     cat_claims: {
       pct: 48,
-      bot: "Claims & Appeals:",
+      bot: "Here are your Claims & Appeals options — tap any topic to learn more:",
       chips: ['File a Claim', 'Claim Status', 'Denied Claim', 'Rating Increase', 'C&P Exam', 'TDIU', 'Nexus Letters', 'VA Records', 'Back to Categories']
     },
 
@@ -2090,7 +2090,11 @@
           + '\n- The suggestion must be a short benefit topic like "PACT Act eligibility" or "File a disability claim" — NEVER a question, instruction, or sentence telling the user what to do'
           + '\n- Only answer questions about VA benefits, Veteran services, and related topics'
           + '\n- Always capitalize the word "Veteran" — it is a title of respect'
-          + '\n- If the question is off-topic (events, Post hours, membership, non-VA questions), keep your redirect to 1-2 sentences max — point them to the Post directly, then offer to help with VA benefits. Start with "For [org name]..." not with a preamble about what you can or cannot do',
+          + '\n- If the question is off-topic (events, Post hours, membership, non-VA questions), keep your redirect to 1-2 sentences max — point them to the Post directly, then offer to help with VA benefits. Start with "For [org name]..." not with a preamble about what you can or cannot do'
+          + '\n- NEVER use bullet points, numbered lists, dashes, or markdown headers. Use flowing prose only'
+          + '\n- NEVER ask the veteran to clarify which benefit they mean. Use the conversation context below to determine which benefit they are asking about, and answer specifically for that benefit'
+          + buildContext()
+          + langInstruction(),
         messages: [{ role: 'user', content: msg }]
       })
     })
@@ -2211,8 +2215,14 @@
         var hasIt = chips.some(function (c) { return c === startOverLabel || c === 'Start over' || c === 'Start Fresh →'; });
         if (!hasIt) chips.push(startOverLabel);
       }
-      // Add AI suggestion as first chip if valid
-      if (sug) chips.unshift(sug);
+      // Add AI suggestion as first chip if valid and not a duplicate
+      if (sug) {
+        var sugLower = sug.toLowerCase().replace(/[?!.,]/g, '');
+        var isDupe = chips.some(function(c) {
+          return c.toLowerCase().replace(/[?!.,]/g, '') === sugLower;
+        });
+        if (!isDupe) chips.unshift(sug);
+      }
       if (node.cards && node.cards.length) {
         mkCards(node.cards);
         if (chips.length) mkChips(chips);
