@@ -2239,15 +2239,7 @@
 
   // ── MAIN HANDLE ────────────────────────────────────────────────────────────
   function handle(text) {
-    // Disclaimer gate — fires only when veteran selects one of the 4 welcome identity cards
-    var DISCLAIMER_TRIGGERS = ['Veteran', 'Active Duty', 'Spouse / Family', 'Surviving Spouse'];
-    if (!disclaimerAcked && DISCLAIMER_TRIGGERS.indexOf(text) !== -1) {
-      showDisclaimer(text);
-      return;
-    }
-    if (turnCount >= CONV_LIMIT) { showLimit(); return; }
-
-    // Crisis intercept — bypass routing and AI entirely
+    // Crisis intercept — ALWAYS first, bypass disclaimer and all routing
     if (CRISIS_RE.test(text)) {
       userMsg(text);
       turnCount++;
@@ -2258,6 +2250,12 @@
       }, 400);
       return;
     }
+    // Disclaimer gate — fires on ANY input if not yet acknowledged
+    if (!disclaimerAcked) {
+      showDisclaimer(text);
+      return;
+    }
+    if (turnCount >= CONV_LIMIT) { showLimit(); return; }
 
     // PII intercept — warn veteran before sending to AI
     if (containsPII(text)) {
