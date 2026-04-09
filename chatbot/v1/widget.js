@@ -2272,6 +2272,26 @@
       return;
     }
 
+    // Direct rate lookup — intercept "how much is X% disability" before AI
+    var rateMatch = text.match(/(\d+)\s*(%|percent)/i);
+    if (rateMatch) {
+      var pct = parseInt(rateMatch[1], 10);
+      var RATES = {10:180,20:357,30:552,40:796,50:1133,60:1435,70:1808,80:2102,90:2362,100:3939};
+      var rate = RATES[pct];
+      if (rate) {
+        userMsg(text);
+        turnCount++;
+        checkWarn();
+        setTimeout(function() {
+          clearOpts();
+          var fmt = '$' + rate.toLocaleString();
+          botMsg('With a <strong>' + pct + '% VA disability rating</strong>, you receive <strong>' + fmt + ' per month</strong> (2026 rate, Veteran alone with no dependents). This is tax-free and paid on the 1st of each month. If you have a spouse or children on your VA file, your amount may be higher. Verify your exact rate at <a href="https://www.va.gov/disability/compensation-rates/" target="_blank" style="color:#e8c84a;text-decoration:underline">VA.gov</a>.');
+          mkChips(['How do I file a claim?', 'How do I increase my rating?', 'What is TDIU?', 'Find a VSO counselor', 'Start over']);
+        }, 400);
+        return;
+      }
+    }
+
     var key = route(text);
     userMsg(text);
     turnCount++;
