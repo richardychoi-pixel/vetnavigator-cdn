@@ -788,8 +788,6 @@
   // ── KEYWORD ROUTING ────────────────────────────────────────────────────────
   var KW = [
     [/\b(crisis|suicid|harm myself|end my life|don.t want to live|988|crisis line)\b/i, 'crisis'],
-    // Disability pay amount lookups — must be BEFORE rating_explained
-    [/how much.*(disab|compensation|va pay|va disab)|(\d+)\s*%\s*(disab|disability|compensation|rated|rating)|disab.*pay.*(\d+)|what.*(\d+)\s*%.*(pay|worth|get|receive)/i, 'disability'],
     // Ratings & claims
     [/\b(rating|rated|disability rating|how.*rating|rating.*work|percent|percentage)\b/i, 'rating_explained'],
     [/\b(increase.*rating|higher rating|raise.*rating|rating.*increase|re-?rate|rerate)\b/i, 'rating_increase'],
