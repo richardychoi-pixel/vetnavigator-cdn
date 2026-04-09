@@ -2069,6 +2069,7 @@
           + '\n- Be empathetic, respectful, and encouraging — many veterans find this process overwhelming'
           + '\n- Give clear, practical answers with specific next steps'
           + '\n- Include relevant dollar amounts, deadlines, or eligibility thresholds when helpful'
+          + '\n- When a veteran asks about a SPECIFIC disability percentage (e.g. "how much is 20% disability"), lead with that exact rate from the table below. Example: "With a 20% disability rating, you receive $357 per month." Do NOT give a general overview or cite other percentages unless directly relevant'
           + '\n- IMPORTANT — 2026 VA RATES: Use ONLY the following rates (effective Dec 1, 2025, 2.8% COLA). Do NOT use rates from your training data — they are outdated.'
           + '\n  Disability (veteran alone): 10%=$180, 20%=$357, 30%=$552, 40%=$796, 50%=$1,133, 60%=$1,435, 70%=$1,808, 80%=$2,102, 90%=$2,362, 100%=$3,939'
           + '\n  TDIU: $3,939/mo (pays at 100% rate). SMC-K: $140/mo additional'
