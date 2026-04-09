@@ -788,6 +788,8 @@
   // ── KEYWORD ROUTING ────────────────────────────────────────────────────────
   var KW = [
     [/\b(crisis|suicid|harm myself|end my life|don.t want to live|988|crisis line)\b/i, 'crisis'],
+    // Disability pay amount lookups — must be BEFORE rating_explained
+    [/how much.*(disab|compensation|va pay|va disab)|(\d+)\s*%\s*(disab|disability|compensation|rated|rating)|disab.*pay.*(\d+)|what.*(\d+)\s*%.*(pay|worth|get|receive)/i, 'disability'],
     // Ratings & claims
     [/\b(rating|rated|disability rating|how.*rating|rating.*work|percent|percentage)\b/i, 'rating_explained'],
     [/\b(increase.*rating|higher rating|raise.*rating|rating.*increase|re-?rate|rerate)\b/i, 'rating_increase'],
@@ -1100,7 +1102,7 @@
     // Input row
     '#vnir{display:flex;gap:6px;padding:8px 11px;flex-shrink:0;',
     'background:rgba(0,0,0,.3);border-top:.5px solid var(--vbd)}',
-    '#vntx{flex:1;font-size:11.5px;padding:6px 10px;border-radius:18px;',
+    '#vntx{flex:1;font-size:16px;padding:6px 10px;border-radius:18px;',
     'border:.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);',
     'color:rgba(255,255,255,.9);font-family:inherit;outline:none}',
     '#vntx::placeholder{color:rgba(255,255,255,.28)}',
