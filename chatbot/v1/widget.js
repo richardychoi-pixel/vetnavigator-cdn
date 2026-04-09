@@ -2195,10 +2195,6 @@
       }
       var pts = txt.split(/Suggested next:/i);
       var ans = pts[0].trim();
-      var sug = pts[1] ? pts[1].trim().replace(/^["']|["']$/g, '') : null;
-      if (sug && (sug.length > 50 || /^(reply|tell|call|grab|click|try|go to|ask|contact|reach out)\b/i.test(sug) || /\?$/.test(sug))) {
-        sug = null;
-      }
       botMsg(ans);
       chatHistory.push({ topic: key, text: ans.replace(PII_RE, '[redacted]').substring(0, 120) });
       clearOpts();
@@ -2215,14 +2211,8 @@
         var hasIt = chips.some(function (c) { return c === startOverLabel || c === 'Start over' || c === 'Start Fresh →'; });
         if (!hasIt) chips.push(startOverLabel);
       }
-      // Add AI suggestion as first chip if valid and not a duplicate
-      if (sug) {
-        var sugLower = sug.toLowerCase().replace(/[?!.,]/g, '');
-        var isDupe = chips.some(function(c) {
-          return c.toLowerCase().replace(/[?!.,]/g, '') === sugLower;
-        });
-        if (!isDupe) chips.unshift(sug);
-      }
+      // AI suggestions removed — node chips are curated and always route correctly.
+      // Free-text input with buildContext() handles questions not covered by chips.
       if (node.cards && node.cards.length) {
         mkCards(node.cards);
         if (chips.length) mkChips(chips);
