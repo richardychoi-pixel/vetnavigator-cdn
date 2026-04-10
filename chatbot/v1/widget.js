@@ -369,14 +369,14 @@
 
     pact_act: {
       pct: 62,
-      bot: "<strong>PACT Act (2022)</strong> — the biggest VA benefits expansion in decades.\n\n<strong>Covers:</strong> Burn pit exposure, Agent Orange, Gulf War illness\n<strong>Added:</strong> 20+ new presumptive conditions\n\nOver 5 million veterans may now qualify.",
-      chips: ['Do I qualify?', 'How do I file a claim?', 'Find a VSO counselor', 'See other benefits']
+      bot: "<strong>PACT Act (2022)</strong> — the biggest VA benefits expansion in decades.\n\n<strong>What it covers:</strong> Burn pit exposure, Agent Orange, Gulf War illness, and 20+ new presumptive conditions.\n\n<strong>Why it matters:</strong> You no longer have to prove your illness was caused by service — VA now presumes it for covered conditions.\n\nOver 5 million Veterans may qualify. Even if you were previously denied, you can reapply under the PACT Act.",
+      chips: ['Do I qualify for PACT Act?', 'How do I file a claim?', 'Find a VSO counselor', 'See other benefits']
     },
 
     pact_qualify: {
       pct: 76,
       bot: "<strong>You may qualify for PACT Act benefits if you:</strong>\n\n— Served near burn pits in Iraq, Afghanistan, or the Gulf\n— Were exposed to Agent Orange (Vietnam, Thailand, Korea DMZ)\n— Have a Gulf War illness diagnosis\n— Have any of 20+ newly added presumptive conditions\n\n<strong>Key change:</strong> You no longer have to prove your illness was caused by service — VA presumes it.\n\nEven if you were previously denied, you can reapply under PACT Act.",
-      chips: ['How do I file a claim?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['How do I file a claim?', 'What documents do I need?', 'Find a VSO counselor', 'See other benefits']
     },
 
     rating_explained: {
@@ -423,7 +423,7 @@
 
     voc_rehab: {
       pct: 62,
-      bot: "<strong>Vocational Rehabilitation & Employment (VR&E / Chapter 31)</strong> — career support for Veterans with service-connected disabilities.\n\n<strong>What it covers:</strong>\n— Career counseling and planning\n— College tuition, books, and supplies\n— Job training and certifications\n— Resume help and job placement\n— Self-employment assistance\n— Adaptive equipment if needed\n\n<strong>Who qualifies:</strong>\n— VA disability rating of <strong>10% or higher</strong>\n— An employment barrier related to your disability\n— Discharged under other than dishonorable conditions\n\n<strong>Duration:</strong> Up to 48 months of benefits (can be extended in some cases).\n\n<strong>This is separate from the GI Bill</strong> — and in some cases, more generous. A VR&E counselor builds a personalized plan with you.",
+      bot: "<strong>Vocational Rehabilitation & Employment (VR&E / Chapter 31)</strong> — career support for Veterans with service-connected disabilities.\n\n<strong>What it covers:</strong>\n— Career counseling and planning\n— College tuition, books, and supplies\n— Job training and certifications\n— Resume help and job placement\n— Self-employment assistance\n\n<strong>Who qualifies:</strong> VA disability rating of <strong>10% or higher</strong> with an employment barrier.\n\n<strong>Duration:</strong> Up to 48 months. This is separate from the GI Bill — and sometimes more generous.",
       chips: ['How do I apply for Voc Rehab?', 'GI Bill', 'Find a VSO counselor', 'See other benefits']
     },
 
@@ -435,20 +435,26 @@
 
     dic: {
       pct: 62,
-      bot: "We are deeply grateful for your family\u2019s service and sacrifice. We are here to support you every step of the way. 🇺🇸\n\n<strong>Dependency and Indemnity Compensation (DIC):</strong>\n\nMonthly tax-free payment to surviving spouses and dependents when a veteran dies from a service-connected condition.\n\n<strong>2026 base rate:</strong> $1,699/month\n<strong>8-year add-on:</strong> +$361/month (if married 8+ years while veteran was 100% rated)\n<strong>Per child:</strong> +$421/month\n\n<strong>Who qualifies:</strong>\n— Surviving spouse married to veteran for 1+ year\n— Veteran died from service-connected disease or injury\n— Or veteran was 100% P&T rated for 10+ years before death\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates effective Dec 2025 (2.8% COLA). Verify at <a href='https://va.gov/disability/compensation-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>. This is general information only — not legal advice. DIC eligibility is complex — a free VSO counselor can review your situation.</em>",
-      chips: ['How do I apply for DIC?', 'Find a VSO counselor', 'See other benefits']
+      bot: "<strong>Dependency and Indemnity Compensation (DIC)</strong> — monthly tax-free payment to surviving spouses and dependents when a Veteran dies from a service-connected condition.\n\n<strong>2026 rates:</strong>\n— Base rate: <strong>$1,699/month</strong>\n— 8-year add-on: +$361/month (married 8+ years while Veteran was 100% rated)\n— Per child: +$421/month\n\n<strong>Who qualifies:</strong>\n— Surviving spouse married to Veteran for 1+ year\n— Veteran died from service-connected disease or injury\n— Or Veteran was 100% P&T rated for 10+ years before death\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates effective Dec 2025 (2.8% COLA). Verify at <a href='https://va.gov/disability/compensation-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>. DIC eligibility is complex — a free VSO counselor can review your situation.</em>",
+      chips: ['How do I apply for DIC?', 'Tell me about CHAMPVA', 'Survivors Pension', 'Find a VSO counselor']
     },
 
     dic_apply: {
       pct: 76,
-      bot: "<strong>How to apply for DIC:</strong>\n\n<strong>Step 1</strong> — Complete <a href='https://va.gov/find-forms/about-form-21P-534EZ' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA Form 21P-534EZ</a>\n<strong>Step 2</strong> — Attach veteran's death certificate\n<strong>Step 3</strong> — Include marriage certificate\n<strong>Step 4</strong> — Submit to your VA Pension Management Center\n\n<strong>📬 Mail DIC forms to:</strong>\nDepartment of Veterans Affairs\nPension Intake Center\nPO Box 5365, Janesville, WI 53547-5365\n\n<strong>🏥 In person:</strong> <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Find your nearest VA office →</a>\n\n<strong>Tip:</strong> A VSO counselor can prepare and submit this paperwork for free — highly recommended given the complexity.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>This is general information only — not legal advice. Always consult a qualified VSO counselor or VA representative for personalized guidance.</em>",
-      chips: ['Tell me about CHAMPVA', 'Survivors Pension', 'Find a VSO counselor', 'See other benefits', 'Start over']
+      bot: "<strong>How to apply for DIC:</strong>\n\n<strong>Step 1</strong> — Complete <a href='https://va.gov/find-forms/about-form-21P-534EZ' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA Form 21P-534EZ</a>\n<strong>Step 2</strong> — Gather: Veteran's death certificate + your marriage certificate\n<strong>Step 3</strong> — Submit to your VA Pension Management Center\n\n<strong>Where to submit:</strong>\n— Online at <a href='https://va.gov' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>\n— By mail: VA Pension Intake Center, PO Box 5365, Janesville, WI 53547-5365\n— In person at any <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA regional office</a>\n\n<strong>Timeline:</strong> DIC claims typically take <strong>3–6 months</strong> to process.\n\n<strong>Tip:</strong> A VSO counselor can prepare and submit this paperwork for free — highly recommended given the complexity.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>This is general information only — not legal advice.</em>",
+      chips: ['Tell me about DIC', 'Tell me about CHAMPVA', 'Survivors Pension', 'Find a VSO counselor']
     },
 
     champva: {
       pct: 62,
-      bot: "<strong>CHAMPVA — VA Healthcare for Dependents:</strong>\n\nHealthcare coverage for spouses and children of veterans who are:\n— 100% permanently and totally (P&T) disabled, OR\n— Died from a service-connected condition\n\n<strong>Covers:</strong> Doctor visits, hospital care, prescriptions, mental health\n<strong>Cost:</strong> No monthly premium. $50/year deductible ($100 family max). 25% cost-share on most services. $3,000/year out-of-pocket cap.\n<strong>Meds by Mail:</strong> $0 copay for maintenance prescriptions (if no other Rx coverage)\n\n<strong>Important:</strong> If age 65+, must have Medicare Parts A & B to keep CHAMPVA.\n\nApply with <a href='https://va.gov/find-forms/about-form-10-10d' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA Form 10-10d</a> at <a href='https://va.gov/health-care/family-caregiver-benefits/champva' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>",
-      chips: ['Tell me about DIC', 'Survivors Pension', 'Find a VSO counselor', 'See other benefits', 'Start over']
+      bot: "<strong>CHAMPVA — VA Healthcare for Dependents</strong>\n\nHealthcare coverage for spouses and children of Veterans who are:\n— <strong>100% permanently and totally (P&T) disabled</strong>, OR\n— Died from a service-connected condition\n\n<strong>What it covers:</strong> Doctor visits, hospital care, prescriptions, mental health.\n\n<strong>Cost:</strong> No monthly premium. $50/year deductible ($100 family). 25% cost-share. $3,000/year out-of-pocket cap.\n\n<strong>Meds by Mail:</strong> $0 copay for maintenance prescriptions.\n\n<strong>Important:</strong> If age 65+, must have Medicare Parts A & B to keep CHAMPVA.",
+      chips: ['How do I apply for CHAMPVA?', 'Tell me about DIC', 'Survivors Pension', 'Find a VSO counselor']
+    },
+
+    champva_apply: {
+      pct: 78,
+      bot: "<strong>How to apply for CHAMPVA:</strong>\n\n<strong>Step 1</strong> — Complete <a href='https://va.gov/find-forms/about-form-10-10d' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA Form 10-10d</a>\n<strong>Step 2</strong> — Include a copy of the Veteran's VA rating decision (showing 100% P&T)\n<strong>Step 3</strong> — Include applicant's Medicare card (if age 65+)\n<strong>Step 4</strong> — Mail to: VHA Office of Integrated Veteran Care, CHAMPVA Eligibility, PO Box 469028, Denver, CO 80246-9028\n\n<strong>Timeline:</strong> CHAMPVA applications typically take <strong>6–8 weeks</strong> to process.\n\n<strong>After approval:</strong> You'll receive a CHAMPVA authorization card. Keep it with you — providers may ask to see it.\n\n<strong>Questions?</strong> Call CHAMPVA at <a href='tel:+18007338387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-800-733-8387</a> (Mon–Fri 8:05am–7:30pm ET).",
+      chips: ['Tell me about CHAMPVA', 'Tell me about DIC', 'Find a VSO counselor', 'See other benefits']
     },
 
     home_loan_apply: {
@@ -509,7 +515,7 @@
 
     pension: {
       pct: 50,
-      bot: "<strong>VA Pension — for low-income wartime veterans:</strong>\n\nA needs-based, tax-free benefit for veterans with limited income who served during a wartime period.\n\n<strong>Basic requirements:</strong>\n— 90+ days active duty (at least 1 day during wartime)\n— Income and assets below VA limits\n— Age 65+ OR permanently disabled\n\n<strong>2026 maximum annual pension rates (MAPR):</strong>\n— Single veteran: $17,441/yr ($1,453/mo)\n— With spouse: $22,839/yr ($1,903/mo)\n— With Aid & Attendance: $29,093/yr ($2,424/mo)\n— A&A with spouse: $34,488/yr ($2,874/mo)\n— Each additional child: +$2,984/yr\n\n<strong>Net worth limit:</strong> $163,699 (includes assets + income)\n\n<strong>Apply with:</strong> VA Form 21P-527EZ\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates effective Dec 2025 (2.8% COLA). Verify at <a href='https://va.gov/pension/veterans-pension-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
+      bot: "<strong>VA Pension</strong> — tax-free income support for low-income wartime Veterans.\n\n<strong>Who qualifies:</strong>\n— Served 90+ days active duty (at least 1 day during wartime)\n— Age 65+ OR permanently disabled\n— Income and net worth below VA limits\n\n<strong>2026 maximum rates:</strong>\n— Single Veteran: $17,441/yr ($1,453/mo)\n— With spouse: $22,839/yr ($1,903/mo)\n— With Aid & Attendance: $29,093/yr ($2,424/mo)\n\n<strong>Net worth limit:</strong> $163,699\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates effective Dec 2025 (2.8% COLA). Verify at <a href='https://va.gov/pension/veterans-pension-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
       chips: ['What is Aid & Attendance?', 'Survivors Pension', 'How do I apply for VA Pension?', 'Find a VSO counselor', 'See other benefits']
     },
 
@@ -827,6 +833,8 @@
     'How do I apply?':'home_loan_apply',
     'How do I apply for TDIU?':'tdiu',
     'Do I qualify?':'pact_qualify',
+    'Do I qualify for PACT Act?':'pact_qualify',
+    'How do I apply for CHAMPVA?':'champva_apply',
     'Tell me about DIC':'dic', 'Tell me about CHAMPVA':'champva',
     'How do I apply for DIC?':'dic_apply',
     'Tell me about VA Home Loan':'home_loan',
