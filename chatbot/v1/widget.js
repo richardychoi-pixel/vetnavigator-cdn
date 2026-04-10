@@ -302,7 +302,7 @@
     home_loan: {
       pct: 62,
       bot: "<strong>VA Home Loan</strong>:\n\n<strong>No down payment required</strong>\n<strong>No PMI (mortgage insurance)</strong>\n<strong>Competitive interest rates</strong>\n<strong>Reusable for life</strong>",
-      chips: ['Am I eligible?', 'What documents do I need?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['Am I eligible for a VA Home Loan?', 'How do I get a VA Home Loan?', 'Find a VSO counselor', 'See other benefits']
     },
 
     healthcare: {
@@ -394,7 +394,7 @@
     gi_bill_apply: {
       pct: 76,
       bot: "<strong>How to apply for the Post-9/11 GI Bill:</strong>\n\n<strong>Step 1</strong> — Apply at <a href='https://va.gov/education/apply' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov/education/apply</a>\n<strong>Step 2</strong> — Select Chapter 33 (Post-9/11 GI Bill)\n<strong>Step 3</strong> — Provide your DD-214 and school info\n<strong>Step 4</strong> — VA notifies your school directly\n\n<strong>Timeline:</strong> 4–8 weeks for approval\n<strong>Transferable</strong> to spouse or children if still serving",
-      chips: ['What documents do I need?', 'Can I transfer my GI Bill?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['GI Bill', 'Can I transfer my GI Bill?', 'Find a VSO counselor', 'See other benefits']
     },
 
     gi_bill_transfer: {
@@ -412,7 +412,7 @@
     voc_rehab_apply: {
       pct: 76,
       bot: "<strong>How to apply for Vocational Rehabilitation (Ch. 31):</strong>\n\n<strong>Step 1</strong> — Apply at <a href='https://va.gov/careers-employment/vocational-rehabilitation' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov/careers-employment/vocational-rehabilitation</a>\n<strong>Step 2</strong> — Meet with a Vocational Rehabilitation Counselor\n<strong>Step 3</strong> — Create a rehabilitation plan together\n\n<strong>You may qualify if you have:</strong>\n— A VA disability rating of 10%+\n— An employment barrier related to your disability\n\n<strong>Covers:</strong> Tuition, books, supplies, job placement support, and more.",
-      chips: ['What documents do I need?', 'GI Bill', 'Find a VSO counselor', 'See other benefits']
+      chips: ['Voc Rehab', 'GI Bill', 'Find a VSO counselor', 'See other benefits']
     },
 
     dic: {
@@ -436,7 +436,7 @@
     home_loan_apply: {
       pct: 76,
       bot: "<strong>How to get a VA Home Loan:</strong>\n\n<strong>Step 1</strong> — Get your Certificate of Eligibility (COE) at <a href='https://va.gov/housing-assistance/home-loans/how-to-apply' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>\n<strong>Step 2</strong> — Choose a VA-approved lender\n<strong>Step 3</strong> — Find a home and make an offer\n<strong>Step 4</strong> — VA appraisal + loan closing\n\n<strong>Who qualifies:</strong> 90+ days active duty, or 6 years National Guard/Reserve\n<strong>Tip:</strong> No down payment, no PMI — saves thousands upfront.",
-      chips: ['What documents do I need?', 'VA Home Loan', 'Find a VSO counselor', 'See other benefits']
+      chips: ['VA Home Loan', 'Find a VSO counselor', 'See other benefits']
     },
 
     healthcare_enroll: {
@@ -753,6 +753,8 @@
     'Tell me about DIC':'dic', 'Tell me about CHAMPVA':'champva',
     'How do I apply for DIC?':'dic_apply',
     'Tell me about VA Home Loan':'home_loan',
+    'How do I get a VA Home Loan?':'home_loan_apply',
+    'Am I eligible for a VA Home Loan?':'home_loan_apply',
     'Tell me about Voc Rehab':'voc_rehab',
     'Tell me about VA Pension':'pension',
     'What is Aid & Attendance?':'aid_attendance',
