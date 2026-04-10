@@ -289,38 +289,50 @@
 
     disability: {
       pct: 62,
-      bot: "<strong>VA Disability Compensation</strong> — tax-free monthly pay for service-connected conditions.\n\n<strong>2026 monthly rates (veteran alone, no dependents):</strong>\n— 10%: $180 | 20%: $357 | 30%: $552\n— 40%: $796 | 50%: $1,133 | 60%: $1,435\n— 70%: $1,808 | 80%: $2,102\n— 90%: $2,362 | 100%: $3,939\n\nRates increase with dependents. <strong>TDIU</strong> pays at the 100% rate if your disabilities prevent you from working.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates effective Dec 2025 (2.8% COLA). Verify at <a href='https://va.gov/disability/compensation-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
-      chips: ['How do I file a claim?', 'What documents do I need?', 'Find a VSO counselor', 'See other benefits']
+      bot: "<strong>VA Disability Compensation</strong> — tax-free monthly pay for conditions connected to your military service.\n\n<strong>2026 monthly rates (Veteran alone, no dependents):</strong>\n— 10%: $180 | 20%: $357 | 30%: $552\n— 40%: $796 | 50%: $1,133 | 60%: $1,435\n— 70%: $1,808 | 80%: $2,102\n— 90%: $2,362 | 100%: $3,939\n\nRates increase with dependents.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates effective Dec 2025 (2.8% COLA). Verify at <a href='https://va.gov/disability/compensation-rates/veteran-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
+      chips: ['How do I file a claim?', 'How do ratings work?', 'What is TDIU?', 'Find a VSO counselor', 'See other benefits']
     },
 
     gi_bill: {
       pct: 62,
-      bot: "<strong>Post-9/11 GI Bill (Chapter 33)</strong> — your earned education benefit.\n\n<strong>What it covers:</strong>\n— <strong>Tuition:</strong> Full tuition at public schools; up to $26,042/yr at private schools\n— <strong>Housing:</strong> Monthly allowance based on your school's ZIP ($1,169–$4,400+/mo)\n— <strong>Books:</strong> Up to $1,000/year\n— <strong>Duration:</strong> Up to 36 months of benefits\n\n<strong>Who qualifies:</strong>\n— 90+ days active duty after Sept 10, 2001\n— Honorable discharge\n— Benefits scale with length of service (100% at 36+ months)\n\n<strong>Online-only students:</strong> Flat rate of $1,169/month for housing.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Housing rates for 2025–2026 academic year. Verify at <a href='https://va.gov/education/benefit-rates/post-9-11-gi-bill-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
-      chips: ['How do I apply?', 'Can I transfer my GI Bill?', 'Find a VSO counselor', 'See other benefits']
+      bot: "<strong>Post-9/11 GI Bill (Chapter 33)</strong> — your earned education benefit.\n\n<strong>What it covers:</strong>\n— <strong>Tuition:</strong> Full at public schools; up to $26,042/yr at private\n— <strong>Housing:</strong> Monthly allowance based on school ZIP ($1,169–$4,400+/mo)\n— <strong>Books:</strong> Up to $1,000/year\n— <strong>Duration:</strong> Up to 36 months of benefits\n— <strong>Online students:</strong> Flat $1,169/month for housing\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates for 2025–2026 academic year. Verify at <a href='https://va.gov/education/benefit-rates/post-9-11-gi-bill-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
+      chips: ['Do I qualify for GI Bill?', 'How do I apply for GI Bill?', 'Can I transfer my GI Bill?', 'Find a VSO counselor', 'See other benefits']
+    },
+
+    gi_bill_eligible: {
+      pct: 68,
+      bot: "<strong>GI Bill eligibility:</strong>\n\n<strong>You qualify for the Post-9/11 GI Bill if:</strong>\n— 90+ days active duty after Sept 10, 2001\n— Honorable discharge\n\n<strong>Benefit level scales with service:</strong>\n— 36+ months: 100% of benefits\n— 30 months: 90%\n— 24 months: 80%\n— 6 months: 60%\n— 90 days: 40%\n\n<strong>Other GI Bill chapters:</strong>\n— <strong>Chapter 30 (Montgomery)</strong> — paid into during service, ~$2,122/mo\n— <strong>Chapter 31 (Voc Rehab)</strong> — for Veterans with 10%+ disability rating\n\nNot sure which chapter is right for you? A VSO counselor can help compare.",
+      chips: ['How do I apply for GI Bill?', 'What is Voc Rehab?', 'GI Bill types', 'Find a VSO counselor']
     },
 
     home_loan: {
       pct: 62,
-      bot: "<strong>VA Home Loan</strong> — one of the most valuable benefits you've earned.\n\n<strong>No down payment</strong> — most conventional loans require 3–20% down\n<strong>No PMI</strong> — saves $100–$300/month vs. conventional\n<strong>Competitive rates</strong> — typically lower than conventional mortgages\n<strong>Reusable</strong> — you can use this benefit again after paying off a previous VA loan\n<strong>No prepayment penalty</strong> — pay off early with no fees\n\n<strong>Who qualifies:</strong> 90+ days active duty, or 6+ years National Guard/Reserve, with eligible discharge.\n\n<strong>VA Funding Fee:</strong> A one-time fee (2.15% first use, 3.3% subsequent) added to the loan — waived if you have a service-connected disability.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>This is general information only. Loan terms depend on your lender. A VSO counselor can help you get started.</em>",
-      chips: ['Am I eligible for a VA Home Loan?', 'How do I get a VA Home Loan?', 'Find a VSO counselor', 'See other benefits']
+      bot: "<strong>VA Home Loan</strong> — one of the most valuable benefits you've earned.\n\n<strong>No down payment</strong> — most conventional loans require 3–20% down\n<strong>No PMI</strong> — saves $100–$300/month vs. conventional\n<strong>Competitive rates</strong> — typically lower than conventional mortgages\n<strong>Reusable</strong> — use it again after paying off a previous VA loan\n<strong>No prepayment penalty</strong> — pay off early with no fees",
+      chips: ['Am I eligible for a VA Home Loan?', 'How do I get started?', 'Find a VSO counselor', 'See other benefits']
+    },
+
+    home_loan_eligible: {
+      pct: 68,
+      bot: "<strong>VA Home Loan eligibility:</strong>\n\n<strong>You likely qualify if:</strong>\n— 90+ days active duty service, OR\n— 6+ years National Guard or Reserve, OR\n— Surviving spouse of a Veteran who died in service or from a service-connected disability\n\n<strong>Discharge requirement:</strong> Must be other than dishonorable.\n\n<strong>VA Funding Fee:</strong> A one-time fee added to your loan:\n— First use: 2.15% (with down payment of less than 5%)\n— Subsequent use: 3.3%\n— <strong>Waived entirely</strong> if you have a service-connected disability\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>This is general information only. A VSO counselor can verify your eligibility.</em>",
+      chips: ['How do I get started?', 'What documents do I need for a VA Home Loan?', 'Find a VSO counselor', 'See other benefits']
     },
 
     healthcare: {
       pct: 62,
-      bot: "<strong>VA Healthcare</strong> — comprehensive medical care for eligible Veterans.\n\n<strong>What's covered:</strong>\n— Primary care (routine checkups, preventive care)\n— Mental health (PTSD, depression, anxiety, substance use)\n— Prescriptions (low or no copay)\n— Urgent care and emergency care\n— Specialty care (cardiology, oncology, surgery, and more)\n— Telehealth (video appointments from home)\n— Women's health services\n\n<strong>Cost:</strong> Free for many Veterans. Others pay low copays based on priority group. Combat Veterans get <strong>free care for 10 years</strong> after discharge.\n\nEnroll at <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a> or call <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a>.",
-      chips: ['How do I enroll?', 'Am I eligible for VA Healthcare?', 'Find a VSO counselor', 'See other benefits']
+      bot: "<strong>VA Healthcare</strong> — comprehensive medical care for eligible Veterans.\n\n<strong>What's covered:</strong>\n— Primary care (routine checkups, preventive care)\n— Mental health (PTSD, depression, anxiety, substance use)\n— Prescriptions (low or no copay)\n— Urgent care and emergency care\n— Specialty care (cardiology, oncology, surgery)\n— Telehealth (video appointments from home)\n— Women's health services\n\n<strong>Cost:</strong> Free for many Veterans. Combat Veterans get <strong>free care for 10 years</strong> after discharge.",
+      chips: ['Am I eligible for VA Healthcare?', 'How do I enroll?', 'Find a VSO counselor', 'See other benefits']
     },
 
     file_claim: {
       pct: 76,
-      bot: "<strong>How to file a VA disability claim:</strong>\n\n<strong>Step 1</strong> — Create account at <a href='https://va.gov' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>\n<strong>Step 2</strong> — Complete <a href='https://va.gov/find-forms/about-form-21-526ez' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA Form 21-526EZ</a>\n<strong>Step 3</strong> — Gather DD-214 and medical records\n<strong>Step 4</strong> — Submit online, by mail, or in person\n\n<strong>📬 By mail:</strong>\nDepartment of Veterans Affairs\nClaims Intake Center\nPO Box 4444, Janesville, WI 53547-4444\n\n<strong>🏥 In person:</strong> <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Find your nearest VA office →</a>\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>This information is general in nature and does not constitute legal advice. For personalized guidance, speak with a free VSO counselor. Never enter personal information like SSNs or claim numbers in this chat.</em>",
-      chips: ['What documents do I need?', 'What happens after I file?', 'Find a VSO counselor', 'See other benefits', 'Start over']
+      bot: "<strong>How to file a VA disability claim:</strong>\n\n<strong>Step 1</strong> — Create an account at <a href='https://va.gov' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>\n<strong>Step 2</strong> — Complete <a href='https://va.gov/find-forms/about-form-21-526ez' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA Form 21-526EZ</a>\n<strong>Step 3</strong> — Gather your evidence (DD-214, medical records)\n<strong>Step 4</strong> — Submit online, by mail (PO Box 4444, Janesville, WI 53547), or in person at any <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA regional office</a>",
+      chips: ['What documents do I need?', 'What happens after I file?', 'Find a VSO counselor', 'See other benefits']
     },
 
     documents: {
       pct: 82,
-      bot: "<strong>Documents needed:</strong>\n\n— DD-214 (discharge papers)\n— Medical records\n— Service treatment records\n— Buddy statements (recommended)\n— Nexus letter from doctor (recommended)\n\n<em>Never enter personal information like SSNs or claim numbers in this chat — use VA.gov to submit documents securely.</em>\n\nMissing DD-214? Request free at <a href='https://archives.gov/veterans' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>archives.gov/veterans</a>",
-      chips: ['How do I file a claim?', 'What happens after I file?', 'Find a VSO counselor', 'See other benefits', 'Start over']
+      bot: "<strong>Documents needed for a disability claim:</strong>\n\n— <strong>DD-214</strong> (discharge papers) — missing yours? Request free at <a href='https://archives.gov/veterans' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>archives.gov/veterans</a>\n— <strong>Medical records</strong> (VA and private)\n— <strong>Service treatment records</strong>\n— <strong>Buddy statements</strong> (recommended) — written statements from people who witnessed your condition\n— <strong>Nexus letter</strong> (recommended) — doctor's letter linking your condition to service\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Never enter personal info like SSNs or claim numbers in this chat — submit documents securely at VA.gov.</em>",
+      chips: ['What happens after I file?', 'What is a nexus letter?', 'How do I file a claim?', 'Find a VSO counselor']
     },
 
     denied: {
@@ -393,8 +405,14 @@
 
     gi_bill_apply: {
       pct: 76,
-      bot: "<strong>How to apply for the Post-9/11 GI Bill:</strong>\n\n<strong>Step 1</strong> — Apply at <a href='https://va.gov/education/how-to-apply' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov/education/how-to-apply</a>\n<strong>Step 2</strong> — Select Chapter 33 (Post-9/11 GI Bill)\n<strong>Step 3</strong> — Submit your documents and school information\n<strong>Step 4</strong> — VA sends a Certificate of Eligibility (COE) to you and your school\n\n<strong>Documents you'll need:</strong>\n— DD-214 or statement of service\n— School name and program you plan to attend\n— Bank account info (for direct deposit of housing allowance)\n\n<strong>Timeline:</strong> VA typically processes GI Bill applications in <strong>4–6 weeks</strong>. You'll receive your COE by mail. Your school's Veterans certifying official can often help expedite.\n\n<strong>Tip:</strong> Apply at least 2 months before your semester starts to avoid delays.",
-      chips: ['GI Bill', 'Can I transfer my GI Bill?', 'Find a VSO counselor', 'See other benefits']
+      bot: "<strong>How to apply for the Post-9/11 GI Bill:</strong>\n\n<strong>Step 1</strong> — Apply at <a href='https://va.gov/education/how-to-apply' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov/education/how-to-apply</a>\n<strong>Step 2</strong> — Select Chapter 33 (Post-9/11 GI Bill)\n<strong>Step 3</strong> — Submit your documents and school information\n<strong>Step 4</strong> — VA sends a Certificate of Eligibility (COE) to you and your school\n\n<strong>Documents you'll need:</strong>\n— DD-214 or statement of service\n— School name and program\n— Bank account info (for direct deposit of housing allowance)",
+      chips: ['What happens after I apply?', 'Can I transfer my GI Bill?', 'Find a VSO counselor', 'See other benefits']
+    },
+
+    gi_bill_after: {
+      pct: 88,
+      bot: "<strong>After you apply for the GI Bill:</strong>\n\n<strong>Processing time:</strong> VA typically processes GI Bill applications in <strong>4–6 weeks</strong>.\n\n<strong>What you'll receive:</strong> A Certificate of Eligibility (COE) by mail confirming your benefit level and months remaining.\n\n<strong>Starting school:</strong> Give your COE to your school's Veterans certifying official — they'll handle enrollment certification with VA.\n\n<strong>Payments:</strong> Housing allowance is paid monthly at the end of each month. Book stipend is paid at the start of each term.\n\n<strong>Tip:</strong> Apply at least 2 months before your semester starts to avoid delays. Your school's Veterans office can often help expedite.",
+      chips: ['GI Bill', 'GI Bill types', 'Find a VSO counselor', 'See other benefits']
     },
 
     gi_bill_transfer: {
@@ -435,19 +453,37 @@
 
     home_loan_apply: {
       pct: 76,
-      bot: "<strong>How to get your VA Home Loan — step by step:</strong>\n\n<strong>Step 1</strong> — Get your Certificate of Eligibility (COE) at <a href='https://va.gov/housing-assistance/home-loans/how-to-apply' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a> — proves to lenders you qualify\n<strong>Step 2</strong> — Get pre-approved with a VA-approved lender (bank, credit union, or mortgage company)\n<strong>Step 3</strong> — Find your home and make an offer\n<strong>Step 4</strong> — VA orders an appraisal to confirm the home meets minimum property requirements\n<strong>Step 5</strong> — Close on your loan\n\n<strong>Documents your lender will need:</strong>\n— COE (from Step 1)\n— DD-214 or statement of service\n— Pay stubs (last 30 days)\n— W-2s or tax returns (last 2 years)\n— Bank statements (last 2 months)\n— Photo ID\n\n<strong>Tip:</strong> Shop at least 2–3 VA-approved lenders to compare rates. Your VSO can recommend trusted lenders in your area.\n\n<strong>Timeline:</strong> From pre-approval to closing typically takes <strong>30–45 days</strong>. The VA appraisal usually takes 1–2 weeks. Your lender handles most of the process — your main job is providing documents and choosing your home.",
+      bot: "<strong>How to get your VA Home Loan — 5 steps:</strong>\n\n<strong>Step 1</strong> — Get your Certificate of Eligibility (COE) at <a href='https://va.gov/housing-assistance/home-loans/how-to-apply' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>\n<strong>Step 2</strong> — Get pre-approved with a VA-approved lender\n<strong>Step 3</strong> — Find your home and make an offer\n<strong>Step 4</strong> — VA orders an appraisal\n<strong>Step 5</strong> — Close on your loan\n\n<strong>Tip:</strong> Shop at least 2–3 VA-approved lenders to compare rates.",
+      chips: ['What documents do I need for a VA Home Loan?', 'How long does it take?', 'Find a VSO counselor', 'See other benefits']
+    },
+
+    home_loan_docs: {
+      pct: 82,
+      bot: "<strong>Documents your lender will need:</strong>\n\n— Certificate of Eligibility (COE) — get at <a href='https://va.gov/housing-assistance/home-loans/how-to-apply' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>\n— DD-214 or statement of service\n— Pay stubs (last 30 days)\n— W-2s or tax returns (last 2 years)\n— Bank statements (last 2 months)\n— Government-issued photo ID\n\n<strong>Tip:</strong> Have these ready before you contact a lender — it speeds up pre-approval significantly.",
+      chips: ['How long does it take?', 'How do I get started?', 'Find a VSO counselor', 'See other benefits']
+    },
+
+    home_loan_timeline: {
+      pct: 88,
+      bot: "<strong>VA Home Loan timeline:</strong>\n\n<strong>Pre-approval:</strong> 1–3 days (once documents are submitted)\n<strong>Home search + offer:</strong> Varies (take your time)\n<strong>VA appraisal:</strong> 1–2 weeks after offer accepted\n<strong>Closing:</strong> 30–45 days from pre-approval to keys in hand\n\n<strong>After closing:</strong> Your mortgage payments go to your lender, not the VA. The VA guarantee stays with the loan for its lifetime.\n\n<strong>Want to use your benefit again?</strong> Once you pay off or sell, your VA loan entitlement is restored — you can reuse it.",
       chips: ['VA Home Loan', 'Find a VSO counselor', 'See other benefits']
     },
 
     healthcare_enroll: {
       pct: 76,
-      bot: "<strong>How to enroll in VA Healthcare:</strong>\n\n<strong>Option 1</strong> — Online: <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Apply at VA.gov</a>\n<strong>Option 2</strong> — Call: <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a> (Mon–Fri 8am–8pm ET)\n<strong>Option 3</strong> — In person at any VA medical center: <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Find locations →</a>\n\n<strong>What you'll need:</strong>\n— DD-214 (discharge papers)\n— Government-issued photo ID\n— Insurance info (if you have any — not required)\n— Income information (helps determine copay level)\n\n<strong>What happens after you apply:</strong>\nVA typically processes applications within <strong>1–2 weeks</strong>. You'll receive a letter with your priority group assignment and instructions to schedule your first appointment. You can check your application status at <a href='https://va.gov/health-care/after-you-apply' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Never share personal information like SSNs in this chat — apply securely at VA.gov.</em>",
-      chips: ['Am I eligible for VA Healthcare?', 'Find a VSO counselor', 'See other benefits']
+      bot: "<strong>How to enroll in VA Healthcare:</strong>\n\n<strong>Option 1</strong> — Online: <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Apply at VA.gov</a>\n<strong>Option 2</strong> — Call: <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a> (Mon–Fri 8am–8pm ET)\n<strong>Option 3</strong> — In person at any VA medical center: <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Find locations →</a>\n\n<strong>What you'll need:</strong>\n— DD-214 (discharge papers)\n— Government-issued photo ID\n— Insurance info (if you have any — not required)\n— Income information (helps determine copay level)\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Never share personal info like SSNs in this chat — apply securely at VA.gov.</em>",
+      chips: ['What happens after I enroll?', 'Am I eligible for VA Healthcare?', 'Find a VSO counselor', 'See other benefits']
+    },
+
+    healthcare_after: {
+      pct: 88,
+      bot: "<strong>After you apply for VA Healthcare:</strong>\n\n<strong>Processing time:</strong> VA typically reviews applications within <strong>1–2 weeks</strong>.\n\n<strong>What you'll receive:</strong> A letter with your priority group assignment and instructions to schedule your first appointment.\n\n<strong>Check your status:</strong> Visit <a href='https://va.gov/health-care/after-you-apply' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov/health-care/after-you-apply</a> or call <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a>.\n\n<strong>First appointment:</strong> Once enrolled, you can schedule your first primary care visit online at <a href='https://va.gov/health-care/schedule-view-va-appointments' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a> or by calling your local VA medical center.\n\n<strong>Tip:</strong> Bring your DD-214 and a list of current medications to your first visit.",
+      chips: ['VA Healthcare', 'Find a VSO counselor', 'See other benefits']
     },
 
     healthcare_eligibility: {
       pct: 82,
-      bot: "<strong>VA Healthcare eligibility:</strong>\n\nYou likely qualify if you:\n— Served 24+ continuous months on active duty, OR\n— Were discharged for a service-connected disability, OR\n— Served in a combat zone after Nov 11, 1998, OR\n— Were exposed to toxins during service (PACT Act — includes Vietnam, Gulf War, Iraq, Afghanistan, any combat zone after 9/11)\n\n<strong>PACT Act expansion:</strong> As of March 2024, all toxic-exposed Veterans can enroll directly — no need to apply for disability first.\n\n<strong>Priority groups:</strong> Veterans with higher disability ratings get seen first and pay less.\n\nNot sure? A VSO counselor can check your eligibility in minutes.",
+      bot: "<strong>VA Healthcare eligibility:</strong>\n\nYou likely qualify if:\n— Served 24+ continuous months on active duty, OR\n— Were discharged for a service-connected disability, OR\n— Served in a combat zone after Nov 11, 1998, OR\n— Were exposed to toxins during service (PACT Act)\n\n<strong>PACT Act expansion (March 2024):</strong> All Veterans exposed to toxins — at home or abroad — can now enroll directly. This includes Vietnam, Gulf War, Iraq, Afghanistan, and any combat zone after 9/11.\n\n<strong>Priority groups:</strong> Veterans with higher disability ratings get seen first and pay less.",
       chips: ['How do I enroll?', 'Find a VSO counselor', 'See other benefits']
     },
 
@@ -516,7 +552,7 @@
     claim_status: {
       pct: 55,
       bot: "<strong>How to Check Your VA Claim Status:</strong>\n\n<strong>Online (fastest):</strong>\n— Sign in at <a href='https://va.gov' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;'>VA.gov</a> → My VA → Track Claims\n— Shows real-time status, any requests for information, and estimated decision date\n\n<strong>By phone:</strong>\n— VA Benefits Hotline: <a href='tel:+18008271000' style='color:var(--gold);text-decoration:underline;'>1-800-827-1000</a> (Mon–Fri 8am–9pm ET)\n\n<strong>Claim stages:</strong>\n1. Claim received → 2. Initial review → 3. Evidence gathering → 4. Evidence review → 5. Rating decision → 6. Preparation for notification → 7. Complete\n\n<strong>Tip:</strong> If your claim has been in one stage for 30+ days without movement, contact your VSO for help.",
-      chips: ['How do I file a claim?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['How do I file a claim?', 'What is a C&P exam?', 'Find a VSO counselor', 'See other benefits']
     },
 
     va_debt: {
@@ -783,7 +819,9 @@
     'Am I eligible?':'healthcare_eligibility',
     'How do I enroll?':'healthcare_enroll',
     'How do I enroll in VA healthcare?':'healthcare_enroll',
+    'Do I qualify for GI Bill?':'gi_bill_eligible',
     'How do I apply for GI Bill?':'gi_bill_apply',
+    'What happens after I apply?':'gi_bill_after',
     'Can I transfer to my family?':'gi_bill_transfer',
     'Other education benefits':'cat_education',
     'How do I apply?':'home_loan_apply',
@@ -793,7 +831,10 @@
     'How do I apply for DIC?':'dic_apply',
     'Tell me about VA Home Loan':'home_loan',
     'How do I get a VA Home Loan?':'home_loan_apply',
-    'Am I eligible for a VA Home Loan?':'home_loan_apply',
+    'Am I eligible for a VA Home Loan?':'home_loan_eligible',
+    'How do I get started?':'home_loan_apply',
+    'What documents do I need for a VA Home Loan?':'home_loan_docs',
+    'How long does it take?':'home_loan_timeline',
     'Tell me about Voc Rehab':'voc_rehab',
     'How do I apply for Voc Rehab?':'voc_rehab_apply',
     'Tell me about VA Pension':'pension',
@@ -807,8 +848,10 @@
     'VA Home Loan':'home_loan',
     'VA Healthcare':'healthcare',
     'Mental health benefits':'mental_health',
+    'How do ratings work?':'rating_explained',
     'Do I qualify for VA Healthcare?':'healthcare_eligibility',
     'Am I eligible for VA Healthcare?':'healthcare_eligibility',
+    'What happens after I enroll?':'healthcare_after',
     'Surviving spouse benefits':'surviving_spouse',
     'What is VA Pension?':'pension',
     'Start over':'welcome', 'Start Fresh →':'welcome',
