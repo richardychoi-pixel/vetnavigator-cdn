@@ -301,7 +301,7 @@
 
     home_loan: {
       pct: 62,
-      bot: "<strong>VA Home Loan</strong>:\n\n<strong>No down payment required</strong>\n<strong>No PMI (mortgage insurance)</strong>\n<strong>Competitive interest rates</strong>\n<strong>Reusable for life</strong>",
+      bot: "<strong>VA Home Loan</strong> — one of the most valuable benefits you've earned.\n\n<strong>No down payment</strong> — most conventional loans require 3–20% down\n<strong>No PMI</strong> — saves $100–$300/month vs. conventional\n<strong>Competitive rates</strong> — typically lower than conventional mortgages\n<strong>Reusable</strong> — you can use this benefit again after paying off a previous VA loan\n<strong>No prepayment penalty</strong> — pay off early with no fees\n\n<strong>Who qualifies:</strong> 90+ days active duty, or 6+ years National Guard/Reserve, with eligible discharge.\n\n<strong>VA Funding Fee:</strong> A one-time fee (2.15% first use, 3.3% subsequent) added to the loan — waived if you have a service-connected disability.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>This is general information only. Loan terms depend on your lender. A VSO counselor can help you get started.</em>",
       chips: ['Am I eligible for a VA Home Loan?', 'How do I get a VA Home Loan?', 'Find a VSO counselor', 'See other benefits']
     },
 
@@ -435,7 +435,7 @@
 
     home_loan_apply: {
       pct: 76,
-      bot: "<strong>How to get a VA Home Loan:</strong>\n\n<strong>Step 1</strong> — Get your Certificate of Eligibility (COE) at <a href='https://va.gov/housing-assistance/home-loans/how-to-apply' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>\n<strong>Step 2</strong> — Choose a VA-approved lender\n<strong>Step 3</strong> — Find a home and make an offer\n<strong>Step 4</strong> — VA appraisal + loan closing\n\n<strong>Who qualifies:</strong> 90+ days active duty, or 6 years National Guard/Reserve\n<strong>Tip:</strong> No down payment, no PMI — saves thousands upfront.",
+      bot: "<strong>How to get your VA Home Loan — step by step:</strong>\n\n<strong>Step 1</strong> — Get your Certificate of Eligibility (COE) at <a href='https://va.gov/housing-assistance/home-loans/how-to-apply' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a> — proves to lenders you qualify\n<strong>Step 2</strong> — Get pre-approved with a VA-approved lender (bank, credit union, or mortgage company)\n<strong>Step 3</strong> — Find your home and make an offer\n<strong>Step 4</strong> — VA orders an appraisal to confirm the home meets minimum property requirements\n<strong>Step 5</strong> — Close on your loan\n\n<strong>Documents your lender will need:</strong>\n— COE (from Step 1)\n— DD-214 or statement of service\n— Pay stubs (last 30 days)\n— W-2s or tax returns (last 2 years)\n— Bank statements (last 2 months)\n— Photo ID\n\n<strong>Tip:</strong> Shop at least 2–3 VA-approved lenders to compare rates. Your VSO can recommend trusted lenders in your area.",
       chips: ['VA Home Loan', 'Find a VSO counselor', 'See other benefits']
     },
 
@@ -2174,6 +2174,7 @@
       clearOpts();
       var chips = s('fallbackChips').slice();
       if (sug) chips.unshift(sug);
+      chips = filterVisitedChips(chips);
       mkChips(chips);
     })
     .catch(function () {
