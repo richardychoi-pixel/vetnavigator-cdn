@@ -960,6 +960,61 @@
     }
   };
 
+  // ── VISITED NODE TRACKING ───────────────────────────────────────────────
+  var visitedNodes = {};
+
+  // Nodes that are navigation/menus — don't count as "visited content"
+  var NAV_NODES = { welcome:1, benefits_menu:1, all_benefits:1, empathy_intro:1,
+    cat_money:1, cat_healthcare:1, cat_education:1, cat_housing:1,
+    cat_family:1, cat_claims:1, veteran:1, era:1 };
+
+  function markVisited(key) {
+    if (!NAV_NODES[key]) visitedNodes[key] = true;
+  }
+
+  function chipTarget(label) {
+    if (lang !== 'en' && CHIP_MAP_I18N[lang] && CHIP_MAP_I18N[lang][label]) return CHIP_MAP_I18N[lang][label];
+    return CHIP_MAP[label] || null;
+  }
+
+  function filterVisitedChips(chips) {
+    var filtered = [];
+    var removed  = 0;
+    for (var i = 0; i < chips.length; i++) {
+      var target = chipTarget(chips[i]);
+      if (target && visitedNodes[target]) {
+        removed++;
+      } else {
+        filtered.push(chips[i]);
+      }
+    }
+    if (removed > 0) {
+      var nudge = tNudge();
+      if (filtered.indexOf(nudge) === -1) filtered.push(nudge);
+    }
+    return filtered;
+  }
+
+  function tNudge() {
+    var m = {
+      en: 'Have a specific question? Type below',
+      es: '¿Tiene una pregunta específica? Escriba abajo',
+      vi: 'Có câu hỏi cụ thể? Nhập bên dưới',
+      ko: '구체적인 질문이 있으신가요? 아래에 입력하세요',
+      tl: 'May tanong? I-type sa ibaba'
+    };
+    return m[lang] || m.en;
+  }
+
+  function isNudgeChip(text) {
+    var t = text.trim();
+    return t === 'Have a specific question? Type below'
+      || t === '¿Tiene una pregunta específica? Escriba abajo'
+      || t === 'Có câu hỏi cụ thể? Nhập bên dưới'
+      || t === '구체적인 질문이 있으신가요? 아래에 입력하세요'
+      || t === 'May tanong? I-type sa ibaba';
+  }
+
   function s(key) {
     var d = I18N[lang] || I18N.en;
     return d[key] !== undefined ? d[key] : (I18N.en[key] || '');
@@ -1558,6 +1613,7 @@
 
   function renderNode(key) {
     var node = getNode(key); if (!node) return;
+    markVisited(key);
     if (node.bot) {
       var plain = botMsg(node.bot);
       chatHistory.push({ topic: key, text: plain.substring(0, 120) });
@@ -1576,6 +1632,7 @@
       var hasIt = chips.some(function (c) { return c === startOverLabel || c === 'Start over' || c === 'Start Fresh →'; });
       if (!hasIt) chips.push(startOverLabel);
     }
+    chips = filterVisitedChips(chips);
     if (node.cards && node.cards.length) {
       mkCards(node.cards);
       if (chips.length) mkChips(chips);
@@ -2148,6 +2205,7 @@
 
   function aiRenderNode(key) {
     var node = getNode(key); if (!node) return;
+    markVisited(key);
     var nodeText = node.bot ? stripHTML(node.bot) : '';
 
     // Show loading state
@@ -2213,6 +2271,7 @@
       }
       // AI suggestions removed — node chips are curated and always route correctly.
       // Free-text input with buildContext() handles questions not covered by chips.
+      chips = filterVisitedChips(chips);
       if (node.cards && node.cards.length) {
         mkCards(node.cards);
         if (chips.length) mkChips(chips);
@@ -2292,6 +2351,24 @@
       }
     }
 
+    // Nudge chip — veteran tapped "Have a specific question? Type below"
+    if (isNudgeChip(text)) {
+      userMsg(text);
+      turnCount++;
+      checkWarn();
+      var nudgeReply = (lang === 'es') ? 'Escriba su pregunta abajo — estoy aquí para ayudar. 👇'
+        : (lang === 'vi') ? 'Nhập câu hỏi của bạn bên dưới — tôi sẵn sàng giúp bạn. 👇'
+        : (lang === 'ko') ? '아래에 질문을 입력하세요 — 도움을 드리겠습니다. 👇'
+        : (lang === 'tl') ? 'I-type ang iyong tanong sa ibaba — nandito ako para tumulong. 👇'
+        : 'Go ahead and type your question below — I\'m here to help. 👇';
+      setTimeout(function () {
+        clearOpts();
+        botMsg(nudgeReply);
+        mkChips(s('fallbackChips'));
+      }, 400);
+      return;
+    }
+
     var key = route(text);
     userMsg(text);
     turnCount++;
@@ -2309,6 +2386,7 @@
       setTimeout(showSummaryPrompt, 400);
       return;
     }
+    if (key === 'welcome') { visitedNodes = {}; }
     // Navigation/menu nodes — render instantly without AI call
     var SKIP_AI = ['welcome','benefits_menu','all_benefits','empathy_intro',
       'cat_money','cat_healthcare','cat_education','cat_housing','cat_family','cat_claims',
@@ -2371,6 +2449,7 @@
       b.classList.toggle('act', b.getAttribute('data-lang') === code);
     });
     // Clear chat and re-render welcome in new language
+    visitedNodes = {};
     ge('vnms').innerHTML = '';
     ge('vncd').innerHTML = '';
     ge('vnch').innerHTML = '';
