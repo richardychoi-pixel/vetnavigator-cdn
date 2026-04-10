@@ -201,7 +201,7 @@
 
     active_duty: {
       pct: 32,
-      bot: "Thank you for your service and dedication. 🇺🇸 We honor your commitment to this nation.\n\n<strong>Preparing to separate or transition?</strong>\n\nHere are the key benefits to act on <em>before</em> you leave:\n\n— <strong>TAP Program</strong> — <a href='https://tapevents.mil' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>mandatory transition assistance, job prep</a>\n— <strong>Disability rating</strong> — file BEFORE you separate (<a href='https://va.gov/disability/how-to-file-claim/when-to-file/pre-discharge-claim' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>BDD program</a>)\n— <strong>GI Bill</strong> — education benefit active the day you separate\n— <strong>VA Healthcare</strong> — enroll within 5 years for free care\n— <strong>VA Home Loan</strong> — available immediately after separation\n\nFiling a disability claim before separation can save months of waiting.",
+      bot: "Thank you for your service and dedication. 🇺🇸 We honor your commitment to this nation.\n\n<strong>Preparing to separate or transition?</strong>\n\nHere are the key benefits to act on <em>before</em> you leave:\n\n— <strong>TAP Program</strong> — <a href='https://tapevents.mil' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>mandatory transition assistance, job prep</a>\n— <strong>Disability rating</strong> — file BEFORE you separate (<a href='https://va.gov/disability/how-to-file-claim/when-to-file/pre-discharge-claim' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>BDD program</a>)\n— <strong>GI Bill</strong> — education benefit active the day you separate\n— <strong>VA Healthcare</strong> — enroll within 10 years for free care\n— <strong>VA Home Loan</strong> — available immediately after separation\n\nFiling a disability claim before separation can save months of waiting.",
       chips: ['Tell me about the BDD program', 'GI Bill', 'VA Home Loan', 'Find a VSO counselor']
     },
 
@@ -302,13 +302,13 @@
     home_loan: {
       pct: 62,
       bot: "<strong>VA Home Loan</strong>:\n\n<strong>No down payment required</strong>\n<strong>No PMI (mortgage insurance)</strong>\n<strong>Competitive interest rates</strong>\n<strong>Reusable for life</strong>",
-      chips: ['Am I eligible?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['Am I eligible?', 'What documents do I need?', 'Find a VSO counselor', 'See other benefits']
     },
 
     healthcare: {
       pct: 62,
       bot: "<strong>VA Healthcare</strong>:\n\n<strong>Covered:</strong> Primary care, mental health, prescriptions\n<strong>Cost:</strong> Free for many veterans\n\nEnroll at <a href='https://VA.gov' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a> or call <a href='tel:+118772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a>.",
-      chips: ['How do I enroll?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['How do I enroll?', 'Am I eligible for VA Healthcare?', 'Find a VSO counselor', 'See other benefits']
     },
 
     file_claim: {
@@ -320,7 +320,7 @@
     documents: {
       pct: 82,
       bot: "<strong>Documents needed:</strong>\n\n— DD-214 (discharge papers)\n— Medical records\n— Service treatment records\n— Buddy statements (recommended)\n— Nexus letter from doctor (recommended)\n\n<em>Never enter personal information like SSNs or claim numbers in this chat — use VA.gov to submit documents securely.</em>\n\nMissing DD-214? Request free at <a href='https://archives.gov/veterans' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>archives.gov/veterans</a>",
-      chips: ['Find a VSO counselor', 'See other benefits', 'Start over']
+      chips: ['How do I file a claim?', 'Find a VSO counselor', 'See other benefits', 'Start over']
     },
 
     denied: {
@@ -358,7 +358,7 @@
     pact_act: {
       pct: 62,
       bot: "<strong>PACT Act (2022)</strong> — the biggest VA benefits expansion in decades.\n\n<strong>Covers:</strong> Burn pit exposure, Agent Orange, Gulf War illness\n<strong>Added:</strong> 20+ new presumptive conditions\n\nOver 5 million veterans may now qualify.",
-      chips: ['Do I qualify?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['Do I qualify?', 'How do I file a claim?', 'Find a VSO counselor', 'See other benefits']
     },
 
     pact_qualify: {
@@ -382,13 +382,13 @@
     cp_exam: {
       pct: 58,
       bot: "<strong>The C&P Exam (Compensation & Pension):</strong>\n\nAfter you file a disability claim, the VA schedules a C&P exam to evaluate your condition. This exam <strong>heavily influences your rating</strong>.\n\n<strong>How to prepare:</strong>\n— Describe your <em>worst days</em>, not your average days\n— Bring your medical records and service records\n— Don't minimize symptoms — be specific and honest\n— Write down all symptoms before the exam\n\n<strong>After the exam:</strong> The examiner submits a DBQ (Disability Benefits Questionnaire). You can request a copy.\n\n<strong>Tip:</strong> A VSO counselor can attend the exam or help you prepare.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>This is general information only — not legal advice. Every claim is different. A free VSO counselor can prepare you for your specific situation.</em>",
-      chips: ['How do I file a claim?', 'What documents do I need?', 'Find a VSO counselor']
+      chips: ['How do I file a claim?', 'What documents do I need?', 'Find a VSO counselor', 'See other benefits']
     },
 
     bdd: {
       pct: 48,
       bot: "<strong>Benefits Delivery at Discharge (BDD):</strong>\n\nFile your VA disability claim 90–180 days BEFORE your separation date — and your rating may be ready the day you leave.\n\n<strong>How it works:</strong>\n— File at <a href='https://va.gov/disability/how-to-file-claim' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov/disability/how-to-file-claim</a>\n— Complete your C&P exam while still on base\n— Rating decision arrives within 30 days of separation\n\n<strong>Why it matters:</strong> Without BDD, average wait is 3–5 months after separation. With BDD, benefits start immediately.",
-      chips: ['What documents do I need?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['What documents do I need?', 'What is a C&P exam?', 'Find a VSO counselor', 'See other benefits']
     },
 
     gi_bill_apply: {
@@ -400,19 +400,19 @@
     gi_bill_transfer: {
       pct: 82,
       bot: "<strong>Transferring GI Bill benefits:</strong>\n\n— Must be on active duty or Selected Reserve\n— Commit to 4 more years of service\n— Transfer at <a href='https://milconnect.dmdc.osd.mil' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>milConnect.deps.mil</a>\n— Spouse can use immediately; dependents at age 18–26\n\nAlready separated? Benefits cannot be transferred after leaving service.",
-      chips: ['Find a VSO counselor', 'See other benefits', 'Start over']
+      chips: ['GI Bill', 'Find a VSO counselor', 'See other benefits', 'Start over']
     },
 
     voc_rehab: {
       pct: 62,
       bot: "<strong>Vocational Rehabilitation (Ch. 31)</strong>:\n\nCovers career counseling, education, job placement, and tools for veterans with a 10%+ disability rating.",
-      chips: ['How do I apply?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['How do I apply?', 'GI Bill', 'Find a VSO counselor', 'See other benefits']
     },
 
     voc_rehab_apply: {
       pct: 76,
       bot: "<strong>How to apply for Vocational Rehabilitation (Ch. 31):</strong>\n\n<strong>Step 1</strong> — Apply at <a href='https://va.gov/careers-employment/vocational-rehabilitation' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov/careers-employment/vocational-rehabilitation</a>\n<strong>Step 2</strong> — Meet with a Vocational Rehabilitation Counselor\n<strong>Step 3</strong> — Create a rehabilitation plan together\n\n<strong>You may qualify if you have:</strong>\n— A VA disability rating of 10%+\n— An employment barrier related to your disability\n\n<strong>Covers:</strong> Tuition, books, supplies, job placement support, and more.",
-      chips: ['What documents do I need?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['What documents do I need?', 'GI Bill', 'Find a VSO counselor', 'See other benefits']
     },
 
     dic: {
@@ -424,30 +424,30 @@
     dic_apply: {
       pct: 76,
       bot: "<strong>How to apply for DIC:</strong>\n\n<strong>Step 1</strong> — Complete <a href='https://va.gov/find-forms/about-form-21P-534EZ' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA Form 21P-534EZ</a>\n<strong>Step 2</strong> — Attach veteran's death certificate\n<strong>Step 3</strong> — Include marriage certificate\n<strong>Step 4</strong> — Submit to your VA Pension Management Center\n\n<strong>📬 Mail DIC forms to:</strong>\nDepartment of Veterans Affairs\nPension Intake Center\nPO Box 5365, Janesville, WI 53547-5365\n\n<strong>🏥 In person:</strong> <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Find your nearest VA office →</a>\n\n<strong>Tip:</strong> A VSO counselor can prepare and submit this paperwork for free — highly recommended given the complexity.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>This is general information only — not legal advice. Always consult a qualified VSO counselor or VA representative for personalized guidance.</em>",
-      chips: ['Find a VSO counselor', 'See other benefits', 'Start over']
+      chips: ['Tell me about CHAMPVA', 'Survivors Pension', 'Find a VSO counselor', 'See other benefits', 'Start over']
     },
 
     champva: {
       pct: 62,
       bot: "<strong>CHAMPVA — VA Healthcare for Dependents:</strong>\n\nHealthcare coverage for spouses and children of veterans who are:\n— 100% permanently and totally (P&T) disabled, OR\n— Died from a service-connected condition\n\n<strong>Covers:</strong> Doctor visits, hospital care, prescriptions, mental health\n<strong>Cost:</strong> No monthly premium. $50/year deductible ($100 family max). 25% cost-share on most services. $3,000/year out-of-pocket cap.\n<strong>Meds by Mail:</strong> $0 copay for maintenance prescriptions (if no other Rx coverage)\n\n<strong>Important:</strong> If age 65+, must have Medicare Parts A & B to keep CHAMPVA.\n\nApply with <a href='https://va.gov/find-forms/about-form-10-10d' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA Form 10-10d</a> at <a href='https://va.gov/health-care/family-caregiver-benefits/champva' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>",
-      chips: ['Find a VSO counselor', 'See other benefits', 'Start over']
+      chips: ['Tell me about DIC', 'Survivors Pension', 'Find a VSO counselor', 'See other benefits', 'Start over']
     },
 
     home_loan_apply: {
       pct: 76,
       bot: "<strong>How to get a VA Home Loan:</strong>\n\n<strong>Step 1</strong> — Get your Certificate of Eligibility (COE) at <a href='https://va.gov/housing-assistance/home-loans/how-to-apply' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>\n<strong>Step 2</strong> — Choose a VA-approved lender\n<strong>Step 3</strong> — Find a home and make an offer\n<strong>Step 4</strong> — VA appraisal + loan closing\n\n<strong>Who qualifies:</strong> 90+ days active duty, or 6 years National Guard/Reserve\n<strong>Tip:</strong> No down payment, no PMI — saves thousands upfront.",
-      chips: ['What documents do I need?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['What documents do I need?', 'VA Home Loan', 'Find a VSO counselor', 'See other benefits']
     },
 
     healthcare_enroll: {
       pct: 76,
-      bot: "<strong>How to enroll in VA Healthcare:</strong>\n\n<strong>Option 1</strong> — Online: <a href='https://va.gov/health-care/apply' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov/health-care/apply</a>\n<strong>Option 2</strong> — Call: <a href='tel:+118772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a> (Mon–Fri 8am–8pm ET)\n<strong>Option 3</strong> — In person at any VA medical center: <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Find locations →</a>\n\n<strong>What you need:</strong> DD-214, government-issued ID, insurance info (if any). You will enter personal information securely on VA.gov — never share it in this chat.\n\n<strong>Cost:</strong> Free for combat veterans (first 5 years). Most others pay little to nothing.",
+      bot: "<strong>How to enroll in VA Healthcare:</strong>\n\n<strong>Option 1</strong> — Online: <a href='https://va.gov/health-care/apply' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov/health-care/apply</a>\n<strong>Option 2</strong> — Call: <a href='tel:+118772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a> (Mon–Fri 8am–8pm ET)\n<strong>Option 3</strong> — In person at any VA medical center: <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Find locations →</a>\n\n<strong>What you need:</strong> DD-214, government-issued ID, insurance info (if any). You will enter personal information securely on VA.gov — never share it in this chat.\n\n<strong>Cost:</strong> Free for combat Veterans (first 10 years). Most others pay little to nothing.",
       chips: ['Am I eligible for VA Healthcare?', 'Find a VSO counselor', 'See other benefits']
     },
 
     healthcare_eligibility: {
       pct: 82,
-      bot: "<strong>VA Healthcare eligibility:</strong>\n\nYou likely qualify if you:\n— Served 24+ continuous months on active duty\n— Were discharged for a service-connected disability\n— Served in a combat zone after Nov 11, 1998\n\n<strong>Priority groups:</strong> Veterans with higher disability ratings get seen first and pay less.\n\nNot sure? A VSO counselor can check your eligibility in minutes.",
+      bot: "<strong>VA Healthcare eligibility:</strong>\n\nYou likely qualify if you:\n— Served 24+ continuous months on active duty, OR\n— Were discharged for a service-connected disability, OR\n— Served in a combat zone after Nov 11, 1998, OR\n— Were exposed to toxins during service (PACT Act — includes Vietnam, Gulf War, Iraq, Afghanistan, any combat zone after 9/11)\n\n<strong>PACT Act expansion:</strong> As of March 2024, all toxic-exposed Veterans can enroll directly — no need to apply for disability first.\n\n<strong>Priority groups:</strong> Veterans with higher disability ratings get seen first and pay less.\n\nNot sure? A VSO counselor can check your eligibility in minutes.",
       chips: ['How do I enroll?', 'Find a VSO counselor', 'See other benefits']
     },
 
@@ -456,7 +456,7 @@
     tdiu: {
       pct: 62,
       bot: "<strong>TDIU — Total Disability Based on Individual Unemployability:</strong>\n\nIf your service-connected disabilities prevent you from working, you may receive <strong>100% disability pay even with a lower rating</strong>.\n\n<strong>General requirements:</strong>\n— One condition rated 60%+ OR\n— Multiple conditions totaling 70%+ (with one at 40%+)\n— Unable to maintain substantially gainful employment\n\n<strong>Pay:</strong> Same as 100% rating ($3,939/mo for 2026)\n\n<strong>Apply with:</strong> VA Form 21-8940 (available at <a href='https://va.gov/find-forms' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>va.gov/find-forms</a>)\n\n<strong>Tip:</strong> Many veterans qualify but don't know about TDIU. A VSO counselor can assess your eligibility.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Amounts approximate — verify current rates at <a href='https://va.gov/disability/compensation-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
-      chips: ['How do I file a claim?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['How do I file a claim?', 'What is a nexus letter?', 'Find a VSO counselor', 'See other benefits']
     },
 
     nexus: {
@@ -467,20 +467,20 @@
 
     mental_health: {
       pct: 52,
-      bot: "<strong>VA Mental Health Benefits:</strong>\n\n<strong>Covered services:</strong>\n— PTSD treatment (therapy + medication)\n— Depression, anxiety, MST counseling\n— Substance use treatment\n— Suicide prevention programs\n— Vet Centers (community-based, less formal than VA hospitals)\n\n<strong>Who qualifies:</strong> Any veteran who served on active duty — even without a disability rating.\n\n<strong>How to access:</strong>\n— Call the VA Mental Health helpline: <a href='tel:+18002738255' style='color:var(--gold);text-decoration:underline;'>1-800-273-8255</a> (Press 1)\n— Walk in to any VA medical center — no appointment needed for mental health crisis\n— Find a Vet Center at <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;'>va.gov/find-locations</a>\n\n<strong>Veterans Crisis Line:</strong> Dial 988, then Press 1",
+      bot: "<strong>VA Mental Health Benefits:</strong>\n\n<strong>Covered services:</strong>\n— PTSD treatment (therapy + medication)\n— Depression, anxiety, MST counseling\n— Substance use treatment\n— Suicide prevention programs\n— Vet Centers (community-based, less formal than VA hospitals)\n\n<strong>Who qualifies:</strong> Any veteran who served on active duty — even without a disability rating.\n\n<strong>How to access:</strong>\n— Call the Veterans Crisis Line: <a href='tel:988' style='color:var(--gold);text-decoration:underline;'>988</a> (Press 1)\n— Walk in to any VA medical center — no appointment needed for mental health crisis\n— Find a Vet Center at <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;'>va.gov/find-locations</a>\n\n<strong>Veterans Crisis Line:</strong> Dial 988, then Press 1",
       chips: ['Do I qualify for VA Healthcare?', 'Find a VSO counselor', 'See other benefits']
     },
 
     pension: {
       pct: 50,
       bot: "<strong>VA Pension — for low-income wartime veterans:</strong>\n\nA needs-based, tax-free benefit for veterans with limited income who served during a wartime period.\n\n<strong>Basic requirements:</strong>\n— 90+ days active duty (at least 1 day during wartime)\n— Income and assets below VA limits\n— Age 65+ OR permanently disabled\n\n<strong>2026 maximum annual pension rates (MAPR):</strong>\n— Single veteran: $17,441/yr ($1,453/mo)\n— With spouse: $22,839/yr ($1,903/mo)\n— With Aid & Attendance: $29,093/yr ($2,424/mo)\n— A&A with spouse: $34,488/yr ($2,874/mo)\n— Each additional child: +$2,984/yr\n\n<strong>Net worth limit:</strong> $163,699 (includes assets + income)\n\n<strong>Apply with:</strong> VA Form 21P-527EZ\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates effective Dec 2025 (2.8% COLA). Verify at <a href='https://va.gov/pension/veterans-pension-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
-      chips: ['What is Aid & Attendance?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['What is Aid & Attendance?', 'Survivors Pension', 'Find a VSO counselor', 'See other benefits']
     },
 
     aid_attendance: {
       pct: 55,
       bot: "<strong>Aid & Attendance (A&A):</strong>\n\nAn enhanced pension benefit for veterans (or surviving spouses) who need help with daily activities.\n\n<strong>You may qualify if you:</strong>\n— Need help bathing, dressing, eating, or using the bathroom\n— Are bedridden or in a nursing home\n— Have severe vision loss\n\n<strong>2026 maximum pension with A&A (MAPR):</strong>\n— Veteran alone: $29,093/yr ($2,424/mo)\n— Veteran with spouse: $34,488/yr ($2,874/mo)\n— Surviving spouse: ~$22,304/yr (~$1,858/mo)\n\n<strong>Net worth limit:</strong> $163,699\n\n<strong>Important:</strong> This benefit is significantly underused. Many elderly veterans in care facilities qualify but have never applied.\n\n<strong>Tip:</strong> A VSO counselor can help — this is a complex application.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates effective Dec 2025 (2.8% COLA). Verify at <a href='https://va.gov/pension/veterans-pension-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
-      chips: ['What is VA Pension?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['What is VA Pension?', 'How do I file a claim?', 'Find a VSO counselor', 'See other benefits']
     },
 
     survivors_pension: {
@@ -492,7 +492,7 @@
     burial: {
       pct: 60,
       bot: "<strong>VA Burial & Memorial Benefits:</strong>\n\nAll honorably discharged veterans are entitled to:\n\n<strong>National Cemetery burial</strong> — Free gravesite, opening/closing, perpetual care, and headstone or marker at any VA national cemetery with space available.\n\n<strong>Burial allowance</strong> — Up to $1,002 for funeral/burial costs (for deaths on or after Oct. 1, 2025). Surviving family or estate can apply.\n\n<strong>Burial flag</strong> — A U.S. flag to drape the casket or accompany the urn — free.\n\n<strong>Presidential Memorial Certificate</strong> — Signed certificate honoring the veteran's service — free.\n\n<strong>Headstones & markers</strong> — Available for private cemetery burials too, at no cost.\n\n<strong>Pre-need eligibility:</strong> Veterans can apply in advance to confirm eligibility for national cemetery burial before it's needed.\n\n<strong>Apply with:</strong> VA Form 21P-530EZ (burial allowance) · 1-800-535-1117 (National Cemetery Scheduling)",
-      chips: ['Find a VSO counselor', 'Surviving spouse benefits', 'See other benefits']
+      chips: ['Tell me about DIC', 'Find a VSO counselor', 'Surviving spouse benefits', 'See other benefits']
     },
 
     caregiver: {
@@ -516,7 +516,7 @@
     va_debt: {
       pct: 55,
       bot: "<strong>VA Debt & Overpayment Help:</strong>\n\nIf VA says you owe money — for education, compensation, or pension overpayments — you have options.\n\n<strong>Your rights:</strong>\n— Request a waiver (ask VA to forgive the debt)\n— Request a compromise (pay less than the full amount)\n— Request an extended repayment plan\n— Request a hearing to dispute the debt\n\n<strong>Act fast:</strong> You have <strong>180 days</strong> from the debt notice to request relief.\n\n<strong>Contact the Debt Management Center:</strong>\n— Phone: <a href='tel:+18008270648' style='color:var(--gold);text-decoration:underline;'>1-800-827-0648</a> (Mon–Fri 7:30am–7pm ET)\n— Online: <a href='https://va.gov/manage-va-debt' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;'>va.gov/manage-va-debt</a>\n\n<strong>Tip:</strong> A VSO counselor can help you write a waiver request — it significantly improves your chances.",
-      chips: ['Find a VSO counselor', 'See other benefits', 'Start over']
+      chips: ['How do I file a claim?', 'Find a VSO counselor', 'See other benefits', 'Start over']
     },
 
     mst: {
@@ -540,7 +540,7 @@
     life_insurance: {
       pct: 55,
       bot: "<strong>VA Life Insurance:</strong>\n\n<strong>SGLI (Servicemembers' Group Life Insurance)</strong>\n— Up to $500,000 coverage while on active duty\n— Must convert within 1 year + 120 days of separation — don't miss this window\n\n<strong>VGLI (Veterans' Group Life Insurance)</strong>\n— Convert your SGLI after separation — no medical exam required if applied within 240 days\n— Coverage up to $500,000, renewable for life\n— Apply at benefits.va.gov/insurance\n\n<strong>S-DVI (Service-Disabled Veterans Life Insurance)</strong>\n— For veterans with a new service-connected disability\n— Up to $10,000 coverage at low rates\n— Must apply within 2 years of your rating decision\n\n<strong>VMLI (Veterans' Mortgage Life Insurance)</strong>\n— Mortgage protection up to $200,000 for severely disabled veterans with adapted housing grants\n\n<strong>Important:</strong> Many veterans lose SGLI coverage without realizing it — act fast after separation.",
-      chips: ['Find a VSO counselor', 'See other benefits', 'Start over']
+      chips: ['VA Healthcare', 'Find a VSO counselor', 'See other benefits', 'Start over']
     },
 
     housing_help: {
@@ -564,7 +564,7 @@
     adapted_housing: {
       pct: 55,
       bot: "<strong>Adapted Housing Grants</strong>\n\n<strong>SAH Grant</strong> — up to $109,986 to build or modify a home\n<strong>SHA Grant</strong> — up to $22,036 for accessibility modifications\n<strong>TRA Grant</strong> — up to $46,496 for temporary adaptations\n\nExamples: wheelchair ramps, roll-in showers, stair lifts.",
-      chips: ['VA Home Loan', 'Find a VSO counselor', 'See other benefits']
+      chips: ['VA Home Loan', 'Housing Assistance', 'Find a VSO counselor', 'See other benefits']
     },
 
     va_records: {
