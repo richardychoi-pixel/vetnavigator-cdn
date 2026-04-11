@@ -1310,9 +1310,10 @@
     'filter:drop-shadow(0 1px 1px rgba(0,0,0,.12))}',
 
     // Mic button
-    '#vnmc{background:rgba(90,143,212,.08);border:.5px solid rgba(90,143,212,.15)}',
-    '#vnmc:hover{background:rgba(90,143,212,.15)}',
-    '#vnmc svg{width:13px;height:13px;fill:#5a8fd4}',
+    '#vnmc{background:linear-gradient(145deg,rgba(90,143,212,.25),rgba(90,143,212,.15) 50%,rgba(90,143,212,.08));border:.5px solid rgba(90,143,212,.3);position:relative;overflow:hidden;box-shadow:inset 0 1px 2px rgba(255,255,255,.5),inset 0 -1px 2px rgba(90,143,212,.08),0 2px 6px rgba(90,143,212,.12)}',
+    '#vnmc::before{content:"";position:absolute;top:1px;left:15%;width:70%;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0));border-radius:50%}',
+    '#vnmc:hover{background:linear-gradient(145deg,rgba(90,143,212,.35),rgba(90,143,212,.22) 50%,rgba(90,143,212,.12));border-color:rgba(90,143,212,.45);box-shadow:inset 0 1px 2px rgba(255,255,255,.5),inset 0 -1px 2px rgba(90,143,212,.12),0 3px 10px rgba(90,143,212,.18)}',
+    '#vnmc svg{width:13px;height:13px;fill:#1a4a8a;position:relative;z-index:1}',
     '#vnmc.on{background:rgba(178,34,52,.15);border-color:rgba(178,34,52,.3);animation:vnM 1s infinite}',
     '#vnmc.on svg{fill:#cc3344}',
     '@keyframes vnM{0%,100%{box-shadow:0 0 0 0 rgba(178,34,52,.3)}',
