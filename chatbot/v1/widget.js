@@ -1168,8 +1168,8 @@
     '#vnhi{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.5);',
     'border:1px solid rgba(255,255,255,.6);display:flex;align-items:center;',
     'justify-content:center;font-size:15px;flex-shrink:0}',
-    '#vnon{color:#3d1f1f;font-size:13px;font-weight:600;line-height:1.2}',
-    '#vnst{color:#8b6060;font-size:10.5px;margin-top:2px;',
+    '#vnon{color:#3d1f1f;font-size:14px;font-weight:600;line-height:1.2}',
+    '#vnst{color:#8b6060;font-size:12px;margin-top:2px;',
     'display:flex;align-items:center;gap:4px}',
     '.vnd{width:5px;height:5px;border-radius:50%;background:#22c55e;display:inline-block}',
 
@@ -1182,7 +1182,7 @@
     '#vnlb{display:flex;align-items:center;gap:4px;padding:6px 12px;',
     'background:linear-gradient(180deg,#fdf6f5,#faf8f7);border-bottom:.5px solid rgba(0,0,0,.04);overflow-x:auto}',
     '#vnlb::-webkit-scrollbar{display:none}',
-    '.vnlg{font-size:10px;padding:3px 8px;border-radius:10px;',
+    '.vnlg{font-size:12px;padding:3px 8px;border-radius:10px;',
     'border:.5px solid rgba(0,0,0,.08);background:transparent;',
     'color:#94a3b8;cursor:pointer;white-space:nowrap;',
     'transition:all .15s;font-family:inherit}',
@@ -1192,7 +1192,7 @@
 
     // Tabs — warm background
     '#vntb{display:flex;background:#faf8f7;border-bottom:.5px solid rgba(0,0,0,.04)}',
-    '.vntb{flex:1;padding:7px 2px;font-size:10px;font-weight:500;',
+    '.vntb{flex:1;padding:7px 2px;font-size:12px;font-weight:500;',
     'background:transparent;border:none;color:#94a3b8;cursor:pointer;',
     'border-bottom:2px solid transparent;transition:all .15s;font-family:inherit}',
     '.vntb:hover{color:#64748b}',
@@ -1221,9 +1221,9 @@
     '.vnav.u{background:#4a7ec5;color:#fff;border-radius:6px}',
 
     // Bot & user bubbles — light theme
-    '.vnbb{padding:9px 12px;border-radius:12px;font-size:12px;',
+    '.vnbb{padding:9px 12px;border-radius:12px;font-size:14px;',
     'line-height:1.65;max-width:88%}',
-    '.vnbb.b{background:#fff;color:#1e293b;font-weight:300;',
+    '.vnbb.b{background:#fff;color:#1e293b;',
     'border-bottom-left-radius:3px;border:.5px solid rgba(0,0,0,.06)}',
     '.vnbb.u{background:var(--vub);color:#fff;border-bottom-right-radius:3px;margin-left:auto}',
     '.vnbb strong{color:#0f172a;font-weight:600}',
@@ -1245,7 +1245,7 @@
     'overflow-y:auto}',
     '#vnop::-webkit-scrollbar{width:2px}',
     '#vnop::-webkit-scrollbar-thumb{background:rgba(0,0,0,.06);border-radius:2px}',
-    '#vnol{font-size:10px;color:#94a3b8;letter-spacing:1px;',
+    '#vnol{font-size:11px;color:#94a3b8;letter-spacing:1px;',
     'text-transform:uppercase;margin-bottom:7px;display:none}',
 
     // Identity cards
@@ -1254,12 +1254,12 @@
     'border-radius:9px;padding:6px 7px;cursor:pointer;transition:all .15s;text-align:center}',
     '.vnca:hover{background:rgba(90,143,212,.06);border-color:rgba(90,143,212,.25)}',
     '.vnci{font-size:14px;margin-bottom:2px}',
-    '.vnct{font-size:10.5px;font-weight:600;color:#0f172a}',
-    '.vncd{font-size:10px;color:#94a3b8;margin-top:2px}',
+    '.vnct{font-size:13px;font-weight:600;color:#0f172a}',
+    '.vncd{font-size:12px;color:#94a3b8;margin-top:2px}',
 
     // Chips — lighter blue
     '#vnch{display:flex;flex-wrap:wrap;gap:6px}',
-    '.vncp{font-size:11.5px;padding:6px 12px;border-radius:14px;',
+    '.vncp{font-size:13px;font-weight:500;padding:6px 12px;border-radius:14px;',
     'background:var(--vchip);border:.5px solid var(--vchip);',
     'color:#fff;cursor:pointer;transition:all .15s;font-family:inherit}',
     '.vncp:hover{background:#4a7ec5;border-color:#4a7ec5}',
