@@ -1122,20 +1122,17 @@
     '--vub:#4a7ec5;--vchip:#5a8fd4;',
     '--vn-panel:520px}',
 
-    // FAB button — Phase 3 redesign pending, keep current shape with updated color
+    // FAB button — American flag chat bubble
     '#vnb{position:fixed;bottom:24px;right:24px;z-index:2147483640;',
-    'width:58px;height:58px;border-radius:50%;border:none;',
-    'background:linear-gradient(145deg,#e05565,#cc3344 40%,#a82535);',
-    'cursor:pointer;box-shadow:0 6px 24px rgba(178,34,52,.35),inset 0 2px 3px rgba(255,255,255,.3),inset 0 -2px 3px rgba(0,0,0,.12);',
-    'display:flex;align-items:center;justify-content:center;',
-    'transition:transform .2s,box-shadow .2s}',
-    '#vnb:hover{transform:scale(1.08);box-shadow:0 8px 32px rgba(178,34,52,.45),inset 0 2px 3px rgba(255,255,255,.3),inset 0 -2px 3px rgba(0,0,0,.12)}',
-    '#vnb svg{width:26px;height:26px;fill:#fff;position:absolute;',
-    'transition:opacity .2s,transform .2s}',
-    '#vnb .vnc{opacity:1;transform:rotate(0)}',
-    '#vnb .vnx{opacity:0;transform:rotate(-90deg)}',
-    '#vnb.open .vnc{opacity:0;transform:rotate(90deg)}',
-    '#vnb.open .vnx{opacity:1;transform:rotate(0)}',
+    'width:58px;height:58px;border:none;background:transparent;',
+    'cursor:pointer;display:flex;align-items:center;justify-content:center;',
+    'transition:transform .25s ease;padding:0}',
+    '#vnb:hover{transform:scale(1.08)}',
+    '#vnb:active{transform:scale(0.98)}',
+    '#vnb .vnfab-flag{width:58px;height:58px;filter:drop-shadow(0 4px 12px rgba(120,40,60,.3));transition:opacity .2s,transform .2s}',
+    '#vnb .vnfab-x{position:absolute;width:58px;height:58px;opacity:0;transform:rotate(-90deg);transition:opacity .2s,transform .2s}',
+    '#vnb.open .vnfab-flag{opacity:0;transform:rotate(90deg)}',
+    '#vnb.open .vnfab-x{opacity:1;transform:rotate(0)}',
 
     // Notification bubble
     '#vnn{position:fixed;bottom:92px;right:24px;z-index:2147483639;',
@@ -1560,8 +1557,8 @@
 
     return '<style id="vns">' + CSS + '</style>'
       + '<button id="vnb" aria-label="Open VA Benefits Assistant">'
-      + '<svg class="vnc" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>'
-      + '<svg class="vnx" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>'
+      + '<svg class="vnfab-flag" viewBox="0 0 62 62"><defs><clipPath id="vnfcp"><path d="M8 6h44a4 4 0 014 4v28a4 4 0 01-4 4H20l-8 10V42H8a4 4 0 01-4-4V10a4 4 0 014-4z"/></clipPath></defs><path d="M8 6h44a4 4 0 014 4v28a4 4 0 01-4 4H20l-8 10V42H8a4 4 0 01-4-4V10a4 4 0 014-4z" fill="#fff" stroke="rgba(0,0,0,.08)" stroke-width=".5"/><g clip-path="url(#vnfcp)"><rect x="4" y="6" width="52" height="5.2" fill="#B22234"/><rect x="4" y="11.2" width="52" height="5.2" fill="#fff"/><rect x="4" y="16.4" width="52" height="5.2" fill="#B22234"/><rect x="4" y="21.6" width="52" height="5.2" fill="#fff"/><rect x="4" y="26.8" width="52" height="5.2" fill="#B22234"/><rect x="4" y="32" width="52" height="5.2" fill="#fff"/><rect x="4" y="37.2" width="52" height="5.2" fill="#B22234"/><rect x="4" y="42.4" width="52" height="5.2" fill="#fff"/><rect x="4" y="47.6" width="52" height="5.2" fill="#B22234"/><rect x="4" y="6" width="24" height="21" fill="#1a3a6b"/><circle cx="10" cy="11" r="1.2" fill="rgba(255,255,255,.85)"/><circle cx="15" cy="11" r="1.2" fill="rgba(255,255,255,.85)"/><circle cx="20" cy="11" r="1.2" fill="rgba(255,255,255,.85)"/><circle cx="12.5" cy="15.5" r="1.2" fill="rgba(255,255,255,.85)"/><circle cx="17.5" cy="15.5" r="1.2" fill="rgba(255,255,255,.85)"/><circle cx="10" cy="20" r="1.2" fill="rgba(255,255,255,.85)"/><circle cx="15" cy="20" r="1.2" fill="rgba(255,255,255,.85)"/><circle cx="20" cy="20" r="1.2" fill="rgba(255,255,255,.85)"/><circle cx="22.5" cy="11" r="1.2" fill="rgba(255,255,255,.85)"/><circle cx="22.5" cy="20" r="1.2" fill="rgba(255,255,255,.85)"/></g><ellipse cx="22" cy="13" rx="16" ry="7" fill="rgba(255,255,255,.2)" transform="rotate(-10 22 13)"/></svg>'
+      + '<svg class="vnfab-x" viewBox="0 0 62 62"><defs><clipPath id="vnfcpx"><path d="M8 6h44a4 4 0 014 4v28a4 4 0 01-4 4H20l-8 10V42H8a4 4 0 01-4-4V10a4 4 0 014-4z"/></clipPath></defs><path d="M8 6h44a4 4 0 014 4v28a4 4 0 01-4 4H20l-8 10V42H8a4 4 0 01-4-4V10a4 4 0 014-4z" fill="#f0f3f9" stroke="rgba(0,0,0,.08)" stroke-width=".5"/><line x1="22" y1="15" x2="40" y2="33" stroke="#64748b" stroke-width="2.5" stroke-linecap="round"/><line x1="40" y1="15" x2="22" y2="33" stroke="#64748b" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="22" cy="13" rx="16" ry="7" fill="rgba(255,255,255,.3)" transform="rotate(-10 22 13)"/></svg>'
       + '</button>'
       + '<div id="vnn" style="display:none"><span style="font-size:15px;flex-shrink:0">🎖️</span>'
       + '<span>Need help with VA benefits? I\'m here — 24/7, free.</span>'
