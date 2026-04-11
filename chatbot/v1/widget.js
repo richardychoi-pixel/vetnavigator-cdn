@@ -190,7 +190,7 @@
 
     veteran: {
       pct: 18,
-      bot: "Thank you for your service. 🇺🇸\n\nWhen did you serve?",
+      bot: "Thank you for your service.\n\nWhen did you serve?",
       cards: [
         { icon: '🏜️', title: 'Post-9/11',   desc: '2001 to present' },
         { icon: '🌊', title: 'Gulf War',     desc: '1990–2001' },
@@ -201,7 +201,7 @@
 
     active_duty: {
       pct: 32,
-      bot: "Thank you for your service and dedication. 🇺🇸 We honor your commitment to this nation.\n\n<strong>Preparing to separate or transition?</strong>\n\nHere are the key benefits to act on <em>before</em> you leave:\n\n— <strong>TAP Program</strong> — <a href='https://tapevents.mil' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>mandatory transition assistance, job prep</a>\n— <strong>Disability rating</strong> — file BEFORE you separate (<a href='https://va.gov/disability/how-to-file-claim/when-to-file/pre-discharge-claim' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>BDD program</a>)\n— <strong>GI Bill</strong> — education benefit active the day you separate\n— <strong>VA Healthcare</strong> — enroll within 10 years for free care\n— <strong>VA Home Loan</strong> — available immediately after separation\n\nFiling a disability claim before separation can save months of waiting.",
+      bot: "Thank you for your service and dedication. We honor your commitment to this nation.\n\n<strong>Preparing to separate or transition?</strong>\n\nHere are the key benefits to act on <em>before</em> you leave:\n\n— <strong>TAP Program</strong> — <a href='https://tapevents.mil' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>mandatory transition assistance, job prep</a>\n— <strong>Disability rating</strong> — file BEFORE you separate (<a href='https://va.gov/disability/how-to-file-claim/when-to-file/pre-discharge-claim' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>BDD program</a>)\n— <strong>GI Bill</strong> — education benefit active the day you separate\n— <strong>VA Healthcare</strong> — enroll within 10 years for free care\n— <strong>VA Home Loan</strong> — available immediately after separation\n\nFiling a disability claim before separation can save months of waiting.",
       chips: ['Tell me about the BDD program', 'GI Bill', 'VA Home Loan', 'Find a VSO counselor']
     },
 
@@ -349,7 +349,7 @@
 
     crisis: {
       pct: 100,
-      bot: "<strong>🆘 If you are in crisis right now:</strong>\n\n<strong>Veterans Crisis Line</strong>\n— Dial <strong>988</strong>, then press <strong>1</strong>\n— Text <strong>838255</strong>\n— Chat: <a href='https://veteranscrisisline.net' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VeteransCrisisLine.net</a>\n— Available 24/7 — confidential — staffed by veterans\n\n<strong>Emergency:</strong> Call 911 or go to your nearest emergency room\n\n<strong>VA same-day mental health services:</strong>\nWalk in to any VA medical center — same-day care is available for mental health crises, no appointment needed.\n\n<strong>Vet Centers:</strong> Community-based, less formal, veteran-run counseling centers. Find yours at <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>va.gov/find-locations</a>\n\nYou are not alone. Help is always available. 🇺🇸",
+      bot: "<strong>🆘 If you are in crisis right now:</strong>\n\n<strong>Veterans Crisis Line</strong>\n— Dial <strong>988</strong>, then press <strong>1</strong>\n— Text <strong>838255</strong>\n— Chat: <a href='https://veteranscrisisline.net' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VeteransCrisisLine.net</a>\n— Available 24/7 — confidential — staffed by veterans\n\n<strong>Emergency:</strong> Call 911 or go to your nearest emergency room\n\n<strong>VA same-day mental health services:</strong>\nWalk in to any VA medical center — same-day care is available for mental health crises, no appointment needed.\n\n<strong>Vet Centers:</strong> Community-based, less formal, veteran-run counseling centers. Find yours at <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>va.gov/find-locations</a>\n\nYou are not alone. Help is always available.",
       chips: ['Mental health benefits', 'Find a VSO counselor', 'Start over']
     },
 
@@ -633,7 +633,7 @@
 
     empathy_intro: {
       pct: 5,
-      bot: "You've come to the right place, and you don't have to figure this out alone. 🇺🇸\n\nMany veterans feel exactly the same way — the VA system is complex and it can be hard to know where to start. That's exactly why this assistant exists.\n\n<strong>Let's start simple.</strong> Which of these best describes what's on your mind?",
+      bot: "You've come to the right place, and you don't have to figure this out alone.\n\nMany veterans feel exactly the same way — the VA system is complex and it can be hard to know where to start. That's exactly why this assistant exists.\n\n<strong>Let's start simple.</strong> Which of these best describes what's on your mind?",
       cards: [
         { icon: '💰', title: 'Money & Benefits', desc: 'Disability pay, pension, financial help' },
         { icon: '🏥', title: 'Healthcare',       desc: 'VA medical care, mental health' },
@@ -664,7 +664,7 @@
       healthcare_enroll: { pct:76, bot:"<strong>Cómo inscribirse en Atención Médica VA:</strong>\n\n<strong>Opción 1</strong> — En línea: <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Solicitar en VA.gov</a>\n<strong>Opción 2</strong> — Llamar: <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a> (lun–vie 8am–8pm ET)\n<strong>Opción 3</strong> — En persona en cualquier centro médico VA: <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Encontrar ubicaciones →</a>\n\n<strong>Lo que necesitará:</strong>\n— DD-214 (papeles de baja)\n— Identificación con foto\n— Información de seguro (si tiene — no es obligatorio)\n— Información de ingresos (determina nivel de copago)\n\n<strong>Después de solicitar:</strong>\nEl VA generalmente procesa solicitudes en <strong>1–2 semanas</strong>. Recibirá una carta con su grupo de prioridad e instrucciones para su primera cita.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Nunca comparta información personal como SSN en este chat — solicite de forma segura en VA.gov.</em>", chips:["¿Soy elegible para atención médica VA?","Buscar consejero VSO","Ver otros beneficios"] },
       healthcare_eligibility: { pct:82, bot:"<strong>Elegibilidad para Atención Médica VA:</strong>\n\nEs probable que califique si:\n— Sirvió 24+ meses continuos en servicio activo, O\n— Fue dado de baja por discapacidad relacionada con el servicio, O\n— Sirvió en zona de combate después del 11 de nov. 1998, O\n— Fue expuesto a toxinas durante el servicio (Ley PACT — incluye Vietnam, Guerra del Golfo, Irak, Afganistán)\n\n<strong>Expansión Ley PACT:</strong> Desde marzo 2024, todos los Veteranos expuestos a toxinas pueden inscribirse directamente — sin necesidad de solicitar discapacidad primero.\n\n<strong>Grupos de prioridad:</strong> Veteranos con calificaciones de discapacidad más altas son atendidos primero y pagan menos.\n\n¿No está seguro? Un consejero VSO puede verificar su elegibilidad en minutos.", chips:["¿Cómo me inscribo?","Buscar consejero VSO","Ver otros beneficios"] },
       vso: { pct:92, bot:null, chips:["¿Cómo presento un reclamo?","Ver otros beneficios","Empezar de nuevo"] },
-      active_duty: { pct:32, bot:"Gracias por su servicio y dedicación. 🇺🇸\n\n<strong>¿Se prepara para separarse o hacer la transición?</strong>\n\nBeneficios clave para actuar <em>antes</em> de irse:\n\n— <strong>Programa TAP</strong> — asistencia de transición obligatoria\n— <strong>Calificación de discapacidad</strong> — presente ANTES de separarse (programa BDD)\n— <strong>GI Bill</strong> — beneficio educativo activo el día que se separa\n— <strong>Atención Médica VA</strong> — inscríbase dentro de 10 años para atención gratuita\n— <strong>Préstamo VA</strong> — disponible inmediatamente después de la separación", chips:["Cuéntame sobre el programa BDD","GI Bill","Préstamo VA","Buscar consejero VSO"] },
+      active_duty: { pct:32, bot:"Gracias por su servicio y dedicación.\n\n<strong>¿Se prepara para separarse o hacer la transición?</strong>\n\nBeneficios clave para actuar <em>antes</em> de irse:\n\n— <strong>Programa TAP</strong> — asistencia de transición obligatoria\n— <strong>Calificación de discapacidad</strong> — presente ANTES de separarse (programa BDD)\n— <strong>GI Bill</strong> — beneficio educativo activo el día que se separa\n— <strong>Atención Médica VA</strong> — inscríbase dentro de 10 años para atención gratuita\n— <strong>Préstamo VA</strong> — disponible inmediatamente después de la separación", chips:["Cuéntame sobre el programa BDD","GI Bill","Préstamo VA","Buscar consejero VSO"] },
       spouse: { pct:48, bot:"Gracias por su apoyo y sacrificio. La fortaleza detrás de cada miembro del servicio es su familia. 🤍\n\n<strong>Beneficios disponibles para cónyuges y dependientes:</strong>\n\n— <strong>CHAMPVA</strong> — atención médica gratuita del VA\n— <strong>DEA (Cap. 35)</strong> — beneficios educativos para dependientes\n— <strong>Pensión de Sobrevivientes</strong> — apoyo de ingresos\n— <strong>DIC</strong> — pago mensual si el veterano falleció por causa del servicio\n— <strong>Préstamo</strong> — cónyuges sobrevivientes pueden ser elegibles", chips:["Cuéntame sobre DIC","Cuéntame sobre CHAMPVA","Buscar consejero VSO","Ver otros beneficios"] }
     },
     vi: {
@@ -1666,7 +1666,7 @@
       + "We're here to help you find and claim every benefit you've earned. This assistant is provided by your VSO — available 24/7 and speaks your language.\n\n"
       + "ℹ️ *General VA benefits information only — not legal advice. Never enter personal info like SSNs in this chat.*\n\n"
       + "Let's get started. Which best describes you?";
-    NODES.veteran.bot = 'Thank you for your service. 🇺🇸\n\n'
+    NODES.veteran.bot = 'Thank you for your service.\n\n'
       + ORG_NAME + ' is proud to support you. When did you serve?';
     // Spanish
     if (NODES_I18N.es) {
@@ -1711,7 +1711,7 @@
     NODES.vso.bot = 'Your VSO counselors are here to help — free of charge.\n\n<strong>'
       + ORG_NAME + '</strong>\n'
       + (c || 'Contact your local VSO office.') + ld + evLine
-      + '\n\n100% free. Walk-ins welcome. 🇺🇸';
+      + '\n\n100% free. Walk-ins welcome.';
     NODES.vso.chips = ORG_EVENTS.length
       ? ['Upcoming events', 'How do I file a claim?', 'See all benefits']
       : ['How do I file a claim?', 'See all benefits', 'Start over'];
