@@ -1271,10 +1271,20 @@
 
     // Chips — lighter blue
     '#vnch{display:flex;flex-wrap:wrap;gap:6px}',
-    '.vncp{font-size:13px;font-weight:500;padding:6px 12px;border-radius:14px;',
-    'background:var(--vchip);border:.5px solid var(--vchip);',
-    'color:#fff;cursor:pointer;transition:all .15s;font-family:inherit}',
-    '.vncp:hover{background:#4a7ec5;border-color:#4a7ec5}',
+    '.vncp{font-size:13px;padding:7px 14px;border-radius:14px;',
+    'background:linear-gradient(145deg,rgba(90,143,212,.25),rgba(90,143,212,.15) 50%,rgba(90,143,212,.08));',
+    'border:.5px solid rgba(90,143,212,.3);',
+    'color:#1a4a8a;cursor:pointer;transition:all .2s ease;font-family:inherit;font-weight:500;',
+    'position:relative;overflow:hidden;',
+    'box-shadow:inset 0 1px 2px rgba(255,255,255,.5),inset 0 -1px 2px rgba(90,143,212,.08),0 2px 6px rgba(90,143,212,.12)}',
+    '.vncp::before{content:"";position:absolute;top:1px;left:15%;width:70%;height:45%;',
+    'background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0));',
+    'border-radius:50%;transition:all .2s ease}',
+    '.vncp:hover{background:linear-gradient(145deg,rgba(90,143,212,.35),rgba(90,143,212,.22) 50%,rgba(90,143,212,.12));',
+    'border-color:rgba(90,143,212,.45);',
+    'box-shadow:inset 0 1px 2px rgba(255,255,255,.5),inset 0 -1px 2px rgba(90,143,212,.12),0 3px 10px rgba(90,143,212,.18);',
+    'transform:translateY(-1px)}',
+    '.vncp:active{transform:translateY(0) scale(.97)}',
 
     // Input row — faded blue
     '#vnir{display:flex;gap:6px;padding:8px 11px;flex-shrink:0;',
