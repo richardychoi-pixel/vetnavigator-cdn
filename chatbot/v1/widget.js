@@ -1599,7 +1599,7 @@
     bb.innerHTML = html.replace(/\n/g, '<br>');
     row.appendChild(av); row.appendChild(bb);
     ge('vnms').appendChild(row);
-    ge('vnms').scrollTop = row.offsetTop - ge('vnms').offsetTop;
+    requestAnimationFrame(function(){ ge('vnms').scrollTop = ge('vnms').scrollHeight; });
     return bb.textContent || bb.innerText || '';
   }
 
