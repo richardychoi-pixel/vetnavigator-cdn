@@ -1250,12 +1250,22 @@
 
     // Identity cards
     '#vncd{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px}',
-    '.vnca{background:#fff;border:.5px solid rgba(0,0,0,.08);',
-    'border-radius:9px;padding:6px 7px;cursor:pointer;transition:all .15s;text-align:center}',
-    '.vnca:hover{background:rgba(90,143,212,.06);border-color:rgba(90,143,212,.25)}',
-    '.vnci{font-size:14px;margin-bottom:2px}',
-    '.vnct{font-size:13px;font-weight:600;color:#0f172a}',
-    '.vncd{font-size:12px;color:#94a3b8;margin-top:2px}',
+    '.vnca{background:linear-gradient(145deg,rgba(255,255,255,.9),rgba(240,242,248,.7));border:.5px solid rgba(255,255,255,.6);',
+    'border-radius:14px;padding:14px 10px;cursor:pointer;transition:all .25s ease;text-align:center;',
+    'position:relative;overflow:hidden;',
+    'box-shadow:inset 0 1px 3px rgba(255,255,255,.8),0 4px 12px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.04)}',
+    '.vnca::before{content:"";position:absolute;top:2px;left:10%;width:80%;height:35%;',
+    'background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,255,255,0));',
+    'border-radius:50%;transition:all .25s ease}',
+    '.vnca:hover{background:linear-gradient(145deg,rgba(204,51,68,.12),rgba(204,51,68,.06) 50%,rgba(204,51,68,.02));',
+    'border-color:rgba(204,51,68,.2);',
+    'box-shadow:inset 0 1px 3px rgba(255,255,255,.6),inset 0 -2px 4px rgba(204,51,68,.06),0 4px 16px rgba(204,51,68,.12);',
+    'transform:translateY(-1px)}',
+    '.vnca:hover::before{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0))}',
+    '.vnca:active{transform:translateY(0) scale(.98)}',
+    '.vnci{font-size:18px;margin-bottom:4px;position:relative;z-index:1}',
+    '.vnct{font-size:13px;font-weight:600;color:#0f172a;position:relative;z-index:1}',
+    '.vncd{font-size:12px;color:#94a3b8;margin-top:3px;position:relative;z-index:1}',
 
     // Chips — lighter blue
     '#vnch{display:flex;flex-wrap:wrap;gap:6px}',
