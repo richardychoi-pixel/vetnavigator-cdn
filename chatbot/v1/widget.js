@@ -1465,6 +1465,24 @@
         + '</div>'
       : '';
 
+    function flagSvg(sz) {
+      return '<svg width="' + sz + '" height="' + sz + '" viewBox="0 0 40 40" style="border-radius:6px;display:block">'
+        + '<rect width="40" height="40" fill="#c0392b"/>'
+        + '<rect y="3.1" width="40" height="3.1" fill="#fff"/>'
+        + '<rect y="9.2" width="40" height="3.1" fill="#fff"/>'
+        + '<rect y="15.4" width="40" height="3.1" fill="#fff"/>'
+        + '<rect y="21.5" width="40" height="3.1" fill="#fff"/>'
+        + '<rect y="27.7" width="40" height="3.1" fill="#fff"/>'
+        + '<rect y="33.8" width="40" height="3.1" fill="#fff"/>'
+        + '<rect width="17" height="21.5" fill="#1a3a6b"/>'
+        + '<circle cx="3.5" cy="3.5" r="1.1" fill="#fff"/><circle cx="8.5" cy="3.5" r="1.1" fill="#fff"/><circle cx="13.5" cy="3.5" r="1.1" fill="#fff"/>'
+        + '<circle cx="6" cy="7" r="1.1" fill="#fff"/><circle cx="11" cy="7" r="1.1" fill="#fff"/>'
+        + '<circle cx="3.5" cy="10.5" r="1.1" fill="#fff"/><circle cx="8.5" cy="10.5" r="1.1" fill="#fff"/><circle cx="13.5" cy="10.5" r="1.1" fill="#fff"/>'
+        + '<circle cx="6" cy="14" r="1.1" fill="#fff"/><circle cx="11" cy="14" r="1.1" fill="#fff"/>'
+        + '<circle cx="3.5" cy="17.5" r="1.1" fill="#fff"/><circle cx="8.5" cy="17.5" r="1.1" fill="#fff"/><circle cx="13.5" cy="17.5" r="1.1" fill="#fff"/>'
+        + '</svg>';
+    }
+
     var brd = SHOW_BRANDING
       ? '<div id="vnbrd" class="vntp" data-panel="branding" style="padding:14px;overflow-y:auto">'
         + '<div style="font-size:12px;font-weight:700;margin-bottom:4px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Organization Logo</div>'
@@ -1476,20 +1494,20 @@
         + '<textarea id="vnbrwm" maxlength="120" placeholder="e.g. Welcome to VFW Post 1234 — we\'re here to help!" style="width:100%;height:56px;background:#fafbfc;border:1px solid #d1d5db;border-radius:10px;padding:8px 10px;font-size:12px;color:#1e293b;font-family:inherit;resize:none;outline:none;box-sizing:border-box;margin-bottom:2px"></textarea>'
         + '<div id="vnbrwc" style="font-size:10px;color:#94a3b8;text-align:right;margin-bottom:10px">0 / 120</div>'
         + '<div style="font-size:12px;font-weight:700;margin-bottom:4px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Accent Color</div>'
-        + '<div id="vnbrswatches" style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:10px">'
-        + ['#d94f5c','#4a90d9','#4aab6e','#e08840','#8b6bbf','#3fa5b5','#d4a24c','#e06b6b','#5bb878','#5a9fd4','#d98050','#a76b94'].map(function(c){
-            return '<div class="vnbrsw" data-color="' + c + '" style="height:32px;border-radius:10px;background:' + c + ';cursor:pointer;border:2px solid transparent;transition:all .2s;box-shadow:inset 0 2px 3px rgba(255,255,255,.3),inset 0 -2px 3px rgba(0,0,0,.15),0 2px 6px rgba(0,0,0,.1)" title="' + c + '"></div>';
+        + '<div id="vnbrswatches" style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:8px">'
+        + [['#d94f5c','Rose'],['#4a90d9','Ocean'],['#4aab6e','Forest'],['#e08840','Amber'],['#8b6bbf','Violet'],['#3fa5b5','Teal'],['#d4a24c','Gold'],['#e06b6b','Coral'],['#5bb878','Sage'],['#5a9fd4','Sky'],['#d98050','Rust'],['#a76b94','Mauve']].map(function(sw){
+            return '<div class="vnbrsw" data-color="' + sw[0] + '" data-name="' + sw[1] + '" style="height:24px;border-radius:8px;background:' + sw[0] + ';cursor:pointer;border:2px solid transparent;transition:all .2s;box-shadow:inset 0 2px 3px rgba(255,255,255,.3),inset 0 -2px 3px rgba(0,0,0,.15),0 2px 6px rgba(0,0,0,.1)" title="' + sw[1] + '"></div>';
           }).join('')
         + '</div>'
         + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">'
-        + '<div id="vnbrcp" style="width:32px;height:32px;border-radius:8px;border:1px solid #d1d5db;background:#d94f5c;flex-shrink:0;box-shadow:inset 0 2px 3px rgba(255,255,255,.3),inset 0 -2px 3px rgba(0,0,0,.15)"></div>'
-        + '<span id="vnbrch" style="font-size:12px;color:#64748b;font-family:monospace">#d94f5c selected</span>'
+        + '<div id="vnbrcp" style="width:28px;height:28px;border-radius:7px;border:1px solid #d1d5db;background:#d94f5c;flex-shrink:0;box-shadow:inset 0 2px 3px rgba(255,255,255,.3),inset 0 -2px 3px rgba(0,0,0,.15)"></div>'
+        + '<span id="vnbrch" style="font-size:12px;color:#64748b">Rose selected</span>'
         + '</div>'
-        + '<div style="font-size:12px;font-weight:700;margin-bottom:4px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Chat Button Size</div>'
-        + '<div id="vnbrfabsizes" style="display:flex;gap:8px;margin-bottom:10px">'
-        + '<div class="vnbrsz" data-size="56" style="flex:1;text-align:center;padding:8px 6px;border-radius:10px;border:2px solid #d1d5db;background:#fafbfc;cursor:pointer;transition:all .2s"><div style="font-size:13px;font-weight:600;color:#1e293b">Small</div><div style="font-size:10px;color:#94a3b8;margin-top:1px">56px</div></div>'
-        + '<div class="vnbrsz act" data-size="58" style="flex:1;text-align:center;padding:8px 6px;border-radius:10px;border:2px solid #1a3a6b;background:rgba(26,58,107,.06);cursor:pointer;transition:all .2s"><div style="font-size:13px;font-weight:600;color:#1a3a6b">Default</div><div style="font-size:10px;color:#64748b;margin-top:1px">58px</div></div>'
-        + '<div class="vnbrsz" data-size="60" style="flex:1;text-align:center;padding:8px 6px;border-radius:10px;border:2px solid #d1d5db;background:#fafbfc;cursor:pointer;transition:all .2s"><div style="font-size:13px;font-weight:600;color:#1e293b">Large</div><div style="font-size:10px;color:#94a3b8;margin-top:1px">60px</div></div>'
+        + '<div style="font-size:12px;font-weight:700;margin-bottom:4px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Floating Widget Icon</div>'
+        + '<div id="vnbrfabsizes" style="display:flex;gap:8px;margin-bottom:10px;align-items:flex-end">'
+        + '<div class="vnbrsz" data-size="56" style="flex:1;display:flex;flex-direction:column;align-items:center;padding:6px 4px;border-radius:10px;border:2px solid #d1d5db;background:#fafbfc;cursor:pointer;transition:all .2s;opacity:0.5">' + flagSvg(34) + '<div style="font-size:10px;color:#64748b;margin-top:4px">Small</div></div>'
+        + '<div class="vnbrsz act" data-size="58" style="flex:1;display:flex;flex-direction:column;align-items:center;padding:6px 4px;border-radius:10px;border:2px solid #1a3a6b;background:rgba(26,58,107,.06);cursor:pointer;transition:all .2s">' + flagSvg(40) + '<div style="font-size:10px;color:#1a3a6b;margin-top:4px">Default</div></div>'
+        + '<div class="vnbrsz" data-size="60" style="flex:1;display:flex;flex-direction:column;align-items:center;padding:6px 4px;border-radius:10px;border:2px solid #d1d5db;background:#fafbfc;cursor:pointer;transition:all .2s;opacity:0.5">' + flagSvg(46) + '<div style="font-size:10px;color:#64748b;margin-top:4px">Large</div></div>'
         + '</div>'
         + '<div style="display:flex;justify-content:center"><button id="vnbrsv" class="vnbtn-glass">Save Branding</button></div>'
         + '<div id="vnbrsvd" style="display:none;text-align:center;font-size:13px;color:#166534;margin-top:8px;font-weight:500">✓ Branding saved!</div>'
@@ -1868,7 +1886,7 @@
       var r = parseInt(hex.slice(1,3),16);
       var g = parseInt(hex.slice(3,5),16);
       var b = parseInt(hex.slice(5,7),16);
-      hdr.style.background = 'linear-gradient(135deg, rgba(' + r + ',' + g + ',' + b + ',0.12), rgba(' + r + ',' + g + ',' + b + ',0.06)), linear-gradient(135deg,#f5e8e6,#f0dad7)';
+      hdr.style.background = 'linear-gradient(135deg, rgba(' + r + ',' + g + ',' + b + ',0.15), rgba(' + r + ',' + g + ',' + b + ',0.08)), linear-gradient(135deg,#ffffff,#fafbfc)';
     }
   }
 
@@ -1891,18 +1909,20 @@
       if (size === selectedFabSize) {
         sz.style.borderColor = '#1a3a6b';
         sz.style.background = 'rgba(26,58,107,.06)';
-        sz.querySelector('div').style.color = '#1a3a6b';
+        sz.style.opacity = '1';
+      } else {
+        sz.style.opacity = '0.5';
       }
       sz.addEventListener('click', function () {
         selectedFabSize = parseInt(this.getAttribute('data-size'));
         document.querySelectorAll('.vnbrsz').forEach(function (s) {
           s.style.borderColor = '#d1d5db';
           s.style.background = '#fafbfc';
-          s.querySelector('div').style.color = '#1e293b';
+          s.style.opacity = '0.5';
         });
         this.style.borderColor = '#1a3a6b';
         this.style.background = 'rgba(26,58,107,.06)';
-        this.querySelector('div').style.color = '#1a3a6b';
+        this.style.opacity = '1';
         // Live preview FAB size
         var fab = ge('vnb');
         if (fab) { fab.style.width = selectedFabSize + 'px'; fab.style.height = selectedFabSize + 'px'; }
@@ -1910,8 +1930,9 @@
     });
     if (ORG_ACCENT) {
       ge('vnbrcp').style.background = ORG_ACCENT;
-      ge('vnbrch').textContent = ORG_ACCENT + ' selected';
       var activeSw = document.querySelector('.vnbrsw[data-color="' + ORG_ACCENT + '"]');
+      var accentName = activeSw ? (activeSw.getAttribute('data-name') || ORG_ACCENT) : ORG_ACCENT;
+      ge('vnbrch').textContent = accentName + ' selected';
       if (activeSw) activeSw.style.borderColor = '#1a3a6b';
     }
 
@@ -1924,11 +1945,12 @@
     document.querySelectorAll('.vnbrsw').forEach(function (sw) {
       sw.addEventListener('click', function () {
         var color = this.getAttribute('data-color');
+        var name = this.getAttribute('data-name') || color;
         selectedAccent = color;
         ge('vnbrcp').style.background = color;
-        ge('vnbrch').textContent = color + ' selected';
+        ge('vnbrch').textContent = name + ' selected';
         document.querySelectorAll('.vnbrsw').forEach(function (s) { s.style.borderColor = 'transparent'; });
-        this.style.borderColor = '#fff';
+        this.style.borderColor = '#1a3a6b';
         applyAccent(color);
       });
     });
