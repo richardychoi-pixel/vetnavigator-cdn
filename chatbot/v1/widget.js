@@ -39,7 +39,7 @@
   var TIER_MAP = { DEMO: 4, PREMIUM: 4, STANDARD: 3, STARTER: 2, BASIC: 1 };
   var TIER_STR, TIER_LVL, IS_DEMO, HAS_ML, HAS_MIC, HAS_ADMIN;
   var CONV_LIMIT, WARN_AT;
-  var ORG_LOGO, ORG_WELCOME, ORG_ACCENT;
+  var ORG_LOGO, ORG_WELCOME, ORG_ACCENT, ORG_FAB_SIZE;
 
   // ── APPLY CONFIG (shared by both inline and fetched paths) ────────────────
   function applyConfig(cfg) {
@@ -78,6 +78,7 @@
     ORG_LOGO    = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgLogo          || '') : '';
     ORG_WELCOME = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgWelcome        || '') : '';
     ORG_ACCENT  = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgAccentColor    || '') : '';
+    ORG_FAB_SIZE = cfg.orgFabSize || '';
   }
 
   // ── DETECT KEY FROM SCRIPT TAG URL ────────────────────────────────────────
@@ -1885,7 +1886,7 @@
     if (ORG_LOGO)    { ge('vnbrli').src = ORG_LOGO; ge('vnbrl').style.display = 'block'; }
 
     var selectedAccent = ORG_ACCENT || '#d94f5c';
-    var selectedFabSize = (cfg && cfg.orgFabSize) ? parseInt(cfg.orgFabSize) : 58;
+    var selectedFabSize = ORG_FAB_SIZE ? parseInt(ORG_FAB_SIZE) : 58;
 
     // FAB size picker wiring
     document.querySelectorAll('.vnbrsz').forEach(function (sz) {
@@ -2894,7 +2895,7 @@
     ge('vnon').textContent  = ORG_NAME;
 
     // Apply saved FAB size from config
-    if (cfg && cfg.orgFabSize && !EMBED_TARGET) { var fs = parseInt(cfg.orgFabSize); var fab = ge('vnb'); if (fab && fs >= 50 && fs <= 70) { fab.style.width = fs + 'px'; fab.style.height = fs + 'px'; } }
+    if (typeof ORG_FAB_SIZE !== 'undefined' && ORG_FAB_SIZE && !EMBED_TARGET) { var fs = parseInt(ORG_FAB_SIZE); var fab = ge('vnb'); if (fab && fs >= 50 && fs <= 70) { fab.style.width = fs + 'px'; fab.style.height = fs + 'px'; } }
 
     // FAB + panel toggle (skip in embed mode)
     if (!EMBED_TARGET) {
