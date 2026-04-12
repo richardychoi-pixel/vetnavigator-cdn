@@ -1875,19 +1875,41 @@
   }
   // ── ACCENT COLOR HELPER ────────────────────────────────────────────────────
   function applyAccent(hex) {
-    // Update --vr CSS variable (buttons, avatar, send — these stay solid)
+    // Update --vr CSS variable (tab underline, progress bar, email send btn)
     var accentStyle = document.getElementById('vns');
     if (accentStyle) {
       accentStyle.textContent = accentStyle.textContent.replace(/--vr\s*:\s*[^;]+;/, '--vr:' + hex + ';');
+      // Update --vub (user bubble color) to accent
+      accentStyle.textContent = accentStyle.textContent.replace(/--vub\s*:\s*[^;]+;/, '--vub:' + hex + ';');
     }
-    // Update header — soft translucent tint over rose base
+    var r = parseInt(hex.slice(1,3),16);
+    var g = parseInt(hex.slice(3,5),16);
+    var b = parseInt(hex.slice(5,7),16);
+    // Update header — soft translucent tint over white base
     var hdr = document.getElementById('vnh');
     if (hdr) {
-      var r = parseInt(hex.slice(1,3),16);
-      var g = parseInt(hex.slice(3,5),16);
-      var b = parseInt(hex.slice(5,7),16);
       hdr.style.background = 'linear-gradient(135deg, rgba(' + r + ',' + g + ',' + b + ',0.15), rgba(' + r + ',' + g + ',' + b + ',0.08)), linear-gradient(135deg,#ffffff,#fafbfc)';
     }
+    // Update Start Over chip + mic button — accent-tinted glass
+    var accentOverride = document.getElementById('vn-accent-override');
+    if (!accentOverride) {
+      accentOverride = document.createElement('style');
+      accentOverride.id = 'vn-accent-override';
+      document.getElementById('vn-root').appendChild(accentOverride);
+    }
+    accentOverride.textContent = ''
+      + '.vncp{background:linear-gradient(145deg,rgba(' + r + ',' + g + ',' + b + ',.25),rgba(' + r + ',' + g + ',' + b + ',.15) 50%,rgba(' + r + ',' + g + ',' + b + ',.08)) !important;'
+      + 'border-color:rgba(' + r + ',' + g + ',' + b + ',.3) !important;'
+      + 'color:' + hex + ' !important;'
+      + 'box-shadow:inset 0 1px 2px rgba(255,255,255,.5),inset 0 -1px 2px rgba(' + r + ',' + g + ',' + b + ',.08),0 2px 6px rgba(' + r + ',' + g + ',' + b + ',.12) !important}'
+      + '.vncp:hover{background:linear-gradient(145deg,rgba(' + r + ',' + g + ',' + b + ',.35),rgba(' + r + ',' + g + ',' + b + ',.22) 50%,rgba(' + r + ',' + g + ',' + b + ',.12)) !important;'
+      + 'border-color:rgba(' + r + ',' + g + ',' + b + ',.45) !important}'
+      + '#vnmc{background:linear-gradient(145deg,rgba(' + r + ',' + g + ',' + b + ',.25),rgba(' + r + ',' + g + ',' + b + ',.15) 50%,rgba(' + r + ',' + g + ',' + b + ',.08)) !important;'
+      + 'border-color:rgba(' + r + ',' + g + ',' + b + ',.3) !important;'
+      + 'box-shadow:inset 0 1px 2px rgba(255,255,255,.5),inset 0 -1px 2px rgba(' + r + ',' + g + ',' + b + ',.08),0 2px 6px rgba(' + r + ',' + g + ',' + b + ',.12) !important}'
+      + '#vnmc:hover{background:linear-gradient(145deg,rgba(' + r + ',' + g + ',' + b + ',.35),rgba(' + r + ',' + g + ',' + b + ',.22) 50%,rgba(' + r + ',' + g + ',' + b + ',.12)) !important;'
+      + 'border-color:rgba(' + r + ',' + g + ',' + b + ',.45) !important}'
+      + '#vnmc svg{fill:' + hex + ' !important}';
   }
 
   // ── BRANDING PANEL WIRING ─────────────────────────────────────────────────
