@@ -1384,15 +1384,14 @@
     '.vnsc:hover:not(.act){background:rgba(0,0,0,.03);color:#64748b}',
 
     // Feedback stars
-    '.vnstar{transition:color .1s;user-select:none;color:rgba(0,0,0,.15);',
-    'text-shadow:none;cursor:pointer}',
-    '.vnstar:hover{color:rgba(0,0,0,.3)}',
-    '.vnstar.on{color:var(--vg);text-shadow:0 0 2px rgba(232,200,74,.3)}',
-    '#vnfbtx:focus{border-color:rgba(90,143,212,.4)}',
-    '#vnfbsb:hover{background:var(--vrd)}',
+    '.vnstar{transition:color .15s,transform .15s;user-select:none;color:#d1d5db;text-shadow:none;cursor:pointer}',
+    '.vnstar:hover{color:#f59e0b;transform:scale(1.15)}',
+    '.vnstar.on{color:#f59e0b;text-shadow:0 0 6px rgba(245,158,11,.3)}',
+    '#vnfbtx:focus,#vnsmsg:focus,#vnsn:focus,#vnse:focus,#vnsy:focus{border-color:#93b4e0;box-shadow:0 0 0 3px rgba(147,180,224,.15)}',
+    '#vnfbsb:hover,#vnssb:hover{background:linear-gradient(145deg,rgba(220,60,78,.95),rgba(185,42,58,.95));box-shadow:inset 0 1px 1px rgba(255,255,255,.3),0 4px 12px rgba(204,51,68,.35)}',
 
     // Support tab
-    '#vnsup{padding:14px;background:#fff}',
+    '#vnsup{padding:0;background:#fff}',
     '#vnsy option{background:#fff;color:#1e293b}',
 
     // Footer
@@ -1505,10 +1504,10 @@
         + '</div>'
       : '';
 
-    var fbk = '<div id="vnfbk" class="vntp" data-panel="feedback" style="padding:14px">'
-      + '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">How was your experience?</div>'
-      + '<div style="font-size:11.5px;color:var(--vs);margin-bottom:12px;line-height:1.5">Your feedback helps us improve this service for all veterans.</div>'
-      + '<div id="vnstars" style="display:flex;gap:8px;margin-bottom:14px;font-size:24px;cursor:pointer">'
+    var fbk = '<div id="vnfbk" class="vntp" data-panel="feedback" style="padding:20px">'
+      + '<div style="font-size:16px;font-weight:700;color:#1e293b;margin-bottom:6px">How was your experience?</div>'
+      + '<div style="font-size:13px;color:#64748b;margin-bottom:16px;line-height:1.5">Your feedback helps us improve this service for all veterans.</div>'
+      + '<div id="vnstars" style="display:flex;gap:12px;margin-bottom:20px;font-size:32px;cursor:pointer">'
       + '<span class="vnstar" data-v="1">☆</span>'
       + '<span class="vnstar" data-v="2">☆</span>'
       + '<span class="vnstar" data-v="3">☆</span>'
@@ -1516,22 +1515,26 @@
       + '<span class="vnstar" data-v="5">☆</span>'
       + '</div>'
       + '<textarea id="vnfbtx" placeholder="Share any thoughts, suggestions, or issues (optional)…" '
-      + 'style="width:100%;height:140px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.15);'
-      + 'border-radius:8px;padding:8px 10px;font-size:12px;color:#fff;font-family:inherit;'
-      + 'outline:none;resize:none;box-sizing:border-box;margin-bottom:10px"></textarea>'
-      + '<button id="vnfbsb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);'
-      + 'border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Submit Feedback</button>'
-      + '<div id="vnfbok" style="display:none;text-align:center;font-size:12px;'
-      + 'color:rgba(74,222,128,.9);margin-top:10px">✓ Thank you! Your feedback has been received.</div>'
+      + 'style="width:100%;min-height:180px;flex:1;background:#fafbfc;border:1px solid #d1d5db;'
+      + 'border-radius:10px;padding:12px 14px;font-size:14px;color:#1e293b;font-family:inherit;'
+      + 'outline:none;resize:none;box-sizing:border-box;margin-bottom:16px"></textarea>'
+      + '<div style="display:flex;justify-content:center">'
+      + '<button id="vnfbsb" style="padding:11px 36px;border-radius:50px;border:none;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;'
+      + 'background:linear-gradient(145deg,rgba(204,51,68,.95),rgba(168,37,53,.95));'
+      + 'box-shadow:inset 0 1px 1px rgba(255,255,255,.25),0 2px 6px rgba(204,51,68,.25);'
+      + 'position:relative;overflow:hidden">'
+      + '<span style="position:relative;z-index:1">Submit Feedback</span></button></div>'
+      + '<div id="vnfbok" style="display:none;text-align:center;font-size:13px;'
+      + 'color:#166534;margin-top:12px;font-weight:500">✓ Thank you! Your feedback has been received.</div>'
       + '</div>';
 
-    var sup = '<div id="vnsup" class="vntp" data-panel="support" style="padding:14px">'
-      + '<div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">Contact Our Team</div>'
-      + '<div style="font-size:11.5px;color:var(--vs);margin-bottom:12px;line-height:1.5">Send us a message and we\'ll follow up with you directly.</div>'
+    var sup = '<div id="vnsup" class="vntp" data-panel="support" style="padding:20px">'
+      + '<div style="font-size:16px;font-weight:700;color:#1e293b;margin-bottom:6px">Contact Our Team</div>'
+      + '<div style="font-size:13px;color:#64748b;margin-bottom:16px;line-height:1.5">Send us a message and we\'ll follow up with you directly.</div>'
       + '<div id="vnsupf">'
-      + '<input id="vnsn" type="text" placeholder="Your name" style="width:100%;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
-      + '<input id="vnse" type="email" placeholder="Your email address" style="width:100%;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
-      + '<select id="vnsy" style="width:100%;background:#1a2340;border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
+      + '<input id="vnsn" type="text" placeholder="Your name" style="width:100%;background:#fafbfc;border:1px solid #d1d5db;border-radius:10px;padding:10px 14px;font-size:14px;color:#1e293b;font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:10px">'
+      + '<input id="vnse" type="email" placeholder="Your email address" style="width:100%;background:#fafbfc;border:1px solid #d1d5db;border-radius:10px;padding:10px 14px;font-size:14px;color:#1e293b;font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:10px">'
+      + '<select id="vnsy" style="width:100%;background:#fafbfc;border:1px solid #d1d5db;border-radius:10px;padding:10px 14px;font-size:14px;color:#1e293b;font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:10px;-webkit-appearance:none;appearance:none;background-image:url(\'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22><path d=%22M1 1l5 5 5-5%22 stroke=%22%2364748b%22 stroke-width=%221.5%22 fill=%22none%22/></svg>\');background-repeat:no-repeat;background-position:right 14px center">'
       + '<option value="">Select topic...</option>'
       + '<option value="benefits">VA Benefits Question</option>'
       + '<option value="claim">Help with my claim</option>'
@@ -1539,15 +1542,20 @@
       + '<option value="documents">Document request</option>'
       + '<option value="other">Other</option>'
       + '</select>'
-      + '<textarea id="vnsmsg" placeholder="Describe your question or request…" style="width:100%;height:140px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;outline:none;resize:none;box-sizing:border-box;margin-bottom:8px"></textarea>'
-      + '<div id="vnserr" style="display:none;font-size:11px;color:rgba(255,100,100,.9);margin-bottom:6px"></div>'
-      + '<p style="font-size:10px;color:rgba(255,255,255,.35);line-height:1.5;margin:0 0 8px">Your name and email are used only to respond to your request. They are not stored, shared, or used for marketing.</p>'
-      + '<button id="vnssb" style="width:100%;padding:9px;border-radius:8px;background:var(--vr);border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Send Message</button>'
+      + '<textarea id="vnsmsg" placeholder="Describe your question or request…" style="width:100%;min-height:140px;background:#fafbfc;border:1px solid #d1d5db;border-radius:10px;padding:12px 14px;font-size:14px;color:#1e293b;font-family:inherit;outline:none;resize:none;box-sizing:border-box;margin-bottom:10px"></textarea>'
+      + '<div id="vnserr" style="display:none;font-size:12px;color:#dc2626;margin-bottom:8px"></div>'
+      + '<p style="font-size:11px;color:#94a3b8;line-height:1.5;margin:0 0 12px">Your name and email are used only to respond to your request. They are not stored, shared, or used for marketing.</p>'
+      + '<div style="display:flex;justify-content:center">'
+      + '<button id="vnssb" style="padding:11px 36px;border-radius:50px;border:none;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;'
+      + 'background:linear-gradient(145deg,rgba(204,51,68,.95),rgba(168,37,53,.95));'
+      + 'box-shadow:inset 0 1px 1px rgba(255,255,255,.25),0 2px 6px rgba(204,51,68,.25);'
+      + 'position:relative;overflow:hidden">'
+      + '<span style="position:relative;z-index:1">Send Message</span></button></div>'
       + '</div>'
-      + '<div id="vnstk" style="display:none;text-align:center;padding:12px">'
-      + '<div style="font-size:24px;margin-bottom:6px">✅</div>'
-      + '<div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.9)">Message sent!</div>'
-      + '<div style="font-size:11.5px;color:var(--vs);margin-top:4px;line-height:1.5">Our team will follow up with you by email.</div>'
+      + '<div id="vnstk" style="display:none;text-align:center;padding:16px">'
+      + '<div style="font-size:28px;margin-bottom:8px">✅</div>'
+      + '<div style="font-size:14px;font-weight:600;color:#1e293b">Message sent!</div>'
+      + '<div style="font-size:13px;color:#64748b;margin-top:6px;line-height:1.5">Our team will follow up with you by email.</div>'
       + '</div>'
       + '</div>';
 
