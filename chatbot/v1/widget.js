@@ -1476,13 +1476,13 @@
         + '<div id="vnbrwc" style="font-size:10px;color:#94a3b8;text-align:right;margin-bottom:10px">0 / 120</div>'
         + '<div style="font-size:12px;font-weight:700;margin-bottom:4px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Accent Color</div>'
         + '<div id="vnbrswatches" style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:10px">'
-        + ['#B22234','#1a6bbf','#1a8f4e','#c45e00','#6b3fa0','#0e7c8a','#b8860b','#c0392b','#2e7d32','#1565a0','#b84300','#7b3f6e'].map(function(c){
+        + ['#d94f5c','#4a90d9','#4aab6e','#e08840','#8b6bbf','#3fa5b5','#d4a24c','#e06b6b','#5bb878','#5a9fd4','#d98050','#a76b94'].map(function(c){
             return '<div class="vnbrsw" data-color="' + c + '" style="height:32px;border-radius:10px;background:' + c + ';cursor:pointer;border:2px solid transparent;transition:all .2s;box-shadow:inset 0 2px 3px rgba(255,255,255,.3),inset 0 -2px 3px rgba(0,0,0,.15),0 2px 6px rgba(0,0,0,.1)" title="' + c + '"></div>';
           }).join('')
         + '</div>'
         + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">'
-        + '<div id="vnbrcp" style="width:32px;height:32px;border-radius:8px;border:1px solid #d1d5db;background:#B22234;flex-shrink:0;box-shadow:inset 0 2px 3px rgba(255,255,255,.3),inset 0 -2px 3px rgba(0,0,0,.15)"></div>'
-        + '<span id="vnbrch" style="font-size:12px;color:#64748b;font-family:monospace">#B22234 selected</span>'
+        + '<div id="vnbrcp" style="width:32px;height:32px;border-radius:8px;border:1px solid #d1d5db;background:#d94f5c;flex-shrink:0;box-shadow:inset 0 2px 3px rgba(255,255,255,.3),inset 0 -2px 3px rgba(0,0,0,.15)"></div>'
+        + '<span id="vnbrch" style="font-size:12px;color:#64748b;font-family:monospace">#d94f5c selected</span>'
         + '</div>'
         + '<div style="font-size:12px;font-weight:700;margin-bottom:4px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Chat Button Size</div>'
         + '<div id="vnbrfabsizes" style="display:flex;gap:8px;margin-bottom:10px">'
@@ -1867,9 +1867,9 @@
       var r = parseInt(hex.slice(1,3),16);
       var g = parseInt(hex.slice(3,5),16);
       var b = parseInt(hex.slice(5,7),16);
-      var r2 = Math.min(255, Math.round(r + (255-r)*0.15));
-      var g2 = Math.min(255, Math.round(g + (255-g)*0.15));
-      var b2 = Math.min(255, Math.round(b + (255-b)*0.15));
+      var r2 = Math.min(255, Math.round(r + (255-r)*0.25));
+      var g2 = Math.min(255, Math.round(g + (255-g)*0.25));
+      var b2 = Math.min(255, Math.round(b + (255-b)*0.25));
       var hex2 = '#' + [r2,g2,b2].map(function(x){return x.toString(16).padStart(2,'0');}).join('');
       hdr.style.background = 'linear-gradient(135deg,' + hex + ',' + hex2 + ')';
     }
@@ -1884,7 +1884,7 @@
     if (ORG_WELCOME) ge('vnbrwm').value = ORG_WELCOME;
     if (ORG_LOGO)    { ge('vnbrli').src = ORG_LOGO; ge('vnbrl').style.display = 'block'; }
 
-    var selectedAccent = ORG_ACCENT || '#B22234';
+    var selectedAccent = ORG_ACCENT || '#d94f5c';
     var selectedFabSize = (cfg && cfg.orgFabSize) ? parseInt(cfg.orgFabSize) : 58;
 
     // FAB size picker wiring
@@ -1915,7 +1915,7 @@
       ge('vnbrcp').style.background = ORG_ACCENT;
       ge('vnbrch').textContent = ORG_ACCENT + ' selected';
       var activeSw = document.querySelector('.vnbrsw[data-color="' + ORG_ACCENT + '"]');
-      if (activeSw) activeSw.style.borderColor = '#fff';
+      if (activeSw) activeSw.style.borderColor = '#1a3a6b';
     }
 
     // Welcome message character counter
