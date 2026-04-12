@@ -1165,7 +1165,7 @@
     '#vnhi{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.5);',
     'border:1px solid rgba(255,255,255,.6);display:flex;align-items:center;',
     'justify-content:center;font-size:15px;flex-shrink:0}',
-    '#vnon{font-size:14px;font-weight:600;line-height:1.2;background:linear-gradient(180deg,#1a2744,#3d4a6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}',
+    '#vnon{font-size:14px;font-weight:600;line-height:1.2;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}',
     '#vnst{color:#6b7a9c;font-size:12px;margin-top:2px;',
     'display:flex;align-items:center;gap:4px}',
     '.vnd{width:5px;height:5px;border-radius:50%;background:#22c55e;display:inline-block}',
@@ -1507,7 +1507,7 @@
       : '';
 
     var fbk = '<div id="vnfbk" class="vntp" data-panel="feedback" style="padding:20px">'
-      + '<div style="font-size:16px;font-weight:700;color:#1e293b;margin-bottom:6px">How was your experience?</div>'
+      + '<div style="font-size:16px;font-weight:700;margin-bottom:6px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">How was your experience?</div>'
       + '<div style="font-size:13px;color:#64748b;margin-bottom:16px;line-height:1.5">Your feedback helps us improve this service for all veterans.</div>'
       + '<div id="vnstars" style="display:flex;gap:12px;margin-bottom:20px;font-size:32px;cursor:pointer">'
       + '<span class="vnstar" data-v="1">☆</span>'
@@ -1527,7 +1527,7 @@
       + '</div>';
 
     var sup = '<div id="vnsup" class="vntp" data-panel="support" style="padding:20px">'
-      + '<div style="font-size:16px;font-weight:700;color:#1e293b;margin-bottom:6px">Contact Our Team</div>'
+      + '<div style="font-size:16px;font-weight:700;margin-bottom:6px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Contact Our Team</div>'
       + '<div style="font-size:13px;color:#64748b;margin-bottom:16px;line-height:1.5">Send us a message and we\'ll follow up with you directly.</div>'
       + '<div id="vnsupf">'
       + '<input id="vnsn" type="text" placeholder="Your name" style="width:100%;background:#fafbfc;border:1px solid #d1d5db;border-radius:10px;padding:10px 14px;font-size:14px;color:#1e293b;font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:10px">'
