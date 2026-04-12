@@ -1353,8 +1353,7 @@
     '#vnadp{padding:12px;background:#fff}',
     '#vnadp::-webkit-scrollbar{width:2px}',
     '#vnadp::-webkit-scrollbar-thumb{background:rgba(0,0,0,.08);border-radius:2px}',
-    '.vnal{font-size:10px;color:#94a3b8;letter-spacing:1.5px;',
-    'text-transform:uppercase;margin:10px 0 6px;display:block}',
+    '.vnal{font-size:11px;color:#1a3a6b;letter-spacing:1.5px;text-transform:uppercase;margin:12px 0 6px;display:block;font-weight:600}',
     '.vnai{width:100%;background:#fafafa;',
     'border:.5px solid rgba(0,0,0,.1);border-radius:7px;',
     'padding:6px 9px;font-size:12px;color:#1e293b;',
@@ -1369,12 +1368,8 @@
     '.vnadd{font-size:11px;padding:4px 10px;border-radius:8px;',
     'border:.5px solid rgba(178,34,52,.2);background:rgba(178,34,52,.04);',
     'color:#cc3344;cursor:pointer;font-family:inherit;margin-bottom:10px}',
-    '#vnsv{width:100%;margin-top:10px;padding:10px;background:var(--vr);',
-    'border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:600;',
-    'cursor:pointer;font-family:inherit}',
-    '#vnsv:hover{background:var(--vrd)}',
-    '#vnsvd{display:none;text-align:center;font-size:12px;',
-    'color:#166534;padding:6px 0}',
+    '#vnsv{margin-top:10px}',
+    '#vnsvd{display:none;text-align:center;font-size:13px;color:#166534;padding:8px 0;font-weight:500}',
 
     // Scan tabs — light theme
     '.vnsc{flex:1;padding:6px 8px;font-size:11px;font-weight:600;cursor:pointer;',
@@ -1391,6 +1386,12 @@
     '.vnbtn-glass{padding:11px 36px;border-radius:24px;border:none;color:#fff;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;background:linear-gradient(145deg,#e05565,#cc3344 40%,#a82535);box-shadow:inset 0 2px 3px rgba(255,255,255,.35),inset 0 -2px 3px rgba(0,0,0,.15),0 3px 10px rgba(178,34,52,.2);position:relative;overflow:hidden;transition:.25s}',
     '.vnbtn-glass::before{content:"";position:absolute;top:2px;left:15%;width:70%;height:45%;background:linear-gradient(rgba(255,255,255,.4),rgba(255,255,255,0));border-radius:50%;pointer-events:none}',
     '.vnbtn-glass:hover{background:linear-gradient(145deg,#ff8895,#f06878 40%,#e85060);transform:translateY(-2px);box-shadow:inset 0 2px 5px rgba(255,255,255,.5),inset 0 -1px 2px rgba(0,0,0,.06),0 6px 28px rgba(230,70,90,.45),0 0 20px rgba(240,100,120,.25)}',
+    '.vnbrsw:hover{transform:scale(1.1);box-shadow:inset 0 2px 3px rgba(255,255,255,.4),inset 0 -2px 3px rgba(0,0,0,.2),0 4px 12px rgba(0,0,0,.2)}',
+    '.vnbrsw[style*="border-color"]{transform:scale(1.08)}',
+    '.vnbrsz:hover{border-color:#93b4e0 !important;background:rgba(26,58,107,.04) !important}',
+    '#vnbrub:hover{background:#f0f4f8;border-color:#93b4e0}',
+    '#vnfbb:hover{background:rgba(26,58,107,.12);border-color:rgba(26,58,107,.3)}',
+    '#vnscb:hover{background:rgba(26,58,107,.15)}',
 
     // Support tab
     '#vnsup{padding:0;background:#fff}',
@@ -1435,10 +1436,10 @@
       + '</div>';
 
     var adm = HAS_ADMIN && SHOW_ADMIN
-      ? '<div id="vnadp" class="vntp" data-panel="admin">'
-        + '<div style="font-size:11px;color:rgba(232,200,74,.85);background:rgba(232,200,74,.07);border:1px solid rgba(232,200,74,.2);border-radius:8px;padding:9px 11px;margin-bottom:12px;line-height:1.5">Update your organization info below. Changes appear instantly in the chat.</div>'
+      ? '<div id="vnadp" class="vntp" data-panel="admin" style="padding:20px">'
+        + '<div style="font-size:12px;color:#1a3a6b;background:rgba(26,58,107,.06);border:1px solid rgba(26,58,107,.15);border-radius:10px;padding:10px 14px;margin-bottom:14px;line-height:1.5">Update your organization info below. Changes appear instantly in the chat.</div>'
         // Scan tabs
-        + '<div id="vnsct" style="display:flex;gap:0;margin-bottom:8px;border-radius:8px;overflow:hidden;border:.5px solid rgba(255,255,255,.1)">'
+        + '<div id="vnsct" style="display:flex;gap:0;margin-bottom:10px;border-radius:10px;overflow:hidden;border:1px solid #d1d5db">'
         + '<button class="vnsc act" data-sc="web">🌐 Website</button>'
         + '<button class="vnsc" data-sc="fb">📘 Facebook</button>'
         + '<button class="vnsc" data-sc="man">✏️ Manual</button>'
@@ -1447,15 +1448,15 @@
         + '<div id="vnscw">'
         + '<div style="display:flex;gap:6px;margin-bottom:6px">'
         + '<input id="vnscu" type="text" class="vnai" style="margin-bottom:0" placeholder="https://yourpost.org"/>'
-        + '<button id="vnscb" style="padding:6px 10px;border-radius:7px;border:.5px solid rgba(60,120,220,.4);background:rgba(30,80,160,.5);color:#fff;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:inherit">🔍 Scan</button>'
+        + '<button id="vnscb" style="padding:7px 12px;border-radius:8px;border:1px solid rgba(26,58,107,.3);background:rgba(26,58,107,.08);color:#1a3a6b;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit">🔍 Scan</button>'
         + '</div>'
         + '<div id="vnscst" style="font-size:11px;min-height:14px;margin-bottom:8px;line-height:1.4"></div>'
         + '</div>'
         // Facebook scan panel
         + '<div id="vnscf" style="display:none">'
-        + '<div style="font-size:10.5px;color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:6px">Facebook blocks auto-scanning. Go to your Facebook page → About tab → select all text → copy → paste below.</div>'
-        + '<textarea id="vnfbpa" placeholder="Paste your Facebook About page text here…" style="width:100%;height:75px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:7px;padding:7px 9px;font-size:11.5px;color:rgba(255,255,255,.85);font-family:inherit;resize:none;outline:none;box-sizing:border-box;margin-bottom:6px"></textarea>'
-        + '<button id="vnfbb" style="width:100%;padding:7px;border-radius:7px;border:.5px solid rgba(232,200,74,.3);background:rgba(100,70,0,.4);color:#fff;font-size:11.5px;font-weight:500;cursor:pointer;font-family:inherit">📘 Extract from Facebook Text</button>'
+        + '<div style="font-size:11px;color:#64748b;line-height:1.5;margin-bottom:8px">Facebook blocks auto-scanning. Go to your Facebook page → About tab → select all text → copy → paste below.</div>'
+        + '<textarea id="vnfbpa" placeholder="Paste your Facebook About page text here…" style="width:100%;height:80px;background:#fafbfc;border:1px solid #d1d5db;border-radius:10px;padding:10px 12px;font-size:13px;color:#1e293b;font-family:inherit;resize:none;outline:none;box-sizing:border-box;margin-bottom:8px"></textarea>'
+        + '<button id="vnfbb" style="width:100%;padding:9px;border-radius:10px;border:1px solid rgba(26,58,107,.2);background:rgba(26,58,107,.06);color:#1a3a6b;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">📘 Extract from Facebook Text</button>'
         + '<div id="vnscst2" style="font-size:11px;min-height:14px;margin-top:6px;margin-bottom:4px;line-height:1.4"></div>'
         + '</div>'
         // Manual fields
@@ -1468,41 +1469,49 @@
         + '<button class="vnadd" id="vnadde">+ Add Event</button>'
         + '<span class="vnal">Leadership & Counselors</span><div id="ald"></div>'
         + '<button class="vnadd" id="vnadda">+ Add Person</button>'
-        + '<button id="vnsv">Save Changes</button>'
+        + '<div style="display:flex;justify-content:center;margin-top:12px"><button id="vnsv" class="vnbtn-glass">Save Changes</button></div>'
         + '<div id="vnsvd">✓ Saved!</div>'
         + '</div>'
       : '';
 
     var brd = SHOW_BRANDING
-      ? '<div id="vnbrd" class="vntp" data-panel="branding" style="padding:14px;overflow-y:auto">'
-        + '<div style="font-size:11px;color:rgba(232,200,74,.85);background:rgba(232,200,74,.07);border:1px solid rgba(232,200,74,.2);border-radius:8px;padding:9px 11px;margin-bottom:14px;line-height:1.5">✨ Premium feature — customize your chatbot\'s look and feel.</div>'
+      ? '<div id="vnbrd" class="vntp" data-panel="branding" style="padding:20px;overflow-y:auto">'
+        + '<div style="font-size:12px;color:#1a3a6b;background:rgba(26,58,107,.06);border:1px solid rgba(26,58,107,.15);border-radius:10px;padding:10px 14px;margin-bottom:16px;line-height:1.5">✨ Premium feature — customize your chatbot\'s look and feel.</div>'
         // Logo section
-        + '<div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Organization Logo</div>'
-        + '<div id="vnbrl" style="margin-bottom:8px;display:none"><img id="vnbrli" src="" style="max-height:48px;max-width:120px;object-fit:contain;border-radius:6px;border:1px solid rgba(255,255,255,.1)" alt="Current logo"></div>'
-        + '<div style="font-size:10.5px;color:rgba(255,255,255,.35);margin-bottom:8px;line-height:1.5">PNG, JPG, SVG or WebP · Max 500KB · Displays in chatbot header</div>'
+        + '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Organization Logo</div>'
+        + '<div id="vnbrl" style="margin-bottom:8px;display:none"><img id="vnbrli" src="" style="max-height:48px;max-width:120px;object-fit:contain;border-radius:6px;border:1px solid #d1d5db" alt="Current logo"></div>'
+        + '<div style="font-size:11px;color:#64748b;margin-bottom:10px;line-height:1.5">PNG, JPG, SVG or WebP · Max 500KB · Displays in chatbot header</div>'
         + '<input id="vnbrf" type="file" accept="image/png,image/jpeg,image/gif,image/svg+xml,image/webp" style="display:none">'
-        + '<button id="vnbrub" style="width:100%;padding:8px;border-radius:8px;border:.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.8);font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;margin-bottom:4px">📁 Choose Logo File</button>'
-        + '<div id="vnbrst" style="font-size:11px;min-height:14px;margin-bottom:14px;line-height:1.4"></div>'
+        + '<button id="vnbrub" style="width:100%;padding:10px;border-radius:10px;border:1px solid #d1d5db;background:#fafbfc;color:#1e293b;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;margin-bottom:4px">📁 Choose Logo File</button>'
+        + '<div id="vnbrst" style="font-size:11px;min-height:14px;margin-bottom:16px;line-height:1.4"></div>'
         // Welcome message section
-        + '<div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Custom Welcome Message</div>'
-        + '<div style="font-size:10.5px;color:rgba(255,255,255,.35);margin-bottom:6px;line-height:1.5">Replaces the default opening line veterans see. Keep it warm and brief.</div>'
-        + '<textarea id="vnbrwm" maxlength="120" placeholder="e.g. Welcome to VFW Post 1234 — we\'re here to help you get every benefit you\'ve earned." style="width:100%;height:72px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 10px;font-size:12px;color:rgba(255,255,255,.85);font-family:inherit;resize:none;outline:none;box-sizing:border-box;margin-bottom:4px"></textarea>'
-        + '<div id="vnbrwc" style="font-size:10px;color:rgba(255,255,255,.3);text-align:right;margin-bottom:14px">0 / 120</div>'
+        + '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Custom Welcome Message</div>'
+        + '<div style="font-size:11px;color:#64748b;margin-bottom:8px;line-height:1.5">Replaces the default opening line veterans see. Keep it warm and brief.</div>'
+        + '<textarea id="vnbrwm" maxlength="120" placeholder="e.g. Welcome to VFW Post 1234 — we\'re here to help you get every benefit you\'ve earned." style="width:100%;height:80px;background:#fafbfc;border:1px solid #d1d5db;border-radius:10px;padding:10px 12px;font-size:13px;color:#1e293b;font-family:inherit;resize:none;outline:none;box-sizing:border-box;margin-bottom:4px"></textarea>'
+        + '<div id="vnbrwc" style="font-size:11px;color:#94a3b8;text-align:right;margin-bottom:16px">0 / 120</div>'
         // Accent color section
-        + '<div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Accent Color</div>'
-        + '<div style="font-size:10.5px;color:rgba(255,255,255,.35);margin-bottom:8px;line-height:1.5">Applied to the header and interactive elements. Click a color to preview.</div>'
-        + '<div id="vnbrswatches" style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:14px">'
+        + '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Accent Color</div>'
+        + '<div style="font-size:11px;color:#64748b;margin-bottom:10px;line-height:1.5">Applied to the header and interactive elements. Click a color to preview.</div>'
+        + '<div id="vnbrswatches" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px">'
         + ['#B22234','#1a6bbf','#1a8f4e','#c45e00','#6b3fa0','#0e7c8a','#b8860b','#c0392b','#2e7d32','#1565a0','#b84300','#7b3f6e'].map(function(c){
-            return '<div class="vnbrsw" data-color="' + c + '" style="height:32px;border-radius:8px;background:' + c + ';cursor:pointer;border:2px solid transparent;transition:border-color .15s" title="' + c + '"></div>';
+            return '<div class="vnbrsw" data-color="' + c + '" style="height:36px;border-radius:10px;background:' + c + ';cursor:pointer;border:2px solid transparent;transition:all .2s;box-shadow:inset 0 2px 3px rgba(255,255,255,.3),inset 0 -2px 3px rgba(0,0,0,.15),0 2px 6px rgba(0,0,0,.1)" title="' + c + '"></div>';
           }).join('')
         + '</div>'
-        + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">'
-        + '<div id="vnbrcp" style="width:32px;height:32px;border-radius:6px;border:.5px solid rgba(255,255,255,.2);background:#B22234;flex-shrink:0"></div>'
-        + '<span id="vnbrch" style="font-size:12px;color:rgba(255,255,255,.5);font-family:monospace">#B22234 selected</span>'
+        // FAB size section
+        + '<div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Chat Button Size</div>'
+        + '<div style="font-size:11px;color:#64748b;margin-bottom:10px;line-height:1.5">Controls the floating chat button size on your website.</div>'
+        + '<div id="vnbrfabsizes" style="display:flex;gap:10px;margin-bottom:16px">'
+        + '<div class="vnbrsz" data-size="56" style="flex:1;text-align:center;padding:12px 8px;border-radius:10px;border:2px solid #d1d5db;background:#fafbfc;cursor:pointer;transition:all .2s"><div style="font-size:14px;font-weight:600;color:#1e293b">Small</div><div style="font-size:11px;color:#94a3b8;margin-top:2px">56px</div></div>'
+        + '<div class="vnbrsz act" data-size="58" style="flex:1;text-align:center;padding:12px 8px;border-radius:10px;border:2px solid #1a3a6b;background:rgba(26,58,107,.06);cursor:pointer;transition:all .2s"><div style="font-size:14px;font-weight:600;color:#1a3a6b">Default</div><div style="font-size:11px;color:#64748b;margin-top:2px">58px</div></div>'
+        + '<div class="vnbrsz" data-size="60" style="flex:1;text-align:center;padding:12px 8px;border-radius:10px;border:2px solid #d1d5db;background:#fafbfc;cursor:pointer;transition:all .2s"><div style="font-size:14px;font-weight:600;color:#1e293b">Large</div><div style="font-size:11px;color:#94a3b8;margin-top:2px">60px</div></div>'
+        + '</div>'
+        + '<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">'
+        + '<div id="vnbrcp" style="width:36px;height:36px;border-radius:8px;border:1px solid #d1d5db;background:#B22234;flex-shrink:0;box-shadow:inset 0 2px 3px rgba(255,255,255,.3),inset 0 -2px 3px rgba(0,0,0,.15)"></div>'
+        + '<span id="vnbrch" style="font-size:12px;color:#64748b;font-family:monospace">#B22234 selected</span>'
         + '</div>'
         // Save button
-        + '<button id="vnbrsv" style="width:100%;padding:10px;border-radius:8px;background:var(--vr);border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Save Branding</button>'
-        + '<div id="vnbrsvd" style="display:none;text-align:center;font-size:12px;color:rgba(74,222,128,.9);margin-top:8px">✓ Branding saved!</div>'
+        + '<div style="display:flex;justify-content:center"><button id="vnbrsv" class="vnbtn-glass">Save Branding</button></div>'
+        + '<div id="vnbrsvd" style="display:none;text-align:center;font-size:13px;color:#166534;margin-top:10px;font-weight:500">✓ Branding saved!</div>'
         + '</div>'
       : '';
 
