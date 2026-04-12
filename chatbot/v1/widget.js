@@ -1857,22 +1857,18 @@
   }
   // ── ACCENT COLOR HELPER ────────────────────────────────────────────────────
   function applyAccent(hex) {
-    // Update --vr CSS variable
+    // Update --vr CSS variable (buttons, avatar, send — these stay solid)
     var accentStyle = document.getElementById('vns');
     if (accentStyle) {
       accentStyle.textContent = accentStyle.textContent.replace(/--vr\s*:\s*[^;]+;/, '--vr:' + hex + ';');
     }
-    // Update header gradient — lighten the color slightly for gradient end stop
+    // Update header — soft translucent tint over rose base
     var hdr = document.getElementById('vnh');
     if (hdr) {
       var r = parseInt(hex.slice(1,3),16);
       var g = parseInt(hex.slice(3,5),16);
       var b = parseInt(hex.slice(5,7),16);
-      var r2 = Math.min(255, Math.round(r + (255-r)*0.25));
-      var g2 = Math.min(255, Math.round(g + (255-g)*0.25));
-      var b2 = Math.min(255, Math.round(b + (255-b)*0.25));
-      var hex2 = '#' + [r2,g2,b2].map(function(x){return x.toString(16).padStart(2,'0');}).join('');
-      hdr.style.background = 'linear-gradient(135deg,' + hex + ',' + hex2 + ')';
+      hdr.style.background = 'linear-gradient(135deg, rgba(' + r + ',' + g + ',' + b + ',0.12), rgba(' + r + ',' + g + ',' + b + ',0.06)), linear-gradient(135deg,#f5e8e6,#f0dad7)';
     }
   }
 
