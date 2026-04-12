@@ -1388,7 +1388,9 @@
     '.vnstar:hover{color:#f59e0b;transform:scale(1.15)}',
     '.vnstar.on{color:#f59e0b;text-shadow:0 0 6px rgba(245,158,11,.3)}',
     '#vnfbtx:focus,#vnsmsg:focus,#vnsn:focus,#vnse:focus,#vnsy:focus{border-color:#93b4e0;box-shadow:0 0 0 3px rgba(147,180,224,.15)}',
-    '#vnfbsb:hover,#vnssb:hover{background:linear-gradient(145deg,rgba(220,60,78,.95),rgba(185,42,58,.95));box-shadow:inset 0 1px 1px rgba(255,255,255,.3),0 4px 12px rgba(204,51,68,.35)}',
+    '.vnbtn-glass{padding:11px 36px;border-radius:24px;border:none;color:#fff;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;background:linear-gradient(145deg,#e05565,#cc3344 40%,#a82535);box-shadow:inset 0 2px 3px rgba(255,255,255,.35),inset 0 -2px 3px rgba(0,0,0,.15),0 3px 10px rgba(178,34,52,.2);position:relative;overflow:hidden;transition:.25s}',
+    '.vnbtn-glass::before{content:"";position:absolute;top:2px;left:15%;width:70%;height:45%;background:linear-gradient(rgba(255,255,255,.4),rgba(255,255,255,0));border-radius:50%;pointer-events:none}',
+    '.vnbtn-glass:hover{background:linear-gradient(145deg,#ff8895,#f06878 40%,#e85060);transform:translateY(-2px);box-shadow:inset 0 2px 5px rgba(255,255,255,.5),inset 0 -1px 2px rgba(0,0,0,.06),0 6px 28px rgba(230,70,90,.45),0 0 20px rgba(240,100,120,.25)}',
 
     // Support tab
     '#vnsup{padding:0;background:#fff}',
@@ -1519,11 +1521,7 @@
       + 'border-radius:10px;padding:12px 14px;font-size:14px;color:#1e293b;font-family:inherit;'
       + 'outline:none;resize:none;box-sizing:border-box;margin-bottom:16px"></textarea>'
       + '<div style="display:flex;justify-content:center">'
-      + '<button id="vnfbsb" style="padding:11px 36px;border-radius:50px;border:none;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;'
-      + 'background:linear-gradient(145deg,rgba(204,51,68,.95),rgba(168,37,53,.95));'
-      + 'box-shadow:inset 0 1px 1px rgba(255,255,255,.25),0 2px 6px rgba(204,51,68,.25);'
-      + 'position:relative;overflow:hidden">'
-      + '<span style="position:relative;z-index:1">Submit Feedback</span></button></div>'
+      + '<button id="vnfbsb" class="vnbtn-glass">Submit Feedback</button></div>'
       + '<div id="vnfbok" style="display:none;text-align:center;font-size:13px;'
       + 'color:#166534;margin-top:12px;font-weight:500">✓ Thank you! Your feedback has been received.</div>'
       + '</div>';
@@ -1546,11 +1544,7 @@
       + '<div id="vnserr" style="display:none;font-size:12px;color:#dc2626;margin-bottom:8px"></div>'
       + '<p style="font-size:11px;color:#94a3b8;line-height:1.5;margin:0 0 12px">Your name and email are used only to respond to your request. They are not stored, shared, or used for marketing.</p>'
       + '<div style="display:flex;justify-content:center">'
-      + '<button id="vnssb" style="padding:11px 36px;border-radius:50px;border:none;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;'
-      + 'background:linear-gradient(145deg,rgba(204,51,68,.95),rgba(168,37,53,.95));'
-      + 'box-shadow:inset 0 1px 1px rgba(255,255,255,.25),0 2px 6px rgba(204,51,68,.25);'
-      + 'position:relative;overflow:hidden">'
-      + '<span style="position:relative;z-index:1">Send Message</span></button></div>'
+      + '<button id="vnssb" class="vnbtn-glass">Send Message</button></div>'
       + '</div>'
       + '<div id="vnstk" style="display:none;text-align:center;padding:16px">'
       + '<div style="font-size:28px;margin-bottom:8px">✅</div>'
