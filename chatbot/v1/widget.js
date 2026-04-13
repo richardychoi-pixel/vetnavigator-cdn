@@ -1134,10 +1134,13 @@
 
     // Notification bubble
     '#vnn{position:fixed;bottom:92px;right:24px;z-index:2147483639;',
-    'background:#fff;color:#1e293b;padding:10px 16px 10px 14px;',
+    'background:linear-gradient(145deg,rgba(90,143,212,.25),rgba(90,143,212,.15) 50%,rgba(90,143,212,.08));',
+    'color:#1a4a8a;padding:10px 16px 10px 14px;',
     'border-radius:12px 12px 4px 12px;font-size:13px;font-weight:500;',
-    'max-width:220px;line-height:1.4;box-shadow:0 4px 20px rgba(0,0,0,.12);',
-    'border:.5px solid rgba(0,0,0,.06);',
+    'max-width:220px;line-height:1.4;',
+    'box-shadow:inset 0 1px 2px rgba(255,255,255,.5),inset 0 -1px 2px rgba(90,143,212,.08),0 4px 20px rgba(90,143,212,.15);',
+    'border:.5px solid rgba(90,143,212,.3);',
+    'backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);',
     'display:flex;align-items:flex-start;gap:8px;cursor:pointer;',
     'font-family:Outfit,system-ui,sans-serif;',
     'animation:vnP .35s cubic-bezier(.34,1.56,.64,1) both}',
