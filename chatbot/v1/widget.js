@@ -2150,6 +2150,225 @@
     });
   }
 
+  // ── ADMIN ──────────────────────────────────────────────────────────────────
+  function vnAE() {
+    var r = document.createElement('div'); r.className = 'vnadr';
+    r.innerHTML = '<input class="vnai" type="text" placeholder="e.g. Monthly Meeting — 1st Tuesday 7pm"/>'
+      + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
+    ge('aev').appendChild(r);
+  }
+  function vnAL() {
+    var r = document.createElement('div'); r.className = 'vnadr';
+    r.innerHTML = '<input class="vnai" type="text" placeholder="e.g. Commander John Smith"/>'
+      + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
+    ge('ald').appendChild(r);
+  }
+  function vnSave() {
+    ORG_NAME   = ge('an').value.trim() || ORG_NAME;
+    ORG_CITY   = ge('ac').value.trim() || ORG_CITY;
+    ORG_PHONE  = ge('ap').value.trim() || ORG_PHONE;
+    ORG_EMAIL  = ge('ae').value.trim() || ORG_EMAIL;
+    ORG_HOURS  = ge('ah').value.trim() || ORG_HOURS;
+    ORG_EVENTS  = Array.from(ge('aev').querySelectorAll('input')).map(function (i) { return i.value.trim(); }).filter(Boolean);
+    ORG_LEADERS = Array.from(ge('ald').querySelectorAll('input')).map(function (i) { return i.value.trim(); }).filter(Boolean);
+    ge('vnon').textContent = ORG_NAME;
+    buildVSO();
+    ge('vnsvd').style.display = 'block';
+    setTimeout(function () { ge('vnsvd').style.display = 'none'; }, 2500);
+
+    // Persist to server if we have a real license key
+    if (LICENSE_KEY && LICENSE_KEY.startsWith('VN-') && LICENSE_KEY !== 'VN-DEMO') {
+      fetch(VN_API + '/config?key=' + encodeURIComponent(LICENSE_KEY), {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orgName:    ORG_NAME,
+          orgCity:    ORG_CITY,
+          orgPhone:   ORG_PHONE,
+          orgEmail:   ORG_EMAIL,
+          orgHours:   ORG_HOURS,
+          events:     ORG_EVENTS,
+          leaders:    ORG_LEADERS
+        })
+      }).catch(function () { /* silent — local save still worked */ });
+    }
+  }
+
+  function populateAdmin() {
+    if (!HAS_ADMIN || !SHOW_ADMIN) return;
+    ge('an').value = ORG_NAME;
+    ge('ac').value = ORG_CITY;
+    ge('ap').value = ORG_PHONE;
+    ge('ae').value = ORG_EMAIL;
+    ge('ah').value = ORG_HOURS;
+    ORG_EVENTS.forEach(function (e) {
+      var r = document.createElement('div'); r.className = 'vnadr';
+      r.innerHTML = '<input class="vnai" type="text" value="' + e.replace(/"/g, '&quot;') + '"/>'
+        + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
+      ge('aev').appendChild(r);
+    });
+    ORG_LEADERS.forEach(function (l) {
+      var r = document.createElement('div'); r.className = 'vnadr';
+      r.innerHTML = '<input class="vnai" type="text" value="' + l.replace(/"/g, '&quot;') + '"/>'
+        + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
+      ge('ald').appendChild(r);
+    });
+  }
+
+  // ── ADMIN PANEL WIRING ─────────────────────────────────────────────────────
+  // Called from init() when HAS_ADMIN && SHOW_ADMIN. Wires up the admin form,
+  // event/leader add buttons, save button, scan tab switcher, and website/Facebook scan AI.
+  function initAdminPanel() {
+    ge('vnadde').addEventListener('click', vnAE);
+    ge('vnadda').addEventListener('click', vnAL);
+    ge('vnsv').addEventListener('click', vnSave);
+    populateAdmin();
+
+    // Scan tab switching
+    document.querySelectorAll('.vnsc').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var sc = this.getAttribute('data-sc');
+        document.querySelectorAll('.vnsc').forEach(function (b) { b.classList.remove('act'); });
+        this.classList.add('act');
+        ge('vnscw').style.display  = sc === 'web' ? 'block' : 'none';
+        ge('vnscf').style.display  = sc === 'fb'  ? 'block' : 'none';
+      });
+    });
+
+    // Helper: fill scanned data into admin fields
+    function fillScanData(data, statusEl) {
+      var found = [];
+      if (data.orgName) { ge('an').value = data.orgName; found.push('name'); }
+      if (data.city)    { ge('ac').value = data.city;    found.push('city'); }
+      if (data.phone)   { ge('ap').value = data.phone;   found.push('phone'); }
+      if (data.email)   { ge('ae').value = data.email;   found.push('email'); }
+      if (data.hours)   { ge('ah').value = data.hours;   found.push('hours'); }
+      if (data.events && data.events.length) {
+        ge('aev').innerHTML = '';
+        data.events.forEach(function (e) {
+          if (!e) return;
+          var r = document.createElement('div'); r.className = 'vnadr';
+          r.innerHTML = '<input class="vnai" type="text" value="' + e.replace(/"/g, '&quot;') + '"/>'
+            + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
+          ge('aev').appendChild(r);
+        });
+        found.push(data.events.length + ' event(s)');
+      }
+      if (data.leaders && data.leaders.length) {
+        ge('ald').innerHTML = '';
+        data.leaders.forEach(function (l) {
+          if (!l) return;
+          var r = document.createElement('div'); r.className = 'vnadr';
+          r.innerHTML = '<input class="vnai" type="text" value="' + l.replace(/"/g, '&quot;') + '"/>'
+            + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
+          ge('ald').appendChild(r);
+        });
+        found.push(data.leaders.length + ' leader(s)');
+      }
+      if (found.length) {
+        statusEl.style.color = 'rgba(74,222,128,.9)';
+        statusEl.textContent = '✓ Found: ' + found.join(', ') + '. Review below and hit Save.';
+      } else {
+        statusEl.style.color = 'rgba(255,120,120,.85)';
+        statusEl.textContent = 'Could not extract details — fill in manually below.';
+      }
+    }
+
+    // Website scan
+    ge('vnscb').addEventListener('click', function () {
+      var url = ge('vnscu').value.trim();
+      if (!url) return;
+      if (!url.startsWith('http')) url = 'https://' + url;
+      var btn = this; btn.disabled = true;
+      var st  = ge('vnscst');
+      st.style.color = 'rgba(232,200,74,.85)';
+      st.textContent = '🔍 Fetching your website…';
+      fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url))
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          var pageText = (j.contents || '')
+            .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+            .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+            .replace(/<[^>]+>/g, ' ')
+            .replace(/\s{3,}/g, '  ')
+            .substring(0, 6000);
+          if (!pageText || pageText.length < 80) {
+            st.style.color   = 'rgba(255,120,120,.85)';
+            st.textContent   = 'Page had little readable content. Fill in manually.';
+            btn.disabled = false; return;
+          }
+          st.textContent = '🤖 AI is reading your website…';
+          return fetch(VN_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'claude-haiku-4-5-20251001',
+              max_tokens: 600,
+              system: 'Extract VSO organization info from website text. Respond with valid JSON only — no markdown, no explanation. Keys: orgName, city, address, phone, email, hours, events (array max 6), leaders (array max 8). Empty string or [] if not found.',
+              messages: [{ role: 'user', content: pageText }]
+            })
+          });
+        })
+        .then(function (r) { return r && r.json(); })
+        .then(function (d) {
+          if (!d) return;
+          var txt = ((d.content || [])[0] || {}).text || '';
+          txt = txt.replace(/```json|```/g, '').trim();
+          try { fillScanData(JSON.parse(txt), ge('vnscst')); }
+          catch (e) {
+            ge('vnscst').style.color = 'rgba(255,120,120,.85)';
+            ge('vnscst').textContent = 'AI scan failed — fill in manually.';
+          }
+          btn.disabled = false;
+        })
+        .catch(function () {
+          ge('vnscst').style.color = 'rgba(255,120,120,.85)';
+          ge('vnscst').textContent = 'Could not reach website — fill in manually.';
+          btn.disabled = false;
+        });
+    });
+
+    // Facebook text scan
+    ge('vnfbb').addEventListener('click', function () {
+      var paste = ge('vnfbpa').value.trim();
+      if (!paste || paste.length < 40) {
+        ge('vnscst2').style.color   = 'rgba(255,120,120,.85)';
+        ge('vnscst2').textContent   = 'Please paste your Facebook About text first.';
+        return;
+      }
+      var btn = this; btn.disabled = true;
+      var st  = ge('vnscst2');
+      st.style.color = 'rgba(232,200,74,.85)';
+      st.textContent = '📘 AI is reading your Facebook info…';
+      fetch(VN_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 600,
+          system: 'Extract VSO organization info from pasted Facebook About page text. Respond with valid JSON only — no markdown, no explanation. Keys: orgName, city, address, phone, email, hours, events (array max 6), leaders (array as "Title – Name", max 8). Empty string or [] if not found.',
+          messages: [{ role: 'user', content: paste.substring(0, 6000) }]
+        })
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var txt = ((d.content || [])[0] || {}).text || '';
+        txt = txt.replace(/```json|```/g, '').trim();
+        try { fillScanData(JSON.parse(txt), ge('vnscst2')); }
+        catch (e) {
+          st.style.color = 'rgba(255,120,120,.85)';
+          st.textContent = 'Could not extract info — fill in manually.';
+        }
+        btn.disabled = false;
+      })
+      .catch(function () {
+        st.style.color = 'rgba(255,120,120,.85)';
+        st.textContent = 'Something went wrong — fill in manually.';
+        btn.disabled = false;
+      });
+    });
+  }
+
   // ── SESSION WARNING ────────────────────────────────────────────────────────
   function checkWarn() {
     var rem = CONV_LIMIT - turnCount;
@@ -2182,20 +2401,14 @@
 
   // ── LIMIT SCREEN ───────────────────────────────────────────────────────────
   function showLimit() {
-    ge('vnms').style.display = 'none';
-    ge('vnwn').style.display = 'none';
-    ge('vnop').style.display = 'none';
-    ge('vnir').style.display  = 'none';
-    ge('vnlm').style.display  = 'block';
-    ge('vnlt').textContent    = s('limitTitle');
-    ge('vnlmg').textContent   = s('limitMsg');
-    ge('vnltl').textContent   = s('limitTopics');
-    ge('vnsp').textContent    = s('sumPrompt');
-    ge('vnseb').textContent   = s('sendSum');
-    ge('vnsem').placeholder   = s('sumPH');
-    ge('vnset').textContent   = s('sumSent');
-    ge('vnvl').textContent    = s('contVSO');
-    ge('vnrs').textContent    = s('startFresh');
+    ge('vnms').style.display = 'none'; ge('vnwn').style.display = 'none';
+    ge('vnop').style.display = 'none'; ge('vnir').style.display = 'none';
+    ge('vnlm').style.display = 'block';
+    ge('vnlt').textContent  = s('limitTitle');  ge('vnlmg').textContent = s('limitMsg');
+    ge('vnltl').textContent = s('limitTopics'); ge('vnsp').textContent  = s('sumPrompt');
+    ge('vnseb').textContent = s('sendSum');     ge('vnsem').placeholder = s('sumPH');
+    ge('vnset').textContent = s('sumSent');     ge('vnvl').textContent  = s('contVSO');
+    ge('vnrs').textContent  = s('startFresh');
 
     // Topics list
     var ul = ge('vnltp'); ul.innerHTML = '';
@@ -2330,6 +2543,74 @@
       }))
     });
   }
+
+  // ── SUMMARY PROMPT (shown on "Start over" when 2+ topics explored) ────────
+  function countTopics() {
+    var seen = {};
+    var count = 0;
+    chatHistory.forEach(function (h) {
+      if (!seen[h.topic] && h.topic !== 'welcome' && h.topic !== 'ai') {
+        seen[h.topic] = true;
+        count++;
+      }
+    });
+    return count;
+  }
+
+  function showSummaryPrompt() {
+    clearOpts();
+    botMsg('<strong>Before you go —</strong> would you like a summary of the topics you explored sent to your email? You can share it with your VSO counselor for follow-up.<br><br><span style="font-size:10px;color:rgba(255,255,255,.4)">Your email is only used to send this summary. We do not store, share, or sell your personal information.</span>');
+    // Build email form as a bot message so it appears in the scrollable chat area
+    var ms = ge('vnms');
+    var row = document.createElement('div');
+    row.className = 'vnr';
+    row.innerHTML = '<div class="vnav b">VN</div>'
+      + '<div class="vnbb b" style="width:100%">'
+      + '<div style="display:flex;gap:6px;margin-bottom:8px">'
+      + '<input id="vnssem" type="email" placeholder="your@email.com" style="flex:1;font-size:11.5px;padding:6px 10px;border-radius:8px;'
+      + 'border:.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);'
+      + 'color:rgba(255,255,255,.9);font-family:inherit;outline:none"/>'
+      + '<button id="vnsseb" style="padding:6px 14px;border-radius:8px;background:var(--vr);border:none;'
+      + 'color:#fff;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Send →</button>'
+      + '</div>'
+      + '<button id="vnsskip" style="width:100%;padding:6px;border-radius:8px;border:.5px solid rgba(255,255,255,.12);'
+      + 'background:transparent;color:rgba(255,255,255,.5);font-size:11px;cursor:pointer;font-family:inherit">'
+      + 'No thanks, start fresh</button>'
+      + '</div>';
+    ms.appendChild(row);
+    ms.scrollTop = ms.scrollHeight;
+    // Wire up buttons
+    ge('vnsseb').addEventListener('click', function () {
+      var em = ge('vnssem').value.trim();
+      if (!em || em.indexOf('@') === -1) { ge('vnssem').style.borderColor = 'rgba(255,80,80,.6)'; return; }
+      var msgBox = row.querySelector('.vnbb');
+      msgBox.innerHTML = '<div style="font-size:12px;color:rgba(255,255,255,.6);text-align:center;padding:4px 0">'
+        + '⏳ Generating your summary...</div>';
+      sendSummary(em, function () {
+        msgBox.innerHTML = '<div style="font-size:12px;color:rgba(74,222,128,.9);text-align:center;padding:4px 0">'
+          + '✓ Summary sent! Check your inbox.</div>';
+        setTimeout(restart, 1500);
+      });
+    });
+    ge('vnsskip').addEventListener('click', restart);
+  }
+
+  // ── RESTART ────────────────────────────────────────────────────────────────
+  function restart() {
+    turnCount   = 0;
+    chatHistory = [];
+    ge('vnlm').style.display  = 'none';
+    ge('vnms').style.display  = 'flex';
+    ge('vnop').style.display  = 'block';
+    ge('vnir').style.display  = 'flex';
+    ge('vnwn').style.display  = 'none';
+    ge('vnms').innerHTML      = '';
+    ge('vnser').style.display = 'flex';
+    ge('vnset').style.display = 'none';
+    ge('vnsem').value         = '';
+    renderNode('welcome');
+  }
+
 
   // ── TIER GATE FREE TEXT ────────────────────────────────────────────────────
   function gatedFreeText(text) {
@@ -2810,139 +3091,6 @@
     ge('vnp').classList.remove('open');
   }
 
-  // ── NOTIFICATION ── (extracted to widget-engine-notif.js)
-
-  // ── ADMIN ──────────────────────────────────────────────────────────────────
-  function vnAE() {
-    var r = document.createElement('div'); r.className = 'vnadr';
-    r.innerHTML = '<input class="vnai" type="text" placeholder="e.g. Monthly Meeting — 1st Tuesday 7pm"/>'
-      + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
-    ge('aev').appendChild(r);
-  }
-  function vnAL() {
-    var r = document.createElement('div'); r.className = 'vnadr';
-    r.innerHTML = '<input class="vnai" type="text" placeholder="e.g. Commander John Smith"/>'
-      + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
-    ge('ald').appendChild(r);
-  }
-  function vnSave() {
-    ORG_NAME   = ge('an').value.trim() || ORG_NAME;
-    ORG_CITY   = ge('ac').value.trim() || ORG_CITY;
-    ORG_PHONE  = ge('ap').value.trim() || ORG_PHONE;
-    ORG_EMAIL  = ge('ae').value.trim() || ORG_EMAIL;
-    ORG_HOURS  = ge('ah').value.trim() || ORG_HOURS;
-    ORG_EVENTS  = Array.from(ge('aev').querySelectorAll('input')).map(function (i) { return i.value.trim(); }).filter(Boolean);
-    ORG_LEADERS = Array.from(ge('ald').querySelectorAll('input')).map(function (i) { return i.value.trim(); }).filter(Boolean);
-    ge('vnon').textContent = ORG_NAME;
-    buildVSO();
-    ge('vnsvd').style.display = 'block';
-    setTimeout(function () { ge('vnsvd').style.display = 'none'; }, 2500);
-
-    // Persist to server if we have a real license key
-    if (LICENSE_KEY && LICENSE_KEY.startsWith('VN-') && LICENSE_KEY !== 'VN-DEMO') {
-      fetch(VN_API + '/config?key=' + encodeURIComponent(LICENSE_KEY), {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          orgName:    ORG_NAME,
-          orgCity:    ORG_CITY,
-          orgPhone:   ORG_PHONE,
-          orgEmail:   ORG_EMAIL,
-          orgHours:   ORG_HOURS,
-          events:     ORG_EVENTS,
-          leaders:    ORG_LEADERS
-        })
-      }).catch(function () { /* silent — local save still worked */ });
-    }
-  }
-
-  function populateAdmin() {
-    if (!HAS_ADMIN || !SHOW_ADMIN) return;
-    ge('an').value = ORG_NAME;
-    ge('ac').value = ORG_CITY;
-    ge('ap').value = ORG_PHONE;
-    ge('ae').value = ORG_EMAIL;
-    ge('ah').value = ORG_HOURS;
-    ORG_EVENTS.forEach(function (e) {
-      var r = document.createElement('div'); r.className = 'vnadr';
-      r.innerHTML = '<input class="vnai" type="text" value="' + e.replace(/"/g, '&quot;') + '"/>'
-        + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
-      ge('aev').appendChild(r);
-    });
-    ORG_LEADERS.forEach(function (l) {
-      var r = document.createElement('div'); r.className = 'vnadr';
-      r.innerHTML = '<input class="vnai" type="text" value="' + l.replace(/"/g, '&quot;') + '"/>'
-        + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
-      ge('ald').appendChild(r);
-    });
-  }
-
-  // ── SUMMARY PROMPT (shown on "Start over" when 2+ topics explored) ────────
-  function countTopics() {
-    var seen = {};
-    var count = 0;
-    chatHistory.forEach(function (h) {
-      if (!seen[h.topic] && h.topic !== 'welcome' && h.topic !== 'ai') {
-        seen[h.topic] = true;
-        count++;
-      }
-    });
-    return count;
-  }
-
-  function showSummaryPrompt() {
-    clearOpts();
-    botMsg('<strong>Before you go —</strong> would you like a summary of the topics you explored sent to your email? You can share it with your VSO counselor for follow-up.<br><br><span style="font-size:10px;color:rgba(255,255,255,.4)">Your email is only used to send this summary. We do not store, share, or sell your personal information.</span>');
-    // Build email form as a bot message so it appears in the scrollable chat area
-    var ms = ge('vnms');
-    var row = document.createElement('div');
-    row.className = 'vnr';
-    row.innerHTML = '<div class="vnav b">VN</div>'
-      + '<div class="vnbb b" style="width:100%">'
-      + '<div style="display:flex;gap:6px;margin-bottom:8px">'
-      + '<input id="vnssem" type="email" placeholder="your@email.com" style="flex:1;font-size:11.5px;padding:6px 10px;border-radius:8px;'
-      + 'border:.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);'
-      + 'color:rgba(255,255,255,.9);font-family:inherit;outline:none"/>'
-      + '<button id="vnsseb" style="padding:6px 14px;border-radius:8px;background:var(--vr);border:none;'
-      + 'color:#fff;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Send →</button>'
-      + '</div>'
-      + '<button id="vnsskip" style="width:100%;padding:6px;border-radius:8px;border:.5px solid rgba(255,255,255,.12);'
-      + 'background:transparent;color:rgba(255,255,255,.5);font-size:11px;cursor:pointer;font-family:inherit">'
-      + 'No thanks, start fresh</button>'
-      + '</div>';
-    ms.appendChild(row);
-    ms.scrollTop = ms.scrollHeight;
-    // Wire up buttons
-    ge('vnsseb').addEventListener('click', function () {
-      var em = ge('vnssem').value.trim();
-      if (!em || em.indexOf('@') === -1) { ge('vnssem').style.borderColor = 'rgba(255,80,80,.6)'; return; }
-      var msgBox = row.querySelector('.vnbb');
-      msgBox.innerHTML = '<div style="font-size:12px;color:rgba(255,255,255,.6);text-align:center;padding:4px 0">'
-        + '⏳ Generating your summary...</div>';
-      sendSummary(em, function () {
-        msgBox.innerHTML = '<div style="font-size:12px;color:rgba(74,222,128,.9);text-align:center;padding:4px 0">'
-          + '✓ Summary sent! Check your inbox.</div>';
-        setTimeout(restart, 1500);
-      });
-    });
-    ge('vnsskip').addEventListener('click', restart);
-  }
-
-  // ── RESTART ────────────────────────────────────────────────────────────────
-  function restart() {
-    turnCount   = 0;
-    chatHistory = [];
-    ge('vnlm').style.display  = 'none';
-    ge('vnms').style.display  = 'flex';
-    ge('vnop').style.display  = 'block';
-    ge('vnir').style.display  = 'flex';
-    ge('vnwn').style.display  = 'none';
-    ge('vnms').innerHTML      = '';
-    ge('vnser').style.display = 'flex';
-    ge('vnset').style.display = 'none';
-    ge('vnsem').value         = '';
-    renderNode('welcome');
-  }
 
   // ── INIT ───────────────────────────────────────────────────────────────────
   // Size tiers — detected once on boot, never changes during session
@@ -2995,18 +3143,12 @@
       var panel = ge('vnp');
       if (panel) {
         panel.classList.add('open');
-        panel.style.position = 'relative';
-        panel.style.width = '100%';
-        panel.style.height = '100%';
-        panel.style.bottom = 'auto';
-        panel.style.right = 'auto';
-        panel.style.borderRadius = '0';
-        panel.style.border = 'none';
-        panel.style.boxShadow = 'none';
-        panel.style.transform = 'none';
-        panel.style.opacity = '1';
-        panel.style.pointerEvents = 'all';
-        panel.style.display = 'flex';
+        panel.style.position = 'relative'; panel.style.width = '100%';
+        panel.style.height = '100%';       panel.style.bottom = 'auto';
+        panel.style.right = 'auto';        panel.style.borderRadius = '0';
+        panel.style.border = 'none';       panel.style.boxShadow = 'none';
+        panel.style.transform = 'none';    panel.style.opacity = '1';
+        panel.style.pointerEvents = 'all'; panel.style.display = 'flex';
         panel.style.flexDirection = 'column';
       }
       // Tab panels fill remaining space
@@ -3040,7 +3182,6 @@
       ge('vnb').addEventListener('click', function () {
         panelOpen ? closePanel() : openPanel();
       });
-
     }
 
     // Tabs
@@ -3123,155 +3264,9 @@
     initBranding();
 
     // Admin panel wiring (Starter+ AND ?vnadmin=1)
+    // Admin panel wiring (Starter+ AND ?vnadmin=1) — logic in widget-engine-admin.js
     if (HAS_ADMIN && SHOW_ADMIN) {
-      ge('vnadde').addEventListener('click', vnAE);
-      ge('vnadda').addEventListener('click', vnAL);
-      ge('vnsv').addEventListener('click', vnSave);
-      populateAdmin();
-
-      // Scan tab switching
-      document.querySelectorAll('.vnsc').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var sc = this.getAttribute('data-sc');
-          document.querySelectorAll('.vnsc').forEach(function (b) { b.classList.remove('act'); });
-          this.classList.add('act');
-          ge('vnscw').style.display  = sc === 'web' ? 'block' : 'none';
-          ge('vnscf').style.display  = sc === 'fb'  ? 'block' : 'none';
-        });
-      });
-
-      // Helper: fill scanned data into admin fields
-      function fillScanData(data, statusEl) {
-        var found = [];
-        if (data.orgName) { ge('an').value = data.orgName; found.push('name'); }
-        if (data.city)    { ge('ac').value = data.city;    found.push('city'); }
-        if (data.phone)   { ge('ap').value = data.phone;   found.push('phone'); }
-        if (data.email)   { ge('ae').value = data.email;   found.push('email'); }
-        if (data.hours)   { ge('ah').value = data.hours;   found.push('hours'); }
-        if (data.events && data.events.length) {
-          ge('aev').innerHTML = '';
-          data.events.forEach(function (e) {
-            if (!e) return;
-            var r = document.createElement('div'); r.className = 'vnadr';
-            r.innerHTML = '<input class="vnai" type="text" value="' + e.replace(/"/g, '&quot;') + '"/>'
-              + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
-            ge('aev').appendChild(r);
-          });
-          found.push(data.events.length + ' event(s)');
-        }
-        if (data.leaders && data.leaders.length) {
-          ge('ald').innerHTML = '';
-          data.leaders.forEach(function (l) {
-            if (!l) return;
-            var r = document.createElement('div'); r.className = 'vnadr';
-            r.innerHTML = '<input class="vnai" type="text" value="' + l.replace(/"/g, '&quot;') + '"/>'
-              + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
-            ge('ald').appendChild(r);
-          });
-          found.push(data.leaders.length + ' leader(s)');
-        }
-        if (found.length) {
-          statusEl.style.color = 'rgba(74,222,128,.9)';
-          statusEl.textContent = '✓ Found: ' + found.join(', ') + '. Review below and hit Save.';
-        } else {
-          statusEl.style.color = 'rgba(255,120,120,.85)';
-          statusEl.textContent = 'Could not extract details — fill in manually below.';
-        }
-      }
-
-      // Website scan
-      ge('vnscb').addEventListener('click', function () {
-        var url = ge('vnscu').value.trim();
-        if (!url) return;
-        if (!url.startsWith('http')) url = 'https://' + url;
-        var btn = this; btn.disabled = true;
-        var st  = ge('vnscst');
-        st.style.color = 'rgba(232,200,74,.85)';
-        st.textContent = '🔍 Fetching your website…';
-        fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url))
-          .then(function (r) { return r.json(); })
-          .then(function (j) {
-            var pageText = (j.contents || '')
-              .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
-              .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
-              .replace(/<[^>]+>/g, ' ')
-              .replace(/\s{3,}/g, '  ')
-              .substring(0, 6000);
-            if (!pageText || pageText.length < 80) {
-              st.style.color   = 'rgba(255,120,120,.85)';
-              st.textContent   = 'Page had little readable content. Fill in manually.';
-              btn.disabled = false; return;
-            }
-            st.textContent = '🤖 AI is reading your website…';
-            return fetch(VN_API, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                model: 'claude-haiku-4-5-20251001',
-                max_tokens: 600,
-                system: 'Extract VSO organization info from website text. Respond with valid JSON only — no markdown, no explanation. Keys: orgName, city, address, phone, email, hours, events (array max 6), leaders (array max 8). Empty string or [] if not found.',
-                messages: [{ role: 'user', content: pageText }]
-              })
-            });
-          })
-          .then(function (r) { return r && r.json(); })
-          .then(function (d) {
-            if (!d) return;
-            var txt = ((d.content || [])[0] || {}).text || '';
-            txt = txt.replace(/```json|```/g, '').trim();
-            try { fillScanData(JSON.parse(txt), ge('vnscst')); }
-            catch (e) {
-              ge('vnscst').style.color = 'rgba(255,120,120,.85)';
-              ge('vnscst').textContent = 'AI scan failed — fill in manually.';
-            }
-            btn.disabled = false;
-          })
-          .catch(function () {
-            ge('vnscst').style.color = 'rgba(255,120,120,.85)';
-            ge('vnscst').textContent = 'Could not reach website — fill in manually.';
-            btn.disabled = false;
-          });
-      });
-
-      // Facebook text scan
-      ge('vnfbb').addEventListener('click', function () {
-        var paste = ge('vnfbpa').value.trim();
-        if (!paste || paste.length < 40) {
-          ge('vnscst2').style.color   = 'rgba(255,120,120,.85)';
-          ge('vnscst2').textContent   = 'Please paste your Facebook About text first.';
-          return;
-        }
-        var btn = this; btn.disabled = true;
-        var st  = ge('vnscst2');
-        st.style.color = 'rgba(232,200,74,.85)';
-        st.textContent = '📘 AI is reading your Facebook info…';
-        fetch(VN_API, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            model: 'claude-haiku-4-5-20251001',
-            max_tokens: 600,
-            system: 'Extract VSO organization info from pasted Facebook About page text. Respond with valid JSON only — no markdown, no explanation. Keys: orgName, city, address, phone, email, hours, events (array max 6), leaders (array as "Title – Name", max 8). Empty string or [] if not found.',
-            messages: [{ role: 'user', content: paste.substring(0, 6000) }]
-          })
-        })
-        .then(function (r) { return r.json(); })
-        .then(function (d) {
-          var txt = ((d.content || [])[0] || {}).text || '';
-          txt = txt.replace(/```json|```/g, '').trim();
-          try { fillScanData(JSON.parse(txt), ge('vnscst2')); }
-          catch (e) {
-            st.style.color = 'rgba(255,120,120,.85)';
-            st.textContent = 'Could not extract info — fill in manually.';
-          }
-          btn.disabled = false;
-        })
-        .catch(function () {
-          st.style.color = 'rgba(255,120,120,.85)';
-          st.textContent = 'Something went wrong — fill in manually.';
-          btn.disabled = false;
-        });
-      });
+      initAdminPanel();
     }
 
     // Star rating
