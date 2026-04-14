@@ -3077,6 +3077,64 @@
       }
     }
 
+    // VA Regional Office lookup — intercept state mentions in free text
+    // Catches: 'where is the VA office in Florida', 'I'm moving to TX', etc.
+    var STATE_NAMES = {
+      'alabama':'AL','alaska':'AK','arizona':'AZ','arkansas':'AR','california':'CA',
+      'colorado':'CO','connecticut':'CT','delaware':'DE','florida':'FL','georgia':'GA',
+      'hawaii':'HI','idaho':'ID','illinois':'IL','indiana':'IN','iowa':'IA',
+      'kansas':'KS','kentucky':'KY','louisiana':'LA','maine':'ME','maryland':'MD',
+      'massachusetts':'MA','michigan':'MI','minnesota':'MN','mississippi':'MS',
+      'missouri':'MO','montana':'MT','nebraska':'NE','nevada':'NV',
+      'new hampshire':'NH','new jersey':'NJ','new mexico':'NM','new york':'NY',
+      'north carolina':'NC','north dakota':'ND','ohio':'OH','oklahoma':'OK',
+      'oregon':'OR','pennsylvania':'PA','rhode island':'RI','south carolina':'SC',
+      'south dakota':'SD','tennessee':'TN','texas':'TX','utah':'UT',
+      'vermont':'VT','virginia':'VA','washington':'WA','west virginia':'WV',
+      'wisconsin':'WI','wyoming':'WY','district of columbia':'DC',
+      'puerto rico':'PR','guam':'GU','virgin islands':'VI','philippines':'PH'
+    };
+    var varoIntercepted = false;
+    var mentionedState = null;
+    // Check full state names first
+    var textLower = text.toLowerCase();
+    for (var sName in STATE_NAMES) {
+      if (textLower.indexOf(sName) !== -1) {
+        mentionedState = STATE_NAMES[sName];
+        break;
+      }
+    }
+    // Check 2-letter abbreviations if no full name found
+    if (!mentionedState) {
+      var abbrMatch = text.match(/\b([A-Z]{2})\b/);
+      if (abbrMatch && VARO_MAP[abbrMatch[1]]) {
+        mentionedState = abbrMatch[1];
+      }
+    }
+    // If a state was mentioned AND it looks like a location question, intercept
+    if (mentionedState && VARO_MAP[mentionedState]) {
+      var locIntent = /\b(office|regional|varo|va office|location|where|moving|relocat|transfer|near|closest|address|visit|in person|file.*claim|claim.*file)\b/i;
+      if (locIntent.test(text)) {
+        varoIntercepted = true;
+        var varoR = VARO_MAP[mentionedState];
+        userMsg(text);
+        turnCount++;
+        checkWarn();
+        var varoResponse = 'The VA Regional Office for <strong>' + mentionedState + '</strong> is:\n\n'
+          + '<strong>' + varoR.name + '</strong>\n'
+          + '\ud83d\udcde ' + varoR.phone + '\n'
+          + '\ud83c\udf10 <a href="' + varoR.url + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:underline;text-underline-offset:2px;">Visit their website \u2192</a>\n\n'
+          + 'This office handles disability claims, appeals, pension, and most VA benefits for veterans in that region.\n\n'
+          + 'For VA healthcare and hospital locations, use the <a href="https://www.va.gov/find-locations/" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:underline;text-underline-offset:2px;">VA Facility Locator \u2192</a>';
+        setTimeout(function () {
+          clearOpts();
+          botMsg(varoResponse);
+          mkChips(['How do I file a claim?', 'Find a VSO counselor', 'See all benefits', 'Start over']);
+        }, 400);
+      }
+    }
+    if (varoIntercepted) return;
+
     // Nudge chip — veteran tapped "Have a specific question? Type below"
     if (isNudgeChip(text)) {
       userMsg(text);
