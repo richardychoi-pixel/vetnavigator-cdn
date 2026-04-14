@@ -1531,6 +1531,7 @@
         + '</div>'
         + '<span class="vnal">Organization Name</span><input class="vnai" id="an" type="text"/>'
         + '<span class="vnal">City</span><input class="vnai" id="ac" type="text"/>'
+        + '<span class="vnal">State <span style="font-size:10px;color:#94a3b8;font-weight:400">(2-letter, e.g. IL)</span></span><input class="vnai" id="ast" type="text" maxlength="2" placeholder="e.g. IL"/>'
         + '<span class="vnal">Phone</span><input class="vnai" id="ap" type="text"/>'
         + '<span class="vnal">Email</span><input class="vnai" id="ae" type="email"/>'
         + '<span class="vnal">Office Hours</span><input class="vnai" id="ah" type="text"/>'
@@ -2290,6 +2291,7 @@
   function vnSave() {
     ORG_NAME   = ge('an').value.trim() || ORG_NAME;
     ORG_CITY   = ge('ac').value.trim() || ORG_CITY;
+    ORG_STATE  = (ge('ast').value.trim() || ORG_STATE).toUpperCase();
     ORG_PHONE  = ge('ap').value.trim() || ORG_PHONE;
     ORG_EMAIL  = ge('ae').value.trim() || ORG_EMAIL;
     ORG_HOURS  = ge('ah').value.trim() || ORG_HOURS;
@@ -2308,6 +2310,7 @@
         body: JSON.stringify({
           orgName:    ORG_NAME,
           orgCity:    ORG_CITY,
+          orgState:   ORG_STATE,
           orgPhone:   ORG_PHONE,
           orgEmail:   ORG_EMAIL,
           orgHours:   ORG_HOURS,
@@ -2322,6 +2325,7 @@
     if (!HAS_ADMIN || !SHOW_ADMIN) return;
     ge('an').value = ORG_NAME;
     ge('ac').value = ORG_CITY;
+    ge('ast').value = ORG_STATE;
     ge('ap').value = ORG_PHONE;
     ge('ae').value = ORG_EMAIL;
     ge('ah').value = ORG_HOURS;
@@ -2364,6 +2368,7 @@
       var found = [];
       if (data.orgName) { ge('an').value = data.orgName; found.push('name'); }
       if (data.city)    { ge('ac').value = data.city;    found.push('city'); }
+      if (data.state)   { ge('ast').value = (data.state || '').toUpperCase().substring(0,2); found.push('state'); }
       if (data.phone)   { ge('ap').value = data.phone;   found.push('phone'); }
       if (data.email)   { ge('ae').value = data.email;   found.push('email'); }
       if (data.hours)   { ge('ah').value = data.hours;   found.push('hours'); }
@@ -2428,7 +2433,7 @@
             body: JSON.stringify({
               model: 'claude-haiku-4-5-20251001',
               max_tokens: 600,
-              system: 'Extract VSO organization info from website text. Respond with valid JSON only — no markdown, no explanation. Keys: orgName, city, address, phone, email, hours, events (array max 6), leaders (array max 8). Empty string or [] if not found.',
+              system: 'Extract VSO organization info from website text. Respond with valid JSON only — no markdown, no explanation. Keys: orgName, city, state (2-letter US state code), address, phone, email, hours, events (array max 6), leaders (array max 8). Empty string or [] if not found.',
               messages: [{ role: 'user', content: pageText }]
             })
           });
@@ -2470,7 +2475,7 @@
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 600,
-          system: 'Extract VSO organization info from pasted Facebook About page text. Respond with valid JSON only — no markdown, no explanation. Keys: orgName, city, address, phone, email, hours, events (array max 6), leaders (array as "Title – Name", max 8). Empty string or [] if not found.',
+          system: 'Extract VSO organization info from pasted Facebook About page text. Respond with valid JSON only — no markdown, no explanation. Keys: orgName, city, state (2-letter US state code), address, phone, email, hours, events (array max 6), leaders (array as "Title – Name", max 8). Empty string or [] if not found.',
           messages: [{ role: 'user', content: paste.substring(0, 6000) }]
         })
       })
