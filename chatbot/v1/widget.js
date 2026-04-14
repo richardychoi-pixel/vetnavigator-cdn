@@ -393,7 +393,7 @@
     file_claim: {
       pct: 76,
       bot: "<strong>How to file a VA disability claim:</strong>\n\n<strong>Step 1</strong> — Create an account at <a href='https://va.gov' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>\n<strong>Step 2</strong> — Complete <a href='https://va.gov/find-forms/about-form-21-526ez' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA Form 21-526EZ</a>\n<strong>Step 3</strong> — Gather your evidence (DD-214, medical records)\n<strong>Step 4</strong> — Submit online, by mail (PO Box 4444, Janesville, WI 53547), or in person at any <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA regional office</a>",
-      chips: ['What documents do I need?', 'What happens after I file?', 'Find a VSO counselor', 'See other benefits']
+      chips: ['What documents do I need?', 'What happens after I file?', 'Where is my VA Regional Office?', 'Find a VSO counselor', 'See other benefits']
     },
 
     documents: {
@@ -926,6 +926,7 @@
     'Find my VA Regional Office':'va_locations',
     'Where do I file my claim?':'va_locations',
     'Where is my VA office?':'va_locations',
+    'Where is my VA Regional Office?':'va_locations',
     'What is BDD?':'bdd',
     'Tell me about the BDD program':'bdd',
     'GI Bill':'gi_bill',
@@ -1812,6 +1813,22 @@
     }
   }
 
+  // ── FILE CLAIM NODE — inject regional office line dynamically ──────────────
+  function buildFileClaimNode() {
+    var varoLine = '';
+    if (ORG_STATE && VARO_MAP[ORG_STATE]) {
+      var v = VARO_MAP[ORG_STATE];
+      varoLine = '\n\n\ud83c\udfdb\ufe0f <strong>Your VA Regional Office:</strong>\n'
+        + '<strong>' + v.name + '</strong>\n'
+        + '\ud83d\udcde ' + v.phone + ' &nbsp;\u2014&nbsp; '
+        + '<a href="' + v.url + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:underline;text-underline-offset:2px;">Website \u2192</a>';
+    } else {
+      varoLine = '\n\n\ud83c\udfdb\ufe0f <strong>Find your VA Regional Office:</strong>\n'
+        + '<a href="https://va.gov/find-locations" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:underline;text-underline-offset:2px;">va.gov/find-locations \u2192</a>';
+    }
+    NODES.file_claim.bot = "<strong>How to file a VA disability claim:</strong>\n\n<strong>Step 1</strong> \u2014 Create an account at <a href='https://va.gov' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>\n<strong>Step 2</strong> \u2014 Complete <a href='https://va.gov/find-forms/about-form-21-526ez' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA Form 21-526EZ</a>\n<strong>Step 3</strong> \u2014 Gather your evidence (DD-214, medical records)\n<strong>Step 4</strong> \u2014 Submit online, by mail (PO Box 4444, Janesville, WI 53547), or in person" + varoLine;
+  }
+
   // ── VA LOCATIONS NODE ──────────────────────────────────────────────────────
   function buildVALocations() {
     var varo = ORG_STATE && VARO_MAP[ORG_STATE] ? VARO_MAP[ORG_STATE] : null;
@@ -1984,6 +2001,7 @@
   function boot() {
     loadConfig(function () {
       buildVALocations();
+      buildFileClaimNode();
       init();
     });
   }
