@@ -2697,8 +2697,8 @@
       + '<button id="vnsseb" style="padding:6px 14px;border-radius:8px;background:var(--vr);border:none;'
       + 'color:#fff;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Send →</button>'
       + '</div>'
-      + '<button id="vnsskip" style="width:100%;padding:6px;border-radius:8px;border:.5px solid rgba(255,255,255,.12);'
-      + 'background:transparent;color:rgba(255,255,255,.5);font-size:11px;cursor:pointer;font-family:inherit">'
+      + '<button id="vnsskip" style="width:100%;padding:6px;border-radius:8px;border:.5px solid rgba(26,58,107,.15);'
+      + 'background:transparent;color:rgba(26,58,107,.5);font-size:11px;cursor:pointer;font-family:inherit">'
       + 'No thanks, start fresh</button>'
       + '</div>';
     ms.appendChild(row);
