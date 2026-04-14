@@ -1692,10 +1692,24 @@
   // ── WELCOME NODE ───────────────────────────────────────────────────────────
   function buildWelcome() {
     var loc = ORG_CITY ? '\n📍 Serving veterans in ' + ORG_CITY : '';
+
+    // Premium: inject org logo inline at top of welcome bubble
+    // Renders as a branded header row: [logo] [org name + city] with divider below
+    var logoBlock = '';
+    if (ORG_LOGO) {
+      logoBlock = '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(0,0,0,.07)">'
+        + '<img src="' + ORG_LOGO + '" style="width:40px;height:40px;object-fit:contain;border-radius:6px;border:1px solid rgba(0,0,0,.08);flex-shrink:0" alt="' + ORG_NAME + '" onerror="this.parentElement.style.display=\'none\'">'
+        + '<div style="min-width:0">'
+        + '<div style="font-size:13px;font-weight:700;color:#1a3a6b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + ORG_NAME + '</div>'
+        + (ORG_CITY ? '<div style="font-size:11px;color:#64748b">' + ORG_CITY + '</div>' : '')
+        + '</div></div>';
+    }
+
     var welcomeOpener = ORG_WELCOME
       ? ORG_WELCOME + '\n\n'
       : 'Welcome to ' + ORG_NAME + '!' + loc + '\n\n';
-    NODES.welcome.bot = welcomeOpener
+    NODES.welcome.bot = logoBlock
+      + welcomeOpener
       + "We're here to help you find and claim every benefit you've earned. This assistant is provided by your VSO — available 24/7 and speaks your language.\n\n"
       + "ℹ️ *General VA benefits information only — not legal advice. Never enter personal info like SSNs in this chat.*\n\n"
       + "Let's get started. Which best describes you?";
