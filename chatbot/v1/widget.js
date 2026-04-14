@@ -2862,6 +2862,7 @@
           + '\n- If a veteran\'s question is vague, ambiguous, or missing key details needed to give an accurate answer, ask ONE short clarifying question rather than guessing. For example: if they mention a city but not a state, ask which state. If they ask "am I eligible?" without naming a benefit, ask which benefit they mean. Keep clarifying questions to one sentence and conversational in tone.'
           + '\n- NEVER ask for clarification that requires personal identifying information. Safe clarifying questions ask about: benefit type, service era, disability rating percentage, or state/region. NEVER ask for: Social Security number, VA file number, date of birth, address, medical diagnosis, claim number, or any other PII — even framed as "just to help you better".'
           + '\n- NEVER guess at a location, office, or eligibility determination when the veteran has not provided enough context. A wrong answer is worse than a clarifying question.'
+          + '\n- CRITICAL LOCATION RULE: If a veteran asks about a VA office, hospital, or location in a specific city but does not name a state, NEVER use the VSO\'s state or any default state to answer. Instead ask: "Which state is that city in? Just tell me the state name or abbreviation and I can point you to the right office." Do not assume the city is in the same state as the VSO.'
           + buildContext()
           + langInstruction(),
         messages: [{ role: 'user', content: msg }]
@@ -3154,12 +3155,15 @@
     if (varoIntercepted) return;
 
     // City-without-state clarification — location intent but no state matched
-    // Catches: 'where is the VA office in Tampa', 'I'm moving to Denver'
+    // Catches: 'where is the VA office in Tampa', 'I'm moving to denver' (any case)
     if (!mentionedState) {
-      var cityIntent = /\b(office|regional|varo|va office|location|where|moving|relocat|transfer|near|closest|address|visit|in person|file.*claim|claim.*file)\b/i;
-      var cityLike = /\b([A-Z][a-z]{2,})\b/;
-      var commonWords = /\b(The|How|What|When|Where|Which|Who|Why|Can|Could|Would|Should|Is|Are|Was|Were|Do|Did|Have|Has|Had|Not|For|And|But|Or|With|From|About|Into|Over|After|Before|During|Been|Being|That|This|These|Those|They|Them|Their|There|Here|Help|Tell|Give|Show|Need|Want|Know|Find|Look|File|Claim|Benefit|Benefits|Apply|Get|Got|My|Me|You|Your|Our|We|His|Her|Its)\b/;
-      if (cityIntent.test(text) && cityLike.test(text) && !commonWords.test(text.match(cityLike) ? text.match(cityLike)[0] : '')) {
+      var cityIntent2 = /\b(office|regional|varo|location|where|moving|relocat|transfer|near|closest|address|visit|in person|file.*claim|claim.*file)\b/i;
+      // Extract word(s) after 'in', 'to', 'near', 'at' — these are likely city names
+      var cityPrepMatch = text.match(/\b(?:in|to|near|at|around|into)\s+([a-zA-Z]{3,}(?:\s+[a-zA-Z]{3,})?)\b/i);
+      var commonWordsSet = {'the':1,'how':1,'what':1,'when':1,'where':1,'which':1,'who':1,'why':1,'can':1,'could':1,'would':1,'should':1,'is':1,'are':1,'was':1,'were':1,'do':1,'did':1,'have':1,'has':1,'had':1,'not':1,'for':1,'and':1,'but':1,'or':1,'with':1,'from':1,'about':1,'into':1,'over':1,'after':1,'before':1,'during':1,'been':1,'being':1,'that':1,'this':1,'these':1,'those':1,'they':1,'them':1,'their':1,'there':1,'here':1,'help':1,'tell':1,'give':1,'show':1,'need':1,'want':1,'know':1,'find':1,'look':1,'file':1,'claim':1,'benefit':1,'benefits':1,'apply':1,'get':1,'got':1,'my':1,'me':1,'you':1,'your':1,'our':1,'we':1,'his':1,'her':1,'its':1,'office':1,'regional':1,'person':1,'another':1,'other':1,'some':1,'any':1,'also':1,'just':1,'still':1,'now':1,'then':1,'than':1,'more':1,'most':1,'va':1,'varo':1};
+      var candidateCity = cityPrepMatch ? cityPrepMatch[1].toLowerCase() : null;
+      var isCityLike = candidateCity && !commonWordsSet[candidateCity] && candidateCity.length >= 3;
+      if (cityIntent2.test(text) && isCityLike) {
         userMsg(text);
         turnCount++;
         checkWarn();
