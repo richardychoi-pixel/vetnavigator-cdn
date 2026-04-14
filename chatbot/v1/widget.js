@@ -41,7 +41,7 @@
   var CONV_LIMIT, WARN_AT;
   var ORG_LOGO, ORG_WELCOME, ORG_ACCENT, ORG_FAB_SIZE;
   var DEMO_GATE;
-  var DEMO_GATE_AFTER = 3;
+  var DEMO_GATE_AFTER = 7;
   var demoGateShown = false;
   var demoInteractions = 0;
 
