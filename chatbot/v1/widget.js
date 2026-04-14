@@ -40,6 +40,7 @@
   var TIER_STR, TIER_LVL, IS_DEMO, HAS_ML, HAS_MIC, HAS_ADMIN;
   var CONV_LIMIT, WARN_AT;
   var ORG_LOGO, ORG_WELCOME, ORG_ACCENT, ORG_FAB_SIZE;
+  var ORG_STATE;
   var DEMO_GATE;
   var DEMO_GATE_AFTER = 7;
   var demoGateShown = false;
@@ -83,6 +84,7 @@
     ORG_WELCOME = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgWelcome        || '') : '';
     ORG_ACCENT  = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgAccentColor    || '') : '';
     ORG_FAB_SIZE = cfg.orgFabSize || '';
+    ORG_STATE   = (cfg.orgState  || '').toUpperCase().trim();
     DEMO_GATE = cfg.demoGate === true;
   }
 
@@ -179,6 +181,65 @@
     if (req === undefined || IS_DEMO) return true;
     return TIER_LVL >= req;
   }
+
+  // ── VA REGIONAL OFFICE (VARO) LOOKUP — by 2-letter state code ─────────────
+  var VARO_MAP = {
+    'AL':{ name:'Montgomery VA Regional Office',        phone:'800-827-1000', url:'https://www.benefits.va.gov/montgomery/' },
+    'AK':{ name:'Anchorage VA Regional Office',         phone:'800-827-1000', url:'https://www.benefits.va.gov/anchorage/' },
+    'AZ':{ name:'Phoenix VA Regional Office',           phone:'800-827-1000', url:'https://www.benefits.va.gov/phoenix/' },
+    'AR':{ name:'Little Rock VA Regional Office',       phone:'800-827-1000', url:'https://www.benefits.va.gov/littlerock/' },
+    'CA':{ name:'Los Angeles VA Regional Office',       phone:'800-827-1000', url:'https://www.benefits.va.gov/losangeles/' },
+    'CO':{ name:'Denver VA Regional Office',            phone:'800-827-1000', url:'https://www.benefits.va.gov/denver/' },
+    'CT':{ name:'Hartford VA Regional Office',          phone:'800-827-1000', url:'https://www.benefits.va.gov/hartford/' },
+    'DE':{ name:'Philadelphia VA Regional Office',      phone:'800-827-1000', url:'https://www.benefits.va.gov/philadelphia/' },
+    'FL':{ name:'St. Petersburg VA Regional Office',    phone:'800-827-1000', url:'https://www.benefits.va.gov/stpetersburg/' },
+    'GA':{ name:'Atlanta VA Regional Office',           phone:'800-827-1000', url:'https://www.benefits.va.gov/atlanta/' },
+    'HI':{ name:'Honolulu VA Regional Office',          phone:'800-827-1000', url:'https://www.benefits.va.gov/honolulu/' },
+    'ID':{ name:'Boise VA Regional Office',             phone:'800-827-1000', url:'https://www.benefits.va.gov/boise/' },
+    'IL':{ name:'Chicago VA Regional Office',           phone:'800-827-1000', url:'https://www.benefits.va.gov/chicago/' },
+    'IN':{ name:'Indianapolis VA Regional Office',      phone:'800-827-1000', url:'https://www.benefits.va.gov/indianapolis/' },
+    'IA':{ name:'Des Moines VA Regional Office',        phone:'800-827-1000', url:'https://www.benefits.va.gov/desmoines/' },
+    'KS':{ name:'Wichita VA Regional Office',           phone:'800-827-1000', url:'https://www.benefits.va.gov/wichita/' },
+    'KY':{ name:'Louisville VA Regional Office',        phone:'800-827-1000', url:'https://www.benefits.va.gov/louisville/' },
+    'LA':{ name:'New Orleans VA Regional Office',       phone:'800-827-1000', url:'https://www.benefits.va.gov/neworleans/' },
+    'ME':{ name:'Togus VA Regional Office',             phone:'800-827-1000', url:'https://www.benefits.va.gov/togus/' },
+    'MD':{ name:'Baltimore VA Regional Office',         phone:'800-827-1000', url:'https://www.benefits.va.gov/baltimore/' },
+    'MA':{ name:'Boston VA Regional Office',            phone:'800-827-1000', url:'https://www.benefits.va.gov/boston/' },
+    'MI':{ name:'Detroit VA Regional Office',           phone:'800-827-1000', url:'https://www.benefits.va.gov/detroit/' },
+    'MN':{ name:'St. Paul VA Regional Office',          phone:'800-827-1000', url:'https://www.benefits.va.gov/stpaul/' },
+    'MS':{ name:'Jackson VA Regional Office',           phone:'800-827-1000', url:'https://www.benefits.va.gov/jackson/' },
+    'MO':{ name:'St. Louis VA Regional Office',         phone:'800-827-1000', url:'https://www.benefits.va.gov/stlouis/' },
+    'MT':{ name:'Fort Harrison VA Regional Office',     phone:'800-827-1000', url:'https://www.benefits.va.gov/fortharrison/' },
+    'NE':{ name:'Lincoln VA Regional Office',           phone:'800-827-1000', url:'https://www.benefits.va.gov/lincoln/' },
+    'NV':{ name:'Reno VA Regional Office',              phone:'800-827-1000', url:'https://www.benefits.va.gov/reno/' },
+    'NH':{ name:'Manchester VA Regional Office',        phone:'800-827-1000', url:'https://www.benefits.va.gov/manchester/' },
+    'NJ':{ name:'Newark VA Regional Office',            phone:'800-827-1000', url:'https://www.benefits.va.gov/newark/' },
+    'NM':{ name:'Albuquerque VA Regional Office',       phone:'800-827-1000', url:'https://www.benefits.va.gov/albuquerque/' },
+    'NY':{ name:'New York VA Regional Office',          phone:'800-827-1000', url:'https://www.benefits.va.gov/newyork/' },
+    'NC':{ name:'Winston-Salem VA Regional Office',     phone:'800-827-1000', url:'https://www.benefits.va.gov/winstonsalem/' },
+    'ND':{ name:'Fargo VA Regional Office',             phone:'800-827-1000', url:'https://www.benefits.va.gov/fargo/' },
+    'OH':{ name:'Cleveland VA Regional Office',         phone:'800-827-1000', url:'https://www.benefits.va.gov/cleveland/' },
+    'OK':{ name:'Muskogee VA Regional Office',          phone:'800-827-1000', url:'https://www.benefits.va.gov/muskogee/' },
+    'OR':{ name:'Portland VA Regional Office',          phone:'800-827-1000', url:'https://www.benefits.va.gov/portland/' },
+    'PA':{ name:'Philadelphia VA Regional Office',      phone:'800-827-1000', url:'https://www.benefits.va.gov/philadelphia/' },
+    'RI':{ name:'Providence VA Regional Office',        phone:'800-827-1000', url:'https://www.benefits.va.gov/providence/' },
+    'SC':{ name:'Columbia VA Regional Office',          phone:'800-827-1000', url:'https://www.benefits.va.gov/columbia/' },
+    'SD':{ name:'Sioux Falls VA Regional Office',       phone:'800-827-1000', url:'https://www.benefits.va.gov/siouxfalls/' },
+    'TN':{ name:'Nashville VA Regional Office',         phone:'800-827-1000', url:'https://www.benefits.va.gov/nashville/' },
+    'TX':{ name:'Houston VA Regional Office',           phone:'800-827-1000', url:'https://www.benefits.va.gov/houston/' },
+    'UT':{ name:'Salt Lake City VA Regional Office',    phone:'800-827-1000', url:'https://www.benefits.va.gov/saltlakecity/' },
+    'VT':{ name:'White River Junction VA Regional Office', phone:'800-827-1000', url:'https://www.benefits.va.gov/whiteriver/' },
+    'VA':{ name:'Roanoke VA Regional Office',           phone:'800-827-1000', url:'https://www.benefits.va.gov/roanoke/' },
+    'WA':{ name:'Seattle VA Regional Office',           phone:'800-827-1000', url:'https://www.benefits.va.gov/seattle/' },
+    'WV':{ name:'Huntington VA Regional Office',        phone:'800-827-1000', url:'https://www.benefits.va.gov/huntington/' },
+    'WI':{ name:'Milwaukee VA Regional Office',         phone:'800-827-1000', url:'https://www.benefits.va.gov/milwaukee/' },
+    'WY':{ name:'Cheyenne VA Regional Office',          phone:'800-827-1000', url:'https://www.benefits.va.gov/cheyenne/' },
+    'DC':{ name:'Washington DC VA Regional Office',     phone:'800-827-1000', url:'https://www.benefits.va.gov/washington/' },
+    'PR':{ name:'San Juan VA Regional Office',          phone:'800-827-1000', url:'https://www.benefits.va.gov/sanjuan/' },
+    'GU':{ name:'Honolulu VA Regional Office (Guam)',   phone:'800-827-1000', url:'https://www.benefits.va.gov/honolulu/' },
+    'VI':{ name:'St. Croix VA Regional Office',         phone:'800-827-1000', url:'https://www.benefits.va.gov/sanjuan/' },
+    'PH':{ name:'Manila VA Regional Office',            phone:'+63-2-550-3888', url:'https://www.benefits.va.gov/manila/' }
+  };
 
   // ── CONVERSATION NODES ─────────────────────────────────────────────────────
   var NODES = {
@@ -357,6 +418,12 @@
       pct: 100,
       bot: "<strong>🆘 If you are in crisis right now:</strong>\n\n<strong>Veterans Crisis Line</strong>\n— Dial <strong>988</strong>, then press <strong>1</strong>\n— Text <strong>838255</strong>\n— Chat: <a href='https://veteranscrisisline.net' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VeteransCrisisLine.net</a>\n— Available 24/7 — confidential — staffed by veterans\n\n<strong>Emergency:</strong> Call 911 or go to your nearest emergency room\n\n<strong>VA same-day mental health services:</strong>\nWalk in to any VA medical center — same-day care is available for mental health crises, no appointment needed.\n\n<strong>Vet Centers:</strong> Community-based, less formal, veteran-run counseling centers. Find yours at <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>va.gov/find-locations</a>\n\nYou are not alone. Help is always available.",
       chips: ['Mental health benefits', 'Find a VSO counselor', 'Start over']
+    },
+
+    va_locations: {
+      pct: 30,
+      bot: null, // built dynamically in buildVALocations()
+      chips: ['How do I file a claim?', 'Find a VSO counselor', 'See all benefits']
     },
 
     vso: {
@@ -856,6 +923,9 @@
     'What is Aid & Attendance?':'aid_attendance',
     'How do I apply for BDD?':'bdd',
     'Find a VSO counselor':'vso',
+    'Find my VA Regional Office':'va_locations',
+    'Where do I file my claim?':'va_locations',
+    'Where is my VA office?':'va_locations',
     'What is BDD?':'bdd',
     'Tell me about the BDD program':'bdd',
     'GI Bill':'gi_bill',
@@ -943,6 +1013,7 @@
     // Burial
     [/\b(burial|cemetery|headstone|gravestone|memorial|funeral|interment|pre.need|national.cemetery)\b/i, 'burial'],
     // Navigation
+    [/\b(where.*file|file.*where|where.*submit|regional office|varo|va office|va.*location|nearest va|closest va|local va|where.*claim|va.*address|va.*near me|va facility|va.*building|where.*appeal|where.*in person)\b/i, 'va_locations'],
     [/\b(vso|counselor|service officer|speak.*someone|talk.*someone)\b/i,  'vso'],
     [/\b(benefits|what.*benefit|all benefit|other benefit|list.*benefit)\b/i, 'benefits_menu'],
     [/\b(what can you|what do you|what.*cover|what.*help|capabilities|help with what|full list)\b/i, 'capabilities'],
@@ -1741,6 +1812,25 @@
     }
   }
 
+  // ── VA LOCATIONS NODE ──────────────────────────────────────────────────────
+  function buildVALocations() {
+    var varo = ORG_STATE && VARO_MAP[ORG_STATE] ? VARO_MAP[ORG_STATE] : null;
+    if (varo) {
+      NODES.va_locations.bot = 'Based on your VSO\u2019s location, here is your VA Regional Office for filing claims and appeals:\n\n'
+        + '<strong>' + varo.name + '</strong>\n'
+        + '\ud83d\udcde ' + varo.phone + '\n'
+        + '\ud83c\udf10 <a href="' + varo.url + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:underline">Visit their website \u2192</a>\n\n'
+        + 'This office handles disability claims, appeals, pension, and other VA benefits for veterans in your area.\n\n'
+        + 'For VA healthcare locations, visit <a href="https://www.va.gov/find-locations/" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:underline">VA Facility Locator \u2192</a>';
+    } else {
+      NODES.va_locations.bot = 'To find your nearest VA Regional Office for filing claims and appeals:\n\n'
+        + '\ud83c\udf10 <a href="https://www.benefits.va.gov/benefits/offices.asp" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:underline">VA Regional Offices Directory \u2192</a>\n\n'
+        + 'For VA healthcare locations and hospitals:\n'
+        + '\ud83c\udf10 <a href="https://www.va.gov/find-locations/" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:underline">VA Facility Locator \u2192</a>\n\n'
+        + 'You can also call <strong>800-827-1000</strong> (Mon\u2013Fri 8am\u20139pm ET) to speak with a VA representative.';
+    }
+  }
+
   // ── VSO NODE ───────────────────────────────────────────────────────────────
   function buildVSO() {
     var c = '';
@@ -1893,6 +1983,7 @@
   // ── BOOT ───────────────────────────────────────────────────────────────────
   function boot() {
     loadConfig(function () {
+      buildVALocations();
       init();
     });
   }
