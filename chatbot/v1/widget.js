@@ -2683,7 +2683,7 @@
 
   function showSummaryPrompt() {
     clearOpts();
-    botMsg('<strong>Before you go —</strong> would you like a summary of the topics you explored sent to your email? You can share it with your VSO counselor for follow-up.<br><br><span style="font-size:10px;color:rgba(255,255,255,.4)">Your email is only used to send this summary. We do not store, share, or sell your personal information.</span>');
+    botMsg('<strong>Before you go —</strong> would you like a summary of the topics you explored sent to your email? You can share it with your VSO counselor for follow-up.<br><br><span style="font-size:10px;color:rgba(26,58,107,.4)">Your email is only used to send this summary. We do not store, share, or sell your personal information.</span>');
     // Build email form as a bot message so it appears in the scrollable chat area
     var ms = ge('vnms');
     var row = document.createElement('div');
@@ -2692,8 +2692,8 @@
       + '<div class="vnbb b" style="width:100%">'
       + '<div style="display:flex;gap:6px;margin-bottom:8px">'
       + '<input id="vnssem" type="email" placeholder="your@email.com" style="flex:1;font-size:11.5px;padding:6px 10px;border-radius:8px;'
-      + 'border:.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);'
-      + 'color:rgba(255,255,255,.9);font-family:inherit;outline:none"/>'
+      + 'border:.5px solid rgba(26,58,107,.2);background:#fafbfc;'
+      + 'color:#1e293b;font-family:inherit;outline:none"/>'
       + '<button id="vnsseb" style="padding:6px 14px;border-radius:8px;background:var(--vr);border:none;'
       + 'color:#fff;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Send →</button>'
       + '</div>'
@@ -2708,7 +2708,7 @@
       var em = ge('vnssem').value.trim();
       if (!em || em.indexOf('@') === -1) { ge('vnssem').style.borderColor = 'rgba(255,80,80,.6)'; return; }
       var msgBox = row.querySelector('.vnbb');
-      msgBox.innerHTML = '<div style="font-size:12px;color:rgba(255,255,255,.6);text-align:center;padding:4px 0">'
+      msgBox.innerHTML = '<div style="font-size:12px;color:rgba(26,58,107,.6);text-align:center;padding:4px 0">'
         + '⏳ Generating your summary...</div>';
       sendSummary(em, function () {
         msgBox.innerHTML = '<div style="font-size:12px;color:rgba(74,222,128,.9);text-align:center;padding:4px 0">'
