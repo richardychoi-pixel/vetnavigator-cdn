@@ -2694,12 +2694,13 @@
       + '<input id="vnssem" type="email" placeholder="your@email.com" style="flex:1;font-size:11.5px;padding:6px 10px;border-radius:8px;'
       + 'border:.5px solid rgba(26,58,107,.2);background:#fafbfc;'
       + 'color:#1e293b;font-family:inherit;outline:none"/>'
-      + '<button id="vnsseb" style="padding:6px 14px;border-radius:8px;background:var(--vr);border:none;'
-      + 'color:#fff;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Send →</button>'
+      + '<button id="vnsseb" class="vnbtn-glass" style="padding:6px 14px;font-size:11.5px;white-space:nowrap">Send →</button>'
       + '</div>'
-      + '<button id="vnsskip" style="width:100%;padding:6px;border-radius:8px;border:.5px solid rgba(26,58,107,.15);'
-      + 'background:transparent;color:rgba(26,58,107,.5);font-size:11px;cursor:pointer;font-family:inherit">'
-      + 'No thanks, start fresh</button>'
+      + '<button id="vnsskip" style="width:100%;padding:8px;border-radius:8px;'
+      + 'background:linear-gradient(145deg,rgba(90,143,212,.25),rgba(90,143,212,.15) 50%,rgba(90,143,212,.08));'
+      + 'border:.5px solid rgba(90,143,212,.3);color:#1a4a8a;font-size:11.5px;font-weight:500;'
+      + 'cursor:pointer;font-family:inherit;transition:all .2s">'
+      + 'No thanks — start fresh</button>'
       + '</div>';
     ms.appendChild(row);
     ms.scrollTop = ms.scrollHeight;
