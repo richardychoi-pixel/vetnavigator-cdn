@@ -2689,6 +2689,8 @@
   }
 
   // ── NOTIFICATION ───────────────────────────────────────────────────────────
+  var vnNotifHoverLock = false;
+  var vnNotifLockTimer = null;
   function vnShowNotif() {
     var n = ge('vnn');
     if (!n || n.dataset.dismissed) return;
@@ -2707,6 +2709,15 @@
     setTimeout(function () { vnHideNotif(); }, 2000);
   }
   function vnHideNotif() {
+    if (vnNotifHoverLock) {
+      if (vnNotifLockTimer) return;
+      vnNotifLockTimer = setTimeout(function () {
+        vnNotifHoverLock = false;
+        vnNotifLockTimer = null;
+        vnHideNotif();
+      }, 2000);
+      return;
+    }
     var n = ge('vnn');
     if (!n || n.style.display === 'none') return;
     n.classList.add('hide');
@@ -3231,11 +3242,12 @@
           }
         });
 
-        // Hover on FAB — show bubble while hovering
+        // Hover on FAB — show bubble while hovering (2s min display lock)
         fab.addEventListener('mouseenter', function () {
           if (notif.style.display === 'block') return;
           var panel = ge('vnp');
           if (panel && panel.classList.contains('open')) return;
+          vnNotifHoverLock = true;
           vnShowNotif();
         });
 
