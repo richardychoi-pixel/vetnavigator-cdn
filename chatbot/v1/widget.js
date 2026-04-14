@@ -2061,6 +2061,95 @@
       setTimeout(function () { ge('vnbrsvd').style.display = 'none'; }, 2500);
     });
   }
+  // ── NOTIFICATION ───────────────────────────────────────────────────────────
+  var vnNotifHoverLock = false;
+  var vnNotifLockTimer = null;
+  function vnShowNotif() {
+    var n = ge('vnn');
+    if (!n || n.dataset.dismissed) return;
+    var msgs = [
+      'Ask about VA benefits',
+      'Questions? Ask here.',
+      'VA benefits help',
+      "Need help? I'm free.",
+      'Which benefits qualify?',
+      'Ask me about the VA'
+    ];
+    var t = ge('vnnt');
+    if (t) t.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+    n.style.display = 'block';
+    n.classList.remove('hide');
+    setTimeout(function () { vnHideNotif(); }, 2000);
+  }
+  function vnHideNotif() {
+    if (vnNotifHoverLock) {
+      if (vnNotifLockTimer) return;
+      vnNotifLockTimer = setTimeout(function () {
+        vnNotifHoverLock = false;
+        vnNotifLockTimer = null;
+        vnHideNotif();
+      }, 2000);
+      return;
+    }
+    var n = ge('vnn');
+    if (!n || n.style.display === 'none') return;
+    n.classList.add('hide');
+    setTimeout(function () { n.style.display = 'none'; }, 250);
+  }
+
+  // Notification bubble logic (skip in embed mode). Called from init().
+  function initNotifBubble(isEmbed) {
+    if (isEmbed) return;
+    var fab = ge('vnb');
+    var notif = ge('vnn');
+    if (!fab || !notif) return;
+
+    var shownTop = false;
+    var shownBottom = false;
+
+    // Show once at top of page after 4s
+    setTimeout(function () {
+      if (window.scrollY < 200) {
+        shownTop = true;
+        vnShowNotif();
+      }
+    }, 4000);
+
+    // Show once at bottom of page when user scrolls near footer
+    window.addEventListener('scroll', function () {
+      if (shownBottom) return;
+      var scrollBottom = window.scrollY + window.innerHeight;
+      if (scrollBottom >= document.body.scrollHeight - 100) {
+        shownBottom = true;
+        vnShowNotif();
+      }
+    });
+
+    // Hover on FAB — show bubble while hovering (2s min display lock)
+    fab.addEventListener('mouseenter', function () {
+      if (notif.style.display === 'block') return;
+      var panel = ge('vnp');
+      if (panel && panel.classList.contains('open')) return;
+      vnNotifHoverLock = true;
+      vnShowNotif();
+    });
+
+    fab.addEventListener('mouseleave', function () {
+      setTimeout(function () { vnHideNotif(); }, 1500);
+    });
+
+    notif.addEventListener('mouseleave', function () {
+      setTimeout(function () { vnHideNotif(); }, 1000);
+    });
+
+    // Click notif to open panel
+    notif.addEventListener('click', function () {
+      notif.dataset.dismissed = '1';
+      vnHideNotif();
+      fab.click();
+    });
+  }
+
   // ── SESSION WARNING ────────────────────────────────────────────────────────
   function checkWarn() {
     var rem = CONV_LIMIT - turnCount;
@@ -2721,41 +2810,7 @@
     ge('vnp').classList.remove('open');
   }
 
-  // ── NOTIFICATION ───────────────────────────────────────────────────────────
-  var vnNotifHoverLock = false;
-  var vnNotifLockTimer = null;
-  function vnShowNotif() {
-    var n = ge('vnn');
-    if (!n || n.dataset.dismissed) return;
-    var msgs = [
-      'Ask about VA benefits',
-      'Questions? Ask here.',
-      'VA benefits help',
-      "Need help? I'm free.",
-      'Which benefits qualify?',
-      'Ask me about the VA'
-    ];
-    var t = ge('vnnt');
-    if (t) t.textContent = msgs[Math.floor(Math.random() * msgs.length)];
-    n.style.display = 'block';
-    n.classList.remove('hide');
-    setTimeout(function () { vnHideNotif(); }, 2000);
-  }
-  function vnHideNotif() {
-    if (vnNotifHoverLock) {
-      if (vnNotifLockTimer) return;
-      vnNotifLockTimer = setTimeout(function () {
-        vnNotifHoverLock = false;
-        vnNotifLockTimer = null;
-        vnHideNotif();
-      }, 2000);
-      return;
-    }
-    var n = ge('vnn');
-    if (!n || n.style.display === 'none') return;
-    n.classList.add('hide');
-    setTimeout(function () { n.style.display = 'none'; }, 250);
-  }
+  // ── NOTIFICATION ── (extracted to widget-engine-notif.js)
 
   // ── ADMIN ──────────────────────────────────────────────────────────────────
   function vnAE() {
@@ -3295,59 +3350,8 @@
     // Microphone
     initMic();
 
-    // Notification bubble logic (skip in embed mode)
-    if (!EMBED_TARGET) {
-      (function () {
-        var fab = ge('vnb');
-        var notif = ge('vnn');
-        if (!fab || !notif) return;
-
-        var shownTop = false;
-        var shownBottom = false;
-
-        // Show once at top of page after 4s
-        setTimeout(function () {
-          if (window.scrollY < 200) {
-            shownTop = true;
-            vnShowNotif();
-          }
-        }, 4000);
-
-        // Show once at bottom of page when user scrolls near footer
-        window.addEventListener('scroll', function () {
-          if (shownBottom) return;
-          var scrollBottom = window.scrollY + window.innerHeight;
-          if (scrollBottom >= document.body.scrollHeight - 100) {
-            shownBottom = true;
-            vnShowNotif();
-          }
-        });
-
-        // Hover on FAB — show bubble while hovering (2s min display lock)
-        fab.addEventListener('mouseenter', function () {
-          if (notif.style.display === 'block') return;
-          var panel = ge('vnp');
-          if (panel && panel.classList.contains('open')) return;
-          vnNotifHoverLock = true;
-          vnShowNotif();
-        });
-
-        fab.addEventListener('mouseleave', function () {
-          setTimeout(function () { vnHideNotif(); }, 1500);
-        });
-
-        notif.addEventListener('mouseleave', function () {
-          setTimeout(function () { vnHideNotif(); }, 1000);
-        });
-
-        // Click notif to open panel
-        notif.addEventListener('click', function () {
-          notif.dataset.dismissed = '1';
-          vnHideNotif();
-          fab.click();
-        });
-      })();
-    }
+    // Notification bubble logic (skip in embed mode) — lives in widget-engine-notif.js
+    initNotifBubble(!!EMBED_TARGET);
   }
 
 })();
