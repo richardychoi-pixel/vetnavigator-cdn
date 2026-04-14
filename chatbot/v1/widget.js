@@ -3028,6 +3028,10 @@
     }
     // Awaiting state follow-up after city clarification prompt
     if (awaitingStateForVARO) {
+      // If veteran tapped a chip instead of typing a state — release the flag and route normally
+      var isChipInput = CHIP_MAP[text] || (lang !== 'en' && CHIP_MAP_I18N[lang] && CHIP_MAP_I18N[lang][text]);
+      if (isChipInput) { awaitingStateForVARO = false; }
+      else {
       awaitingStateForVARO = false;
       var replyLower = text.toLowerCase().trim();
       // Check full state name
@@ -3083,6 +3087,7 @@
         mkChips(['Find a VSO counselor', 'See all benefits', 'Start over']);
       }, 400);
       return;
+      } // end else (not a chip)
     }
 
     // Disclaimer gate — fires on ANY input if not yet acknowledged
