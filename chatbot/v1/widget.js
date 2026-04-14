@@ -40,6 +40,10 @@
   var TIER_STR, TIER_LVL, IS_DEMO, HAS_ML, HAS_MIC, HAS_ADMIN;
   var CONV_LIMIT, WARN_AT;
   var ORG_LOGO, ORG_WELCOME, ORG_ACCENT, ORG_FAB_SIZE;
+  var DEMO_GATE;
+  var DEMO_GATE_AFTER = 3;
+  var demoGateShown = false;
+  var demoInteractions = 0;
 
   // ── APPLY CONFIG (shared by both inline and fetched paths) ────────────────
   function applyConfig(cfg) {
@@ -79,6 +83,7 @@
     ORG_WELCOME = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgWelcome        || '') : '';
     ORG_ACCENT  = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgAccentColor    || '') : '';
     ORG_FAB_SIZE = cfg.orgFabSize || '';
+    DEMO_GATE = cfg.demoGate === true;
   }
 
   // ── DETECT KEY FROM SCRIPT TAG URL ────────────────────────────────────────
@@ -1600,6 +1605,19 @@
       +     '</div>'
       +   '</div>'
       +   adm + brd + fbk + sup
+      +   '<div id="vngate" style="display:none;position:absolute;top:0;left:0;right:0;bottom:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:32px 24px;font-family:Outfit,system-ui,sans-serif;overflow-y:auto">'
+      +     '<div style="text-align:center;margin-bottom:20px">'
+      +       '<div style="font-size:28px;margin-bottom:8px">🎖️</div>'
+      +       '<div style="font-size:18px;font-weight:700;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px">Enjoying the demo?</div>'
+      +       '<div style="font-size:13px;color:#64748b;line-height:1.5">Tell us a bit about yourself to continue exploring. No spam — just veterans helping veterans.</div>'
+      +     '</div>'
+      +     '<input id="vngate-name" type="text" placeholder="Your name" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #d1d5db;background:#fafbfc;font-size:14px;color:#1e293b;font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
+      +     '<input id="vngate-email" type="email" placeholder="Your email address" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #d1d5db;background:#fafbfc;font-size:14px;color:#1e293b;font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
+      +     '<input id="vngate-org" type="text" placeholder="Organization (optional)" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #d1d5db;background:#fafbfc;font-size:14px;color:#1e293b;font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:8px">'
+      +     '<div id="vngate-err" style="display:none;font-size:12px;color:#cc3344;margin-bottom:8px;text-align:center"></div>'
+      +     '<button id="vngate-btn" style="width:100%;padding:12px;border-radius:24px;border:none;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;background:linear-gradient(145deg,#e05565,#cc3344 40%,#a82535);box-shadow:inset 0 2px 3px rgba(255,255,255,.35),inset 0 -2px 3px rgba(0,0,0,.15),0 3px 10px rgba(178,34,52,.2);position:relative;overflow:hidden;transition:.25s">Continue Exploring →</button>'
+      +     '<div style="font-size:11px;color:#94a3b8;text-align:center;margin-top:12px">Your info is private. We never share it.</div>'
+      +   '</div>'
       +   '<div id="vnft">Powered by VetNavigator AI · Veteran-Made &amp; Veteran-Owned</div>'
       + '</div>';
   }
@@ -2516,6 +2534,21 @@
       showDisclaimer(text);
       return;
     }
+    // Demo gate — email capture after N interactions (only if demoGate:true in KV)
+    if (DEMO_GATE && !demoGateShown) {
+      demoInteractions++;
+      if (demoInteractions >= DEMO_GATE_AFTER) {
+        demoGateShown = true;
+        var gate = document.getElementById('vngate');
+        if (gate) {
+          gate.style.display = 'block';
+          gate.style.opacity = '0';
+          gate.style.transition = 'opacity 0.3s';
+          setTimeout(function () { gate.style.opacity = '1'; }, 20);
+        }
+        return;
+      }
+    }
     if (turnCount >= CONV_LIMIT) { showLimit(); return; }
 
     // PII intercept — warn veteran before sending to AI
@@ -2983,6 +3016,54 @@
 
     // Restart
     ge('vnrs').addEventListener('click', restart);
+
+    // Demo gate submit button
+    var gateBtn = document.getElementById('vngate-btn');
+    if (gateBtn) {
+      gateBtn.addEventListener('click', function () {
+        var name  = document.getElementById('vngate-name').value.trim();
+        var email = document.getElementById('vngate-email').value.trim();
+        var org   = document.getElementById('vngate-org').value.trim();
+        var err   = document.getElementById('vngate-err');
+
+        if (!name) { err.textContent = 'Please enter your name.'; err.style.display = ''; return; }
+        if (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
+          err.textContent = 'Please enter a valid email.'; err.style.display = ''; return;
+        }
+        err.style.display = 'none';
+        gateBtn.disabled = true;
+        gateBtn.textContent = 'Unlocking...';
+
+        if (BREVO_KEY) {
+          var nameParts = name.split(' ');
+          var firstName = nameParts[0] || name;
+          var lastName  = nameParts.slice(1).join(' ') || '';
+          fetch('https://api.brevo.com/v3/contacts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
+            body: JSON.stringify({
+              email: email,
+              attributes: {
+                FIRSTNAME: firstName,
+                LASTNAME: lastName,
+                ORGANIZATION: org,
+                SOURCE: 'VetNavigator Demo Gate',
+                PAGE: window.location.href,
+                LEAD_DATE: new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' })
+              },
+              listIds: [3],
+              updateEnabled: true
+            })
+          }).catch(function () {});
+        }
+
+        var gate = document.getElementById('vngate');
+        if (gate) {
+          gate.style.opacity = '0';
+          setTimeout(function () { gate.style.display = 'none'; }, 300);
+        }
+      });
+    }
 
     initBranding();
 
