@@ -2859,7 +2859,9 @@
           + '\n- Always capitalize the word "Veteran" — it is a title of respect'
           + '\n- If the question is off-topic (events, Post hours, membership, non-VA questions), keep your redirect to 1-2 sentences max — point them to the Post directly, then offer to help with VA benefits. Start with "For [org name]..." not with a preamble about what you can or cannot do'
           + '\n- NEVER use bullet points, numbered lists, dashes, or markdown headers. Use flowing prose only'
-          + '\n- NEVER ask the veteran to clarify which benefit they mean. Use the conversation context below to determine which benefit they are asking about, and answer specifically for that benefit'
+          + '\n- If a veteran\'s question is vague, ambiguous, or missing key details needed to give an accurate answer, ask ONE short clarifying question rather than guessing. For example: if they mention a city but not a state, ask which state. If they ask "am I eligible?" without naming a benefit, ask which benefit they mean. Keep clarifying questions to one sentence and conversational in tone.'
+          + '\n- NEVER ask for clarification that requires personal identifying information. Safe clarifying questions ask about: benefit type, service era, disability rating percentage, or state/region. NEVER ask for: Social Security number, VA file number, date of birth, address, medical diagnosis, claim number, or any other PII — even framed as "just to help you better".'
+          + '\n- NEVER guess at a location, office, or eligibility determination when the veteran has not provided enough context. A wrong answer is worse than a clarifying question.'
           + buildContext()
           + langInstruction(),
         messages: [{ role: 'user', content: msg }]
@@ -3134,6 +3136,25 @@
       }
     }
     if (varoIntercepted) return;
+
+    // City-without-state clarification — location intent but no state matched
+    // Catches: 'where is the VA office in Tampa', 'I'm moving to Denver'
+    if (!mentionedState) {
+      var cityIntent = /\b(office|regional|varo|va office|location|where|moving|relocat|transfer|near|closest|address|visit|in person|file.*claim|claim.*file)\b/i;
+      var cityLike = /\b([A-Z][a-z]{2,})\b/;
+      var commonWords = /\b(The|How|What|When|Where|Which|Who|Why|Can|Could|Would|Should|Is|Are|Was|Were|Do|Did|Have|Has|Had|Not|For|And|But|Or|With|From|About|Into|Over|After|Before|During|Been|Being|That|This|These|Those|They|Them|Their|There|Here|Help|Tell|Give|Show|Need|Want|Know|Find|Look|File|Claim|Benefit|Benefits|Apply|Get|Got|My|Me|You|Your|Our|We|His|Her|Its)\b/;
+      if (cityIntent.test(text) && cityLike.test(text) && !commonWords.test(text.match(cityLike) ? text.match(cityLike)[0] : '')) {
+        userMsg(text);
+        turnCount++;
+        checkWarn();
+        setTimeout(function () {
+          clearOpts();
+          botMsg('I can look up the VA Regional Office for you — which state is that in? Just tell me the state name or abbreviation, like "Florida" or "FL".');
+          mkChips(['Find a VSO counselor', 'See all benefits', 'Start over']);
+        }, 400);
+        return;
+      }
+    }
 
     // Nudge chip — veteran tapped "Have a specific question? Type below"
     if (isNudgeChip(text)) {
