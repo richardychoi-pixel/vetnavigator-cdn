@@ -2940,7 +2940,7 @@
       var panel = ge('vnp');
       if (panel) {
         panel.classList.add('open');
-        panel.style.position = 'static';
+        panel.style.position = 'relative';
         panel.style.width = '100%';
         panel.style.height = '100%';
         panel.style.bottom = 'auto';
