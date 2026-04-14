@@ -45,6 +45,7 @@
   var DEMO_GATE_AFTER = 7;
   var demoGateShown = false;
   var demoInteractions = 0;
+  var awaitingStateForVARO = false;
 
   // ── APPLY CONFIG (shared by both inline and fetched paths) ────────────────
   function applyConfig(cfg) {
@@ -3025,6 +3026,65 @@
       }, 400);
       return;
     }
+    // Awaiting state follow-up after city clarification prompt
+    if (awaitingStateForVARO) {
+      awaitingStateForVARO = false;
+      var replyLower = text.toLowerCase().trim();
+      // Check full state name
+      var replyState = null;
+      var STATE_NAMES_REPLY = {
+        'alabama':'AL','alaska':'AK','arizona':'AZ','arkansas':'AR','california':'CA',
+        'colorado':'CO','connecticut':'CT','delaware':'DE','florida':'FL','georgia':'GA',
+        'hawaii':'HI','idaho':'ID','illinois':'IL','indiana':'IN','iowa':'IA',
+        'kansas':'KS','kentucky':'KY','louisiana':'LA','maine':'ME','maryland':'MD',
+        'massachusetts':'MA','michigan':'MI','minnesota':'MN','mississippi':'MS',
+        'missouri':'MO','montana':'MT','nebraska':'NE','nevada':'NV',
+        'new hampshire':'NH','new jersey':'NJ','new mexico':'NM','new york':'NY',
+        'north carolina':'NC','north dakota':'ND','ohio':'OH','oklahoma':'OK',
+        'oregon':'OR','pennsylvania':'PA','rhode island':'RI','south carolina':'SC',
+        'south dakota':'SD','tennessee':'TN','texas':'TX','utah':'UT',
+        'vermont':'VT','virginia':'VA','washington':'WA','west virginia':'WV',
+        'wisconsin':'WI','wyoming':'WY','district of columbia':'DC',
+        'puerto rico':'PR','guam':'GU','virgin islands':'VI','philippines':'PH'
+      };
+      for (var sn in STATE_NAMES_REPLY) {
+        if (replyLower.indexOf(sn) !== -1) { replyState = STATE_NAMES_REPLY[sn]; break; }
+      }
+      // Check 2-letter abbreviation if no full name
+      if (!replyState) {
+        var abbrReply = text.trim().toUpperCase();
+        if (VARO_MAP[abbrReply]) replyState = abbrReply;
+      }
+      if (replyState && VARO_MAP[replyState]) {
+        var vr = VARO_MAP[replyState];
+        userMsg(text);
+        turnCount++;
+        checkWarn();
+        setTimeout(function () {
+          clearOpts();
+          botMsg('The VA Regional Office for <strong>' + replyState + '</strong> is:\n\n'
+            + '<strong>' + vr.name + '</strong>\n'
+            + '\ud83d\udcde ' + vr.phone + '\n'
+            + '\ud83c\udf10 <a href="' + vr.url + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:underline;text-underline-offset:2px;">Visit their website \u2192</a>\n\n'
+            + 'This office handles disability claims, appeals, pension, and most VA benefits for veterans in that region.\n\n'
+            + 'For VA healthcare and hospital locations, use the <a href="https://www.va.gov/find-locations/" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:underline;text-underline-offset:2px;">VA Facility Locator \u2192</a>');
+          mkChips(['How do I file a claim?', 'Find a VSO counselor', 'See all benefits', 'Start over']);
+        }, 400);
+        return;
+      }
+      // State not recognized — ask again
+      userMsg(text);
+      turnCount++;
+      checkWarn();
+      awaitingStateForVARO = true;
+      setTimeout(function () {
+        clearOpts();
+        botMsg('I didn\'t catch that state — could you try again? For example, "Florida", "FL", "Texas", or "TX".');
+        mkChips(['Find a VSO counselor', 'See all benefits', 'Start over']);
+      }, 400);
+      return;
+    }
+
     // Disclaimer gate — fires on ANY input if not yet acknowledged
     if (!disclaimerAcked) {
       showDisclaimer(text);
@@ -3167,6 +3227,7 @@
         userMsg(text);
         turnCount++;
         checkWarn();
+        awaitingStateForVARO = true;
         setTimeout(function () {
           clearOpts();
           botMsg('I can look up the VA Regional Office for you — which state is that in? Just tell me the state name or abbreviation, like "Florida" or "FL".');
