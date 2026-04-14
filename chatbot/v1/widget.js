@@ -3107,10 +3107,26 @@
       }
     }
     // Check 2-letter abbreviations if no full name found
+    // Exclude 'VA' (agency name), 'ID' (identity), 'OR' (conjunction), 'IN' (preposition),
+    // 'OK' (acknowledgement), 'HI' (greeting), 'ME' (pronoun), 'OH' (exclamation)
+    // when they appear as common words rather than state abbreviations
+    var AMBIGUOUS_ABBR = { 'VA':1, 'ID':1, 'OR':1, 'IN':1, 'OK':1, 'HI':1, 'ME':1, 'OH':1 };
     if (!mentionedState) {
-      var abbrMatch = text.match(/\b([A-Z]{2})\b/);
-      if (abbrMatch && VARO_MAP[abbrMatch[1]]) {
-        mentionedState = abbrMatch[1];
+      var abbrMatches = text.match(/\b([A-Z]{2})\b/g) || [];
+      for (var ai = 0; ai < abbrMatches.length; ai++) {
+        var ab = abbrMatches[ai];
+        if (VARO_MAP[ab] && !AMBIGUOUS_ABBR[ab]) {
+          mentionedState = ab;
+          break;
+        }
+      }
+      // Allow ambiguous abbrs ONLY if veteran explicitly typed them with clear state intent
+      // e.g. 'moving to VA' or 'office in VA' — preceded by 'to', 'in', 'for', 'from'
+      if (!mentionedState) {
+        var ambigMatch = text.match(/\b(?:to|in|for|from|into|near)\s+([A-Z]{2})\b/);
+        if (ambigMatch && VARO_MAP[ambigMatch[1]]) {
+          mentionedState = ambigMatch[1];
+        }
       }
     }
     // If a state was mentioned AND it looks like a location question, intercept
