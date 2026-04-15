@@ -3478,6 +3478,34 @@
       });
     }
 
+    // Mobile scroll bleed fix — stop touchmove from propagating to page behind widget
+    var vnPanel = ge('vnp');
+    if (vnPanel) {
+      vnPanel.addEventListener('touchmove', function (e) {
+        var ms = ge('vnms');
+        // Allow scroll if touch is inside the messages container and it can scroll
+        if (ms && ms.contains(e.target)) {
+          var atTop    = ms.scrollTop === 0;
+          var atBottom = ms.scrollTop + ms.clientHeight >= ms.scrollHeight - 1;
+          var goingUp   = e.touches[0].clientY > (vnPanel._lastTouchY || e.touches[0].clientY);
+          var goingDown = e.touches[0].clientY < (vnPanel._lastTouchY || e.touches[0].clientY);
+          // Block if at boundary and trying to scroll beyond it
+          if ((atTop && goingUp) || (atBottom && goingDown)) {
+            e.preventDefault();
+          }
+          // Otherwise let the messages scroll naturally
+        } else {
+          // Touch is on chips, input, tabs, header — block page scroll entirely
+          e.preventDefault();
+        }
+        vnPanel._lastTouchY = e.touches[0].clientY;
+      }, { passive: false });
+
+      vnPanel.addEventListener('touchstart', function (e) {
+        vnPanel._lastTouchY = e.touches[0].clientY;
+      }, { passive: true });
+    }
+
     // Tabs
     document.querySelectorAll('.vntb').forEach(function (t) {
       t.addEventListener('click', function () { setTab(this.getAttribute('data-tab')); });
