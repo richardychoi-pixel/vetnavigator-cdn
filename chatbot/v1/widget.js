@@ -1299,7 +1299,7 @@
     // Bot & user bubbles — light theme
     '.vnbb{padding:9px 12px;border-radius:12px;font-size:14px;',
     'line-height:1.65;max-width:88%}',
-    '.vnbb.b{background:#fff;color:#1e293b;',
+    '.vnbb.b{background:#fff;color:#1e293b;text-align:left;',
     'border-bottom-left-radius:3px;border:.5px solid rgba(0,0,0,.06)}',
     '.vnbb.u{background:var(--vub);color:#fff;border-bottom-right-radius:3px;margin-left:auto}',
     '.vnbb strong{font-weight:600;background:linear-gradient(180deg,#1a2744,#3d4a6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}',
