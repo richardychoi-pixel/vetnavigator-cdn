@@ -2601,22 +2601,19 @@
       system:     'You are a helpful VA benefits assistant. Write concise, empathetic summaries for veterans.',
       messages:   [{ role: 'user', content: summaryPrompt }]
     };
-    console.log('[VN-DEBUG] AI summary payload:', JSON.stringify(aiPayload));
     fetch(VN_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(aiPayload)
     })
-    .then(function (r) { console.log('[VN-DEBUG] AI response status:', r.status); return r.json(); })
+    .then(function (r) { return r.json(); })
     .then(function (d) {
-      console.log('[VN-DEBUG] AI response body:', JSON.stringify(d));
       var aiSummary = (d && d.content && d.content[0] && d.content[0].text)
         ? d.content[0].text.trim() : '';
       buildAndSendEmail(email, topics, aiSummary);
       if (onDone) onDone();
     })
-    .catch(function (err) {
-      console.log('[VN-DEBUG] AI call failed:', err);
+    .catch(function () {
       buildAndSendEmail(email, topics, '');
       if (onDone) onDone();
     });
@@ -2669,15 +2666,11 @@
       to: [{ email: email }],
       subject: '🎖️ Your VA Benefits Session Summary — ' + ORG_NAME
     };
-    console.log('[VN-DEBUG] Veteran email payload:', JSON.stringify(vetPayload));
     fetch(VN_API + '/brevo/email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(vetPayload)
-    })
-    .then(function (r) { console.log('[VN-DEBUG] Veteran email status:', r.status); return r.json(); })
-    .then(function (d) { console.log('[VN-DEBUG] Veteran email response:', JSON.stringify(d)); })
-    .catch(function (err) { console.log('[VN-DEBUG] Veteran email failed:', err); });
+    }).catch(function () {});
 
     // CC to ops via Worker proxy (sender = ops@ for internal)
     var ccPayload = {
@@ -2687,15 +2680,11 @@
       to: [{ email: OPS_EMAIL }],
       subject: '📋 Session Summary CC — ' + ORG_NAME
     };
-    console.log('[VN-DEBUG] CC email payload:', JSON.stringify(ccPayload));
     fetch(VN_API + '/brevo/email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(ccPayload)
-    })
-    .then(function (r) { console.log('[VN-DEBUG] CC email status:', r.status); return r.json(); })
-    .then(function (d) { console.log('[VN-DEBUG] CC email response:', JSON.stringify(d)); })
-    .catch(function (err) { console.log('[VN-DEBUG] CC email failed:', err); });
+    }).catch(function () {});
   }
 
   // ── SUMMARY PROMPT (shown on "Start over" when 2+ topics explored) ────────
