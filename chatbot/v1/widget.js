@@ -30,7 +30,7 @@
 
   // ── CONSTANTS ──────────────────────────────────────────────────────────────
   var VN_API        = 'https://vetnavigator-chat.richard-y-choi.workers.dev';
-  var SUPPORT_EMAIL = 'support@vetnavigator.ai';
+  var SUPPORT_EMAIL = 'ops@vetnavigator.ai';
   var OPS_EMAIL     = 'ops@vetnavigator.ai';
   // BREVO_KEY removed — all Brevo calls now proxy through the Worker
 
@@ -2654,31 +2654,30 @@
       + 'Powered by VetNavigator AI · <a href="https://vetnavigator.ai" style="color:#B22234">vetnavigator.ai</a>'
       + '</p></div></div>';
 
-    var payload = {
-      sender:      { name: 'VetNavigator AI', email: SUPPORT_EMAIL },
-      htmlContent: html
-    };
-
-    // Send to veteran via Worker proxy
+    // Send to veteran via Worker proxy (sender = support@ for customer-facing)
     fetch(VN_API + '/brevo/email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(Object.assign({}, payload, {
+      body: JSON.stringify({
         key: LICENSE_KEY,
+        sender:      { name: 'VetNavigator AI', email: 'support@vetnavigator.ai' },
+        htmlContent: html,
         to: [{ email: email }],
         subject: '🎖️ Your VA Benefits Session Summary — ' + ORG_NAME
-      }))
+      })
     });
 
-    // CC to support via Worker proxy
+    // CC to ops via Worker proxy (sender = ops@ for internal)
     fetch(VN_API + '/brevo/email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(Object.assign({}, payload, {
+      body: JSON.stringify({
         key: LICENSE_KEY,
-        to: [{ email: 'ops@vetnavigator.ai' }],
+        sender:      { name: 'VetNavigator AI', email: SUPPORT_EMAIL },
+        htmlContent: html,
+        to: [{ email: OPS_EMAIL }],
         subject: '📋 Session Summary CC — ' + ORG_NAME
-      }))
+      })
     });
   }
 
