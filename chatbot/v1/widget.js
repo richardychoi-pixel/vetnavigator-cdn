@@ -3589,6 +3589,26 @@
           })
         }).catch(function () {});
 
+        // Lead notification email to richard@
+        var subj = '🎯 New Demo Lead — ' + name + (org ? ' (' + org + ')' : '');
+        fetch(VN_API + '/brevo/email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            key: LICENSE_KEY,
+            sender: { name: 'VetNavigator AI', email: 'ops@vetnavigator.ai' },
+            to: [{ email: 'richard@vetnavigator.ai' }],
+            subject: subj,
+            htmlContent: 'New demo lead captured on VetNavigator.ai<br><br>'
+              + '<strong>Name:</strong> ' + name + '<br>'
+              + '<strong>Email:</strong> ' + email + '<br>'
+              + '<strong>Organization:</strong> ' + (org || 'Not provided') + '<br>'
+              + '<strong>Source:</strong> VetNavigator Demo Gate<br>'
+              + '<strong>Time:</strong> ' + new Date().toLocaleString('en-US') + '<br>'
+              + '<strong>Page:</strong> ' + window.location.href
+          })
+        }).catch(function () {});
+
         var gate = document.getElementById('vngate');
         if (gate) {
           gate.style.opacity = '0';
