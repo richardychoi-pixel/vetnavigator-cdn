@@ -73,12 +73,11 @@
     IS_DEMO    = TIER_STR === 'DEMO';
     HAS_ML     = TIER_LVL >= 3 || IS_DEMO;
     HAS_MIC    = TIER_LVL >= 3 || IS_DEMO;
-    // Admin access: token in URL must match adminToken from KV (demo bypasses)
+    // Admin access: validated server-side via X-VN-Admin header (demo bypasses)
     var _urlAdmin = new URLSearchParams(window.location.search).get('vnadmin') || '';
-    var _cfgToken = (cfg.adminToken || '').trim();
     HAS_ADMIN  = IS_DEMO
-      ? (_urlAdmin === '1' || (_cfgToken && _urlAdmin === _cfgToken))
-      : (TIER_LVL >= 2 && _cfgToken && _urlAdmin === _cfgToken);
+      ? (_urlAdmin === '1' || cfg.adminValid === true)
+      : (TIER_LVL >= 2 && cfg.adminValid === true);
     CONV_LIMIT = (IS_DEMO || TIER_LVL >= 3) ? 999 : (TIER_LVL >= 2 ? 20 : 10);
     WARN_AT    = Math.ceil(CONV_LIMIT * 0.8);
     ORG_LOGO    = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgLogo          || '') : '';
@@ -122,7 +121,10 @@
     }
 
     // Fetch config from Worker
-    fetch(VN_API + '/config?key=' + encodeURIComponent(key))
+    var adminParam = new URLSearchParams(window.location.search).get('vnadmin') || '';
+    fetch(VN_API + '/config?key=' + encodeURIComponent(key), {
+      headers: adminParam ? { 'X-VN-Admin': adminParam } : {}
+    })
       .then(function (r) { return r.json(); })
       .then(function (data) {
         if (data && data.orgName) {
@@ -2308,6 +2310,7 @@
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          adminToken: new URLSearchParams(window.location.search).get('vnadmin') || '',
           orgName:    ORG_NAME,
           orgCity:    ORG_CITY,
           orgState:   ORG_STATE,
