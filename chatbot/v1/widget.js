@@ -2431,6 +2431,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+              key: LICENSE_KEY,
               model: 'claude-haiku-4-5-20251001',
               max_tokens: 600,
               system: 'Extract VSO organization info from website text. Respond with valid JSON only — no markdown, no explanation. Keys: orgName, city, state (2-letter US state code), address, phone, email, hours, events (array max 6), leaders (array max 8). Empty string or [] if not found.',
@@ -2473,6 +2474,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          key: LICENSE_KEY,
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 600,
           system: 'Extract VSO organization info from pasted Facebook About page text. Respond with valid JSON only — no markdown, no explanation. Keys: orgName, city, state (2-letter US state code), address, phone, email, hours, events (array max 6), leaders (array as "Title – Name", max 8). Empty string or [] if not found.',
@@ -2824,6 +2826,7 @@
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        key:        LICENSE_KEY,
         model:      'claude-haiku-4-5-20251001',
         max_tokens: 200,
         system:     'You are a warm, knowledgeable VA benefits assistant for ' + ORG_NAME
