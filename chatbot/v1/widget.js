@@ -31,6 +31,7 @@
   // ── CONSTANTS ──────────────────────────────────────────────────────────────
   var VN_API        = 'https://vetnavigator-chat.richard-y-choi.workers.dev';
   var SUPPORT_EMAIL = 'support@vetnavigator.ai';
+  var OPS_EMAIL     = 'ops@vetnavigator.ai';
   // BREVO_KEY removed — all Brevo calls now proxy through the Worker
 
   // ── CONFIG VARIABLES (populated by loadConfig) ────────────────────────────
@@ -3623,7 +3624,7 @@
         body: JSON.stringify({
           key: LICENSE_KEY,
           sender:      { name: 'VetNavigator Widget', email: SUPPORT_EMAIL },
-          to:          [{ email: SUPPORT_EMAIL }],
+          to:          [{ email: OPS_EMAIL }],
           subject:     '⭐ Widget Feedback — ' + ORG_NAME + ' (' + rating + '/5)',
           htmlContent: '<p><strong>Rating:</strong> ' + rating + '/5</p>'
             + '<p><strong>Post:</strong> ' + ORG_NAME + '</p>'
@@ -3654,7 +3655,7 @@
         body: JSON.stringify({
           key: LICENSE_KEY,
           sender:      { name: 'VetNavigator Widget', email: SUPPORT_EMAIL },
-          to:          [{ email: SUPPORT_EMAIL }],
+          to:          [{ email: OPS_EMAIL }],
           replyTo:     { name: name, email: email },
           subject:     '🎧 Support Request — ' + ORG_NAME + (topic ? ' (' + topic + ')' : ''),
           htmlContent: '<p><strong>From:</strong> ' + name + ' (' + email + ')</p>'
