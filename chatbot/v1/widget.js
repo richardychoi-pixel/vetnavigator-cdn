@@ -2593,6 +2593,7 @@
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        key:        LICENSE_KEY,
         model:      'claude-haiku-4-5-20251001',
         max_tokens: 150,
         system:     'You are a helpful VA benefits assistant. Write concise, empathetic summaries for veterans.',
@@ -2674,7 +2675,7 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(Object.assign({}, payload, {
         key: LICENSE_KEY,
-        to: [{ email: SUPPORT_EMAIL }],
+        to: [{ email: 'ops@vetnavigator.ai' }],
         subject: '📋 Session Summary CC — ' + ORG_NAME
       }))
     });
