@@ -31,7 +31,7 @@
   // ── CONSTANTS ──────────────────────────────────────────────────────────────
   var VN_API        = 'https://vetnavigator-chat.richard-y-choi.workers.dev';
   var SUPPORT_EMAIL = 'support@vetnavigator.ai';
-  var BREVO_KEY     = (window.VN_CONFIG && window.VN_CONFIG.BREVO_API_KEY) || '';
+  // BREVO_KEY removed — all Brevo calls now proxy through the Worker
 
   // ── CONFIG VARIABLES (populated by loadConfig) ────────────────────────────
   var LICENSE_KEY, ORG_NAME, ORG_CITY, ORG_ADDR, ORG_PHONE, ORG_EMAIL;
@@ -2566,7 +2566,7 @@
 
   // ── SEND SUMMARY EMAIL ─────────────────────────────────────────────────────
   function sendSummary(email, onDone) {
-    if (!BREVO_KEY) { if (onDone) onDone(); return; }
+    if (!VN_API) { if (onDone) onDone(); return; }
     var topics = [];
     var seen   = {};
     chatHistory.forEach(function (h) {
@@ -2657,21 +2657,23 @@
       htmlContent: html
     };
 
-    // Send to veteran
-    fetch('https://api.brevo.com/v3/smtp/email', {
+    // Send to veteran via Worker proxy
+    fetch(VN_API + '/brevo/email', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(Object.assign({}, payload, {
+        key: LICENSE_KEY,
         to: [{ email: email }],
         subject: '🎖️ Your VA Benefits Session Summary — ' + ORG_NAME
       }))
     });
 
-    // CC to support
-    fetch('https://api.brevo.com/v3/smtp/email', {
+    // CC to support via Worker proxy
+    fetch(VN_API + '/brevo/email', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(Object.assign({}, payload, {
+        key: LICENSE_KEY,
         to: [{ email: SUPPORT_EMAIL }],
         subject: '📋 Session Summary CC — ' + ORG_NAME
       }))
@@ -3558,28 +3560,27 @@
         gateBtn.disabled = true;
         gateBtn.textContent = 'Unlocking...';
 
-        if (BREVO_KEY) {
-          var nameParts = name.split(' ');
-          var firstName = nameParts[0] || name;
-          var lastName  = nameParts.slice(1).join(' ') || '';
-          fetch('https://api.brevo.com/v3/contacts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
-            body: JSON.stringify({
-              email: email,
-              attributes: {
-                FIRSTNAME: firstName,
-                LASTNAME: lastName,
-                ORGANIZATION: org,
-                SOURCE: 'VetNavigator Demo Gate',
-                PAGE: window.location.href,
-                LEAD_DATE: new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' })
-              },
-              listIds: [3],
-              updateEnabled: true
-            })
-          }).catch(function () {});
-        }
+        var nameParts = name.split(' ');
+        var firstName = nameParts[0] || name;
+        var lastName  = nameParts.slice(1).join(' ') || '';
+        fetch(VN_API + '/brevo/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            key: LICENSE_KEY,
+            email: email,
+            attributes: {
+              FIRSTNAME: firstName,
+              LASTNAME: lastName,
+              ORGANIZATION: org,
+              SOURCE: 'VetNavigator Demo Gate',
+              PAGE: window.location.href,
+              LEAD_DATE: new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' })
+            },
+            listIds: [3],
+            updateEnabled: true
+          })
+        }).catch(function () {});
 
         var gate = document.getElementById('vngate');
         if (gate) {
@@ -3615,8 +3616,11 @@
       var rating = starRating;
       var text   = ge('vnfbtx').value.trim();
       if (!rating && !text) return;
-      if (BREVO_KEY) {
-        var body = {
+      fetch(VN_API + '/brevo/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          key: LICENSE_KEY,
           sender:      { name: 'VetNavigator Widget', email: SUPPORT_EMAIL },
           to:          [{ email: SUPPORT_EMAIL }],
           subject:     '⭐ Widget Feedback — ' + ORG_NAME + ' (' + rating + '/5)',
@@ -3624,13 +3628,8 @@
             + '<p><strong>Post:</strong> ' + ORG_NAME + '</p>'
             + '<p><strong>License:</strong> ' + LICENSE_KEY + '</p>'
             + (text ? '<p><strong>Comments:</strong><br>' + text + '</p>' : '<p><em>No written feedback</em></p>')
-        };
-        fetch('https://api.brevo.com/v3/smtp/email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
-          body: JSON.stringify(body)
-        });
-      }
+        })
+      });
       ge('vnfbsb').style.display = 'none';
       ge('vnfbok').style.display = 'block';
     });
@@ -3648,8 +3647,11 @@
         errEl.style.display = 'block';
         return;
       }
-      if (BREVO_KEY) {
-        var body = {
+      fetch(VN_API + '/brevo/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          key: LICENSE_KEY,
           sender:      { name: 'VetNavigator Widget', email: SUPPORT_EMAIL },
           to:          [{ email: SUPPORT_EMAIL }],
           replyTo:     { name: name, email: email },
@@ -3659,13 +3661,8 @@
             + '<p><strong>License:</strong> ' + LICENSE_KEY + '</p>'
             + (topic ? '<p><strong>Topic:</strong> ' + topic + '</p>' : '')
             + '<p><strong>Message:</strong><br>' + msg.replace(/\n/g, '<br>') + '</p>'
-        };
-        fetch('https://api.brevo.com/v3/smtp/email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
-          body: JSON.stringify(body)
-        });
-      }
+        })
+      });
       ge('vnsupf').style.display = 'none';
       ge('vnstk').style.display  = 'block';
     });
