@@ -2660,7 +2660,7 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         key: LICENSE_KEY,
-        sender:      { name: 'VetNavigator AI', email: 'support@vetnavigator.ai' },
+        sender:      { name: 'VetNavigator AI', email: 'richard@vetnavigator.ai' },
         htmlContent: html,
         to: [{ email: email }],
         subject: '🎖️ Your VA Benefits Session Summary — ' + ORG_NAME
