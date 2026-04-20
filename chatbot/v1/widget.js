@@ -1942,16 +1942,17 @@
     clearOpts();
     mkChips(['Find a VSO counselor', 'See all benefits', 'Start over']);
 
-    // Silent upsell notification to VetNavigator (internal)
-    if (BREVO_KEY && ORG_EMAIL) {
+    // Silent upsell notification to VetNavigator (internal) via Worker proxy
+    if (ORG_EMAIL) {
       var tierNeeded = TOPIC_TIERS[key] || 2;
       var planNeeded = tierNeeded >= 3 ? 'Standard' : 'Starter';
-      fetch('https://api.brevo.com/v3/smtp/email', {
+      fetch(VN_API + '/brevo/email', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          key: LICENSE_KEY,
           sender:  { name: 'VetNavigator AI', email: SUPPORT_EMAIL },
-          to:      [{ email: SUPPORT_EMAIL }],
+          to:      [{ email: OPS_EMAIL }],
           subject: '📊 Upgrade Opportunity — ' + ORG_NAME + ' · ' + label,
           htmlContent: '<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;">'
             + '<div style="background:#1a3a6b;padding:20px 24px;border-radius:10px 10px 0 0;color:#fff;">'
@@ -1967,16 +1968,19 @@
       }).catch(function () {});
 
       // Update customer's Brevo contact with gated topic for weekly digest automation
-      fetch('https://api.brevo.com/v3/contacts/' + encodeURIComponent(ORG_EMAIL), {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'api-key': BREVO_KEY },
+      fetch(VN_API + '/brevo/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          key: LICENSE_KEY,
+          email: ORG_EMAIL,
           attributes: {
             LAST_GATED_TOPIC:   label,
             GATED_PLAN_NEEDED:  planNeeded,
             LAST_GATED_AT:      new Date().toISOString().split('T')[0],
             GATED_TOPIC_COUNT:  1
-          }
+          },
+          updateEnabled: true
         })
       }).catch(function () {});
     }
