@@ -1,0 +1,324 @@
+{
+  "nodes": {
+    "welcome": {
+      "pct": 5,
+      "bot": "¡Bienvenido a {{ORG_NAME}}!{{#ORG_CITY}}\n📍 Sirviendo a veteranos en {{ORG_CITY}}{{/ORG_CITY}}\n\nEstamos aquí para ayudarle a encontrar y reclamar cada beneficio que se ha ganado. Este asistente es gratuito, disponible 24/7 y habla su idioma.\n\nℹ️ *Solo información general sobre beneficios VA — no asesoramiento legal. Nunca ingrese información personal en este chat.*\n\n¿Cuál le describe mejor?",
+      "cards": [
+        {
+          "icon": "🎖️",
+          "title": "Veterano",
+          "desc": "Serví en el ejército de EE.UU."
+        },
+        {
+          "icon": "⚔️",
+          "title": "Servicio Activo",
+          "desc": "Actualmente sirviendo"
+        },
+        {
+          "icon": "💛",
+          "title": "Cónyuge / Familia",
+          "desc": "Familiar de un veterano"
+        },
+        {
+          "icon": "🕊️",
+          "title": "Cónyuge Sobreviviente",
+          "desc": "Perdió a un cónyuge veterano"
+        }
+      ]
+    },
+    "veteran": {
+      "pct": 18,
+      "bot": "Gracias por su servicio. 🇺🇸\n\n{{ORG_NAME}} se enorgullece de apoyarle. ¿Cuándo sirvió?",
+      "cards": [
+        {
+          "icon": "🏜️",
+          "title": "Post-11 de Sep.",
+          "desc": "2001 al presente"
+        },
+        {
+          "icon": "🌊",
+          "title": "Guerra del Golfo",
+          "desc": "1990–2001"
+        },
+        {
+          "icon": "🌿",
+          "title": "Era de Vietnam",
+          "desc": "1964–1975"
+        },
+        {
+          "icon": "🔵",
+          "title": "Otra Era",
+          "desc": "Corea, Guerra Fría, etc."
+        }
+      ]
+    },
+    "era": {
+      "pct": 32,
+      "bot": "¿Tiene actualmente una calificación de discapacidad del VA?",
+      "cards": [
+        {
+          "icon": "✅",
+          "title": "Sí — calificado",
+          "desc": "Tengo un porcentaje"
+        },
+        {
+          "icon": "📝",
+          "title": "No — todavía no",
+          "desc": "Nunca presenté"
+        },
+        {
+          "icon": "❌",
+          "title": "Fue denegado",
+          "desc": "Mi reclamo fue negado"
+        },
+        {
+          "icon": "❓",
+          "title": "No estoy seguro",
+          "desc": "Necesito verificar"
+        }
+      ]
+    },
+    "benefits_menu": {
+      "pct": 48,
+      "bot": "Estos son los principales beneficios. ¿Cuál le interesa más?",
+      "cards": [
+        {
+          "icon": "💰",
+          "title": "Pago por Discapacidad",
+          "desc": "Pago mensual libre de impuestos"
+        },
+        {
+          "icon": "🎓",
+          "title": "GI Bill",
+          "desc": "Financiamiento educativo"
+        },
+        {
+          "icon": "🏠",
+          "title": "Préstamo VA",
+          "desc": "Sin pago inicial"
+        },
+        {
+          "icon": "☢️",
+          "title": "Ley PACT",
+          "desc": "Exposición tóxica"
+        },
+        {
+          "icon": "🏥",
+          "title": "Atención Médica",
+          "desc": "Atención médica del VA"
+        },
+        {
+          "icon": "👔",
+          "title": "Rehabilitación Voc.",
+          "desc": "Capacitación laboral"
+        }
+      ]
+    },
+    "disability": {
+      "pct": 62,
+      "bot": "<strong>Compensación por Discapacidad del VA</strong> — pago mensual libre de impuestos por condiciones relacionadas con el servicio.\n\n<strong>Tasas 2026 (veterano solo):</strong> 10%: $180 | 50%: $1,133 | 100%: $3,939/mes\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Tasas vigentes dic 2025 (COLA 2.8%). Verifique en VA.gov.</em>",
+      "chips": [
+        "¿Cómo presento un reclamo?",
+        "¿Qué documentos necesito?",
+        "Buscar consejero VSO",
+        "Ver otros beneficios"
+      ]
+    },
+    "gi_bill": {
+      "pct": 62,
+      "bot": "<strong>GI Bill Post-9/11 (Capítulo 33)</strong> — su beneficio educativo ganado.\n\n<strong>Qué cubre:</strong>\n— <strong>Matrícula:</strong> Completa en universidades públicas; hasta $26,042/año en privadas\n— <strong>Vivienda:</strong> Subsidio mensual según código postal ($1,169–$4,400+/mes)\n— <strong>Libros:</strong> Hasta $1,000/año\n— <strong>Duración:</strong> Hasta 36 meses\n\n<strong>Quién califica:</strong>\n— 90+ días servicio activo después del 10 de sep. 2001\n— Baja honorable\n— Beneficios aumentan con tiempo de servicio (100% a 36+ meses)\n\n<strong>Estudiantes en línea:</strong> Tarifa fija de $1,169/mes para vivienda.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Tasas de vivienda año académico 2025–2026. Verifique en <a href='https://va.gov/education/benefit-rates/post-9-11-gi-bill-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
+      "chips": [
+        "¿Cómo solicito?",
+        "¿Puedo transferir mi GI Bill?",
+        "Buscar consejero VSO",
+        "Ver otros beneficios"
+      ]
+    },
+    "home_loan": {
+      "pct": 62,
+      "bot": "<strong>Préstamo para Vivienda VA</strong> — uno de los beneficios más valiosos que ha ganado.\n\n<strong>Sin pago inicial</strong> — la mayoría de préstamos convencionales requieren 3–20%\n<strong>Sin PMI</strong> — ahorra $100–$300/mes vs. convencional\n<strong>Tasas competitivas</strong> — generalmente más bajas que hipotecas convencionales\n<strong>Reutilizable</strong> — puede usar este beneficio de nuevo\n\n<strong>Quién califica:</strong> 90+ días servicio activo, o 6+ años Guardia Nacional/Reserva.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Esta es información general. Los términos dependen de su prestamista.</em>",
+      "chips": [
+        "¿Soy elegible para un Préstamo VA?",
+        "¿Cómo obtengo un Préstamo VA?",
+        "Buscar consejero VSO",
+        "Ver otros beneficios"
+      ]
+    },
+    "pact_act": {
+      "pct": 62,
+      "bot": "<strong>Ley PACT (2022)</strong> — la mayor expansión de beneficios del VA en décadas.\n\nCubre: Fosos de quema, Agente Naranja, Enfermedad de la Guerra del Golfo.\n\nMás de 5 millones de veteranos pueden calificar ahora.",
+      "chips": [
+        "¿Califico?",
+        "Buscar consejero VSO",
+        "Ver otros beneficios"
+      ]
+    },
+    "healthcare": {
+      "pct": 62,
+      "bot": "<strong>Atención Médica del VA</strong> — atención médica integral para Veteranos elegibles.\n\n<strong>Qué cubre:</strong>\n— Atención primaria (chequeos, cuidado preventivo)\n— Salud mental (TEPT, depresión, ansiedad)\n— Medicamentos (bajo o sin copago)\n— Atención de urgencia y emergencia\n— Atención especializada (cardiología, oncología, cirugía)\n— Telesalud (citas por video desde casa)\n\n<strong>Costo:</strong> Gratis para muchos Veteranos. Veteranos de combate reciben <strong>atención gratuita por 10 años</strong> después de la separación.\n\nInscríbase en <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a> o llame al <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a>.",
+      "chips": [
+        "¿Cómo me inscribo?",
+        "¿Soy elegible para atención médica VA?",
+        "Buscar consejero VSO",
+        "Ver otros beneficios"
+      ]
+    },
+    "voc_rehab": {
+      "pct": 62,
+      "bot": "<strong>Rehabilitación Vocacional (VR&E / Capítulo 31)</strong> — apoyo profesional para Veteranos con discapacidades.\n\n<strong>Qué cubre:</strong>\n— Asesoría y planificación profesional\n— Matrícula, libros y materiales\n— Capacitación laboral y certificaciones\n— Ayuda con currículum y colocación laboral\n\n<strong>Quién califica:</strong>\n— Calificación de discapacidad VA del <strong>10% o más</strong>\n— Barrera de empleo relacionada con su discapacidad\n\n<strong>Duración:</strong> Hasta 48 meses de beneficios.",
+      "chips": [
+        "¿Cómo solicito Rehabilitación Voc.?",
+        "GI Bill",
+        "Buscar consejero VSO",
+        "Ver otros beneficios"
+      ]
+    },
+    "denied": {
+      "pct": 76,
+      "bot": "<strong>Un reclamo denegado no es el final.</strong>\n\nLa mayoría de los reclamos son denegados la primera vez — pero más del 70% de las apelaciones se ganan con la ayuda correcta.\n\n<strong>Sus opciones:</strong>\n— Reclamo Suplementario (nueva evidencia)\n— Junta de Apelaciones de Veteranos\n— Representante VSO gratuito para luchar por usted\n\nNo se rinda. Un consejero VSO puede revisar su carta de denegación gratis.",
+      "chips": [
+        "Buscar consejero VSO",
+        "¿Cómo presento un reclamo?",
+        "Ver otros beneficios",
+        "Empezar de nuevo"
+      ]
+    },
+    "file_claim": {
+      "pct": 76,
+      "bot": "<strong>Cómo presentar un reclamo de discapacidad:</strong>\n\n<strong>Paso 1</strong> — Crear cuenta en VA.gov\n<strong>Paso 2</strong> — Completar Formulario VA 21-526EZ\n<strong>Paso 3</strong> — Reunir DD-214 y registros médicos\n<strong>Paso 4</strong> — Presentar en línea, por correo o en persona\n\n<strong>📬 Por correo:</strong>\nDepartment of Veterans Affairs\nClaims Intake Center\nPO Box 4444, Janesville, WI 53547-4444\n\n<strong>🏥 En persona:</strong> <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Encontrar su oficina VA más cercana →</a>",
+      "chips": [
+        "¿Qué documentos necesito?",
+        "Buscar consejero VSO",
+        "Ver otros beneficios",
+        "Empezar de nuevo"
+      ]
+    },
+    "documents": {
+      "pct": 82,
+      "bot": "<strong>Documentos necesarios:</strong>\n\n— DD-214 (papeles de baja)\n— Registros médicos\n— Registros de tratamiento militar\n— Declaraciones de compañeros (recomendado)\n— Carta Nexus del doctor (recomendado)\n\n<em>Nunca ingrese información personal como números de Seguro Social en este chat — use VA.gov para enviar documentos de forma segura.</em>\n\n¿Le falta el DD-214? Solicítelo gratis en archives.gov/veterans",
+      "chips": [
+        "Buscar consejero VSO",
+        "Ver otros beneficios",
+        "Empezar de nuevo"
+      ]
+    },
+    "healthcare_enroll": {
+      "pct": 76,
+      "bot": "<strong>Cómo inscribirse en Atención Médica VA:</strong>\n\n<strong>Opción 1</strong> — En línea: <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Solicitar en VA.gov</a>\n<strong>Opción 2</strong> — Llamar: <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a> (lun–vie 8am–8pm ET)\n<strong>Opción 3</strong> — En persona en cualquier centro médico VA: <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Encontrar ubicaciones →</a>\n\n<strong>Lo que necesitará:</strong>\n— DD-214 (papeles de baja)\n— Identificación con foto\n— Información de seguro (si tiene — no es obligatorio)\n— Información de ingresos (determina nivel de copago)\n\n<strong>Después de solicitar:</strong>\nEl VA generalmente procesa solicitudes en <strong>1–2 semanas</strong>. Recibirá una carta con su grupo de prioridad e instrucciones para su primera cita.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Nunca comparta información personal como SSN en este chat — solicite de forma segura en VA.gov.</em>",
+      "chips": [
+        "¿Soy elegible para atención médica VA?",
+        "Buscar consejero VSO",
+        "Ver otros beneficios"
+      ]
+    },
+    "healthcare_eligibility": {
+      "pct": 82,
+      "bot": "<strong>Elegibilidad para Atención Médica VA:</strong>\n\nEs probable que califique si:\n— Sirvió 24+ meses continuos en servicio activo, O\n— Fue dado de baja por discapacidad relacionada con el servicio, O\n— Sirvió en zona de combate después del 11 de nov. 1998, O\n— Fue expuesto a toxinas durante el servicio (Ley PACT — incluye Vietnam, Guerra del Golfo, Irak, Afganistán)\n\n<strong>Expansión Ley PACT:</strong> Desde marzo 2024, todos los Veteranos expuestos a toxinas pueden inscribirse directamente — sin necesidad de solicitar discapacidad primero.\n\n<strong>Grupos de prioridad:</strong> Veteranos con calificaciones de discapacidad más altas son atendidos primero y pagan menos.\n\n¿No está seguro? Un consejero VSO puede verificar su elegibilidad en minutos.",
+      "chips": [
+        "¿Cómo me inscribo?",
+        "Buscar consejero VSO",
+        "Ver otros beneficios"
+      ]
+    },
+    "vso": {
+      "pct": 92,
+      "bot": null,
+      "chips": [
+        "¿Cómo presento un reclamo?",
+        "Ver otros beneficios",
+        "Empezar de nuevo"
+      ]
+    },
+    "active_duty": {
+      "pct": 32,
+      "bot": "Gracias por su servicio y dedicación.\n\n<strong>¿Se prepara para separarse o hacer la transición?</strong>\n\nBeneficios clave para actuar <em>antes</em> de irse:\n\n— <strong>Programa TAP</strong> — asistencia de transición obligatoria\n— <strong>Calificación de discapacidad</strong> — presente ANTES de separarse (programa BDD)\n— <strong>GI Bill</strong> — beneficio educativo activo el día que se separa\n— <strong>Atención Médica VA</strong> — inscríbase dentro de 10 años para atención gratuita\n— <strong>Préstamo VA</strong> — disponible inmediatamente después de la separación",
+      "chips": [
+        "Cuéntame sobre el programa BDD",
+        "GI Bill",
+        "Préstamo VA",
+        "Buscar consejero VSO"
+      ]
+    },
+    "spouse": {
+      "pct": 48,
+      "bot": "Gracias por su apoyo y sacrificio. La fortaleza detrás de cada miembro del servicio es su familia. 🤍\n\n<strong>Beneficios disponibles para cónyuges y dependientes:</strong>\n\n— <strong>CHAMPVA</strong> — atención médica gratuita del VA\n— <strong>DEA (Cap. 35)</strong> — beneficios educativos para dependientes\n— <strong>Pensión de Sobrevivientes</strong> — apoyo de ingresos\n— <strong>DIC</strong> — pago mensual si el veterano falleció por causa del servicio\n— <strong>Préstamo</strong> — cónyuges sobrevivientes pueden ser elegibles",
+      "chips": [
+        "Cuéntame sobre DIC",
+        "Cuéntame sobre CHAMPVA",
+        "Buscar consejero VSO",
+        "Ver otros beneficios"
+      ]
+    }
+  },
+  "chipMap": {
+    "Veterano": "veteran",
+    "Servicio Activo": "active_duty",
+    "Cónyuge / Familia": "spouse",
+    "Cónyuge Sobreviviente": "surviving_spouse",
+    "Post-11 de Sep.": "era",
+    "Guerra del Golfo": "era",
+    "Era de Vietnam": "era",
+    "Otra Era": "era",
+    "Sí — calificado": "disability",
+    "No — todavía no": "file_claim",
+    "Fue denegado": "denied",
+    "No estoy seguro": "file_claim",
+    "Pago por Discapacidad": "disability",
+    "GI Bill": "gi_bill",
+    "Préstamo VA": "home_loan",
+    "Ley PACT": "pact_act",
+    "Atención Médica": "healthcare",
+    "Rehabilitación Voc.": "voc_rehab",
+    "¿Cómo presento un reclamo?": "file_claim",
+    "¿Qué documentos necesito?": "documents",
+    "Buscar consejero VSO": "vso",
+    "Ver otros beneficios": "benefits_menu",
+    "Ver todos los beneficios": "all_benefits",
+    "¿Califico?": "pact_qualify",
+    "¿Soy elegible?": "home_loan_apply",
+    "¿Cómo solicito?": "gi_bill_apply",
+    "¿Cómo me inscribo?": "healthcare_enroll",
+    "¿Soy elegible para atención médica VA?": "healthcare_eligibility",
+    "Cuéntame sobre el programa BDD": "bdd",
+    "Cuéntame sobre DIC": "dic",
+    "Cuéntame sobre CHAMPVA": "champva",
+    "¿Cómo solicito DIC?": "dic_apply",
+    "¿Puedo transferir mi GI Bill?": "gi_bill_transfer",
+    "¿Soy elegible para un Préstamo VA?": "home_loan_apply",
+    "¿Cómo obtengo un Préstamo VA?": "home_loan_apply",
+    "¿Cómo solicito Rehabilitación Voc.?": "voc_rehab_apply",
+    "Empezar de nuevo": "welcome"
+  },
+  "ui": {
+    "ph": "Escriba una pregunta o toque una opción…",
+    "online": "En línea · Gratuito · 24/7",
+    "choose": "Elija una opción",
+    "warn": {
+      "template": "Le quedan {{n}} pregunta{{s}} en esta sesión.",
+      "pluralSuffix": "s"
+    },
+    "limitTitle": "Sesión Completa",
+    "limitMsg": "Ha cubierto mucho terreno. Su consejero VSO puede ayudarle a continuar — gratis.",
+    "limitTopics": "Temas que exploró:",
+    "sumPrompt": "¿Desea recibir un resumen por correo?",
+    "sumPH": "su@correo.com",
+    "sendSum": "Enviar Mi Resumen →",
+    "sumSent": "✓ ¡Resumen enviado!",
+    "contVSO": "Continúe con su consejero VSO:",
+    "startFresh": "Comenzar de Nuevo →",
+    "gated": "Para este tema, recomendamos hablar directamente con su consejero VSO — pueden brindar orientación personalizada sin costo.",
+    "fallback": "¡Buena pregunta! Recomiendo hablar con un consejero VSO gratuito.",
+    "fallbackChips": [
+      "Buscar consejero VSO",
+      "Ver todos los beneficios",
+      "Empezar de nuevo"
+    ],
+    "disclaimerTitle": "Antes de comenzar",
+    "disclaimerBody": "VetNavigator proporciona información general sobre beneficios del VA únicamente.\n\nEste chatbot no es un abogado, agente de reclamaciones ni consejero VSO. La información compartida aquí es orientativa y puede no reflejar su situación específica.\n\nPara ayuda personalizada, comuníquese con su consejero VSO local.\n\nNo comparta información personal como su Número de Seguro Social, número de archivo del VA, fecha de nacimiento o detalles financieros en este chat.\n\nPara más detalles, consulte nuestra <a href=\"https://vetnavigator.ai/privacy.html\" target=\"_blank\" style=\"color:#e8c84a;text-decoration:underline\">Política de Privacidad</a> y <a href=\"https://vetnavigator.ai/terms.html\" target=\"_blank\" style=\"color:#e8c84a;text-decoration:underline\">Términos de Servicio</a>.",
+    "disclaimerBtn": "Entiendo — ¡Comencemos!"
+  },
+  "misc": {
+    "startOver": "Empezar de nuevo",
+    "typeBelow": "Escriba su pregunta abajo — estoy aquí para ayudar. 👇"
+  }
+}

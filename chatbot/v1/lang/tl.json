@@ -1,0 +1,290 @@
+{
+  "nodes": {
+    "welcome": {
+      "pct": 5,
+      "bot": "Maligayang pagdating sa {{ORG_NAME}}!{{#ORG_CITY}}\n📍 Naglilingkod sa mga beterano sa {{ORG_CITY}}{{/ORG_CITY}}\n\nNandito kami para tulungan kang mahanap at makuha ang bawat benepisyong iyong nakamit. Ang assistant na ito ay libre, available 24/7, at nagsasalita ng iyong wika.\n\nℹ️ *Pangkalahatang impormasyon lamang tungkol sa mga benepisyo ng VA — hindi legal na payo. Huwag maglagay ng personal na impormasyon tulad ng SSN sa chat na ito.*\n\nAlin ang pinaka-angkop sa iyo?",
+      "cards": [
+        {
+          "icon": "🎖️",
+          "title": "Beterano",
+          "desc": "Naglingkod sa militar ng US"
+        },
+        {
+          "icon": "⚔️",
+          "title": "Aktibong Serbisyo",
+          "desc": "Kasalukuyang naglilingkod"
+        },
+        {
+          "icon": "💛",
+          "title": "Asawa / Pamilya",
+          "desc": "Miyembro ng pamilya ng beterano"
+        },
+        {
+          "icon": "🕊️",
+          "title": "Naiwang Asawa",
+          "desc": "Nawalan ng asawang beterano"
+        }
+      ]
+    },
+    "veteran": {
+      "pct": 18,
+      "bot": "Salamat sa iyong serbisyo. 🇺🇸\n\n{{ORG_NAME}} ay ipinagmamalaki na suportahan kayo. Kailan kayo naglingkod?",
+      "cards": [
+        {
+          "icon": "🏜️",
+          "title": "Post-9/11",
+          "desc": "2001 hanggang kasalukuyan"
+        },
+        {
+          "icon": "🌊",
+          "title": "Digmaang Gulpo",
+          "desc": "1990–2001"
+        },
+        {
+          "icon": "🌿",
+          "title": "Panahon ng Vietnam",
+          "desc": "1964–1975"
+        },
+        {
+          "icon": "🔵",
+          "title": "Ibang Panahon",
+          "desc": "Korea, Cold War, atbp."
+        }
+      ]
+    },
+    "era": {
+      "pct": 32,
+      "bot": "Mayroon ka bang VA disability rating sa kasalukuyan?",
+      "cards": [
+        {
+          "icon": "✅",
+          "title": "Oo — may rating",
+          "desc": "Mayroon akong rating %"
+        },
+        {
+          "icon": "📝",
+          "title": "Hindi — hindi pa",
+          "desc": "Hindi pa nag-file"
+        },
+        {
+          "icon": "❌",
+          "title": "Tinanggihan",
+          "desc": "Tinanggihan ang aking claim"
+        },
+        {
+          "icon": "❓",
+          "title": "Hindi sigurado",
+          "desc": "Kailangan kong suriin"
+        }
+      ]
+    },
+    "benefits_menu": {
+      "pct": 48,
+      "bot": "Narito ang mga pangunahing benepisyo. Alin ang interesado ka?",
+      "cards": [
+        {
+          "icon": "💰",
+          "title": "Bayad sa Kapansanan",
+          "desc": "Buwanang bayad na walang buwis"
+        },
+        {
+          "icon": "🎓",
+          "title": "GI Bill",
+          "desc": "Pondo sa edukasyon"
+        },
+        {
+          "icon": "🏠",
+          "title": "VA Home Loan",
+          "desc": "Walang down payment"
+        },
+        {
+          "icon": "☢️",
+          "title": "PACT Act",
+          "desc": "Toxic exposure"
+        },
+        {
+          "icon": "🏥",
+          "title": "Pangangalagang Pangkalusugan",
+          "desc": "VA medical care"
+        },
+        {
+          "icon": "👔",
+          "title": "Voc Rehab",
+          "desc": "Pagsasanay sa trabaho"
+        }
+      ]
+    },
+    "disability": {
+      "pct": 62,
+      "bot": "<strong>VA Disability Compensation</strong> — buwanang bayad na walang buwis para sa mga kondisyong konektado sa serbisyo.\n\n<strong>2026 na rate (beterano, walang dependent):</strong> 10%: $180 | 50%: $1,133 | 100%: $3,939/buwan\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Epektibo Dis 2025 (COLA 2.8%). I-verify sa VA.gov.</em>",
+      "chips": [
+        "Paano mag-file ng claim?",
+        "Anong mga dokumento ang kailangan?",
+        "Humanap ng VSO counselor",
+        "Tingnan ang ibang benepisyo"
+      ]
+    },
+    "gi_bill": {
+      "pct": 62,
+      "bot": "<strong>Post-9/11 GI Bill (Chapter 33)</strong> — ang iyong nakamit na benepisyo sa edukasyon.\n\n<strong>Saklaw:</strong>\n— <strong>Tuition:</strong> Buong bayad sa public schools; hanggang $26,042/taon sa private\n— <strong>Housing:</strong> Buwanang allowance batay sa ZIP code ng school ($1,169–$4,400+/buwan)\n— <strong>Mga libro:</strong> Hanggang $1,000/taon\n— <strong>Tagal:</strong> Hanggang 36 na buwan\n\n<strong>Sino ang kwalipikado:</strong>\n— 90+ araw active duty pagkatapos ng Set 10, 2001\n— Honorable discharge\n— Mga benepisyo tumataas ayon sa tagal ng serbisyo (100% sa 36+ buwan)\n\n<strong>Online na estudyante:</strong> Fixed rate na $1,169/buwan para sa housing.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Housing rates para sa 2025–2026 academic year. I-verify sa <a href='https://va.gov/education/benefit-rates/post-9-11-gi-bill-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
+      "chips": [
+        "Paano mag-apply?",
+        "Humanap ng VSO counselor",
+        "Tingnan ang ibang benepisyo"
+      ]
+    },
+    "file_claim": {
+      "pct": 76,
+      "bot": "<strong>Paano mag-file ng claim sa kapansanan:</strong>\n\n<strong>Hakbang 1</strong> — Gumawa ng account sa VA.gov\n<strong>Hakbang 2</strong> — Kumpletuhin ang VA Form 21-526EZ\n<strong>Hakbang 3</strong> — Tipunin ang DD-214 at mga medikal na rekord\n<strong>Hakbang 4</strong> — Isumite online, sa pamamagitan ng koreo, o personal",
+      "chips": [
+        "Anong mga dokumento ang kailangan?",
+        "Humanap ng VSO counselor",
+        "Tingnan ang ibang benepisyo",
+        "Magsimula muli"
+      ]
+    },
+    "documents": {
+      "pct": 82,
+      "bot": "<strong>Mga dokumentong kailangan:</strong>\n\n— DD-214\n— Mga medikal na rekord\n— Mga rekord ng serbisyo sa militar\n— Buddy statements (inirerekomenda)\n— Nexus letter mula sa doktor (inirerekomenda)\n\n<em>Huwag ibahagi ang personal na impormasyon tulad ng Social Security number sa chat na ito — gamitin ang VA.gov para magsumite ng mga dokumento nang ligtas.</em>",
+      "chips": [
+        "Humanap ng VSO counselor",
+        "Tingnan ang ibang benepisyo",
+        "Magsimula muli"
+      ]
+    },
+    "vso": {
+      "pct": 92,
+      "bot": null,
+      "chips": [
+        "Paano mag-file ng claim?",
+        "Tingnan ang lahat ng benepisyo",
+        "Magsimula muli"
+      ]
+    },
+    "spouse": {
+      "pct": 48,
+      "bot": "Salamat sa iyong suporta at sakripisyo. Ang lakas sa likod ng bawat sundalo ay ang kanilang pamilya. 🤍\n\n<strong>Mga benepisyo para sa asawa at dependents:</strong>\n\n— <strong>CHAMPVA</strong> — libreng VA healthcare\n— <strong>DEA (Ch. 35)</strong> — mga benepisyo sa edukasyon\n— <strong>DIC</strong> — buwanang bayad\n— <strong>Home Loan</strong> — maaaring maging eligible",
+      "chips": [
+        "Sabihin sa akin ang tungkol sa DIC",
+        "Sabihin sa akin ang tungkol sa CHAMPVA",
+        "Humanap ng VSO counselor",
+        "Tingnan ang ibang benepisyo"
+      ]
+    },
+    "healthcare": {
+      "pct": 62,
+      "bot": "<strong>VA Healthcare</strong> — komprehensibong pangangalagang medikal para sa mga kwalipikadong Beterano.\n\n<strong>Saklaw:</strong>\n— Primary care (regular checkup, preventive care)\n— Mental health (PTSD, depression, anxiety)\n— Mga gamot (mababa o walang copay)\n— Urgent care at emergency care\n— Specialty care (cardiology, oncology, surgery)\n— Telehealth (video appointment mula sa bahay)\n\n<strong>Gastos:</strong> Libre para sa maraming Beterano. Mga combat Veteran ay may <strong>libreng pangangalaga sa loob ng 10 taon</strong> pagkatapos ng discharge.\n\nMag-enroll sa <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a> o tumawag sa <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a>.",
+      "chips": [
+        "Paano mag-enroll?",
+        "Kwalipikado ba ako sa VA Healthcare?",
+        "Humanap ng VSO counselor",
+        "Tingnan ang ibang benepisyo"
+      ]
+    },
+    "healthcare_enroll": {
+      "pct": 76,
+      "bot": "<strong>Paano mag-enroll sa VA Healthcare:</strong>\n\n<strong>Paraan 1</strong> — Online: <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Mag-apply sa VA.gov</a>\n<strong>Paraan 2</strong> — Tumawag: <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a> (Lun–Biy 8am–8pm ET)\n<strong>Paraan 3</strong> — Personal sa kahit anong VA medical center: <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Hanapin ang lokasyon →</a>\n\n<strong>Kakailanganin mo:</strong>\n— DD-214 (discharge papers)\n— Government-issued photo ID\n— Insurance info (kung mayroon — hindi required)\n— Income information (para matukoy ang copay level)\n\n<strong>Pagkatapos mag-apply:</strong>\nKaraniwang pinoproseso ng VA ang mga aplikasyon sa loob ng <strong>1–2 linggo</strong>. Makakatanggap ka ng sulat na may priority group assignment at instructions para sa unang appointment.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Huwag ibahagi ang personal na impormasyon tulad ng SSN sa chat na ito — mag-apply nang ligtas sa VA.gov.</em>",
+      "chips": [
+        "Kwalipikado ba ako sa VA Healthcare?",
+        "Humanap ng VSO counselor",
+        "Tingnan ang ibang benepisyo"
+      ]
+    },
+    "healthcare_eligibility": {
+      "pct": 82,
+      "bot": "<strong>Eligibility sa VA Healthcare:</strong>\n\nMaaaring kwalipikado ka kung:\n— 24+ buwan na tuloy-tuloy na active duty, O\n— Na-discharge dahil sa service-connected disability, O\n— Nagsilbi sa combat zone pagkatapos ng Nov 11, 1998, O\n— Na-expose sa toxins habang naglilingkod (PACT Act — kasama ang Vietnam, Gulf War, Iraq, Afghanistan)\n\n<strong>PACT Act expansion:</strong> Simula Marso 2024, lahat ng toxic-exposed na Beterano ay maaaring mag-enroll nang direkta — hindi na kailangang mag-apply para sa disability muna.\n\n<strong>Priority groups:</strong> Mga Beterano na may mas mataas na disability rating ay unang natitingnan at mas mababa ang bayad.\n\nHindi sigurado? Maaaring i-verify ng VSO counselor ang iyong eligibility sa ilang minuto.",
+      "chips": [
+        "Paano mag-enroll?",
+        "Humanap ng VSO counselor",
+        "Tingnan ang ibang benepisyo"
+      ]
+    },
+    "home_loan": {
+      "pct": 62,
+      "bot": "<strong>VA Home Loan</strong> — isa sa pinaka-mahalagang benepisyo na iyong nakamit.\n\n<strong>Walang down payment</strong> — karamihan ng conventional loan ay nangangailangan ng 3–20%\n<strong>Walang PMI</strong> — makatitipid ng $100–$300/buwan\n<strong>Competitive na interest rates</strong> — mas mababa kaysa conventional mortgage\n<strong>Magagamit muli</strong> — maaaring gamitin ulit pagkatapos bayaran ang nakaraang VA loan\n\n<strong>Sino ang kwalipikado:</strong> 90+ araw active duty, o 6+ taon National Guard/Reserve.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Ito ay pangkalahatang impormasyon lamang. Ang mga tuntunin ay depende sa iyong lender.</em>",
+      "chips": [
+        "Kwalipikado ba ako sa VA Home Loan?",
+        "Paano kumuha ng VA Home Loan?",
+        "Humanap ng VSO counselor",
+        "Tingnan ang ibang benepisyo"
+      ]
+    },
+    "voc_rehab": {
+      "pct": 62,
+      "bot": "<strong>Vocational Rehabilitation (VR&E / Chapter 31)</strong> — suporta sa karera para sa mga Beterano na may kapansanan.\n\n<strong>Saklaw:</strong>\n— Career counseling at planning\n— Tuition, libro at supplies\n— Job training at certifications\n— Tulong sa resume at job placement\n\n<strong>Sino ang kwalipikado:</strong>\n— VA disability rating na <strong>10% o higit pa</strong>\n— May hadlang sa trabaho dahil sa kapansanan\n\n<strong>Tagal:</strong> Hanggang 48 buwan.",
+      "chips": [
+        "Paano mag-apply sa VR&E?",
+        "GI Bill",
+        "Humanap ng VSO counselor",
+        "Tingnan ang ibang benepisyo"
+      ]
+    }
+  },
+  "chipMap": {
+    "Beterano": "veteran",
+    "Aktibong Serbisyo": "active_duty",
+    "Asawa / Pamilya": "spouse",
+    "Naiwang Asawa": "surviving_spouse",
+    "Post-9/11": "era",
+    "Digmaang Gulpo": "era",
+    "Panahon ng Vietnam": "era",
+    "Ibang Panahon": "era",
+    "Oo — may rating": "disability",
+    "Hindi — hindi pa": "file_claim",
+    "Tinanggihan": "denied",
+    "Hindi sigurado": "file_claim",
+    "Bayad sa Kapansanan": "disability",
+    "GI Bill": "gi_bill",
+    "VA Home Loan": "home_loan",
+    "PACT Act": "pact_act",
+    "Pangangalagang Pangkalusugan": "healthcare",
+    "Voc Rehab": "voc_rehab",
+    "Paano mag-file ng claim?": "file_claim",
+    "Anong mga dokumento ang kailangan?": "documents",
+    "Humanap ng VSO counselor": "vso",
+    "Tingnan ang ibang benepisyo": "benefits_menu",
+    "Tingnan ang lahat ng benepisyo": "all_benefits",
+    "Kwalipikado ba ako?": "pact_qualify",
+    "Paano mag-apply?": "file_claim",
+    "Paano mag-enroll?": "healthcare_enroll",
+    "Sabihin sa akin ang tungkol sa DIC": "dic",
+    "Sabihin sa akin ang tungkol sa CHAMPVA": "champva",
+    "Kwalipikado ba ako sa VA Home Loan?": "home_loan_apply",
+    "Paano kumuha ng VA Home Loan?": "home_loan_apply",
+    "Paano mag-apply sa VR&E?": "voc_rehab_apply",
+    "Kwalipikado ba ako sa VA Healthcare?": "healthcare_eligibility",
+    "Magsimula muli": "welcome"
+  },
+  "ui": {
+    "ph": "Mag-type ng tanong o mag-tap ng opsyon…",
+    "online": "Online · Libre · 24/7",
+    "choose": "Pumili ng opsyon",
+    "warn": {
+      "template": "Mayroon kang {{n}} tanong na natitira.",
+      "pluralSuffix": ""
+    },
+    "limitTitle": "Kumpleto ang Session",
+    "limitMsg": "Marami kang natuklas. Ang iyong VSO counselor ay makakatulong nang libre.",
+    "limitTopics": "Mga paksang iyong tiningnan:",
+    "sumPrompt": "Gusto mo bang magpadala ng buod sa email?",
+    "sumPH": "iyong@email.com",
+    "sendSum": "Ipadala ang Buod →",
+    "sumSent": "✓ Naipadala na ang buod!",
+    "contVSO": "Magpatuloy sa iyong VSO counselor:",
+    "startFresh": "Magsimula Muli →",
+    "gated": "Para sa paksang ito, inirerekomenda naming makipag-usap nang direkta sa iyong VSO counselor — maaari silang magbigay ng personal na gabay nang walang bayad.",
+    "fallback": "Magandang tanong! Inirerekomenda ang pakikipag-usap sa libreng VSO counselor.",
+    "fallbackChips": [
+      "Humanap ng VSO counselor",
+      "Tingnan ang lahat ng benepisyo",
+      "Magsimula muli"
+    ],
+    "disclaimerTitle": "Bago tayo magsimula",
+    "disclaimerBody": "Ang VetNavigator ay nagbibigay lamang ng pangkalahatang impormasyon tungkol sa mga benepisyo ng VA.\n\nAng chatbot na ito ay hindi isang abogado, ahente ng claims, o VSO counselor. Ang impormasyong ibinabahagi dito ay para sa gabay lamang at maaaring hindi sumasalamin sa iyong partikular na sitwasyon.\n\nPara sa personalized na tulong, makipag-ugnayan sa iyong lokal na VSO counselor.\n\nHuwag ibahagi ang personal na impormasyon tulad ng iyong Social Security Number, VA file number, petsa ng kapanganakan, o mga detalyeng pinansyal sa chat na ito.\n\nPara sa karagdagang detalye, mangyaring suriin ang aming <a href=\"https://vetnavigator.ai/privacy.html\" target=\"_blank\" style=\"color:#e8c84a;text-decoration:underline\">Patakaran sa Privacy</a> at <a href=\"https://vetnavigator.ai/terms.html\" target=\"_blank\" style=\"color:#e8c84a;text-decoration:underline\">Mga Tuntunin ng Serbisyo</a>.",
+    "disclaimerBtn": "Naiintindihan ko — Magsimula na!"
+  },
+  "misc": {
+    "startOver": "Magsimula muli",
+    "typeBelow": "I-type ang iyong tanong sa ibaba — nandito ako para tumulong. 👇"
+  }
+}

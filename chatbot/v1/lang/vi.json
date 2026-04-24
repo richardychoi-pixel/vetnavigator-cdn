@@ -1,0 +1,288 @@
+{
+  "nodes": {
+    "welcome": {
+      "pct": 5,
+      "bot": "Chào mừng đến với {{ORG_NAME}}!{{#ORG_CITY}}\n📍 Phục vụ cựu chiến binh tại {{ORG_CITY}}{{/ORG_CITY}}\n\nChúng tôi ở đây để giúp bạn tìm và nhận mọi quyền lợi bạn đã xứng đáng. Trợ lý này miễn phí, hoạt động 24/7 và nói ngôn ngữ của bạn.\n\nℹ️ *Chỉ cung cấp thông tin chung về phúc lợi VA — không phải tư vấn pháp lý. Không bao giờ nhập thông tin cá nhân như số An sinh Xã hội vào chat này.*\n\nĐiều nào mô tả đúng nhất về bạn?",
+      "cards": [
+        {
+          "icon": "🎖️",
+          "title": "Cựu chiến binh",
+          "desc": "Tôi đã phục vụ trong quân đội Hoa Kỳ"
+        },
+        {
+          "icon": "⚔️",
+          "title": "Tại ngũ",
+          "desc": "Đang phục vụ"
+        },
+        {
+          "icon": "💛",
+          "title": "Vợ/Chồng & Gia đình",
+          "desc": "Thành viên gia đình của cựu chiến binh"
+        },
+        {
+          "icon": "🕊️",
+          "title": "Vợ/Chồng góa",
+          "desc": "Mất vợ/chồng cựu chiến binh"
+        }
+      ]
+    },
+    "veteran": {
+      "pct": 18,
+      "bot": "Cảm ơn bạn đã phục vụ đất nước. 🇺🇸\n\n{{ORG_NAME}} tự hào được hỗ trợ bạn. Bạn phục vụ khi nào?",
+      "cards": [
+        {
+          "icon": "🏜️",
+          "title": "Sau 11/9",
+          "desc": "2001 đến nay"
+        },
+        {
+          "icon": "🌊",
+          "title": "Chiến tranh Vùng Vịnh",
+          "desc": "1990–2001"
+        },
+        {
+          "icon": "🌿",
+          "title": "Thời kỳ Việt Nam",
+          "desc": "1964–1975"
+        },
+        {
+          "icon": "🔵",
+          "title": "Thời kỳ khác",
+          "desc": "Hàn Quốc, Chiến tranh Lạnh, v.v."
+        }
+      ]
+    },
+    "era": {
+      "pct": 32,
+      "bot": "Bạn hiện có xếp hạng khuyết tật VA không?",
+      "cards": [
+        {
+          "icon": "✅",
+          "title": "Có — đã xếp hạng",
+          "desc": "Tôi có tỷ lệ %"
+        },
+        {
+          "icon": "📝",
+          "title": "Chưa — chưa nộp",
+          "desc": "Chưa bao giờ nộp đơn"
+        },
+        {
+          "icon": "❌",
+          "title": "Bị từ chối",
+          "desc": "Đơn của tôi bị từ chối"
+        },
+        {
+          "icon": "❓",
+          "title": "Không chắc",
+          "desc": "Tôi cần kiểm tra"
+        }
+      ]
+    },
+    "benefits_menu": {
+      "pct": 48,
+      "bot": "Đây là những phúc lợi hàng đầu. Bạn quan tâm điều nào nhất?",
+      "cards": [
+        {
+          "icon": "💰",
+          "title": "Trợ cấp khuyết tật",
+          "desc": "Tiền hàng tháng miễn thuế"
+        },
+        {
+          "icon": "🎓",
+          "title": "GI Bill",
+          "desc": "Tài trợ giáo dục"
+        },
+        {
+          "icon": "🏠",
+          "title": "Vay mua nhà VA",
+          "desc": "Không cần trả trước"
+        },
+        {
+          "icon": "☢️",
+          "title": "Đạo luật PACT",
+          "desc": "Phơi nhiễm độc hại"
+        },
+        {
+          "icon": "🏥",
+          "title": "Chăm sóc sức khỏe",
+          "desc": "Chăm sóc y tế VA"
+        },
+        {
+          "icon": "👔",
+          "title": "Phục hồi nghề nghiệp",
+          "desc": "Đào tạo việc làm"
+        }
+      ]
+    },
+    "disability": {
+      "pct": 62,
+      "bot": "<strong>Bồi thường Khuyết tật VA</strong> — tiền hàng tháng miễn thuế cho các tình trạng liên quan đến phục vụ.\n\n<strong>Mức 2026 (cựu chiến binh, không người phụ thuộc):</strong> 10%: $180 | 50%: $1,133 | 100%: $3,939/tháng\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Có hiệu lực tháng 12/2025 (COLA 2.8%). Xác minh tại VA.gov.</em>",
+      "chips": [
+        "Làm thế nào để nộp đơn?",
+        "Cần những giấy tờ gì?",
+        "Tìm tư vấn viên VSO",
+        "Xem các phúc lợi khác"
+      ]
+    },
+    "gi_bill": {
+      "pct": 62,
+      "bot": "<strong>GI Bill Sau 9/11 (Chương 33)</strong> — phúc lợi giáo dục bạn đã kiếm được.\n\n<strong>Bao gồm:</strong>\n— <strong>Học phí:</strong> Toàn bộ tại trường công; lên đến $26,042/năm tại trường tư\n— <strong>Nhà ở:</strong> Trợ cấp hàng tháng theo mã ZIP ($1,169–$4,400+/tháng)\n— <strong>Sách:</strong> Lên đến $1,000/năm\n— <strong>Thời hạn:</strong> Lên đến 36 tháng\n\n<strong>Ai đủ điều kiện:</strong>\n— 90+ ngày phục vụ sau 10/9/2001\n— Xuất ngũ danh dự\n— Phúc lợi tăng theo thời gian phục vụ (100% từ 36+ tháng)\n\n<strong>Sinh viên trực tuyến:</strong> Mức cố định $1,169/tháng cho nhà ở.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Mức nhà ở năm học 2025–2026. Xác minh tại <a href='https://va.gov/education/benefit-rates/post-9-11-gi-bill-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
+      "chips": [
+        "Làm thế nào để đăng ký?",
+        "Tìm tư vấn viên VSO",
+        "Xem các phúc lợi khác"
+      ]
+    },
+    "home_loan": {
+      "pct": 62,
+      "bot": "<strong>Vay Mua Nhà VA</strong> — một trong những phúc lợi giá trị nhất bạn đã kiếm được.\n\n<strong>Không cần trả trước</strong> — hầu hết khoản vay thông thường yêu cầu 3–20%\n<strong>Không PMI</strong> — tiết kiệm $100–$300/tháng\n<strong>Lãi suất cạnh tranh</strong> — thường thấp hơn thế chấp thông thường\n<strong>Sử dụng được suốt đời</strong> — có thể dùng lại sau khi trả hết\n\n<strong>Ai đủ điều kiện:</strong> 90+ ngày phục vụ, hoặc 6+ năm Vệ binh Quốc gia/Dự bị.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Đây là thông tin chung. Điều khoản phụ thuộc vào bên cho vay.</em>",
+      "chips": [
+        "Tôi có đủ điều kiện Vay VA không?",
+        "Làm thế nào để Vay VA?",
+        "Tìm tư vấn viên VSO",
+        "Xem các phúc lợi khác"
+      ]
+    },
+    "healthcare": {
+      "pct": 62,
+      "bot": "<strong>Chăm Sóc Sức Khỏe VA</strong> — chăm sóc y tế toàn diện cho Cựu chiến binh đủ điều kiện.\n\n<strong>Bao gồm:</strong>\n— Chăm sóc ban đầu (khám định kỳ, chăm sóc phòng ngừa)\n— Sức khỏe tâm thần (PTSD, trầm cảm, lo âu)\n— Thuốc (ít hoặc không đồng thanh toán)\n— Chăm sóc cấp cứu và khẩn cấp\n— Chăm sóc chuyên khoa (tim mạch, ung thư, phẫu thuật)\n— Telehealth (khám qua video tại nhà)\n\n<strong>Chi phí:</strong> Miễn phí cho nhiều Cựu chiến binh. Cựu chiến binh tham chiến được <strong>chăm sóc miễn phí trong 10 năm</strong> sau khi xuất ngũ.\n\nĐăng ký tại <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a> hoặc gọi <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a>.",
+      "chips": [
+        "Làm thế nào để đăng ký?",
+        "Tôi có đủ điều kiện không?",
+        "Tìm tư vấn viên VSO",
+        "Xem các phúc lợi khác"
+      ]
+    },
+    "healthcare_enroll": {
+      "pct": 76,
+      "bot": "<strong>Cách đăng ký Chăm sóc Sức khỏe VA:</strong>\n\n<strong>Cách 1</strong> — Trực tuyến: <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Đăng ký tại VA.gov</a>\n<strong>Cách 2</strong> — Gọi: <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a> (Thứ 2–6, 8am–8pm ET)\n<strong>Cách 3</strong> — Trực tiếp tại bất kỳ trung tâm y tế VA: <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Tìm địa điểm →</a>\n\n<strong>Bạn sẽ cần:</strong>\n— DD-214 (giấy xuất ngũ)\n— Giấy tờ tùy thân có ảnh\n— Thông tin bảo hiểm (nếu có — không bắt buộc)\n— Thông tin thu nhập (xác định mức đồng thanh toán)\n\n<strong>Sau khi nộp đơn:</strong>\nVA thường xử lý đơn trong <strong>1–2 tuần</strong>. Bạn sẽ nhận thư với nhóm ưu tiên và hướng dẫn đặt lịch khám đầu tiên.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Không chia sẻ thông tin cá nhân như SSN trong chat này — đăng ký an toàn tại VA.gov.</em>",
+      "chips": [
+        "Tôi có đủ điều kiện không?",
+        "Tìm tư vấn viên VSO",
+        "Xem các phúc lợi khác"
+      ]
+    },
+    "healthcare_eligibility": {
+      "pct": 82,
+      "bot": "<strong>Điều kiện Chăm sóc Sức khỏe VA:</strong>\n\nBạn có thể đủ điều kiện nếu:\n— Phục vụ 24+ tháng liên tục, HOỎC\n— Xuất ngũ vì khuyết tật liên quan đến phục vụ, HOỎC\n— Phục vụ trong vùng chiến đấu sau 11/11/1998, HOỎC\n— Tiếp xúc với chất độc khi phục vụ (Đạo luật PACT — bao gồm Việt Nam, Vùng Vịnh, Iraq, Afghanistan)\n\n<strong>Mở rộng Đạo luật PACT:</strong> Từ tháng 3/2024, tất cả Cựu chiến binh tiếp xúc chất độc có thể đăng ký trực tiếp — không cần nộp đơn khuyết tật trước.\n\n<strong>Nhóm ưu tiên:</strong> Cựu chiến binh có xếp hạng khuyết tật cao hơn được khám trước và trả ít hơn.\n\nKhông chắc? Tư vấn viên VSO có thể kiểm tra điều kiện trong vài phút.",
+      "chips": [
+        "Làm thế nào để đăng ký?",
+        "Tìm tư vấn viên VSO",
+        "Xem các phúc lợi khác"
+      ]
+    },
+    "file_claim": {
+      "pct": 76,
+      "bot": "<strong>Cách nộp đơn yêu cầu bồi thường khuyết tật:</strong>\n\n<strong>Bước 1</strong> — Tạo tài khoản tại VA.gov\n<strong>Bước 2</strong> — Hoàn thành Mẫu VA 21-526EZ\n<strong>Bước 3</strong> — Chuẩn bị DD-214 và hồ sơ y tế\n<strong>Bước 4</strong> — Nộp trực tuyến, qua đường bưu điện hoặc trực tiếp",
+      "chips": [
+        "Cần những giấy tờ gì?",
+        "Tìm tư vấn viên VSO",
+        "Xem các phúc lợi khác",
+        "Bắt đầu lại"
+      ]
+    },
+    "documents": {
+      "pct": 82,
+      "bot": "<strong>Giấy tờ cần thiết:</strong>\n\n— DD-214\n— Hồ sơ y tế\n— Hồ sơ điều trị quân sự\n— Lời khai của đồng đội (khuyến nghị)\n— Thư Nexus từ bác sĩ (khuyến nghị)\n\n<em>Không bao giờ nhập thông tin cá nhân như số An sinh Xã hội vào chat này — hãy dùng VA.gov để gửi tài liệu an toàn.</em>",
+      "chips": [
+        "Tìm tư vấn viên VSO",
+        "Xem các phúc lợi khác",
+        "Bắt đầu lại"
+      ]
+    },
+    "vso": {
+      "pct": 92,
+      "bot": null,
+      "chips": [
+        "Làm thế nào để nộp đơn?",
+        "Xem tất cả phúc lợi",
+        "Bắt đầu lại"
+      ]
+    },
+    "spouse": {
+      "pct": 48,
+      "bot": "Cảm ơn sự hỗ trợ và hy sinh của bạn. Sức mạnh đằng sau mỗi quân nhân là gia đình họ. 🤍\n\n<strong>Phúc lợi dành cho vợ/chồng và người phụ thuộc:</strong>\n\n— <strong>CHAMPVA</strong> — chăm sóc sức khỏe miễn phí\n— <strong>DEA (Ch. 35)</strong> — phúc lợi giáo dục\n— <strong>DIC</strong> — thanh toán hàng tháng\n— <strong>Vay mua nhà</strong> — có thể đủ điều kiện",
+      "chips": [
+        "Cho tôi biết về DIC",
+        "Cho tôi biết về CHAMPVA",
+        "Tìm tư vấn viên VSO",
+        "Xem các phúc lợi khác"
+      ]
+    },
+    "voc_rehab": {
+      "pct": 62,
+      "bot": "<strong>Phục hồi Nghề nghiệp (VR&E / Chương 31)</strong> — hỗ trợ nghề nghiệp cho Cựu chiến binh có khuyết tật liên quan đến phục vụ.\n\n<strong>Bao gồm:</strong>\n— Tư vấn và lập kế hoạch nghề nghiệp\n— Học phí, sách và vật liệu\n— Đào tạo việc làm và chứng chỉ\n— Hỗ trợ tìm việc\n\n<strong>Ai đủ điều kiện:</strong>\n— Xếp hạng khuyết tật VA <strong>10% trở lên</strong>\n— Có rào cản việc làm liên quan đến khuyết tật\n\n<strong>Thời hạn:</strong> Lên đến 48 tháng.",
+      "chips": [
+        "Làm thế nào để đăng ký VR&E?",
+        "GI Bill",
+        "Tìm tư vấn viên VSO",
+        "Xem các phúc lợi khác"
+      ]
+    }
+  },
+  "chipMap": {
+    "Cựu chiến binh": "veteran",
+    "Tại ngũ": "active_duty",
+    "Vợ/Chồng & Gia đình": "spouse",
+    "Vợ/Chồng góa": "surviving_spouse",
+    "Sau 11/9": "era",
+    "Chiến tranh Vùng Vịnh": "era",
+    "Thời kỳ Việt Nam": "era",
+    "Thời kỳ khác": "era",
+    "Có — đã xếp hạng": "disability",
+    "Chưa — chưa nộp": "file_claim",
+    "Bị từ chối": "denied",
+    "Không chắc": "file_claim",
+    "Trợ cấp khuyết tật": "disability",
+    "GI Bill": "gi_bill",
+    "Vay mua nhà VA": "home_loan",
+    "Đạo luật PACT": "pact_act",
+    "Chăm sóc sức khỏe": "healthcare",
+    "Phục hồi nghề nghiệp": "voc_rehab",
+    "Làm thế nào để nộp đơn?": "file_claim",
+    "Cần những giấy tờ gì?": "documents",
+    "Tìm tư vấn viên VSO": "vso",
+    "Xem các phúc lợi khác": "benefits_menu",
+    "Xem tất cả phúc lợi": "all_benefits",
+    "Tôi có đủ điều kiện không?": "healthcare_eligibility",
+    "Làm thế nào để đăng ký?": "gi_bill_apply",
+    "Cho tôi biết về DIC": "dic",
+    "Cho tôi biết về CHAMPVA": "champva",
+    "Tôi có đủ điều kiện Vay VA không?": "home_loan_apply",
+    "Làm thế nào để Vay VA?": "home_loan_apply",
+    "Làm thế nào để đăng ký VR&E?": "voc_rehab_apply",
+    "Bắt đầu lại": "welcome"
+  },
+  "ui": {
+    "ph": "Nhập câu hỏi hoặc chọn tùy chọn…",
+    "online": "Trực tuyến · Miễn phí · 24/7",
+    "choose": "Chọn một tùy chọn",
+    "warn": {
+      "template": "Bạn còn {{n}} câu hỏi trong phiên này.",
+      "pluralSuffix": ""
+    },
+    "limitTitle": "Phiên Hoàn Thành",
+    "limitMsg": "Bạn đã tìm hiểu được nhiều. Cố vấn VSO có thể giúp tiếp tục — miễn phí.",
+    "limitTopics": "Chủ đề bạn đã khám phá:",
+    "sumPrompt": "Bạn có muốn nhận tóm tắt qua email?",
+    "sumPH": "email@cua-ban.com",
+    "sendSum": "Gửi Tóm Tắt →",
+    "sumSent": "✓ Đã gửi tóm tắt!",
+    "contVSO": "Tiếp tục với cố vấn VSO:",
+    "startFresh": "Bắt Đầu Lại →",
+    "gated": "Đối với chủ đề này, chúng tôi khuyên bạn nên nói chuyện trực tiếp với cố vấn VSO — họ có thể cung cấp hướng dẫn cá nhân miễn phí.",
+    "fallback": "Câu hỏi hay! Tôi khuyên nên nói chuyện với cố vấn VSO miễn phí.",
+    "fallbackChips": [
+      "Tìm cố vấn VSO",
+      "Xem tất cả phúc lợi",
+      "Bắt đầu lại"
+    ],
+    "disclaimerTitle": "Trước khi bắt đầu",
+    "disclaimerBody": "VetNavigator chỉ cung cấp thông tin chung về phúc lợi VA.\n\nChatbot này không phải là luật sư, đại lý yêu cầu, hay cố vấn VSO. Thông tin được chia sẻ ở đây chỉ mang tính hướng dẫn và có thể không phản ánh tình huống cụ thể của bạn.\n\nĐể được hỗ trợ cá nhân, hãy liên hệ với cố vấn VSO địa phương của bạn.\n\nKhông chia sẻ thông tin cá nhân như Số An sinh Xã hội, số hồ sơ VA, ngày sinh hoặc thông tin tài chính trong chat này.\n\nĐể biết thêm chi tiết, vui lòng xem <a href=\"https://vetnavigator.ai/privacy.html\" target=\"_blank\" style=\"color:#e8c84a;text-decoration:underline\">Chính sách Quyền riêng tư</a> và <a href=\"https://vetnavigator.ai/terms.html\" target=\"_blank\" style=\"color:#e8c84a;text-decoration:underline\">Điều khoản Dịch vụ</a> của chúng tôi.",
+    "disclaimerBtn": "Tôi hiểu — Bắt đầu nào!"
+  },
+  "misc": {
+    "startOver": "Bắt đầu lại",
+    "typeBelow": "Nhập câu hỏi của bạn bên dưới — tôi sẵn sàng giúp bạn. 👇"
+  }
+}

@@ -38,10 +38,11 @@
   var LICENSE_KEY, ORG_NAME, ORG_CITY, ORG_ADDR, ORG_PHONE, ORG_EMAIL;
   var ORG_WEB, ORG_HOURS, ORG_MISSION, ORG_EVENTS, ORG_LEADERS;
   var TIER_MAP = { DEMO: 4, PREMIUM: 4, STANDARD: 3, STARTER: 2, BASIC: 1 };
-  var TIER_STR, TIER_LVL, IS_DEMO, HAS_ML, HAS_MIC, HAS_ADMIN;
+  var TIER_STR, TIER_LVL, IS_DEMO, HAS_MIC, HAS_ADMIN;
   var CONV_LIMIT, WARN_AT;
   var ORG_LOGO, ORG_WELCOME, ORG_ACCENT, ORG_FAB_SIZE;
   var ORG_STATE;
+  var SELECTED_LANGS;
   var DEMO_GATE;
   var DEMO_GATE_AFTER = 7;
   var demoGateShown = false;
@@ -72,7 +73,6 @@
     }
     TIER_LVL   = TIER_MAP[TIER_STR] !== undefined ? TIER_MAP[TIER_STR] : 1;
     IS_DEMO    = TIER_STR === 'DEMO';
-    HAS_ML     = TIER_LVL >= 3 || IS_DEMO;
     HAS_MIC    = TIER_LVL >= 3 || IS_DEMO;
     // Admin access: validated server-side via X-VN-Admin header (demo bypasses)
     var _urlAdmin = new URLSearchParams(window.location.search).get('vnadmin') || '';
@@ -86,7 +86,13 @@
     ORG_ACCENT  = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgAccentColor    || '') : '';
     ORG_FAB_SIZE = cfg.orgFabSize || '';
     ORG_STATE   = (cfg.orgState  || '').toUpperCase().trim();
+    SELECTED_LANGS = Array.isArray(cfg.selectedLanguages) && cfg.selectedLanguages.length > 0
+      ? cfg.selectedLanguages
+      : ['en'];
     DEMO_GATE = cfg.demoGate === true;
+    // Kick off lazy-loads for non-English languages. Fire-and-forget — widget
+    // boot never blocks on this; English is inline and renders immediately.
+    lang_init(SELECTED_LANGS);
   }
 
   // ── DETECT KEY FROM SCRIPT TAG URL ────────────────────────────────────────
@@ -720,153 +726,6 @@
     }
 
   }; // end NODES
-
-  // ── MULTILINGUAL NODE OVERRIDES ────────────────────────────────────────────
-  // When lang !== 'en', renderNode checks here first, falls back to NODES
-  var NODES_I18N = {
-    es: {
-      welcome: { pct:5, bot:null, cards:[{icon:"🎖️",title:"Veterano",desc:"Serví en el ejército de EE.UU."},{icon:"⚔️",title:"Servicio Activo",desc:"Actualmente sirviendo"},{icon:"💛",title:"Cónyuge / Familia",desc:"Familiar de un veterano"},{icon:"🕊️",title:"Cónyuge Sobreviviente",desc:"Perdió a un cónyuge veterano"}] },
-      veteran: { pct:18, bot:null, cards:[{icon:"🏜️",title:"Post-11 de Sep.",desc:"2001 al presente"},{icon:"🌊",title:"Guerra del Golfo",desc:"1990–2001"},{icon:"🌿",title:"Era de Vietnam",desc:"1964–1975"},{icon:"🔵",title:"Otra Era",desc:"Corea, Guerra Fría, etc."}] },
-      era: { pct:32, bot:"¿Tiene actualmente una calificación de discapacidad del VA?", cards:[{icon:"✅",title:"Sí — calificado",desc:"Tengo un porcentaje"},{icon:"📝",title:"No — todavía no",desc:"Nunca presenté"},{icon:"❌",title:"Fue denegado",desc:"Mi reclamo fue negado"},{icon:"❓",title:"No estoy seguro",desc:"Necesito verificar"}] },
-      benefits_menu: { pct:48, bot:"Estos son los principales beneficios. ¿Cuál le interesa más?", cards:[{icon:"💰",title:"Pago por Discapacidad",desc:"Pago mensual libre de impuestos"},{icon:"🎓",title:"GI Bill",desc:"Financiamiento educativo"},{icon:"🏠",title:"Préstamo VA",desc:"Sin pago inicial"},{icon:"☢️",title:"Ley PACT",desc:"Exposición tóxica"},{icon:"🏥",title:"Atención Médica",desc:"Atención médica del VA"},{icon:"👔",title:"Rehabilitación Voc.",desc:"Capacitación laboral"}] },
-      disability: { pct:62, bot:"<strong>Compensación por Discapacidad del VA</strong> — pago mensual libre de impuestos por condiciones relacionadas con el servicio.\n\n<strong>Tasas 2026 (veterano solo):</strong> 10%: $180 | 50%: $1,133 | 100%: $3,939/mes\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Tasas vigentes dic 2025 (COLA 2.8%). Verifique en VA.gov.</em>", chips:["¿Cómo presento un reclamo?","¿Qué documentos necesito?","Buscar consejero VSO","Ver otros beneficios"] },
-      gi_bill: { pct:62, bot:"<strong>GI Bill Post-9/11 (Capítulo 33)</strong> — su beneficio educativo ganado.\n\n<strong>Qué cubre:</strong>\n— <strong>Matrícula:</strong> Completa en universidades públicas; hasta $26,042/año en privadas\n— <strong>Vivienda:</strong> Subsidio mensual según código postal ($1,169–$4,400+/mes)\n— <strong>Libros:</strong> Hasta $1,000/año\n— <strong>Duración:</strong> Hasta 36 meses\n\n<strong>Quién califica:</strong>\n— 90+ días servicio activo después del 10 de sep. 2001\n— Baja honorable\n— Beneficios aumentan con tiempo de servicio (100% a 36+ meses)\n\n<strong>Estudiantes en línea:</strong> Tarifa fija de $1,169/mes para vivienda.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Tasas de vivienda año académico 2025–2026. Verifique en <a href='https://va.gov/education/benefit-rates/post-9-11-gi-bill-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>", chips:["¿Cómo solicito?","¿Puedo transferir mi GI Bill?","Buscar consejero VSO","Ver otros beneficios"] },
-      home_loan: { pct:62, bot:"<strong>Préstamo para Vivienda VA</strong> — uno de los beneficios más valiosos que ha ganado.\n\n<strong>Sin pago inicial</strong> — la mayoría de préstamos convencionales requieren 3–20%\n<strong>Sin PMI</strong> — ahorra $100–$300/mes vs. convencional\n<strong>Tasas competitivas</strong> — generalmente más bajas que hipotecas convencionales\n<strong>Reutilizable</strong> — puede usar este beneficio de nuevo\n\n<strong>Quién califica:</strong> 90+ días servicio activo, o 6+ años Guardia Nacional/Reserva.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Esta es información general. Los términos dependen de su prestamista.</em>", chips:["¿Soy elegible para un Préstamo VA?","¿Cómo obtengo un Préstamo VA?","Buscar consejero VSO","Ver otros beneficios"] },
-      pact_act: { pct:62, bot:"<strong>Ley PACT (2022)</strong> — la mayor expansión de beneficios del VA en décadas.\n\nCubre: Fosos de quema, Agente Naranja, Enfermedad de la Guerra del Golfo.\n\nMás de 5 millones de veteranos pueden calificar ahora.", chips:["¿Califico?","Buscar consejero VSO","Ver otros beneficios"] },
-      healthcare: { pct:62, bot:"<strong>Atención Médica del VA</strong> — atención médica integral para Veteranos elegibles.\n\n<strong>Qué cubre:</strong>\n— Atención primaria (chequeos, cuidado preventivo)\n— Salud mental (TEPT, depresión, ansiedad)\n— Medicamentos (bajo o sin copago)\n— Atención de urgencia y emergencia\n— Atención especializada (cardiología, oncología, cirugía)\n— Telesalud (citas por video desde casa)\n\n<strong>Costo:</strong> Gratis para muchos Veteranos. Veteranos de combate reciben <strong>atención gratuita por 10 años</strong> después de la separación.\n\nInscríbase en <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a> o llame al <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a>.", chips:["¿Cómo me inscribo?","¿Soy elegible para atención médica VA?","Buscar consejero VSO","Ver otros beneficios"] },
-      voc_rehab: { pct:62, bot:"<strong>Rehabilitación Vocacional (VR&E / Capítulo 31)</strong> — apoyo profesional para Veteranos con discapacidades.\n\n<strong>Qué cubre:</strong>\n— Asesoría y planificación profesional\n— Matrícula, libros y materiales\n— Capacitación laboral y certificaciones\n— Ayuda con currículum y colocación laboral\n\n<strong>Quién califica:</strong>\n— Calificación de discapacidad VA del <strong>10% o más</strong>\n— Barrera de empleo relacionada con su discapacidad\n\n<strong>Duración:</strong> Hasta 48 meses de beneficios.", chips:["¿Cómo solicito Rehabilitación Voc.?","GI Bill","Buscar consejero VSO","Ver otros beneficios"] },
-      denied: { pct:76, bot:"<strong>Un reclamo denegado no es el final.</strong>\n\nLa mayoría de los reclamos son denegados la primera vez — pero más del 70% de las apelaciones se ganan con la ayuda correcta.\n\n<strong>Sus opciones:</strong>\n— Reclamo Suplementario (nueva evidencia)\n— Junta de Apelaciones de Veteranos\n— Representante VSO gratuito para luchar por usted\n\nNo se rinda. Un consejero VSO puede revisar su carta de denegación gratis.", chips:["Buscar consejero VSO","¿Cómo presento un reclamo?","Ver otros beneficios","Empezar de nuevo"] },
-      file_claim: { pct:76, bot:"<strong>Cómo presentar un reclamo de discapacidad:</strong>\n\n<strong>Paso 1</strong> — Crear cuenta en VA.gov\n<strong>Paso 2</strong> — Completar Formulario VA 21-526EZ\n<strong>Paso 3</strong> — Reunir DD-214 y registros médicos\n<strong>Paso 4</strong> — Presentar en línea, por correo o en persona\n\n<strong>📬 Por correo:</strong>\nDepartment of Veterans Affairs\nClaims Intake Center\nPO Box 4444, Janesville, WI 53547-4444\n\n<strong>🏥 En persona:</strong> <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Encontrar su oficina VA más cercana →</a>", chips:["¿Qué documentos necesito?","Buscar consejero VSO","Ver otros beneficios","Empezar de nuevo"] },
-      documents: { pct:82, bot:"<strong>Documentos necesarios:</strong>\n\n— DD-214 (papeles de baja)\n— Registros médicos\n— Registros de tratamiento militar\n— Declaraciones de compañeros (recomendado)\n— Carta Nexus del doctor (recomendado)\n\n<em>Nunca ingrese información personal como números de Seguro Social en este chat — use VA.gov para enviar documentos de forma segura.</em>\n\n¿Le falta el DD-214? Solicítelo gratis en archives.gov/veterans", chips:["Buscar consejero VSO","Ver otros beneficios","Empezar de nuevo"] },
-      healthcare_enroll: { pct:76, bot:"<strong>Cómo inscribirse en Atención Médica VA:</strong>\n\n<strong>Opción 1</strong> — En línea: <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Solicitar en VA.gov</a>\n<strong>Opción 2</strong> — Llamar: <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a> (lun–vie 8am–8pm ET)\n<strong>Opción 3</strong> — En persona en cualquier centro médico VA: <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Encontrar ubicaciones →</a>\n\n<strong>Lo que necesitará:</strong>\n— DD-214 (papeles de baja)\n— Identificación con foto\n— Información de seguro (si tiene — no es obligatorio)\n— Información de ingresos (determina nivel de copago)\n\n<strong>Después de solicitar:</strong>\nEl VA generalmente procesa solicitudes en <strong>1–2 semanas</strong>. Recibirá una carta con su grupo de prioridad e instrucciones para su primera cita.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Nunca comparta información personal como SSN en este chat — solicite de forma segura en VA.gov.</em>", chips:["¿Soy elegible para atención médica VA?","Buscar consejero VSO","Ver otros beneficios"] },
-      healthcare_eligibility: { pct:82, bot:"<strong>Elegibilidad para Atención Médica VA:</strong>\n\nEs probable que califique si:\n— Sirvió 24+ meses continuos en servicio activo, O\n— Fue dado de baja por discapacidad relacionada con el servicio, O\n— Sirvió en zona de combate después del 11 de nov. 1998, O\n— Fue expuesto a toxinas durante el servicio (Ley PACT — incluye Vietnam, Guerra del Golfo, Irak, Afganistán)\n\n<strong>Expansión Ley PACT:</strong> Desde marzo 2024, todos los Veteranos expuestos a toxinas pueden inscribirse directamente — sin necesidad de solicitar discapacidad primero.\n\n<strong>Grupos de prioridad:</strong> Veteranos con calificaciones de discapacidad más altas son atendidos primero y pagan menos.\n\n¿No está seguro? Un consejero VSO puede verificar su elegibilidad en minutos.", chips:["¿Cómo me inscribo?","Buscar consejero VSO","Ver otros beneficios"] },
-      vso: { pct:92, bot:null, chips:["¿Cómo presento un reclamo?","Ver otros beneficios","Empezar de nuevo"] },
-      active_duty: { pct:32, bot:"Gracias por su servicio y dedicación.\n\n<strong>¿Se prepara para separarse o hacer la transición?</strong>\n\nBeneficios clave para actuar <em>antes</em> de irse:\n\n— <strong>Programa TAP</strong> — asistencia de transición obligatoria\n— <strong>Calificación de discapacidad</strong> — presente ANTES de separarse (programa BDD)\n— <strong>GI Bill</strong> — beneficio educativo activo el día que se separa\n— <strong>Atención Médica VA</strong> — inscríbase dentro de 10 años para atención gratuita\n— <strong>Préstamo VA</strong> — disponible inmediatamente después de la separación", chips:["Cuéntame sobre el programa BDD","GI Bill","Préstamo VA","Buscar consejero VSO"] },
-      spouse: { pct:48, bot:"Gracias por su apoyo y sacrificio. La fortaleza detrás de cada miembro del servicio es su familia. 🤍\n\n<strong>Beneficios disponibles para cónyuges y dependientes:</strong>\n\n— <strong>CHAMPVA</strong> — atención médica gratuita del VA\n— <strong>DEA (Cap. 35)</strong> — beneficios educativos para dependientes\n— <strong>Pensión de Sobrevivientes</strong> — apoyo de ingresos\n— <strong>DIC</strong> — pago mensual si el veterano falleció por causa del servicio\n— <strong>Préstamo</strong> — cónyuges sobrevivientes pueden ser elegibles", chips:["Cuéntame sobre DIC","Cuéntame sobre CHAMPVA","Buscar consejero VSO","Ver otros beneficios"] }
-    },
-    vi: {
-      welcome: { pct:5, bot:null, cards:[{icon:"\u{1F396}\uFE0F",title:"C\u1EF1u chi\u1EBFn binh",desc:"T\xF4i \u0111\xE3 ph\u1EE5c v\u1EE5 trong qu\xE2n \u0111\u1ED9i Hoa K\u1EF3"},{icon:"\u2694\uFE0F",title:"T\u1EA1i ng\u0169",desc:"\u0110ang ph\u1EE5c v\u1EE5"},{icon:"\uD83D\uDC9B",title:"V\u1EE3/Ch\u1ED3ng & Gia \u0111\xECnh",desc:"Th\xE0nh vi\xEAn gia \u0111\xECnh c\u1EE7a c\u1EF1u chi\u1EBFn binh"},{icon:"\uD83D\uDD4A\uFE0F",title:"V\u1EE3/Ch\u1ED3ng g\xF3a",desc:"M\u1EA5t v\u1EE3/ch\u1ED3ng c\u1EF1u chi\u1EBFn binh"}] },
-      veteran: { pct:18, bot:null, cards:[{icon:"\uD83C\uDFDC\uFE0F",title:"Sau 11/9",desc:"2001 \u0111\u1EBFn nay"},{icon:"\uD83C\uDF0A",title:"Chi\u1EBFn tranh V\xF9ng V\u1ECBnh",desc:"1990\u20132001"},{icon:"\uD83C\uDF3F",title:"Th\u1EDDi k\u1EF3 Vi\u1EC7t Nam",desc:"1964\u20131975"},{icon:"\uD83D\uDD35",title:"Th\u1EDDi k\u1EF3 kh\xE1c",desc:"H\xE0n Qu\u1ED1c, Chi\u1EBFn tranh L\u1EA1nh, v.v."}] },
-      era: { pct:32, bot:"B\u1EA1n hi\u1EC7n c\xF3 x\u1EBFp h\u1EA1ng khuy\u1EBFt t\u1EADt VA kh\xF4ng?", cards:[{icon:"\u2705",title:"C\xF3 \u2014 \u0111\xE3 x\u1EBFp h\u1EA1ng",desc:"T\xF4i c\xF3 t\u1EF7 l\u1EC7 %"},{icon:"\uD83D\uDCDD",title:"Ch\u01B0a \u2014 ch\u01B0a n\u1ED9p",desc:"Ch\u01B0a bao gi\u1EDD n\u1ED9p \u0111\u01A1n"},{icon:"\u274C",title:"B\u1ECB t\u1EEB ch\u1ED1i",desc:"\u0110\u01A1n c\u1EE7a t\xF4i b\u1ECB t\u1EEB ch\u1ED1i"},{icon:"\u2753",title:"Kh\xF4ng ch\u1EAFc",desc:"T\xF4i c\u1EA7n ki\u1EC3m tra"}] },
-      benefits_menu: { pct:48, bot:"\u0110\xE2y l\xE0 nh\u1EEFng ph\xFAc l\u1EE3i h\xE0ng \u0111\u1EA7u. B\u1EA1n quan t\xE2m \u0111i\u1EC1u n\xE0o nh\u1EA5t?", cards:[{icon:"\uD83D\uDCB0",title:"Tr\u1EE3 c\u1EA5p khuy\u1EBFt t\u1EADt",desc:"Ti\u1EC1n h\xE0ng th\xE1ng mi\u1EC5n thu\u1EBF"},{icon:"\uD83C\uDF93",title:"GI Bill",desc:"T\xE0i tr\u1EE3 gi\xE1o d\u1EE5c"},{icon:"\uD83C\uDFE0",title:"Vay mua nh\xE0 VA",desc:"Kh\xF4ng c\u1EA7n tr\u1EA3 tr\u01B0\u1EDBc"},{icon:"\u2622\uFE0F",title:"\u0110\u1EA1o lu\u1EADt PACT",desc:"Ph\u01A1i nhi\u1EC5m \u0111\u1ED9c h\u1EA1i"},{icon:"\uD83C\uDFE5",title:"Ch\u0103m s\xF3c s\u1EE9c kh\u1ECFe",desc:"Ch\u0103m s\xF3c y t\u1EBF VA"},{icon:"\uD83D\uDC54",title:"Ph\u1EE5c h\u1ED3i ngh\u1EC1 nghi\u1EC7p",desc:"\u0110\xE0o t\u1EA1o vi\u1EC7c l\xE0m"}] },
-      disability: { pct:62, bot:"<strong>B\u1ED3i th\u01B0\u1EDDng Khuy\u1EBFt t\u1EADt VA</strong> \u2014 ti\u1EC1n h\xE0ng th\xE1ng mi\u1EC5n thu\u1EBF cho c\xE1c t\xECnh tr\u1EA1ng li\xEAn quan \u0111\u1EBFn ph\u1EE5c v\u1EE5.\n\n<strong>M\u1EE9c 2026 (c\u1EF1u chi\u1EBFn binh, kh\xF4ng ng\u01B0\u1EDDi ph\u1EE5 thu\u1ED9c):</strong> 10%: $180 | 50%: $1,133 | 100%: $3,939/th\xE1ng\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>C\xF3 hi\u1EC7u l\u1EF1c th\xE1ng 12/2025 (COLA 2.8%). X\xE1c minh t\u1EA1i VA.gov.</em>", chips:["L\xE0m th\u1EBF n\xE0o \u0111\u1EC3 n\u1ED9p \u0111\u01A1n?","C\u1EA7n nh\u1EEFng gi\u1EA5y t\u1EDD g\xEC?","T\xECm t\u01B0 v\u1EA5n vi\xEAn VSO","Xem c\xE1c ph\xFAc l\u1EE3i kh\xE1c"] },
-      gi_bill: { pct:62, bot:"<strong>GI Bill Sau 9/11 (Chương 33)</strong> — phúc lợi giáo dục bạn đã kiếm được.\n\n<strong>Bao gồm:</strong>\n— <strong>Học phí:</strong> Toàn bộ tại trường công; lên đến $26,042/năm tại trường tư\n— <strong>Nhà ở:</strong> Trợ cấp hàng tháng theo mã ZIP ($1,169–$4,400+/tháng)\n— <strong>Sách:</strong> Lên đến $1,000/năm\n— <strong>Thời hạn:</strong> Lên đến 36 tháng\n\n<strong>Ai đủ điều kiện:</strong>\n— 90+ ngày phục vụ sau 10/9/2001\n— Xuất ngũ danh dự\n— Phúc lợi tăng theo thời gian phục vụ (100% từ 36+ tháng)\n\n<strong>Sinh viên trực tuyến:</strong> Mức cố định $1,169/tháng cho nhà ở.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Mức nhà ở năm học 2025–2026. Xác minh tại <a href='https://va.gov/education/benefit-rates/post-9-11-gi-bill-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>", chips:["Làm thế nào để đăng ký?","Tìm tư vấn viên VSO","Xem các phúc lợi khác"] },
-      home_loan: { pct:62, bot:"<strong>Vay Mua Nh\xE0 VA</strong> \u2014 m\u1ED9t trong nh\u1EEFng ph\xFAc l\u1EE3i gi\xE1 tr\u1ECB nh\u1EA5t b\u1EA1n \u0111\xE3 ki\u1EBFm \u0111\u01B0\u1EE3c.\n\n<strong>Kh\xF4ng c\u1EA7n tr\u1EA3 tr\u01B0\u1EDBc</strong> \u2014 h\u1EA7u h\u1EBFt kho\u1EA3n vay th\xF4ng th\u01B0\u1EDDng y\xEAu c\u1EA7u 3\u201320%\n<strong>Kh\xF4ng PMI</strong> \u2014 ti\u1EBFt ki\u1EC7m $100\u2013$300/th\xE1ng\n<strong>L\xE3i su\u1EA5t c\u1EA1nh tranh</strong> \u2014 th\u01B0\u1EDDng th\u1EA5p h\u01A1n th\u1EBF ch\u1EA5p th\xF4ng th\u01B0\u1EDDng\n<strong>S\u1EED d\u1EE5ng \u0111\u01B0\u1EE3c su\u1ED1t \u0111\u1EDDi</strong> \u2014 c\xF3 th\u1EC3 d\xF9ng l\u1EA1i sau khi tr\u1EA3 h\u1EBFt\n\n<strong>Ai \u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n:</strong> 90+ ng\xE0y ph\u1EE5c v\u1EE5, ho\u1EB7c 6+ n\u0103m V\u1EC7 binh Qu\u1ED1c gia/D\u1EF1 b\u1ECB.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>\u0110\xE2y l\xE0 th\xF4ng tin chung. \u0110i\u1EC1u kho\u1EA3n ph\u1EE5 thu\u1ED9c v\xE0o b\xEAn cho vay.</em>", chips:["T\xF4i c\xF3 \u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n Vay VA kh\xF4ng?","L\xE0m th\u1EBF n\xE0o \u0111\u1EC3 Vay VA?","T\xECm t\u01B0 v\u1EA5n vi\xEAn VSO","Xem c\xE1c ph\xFAc l\u1EE3i kh\xE1c"] },
-      healthcare: { pct:62, bot:"<strong>Ch\u0103m S\xF3c S\u1EE9c Kh\u1ECFe VA</strong> \u2014 ch\u0103m s\xF3c y t\u1EBF to\xE0n di\u1EC7n cho C\u1EF1u chi\u1EBFn binh \u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n.\n\n<strong>Bao g\u1ED3m:</strong>\n\u2014 Ch\u0103m s\xF3c ban \u0111\u1EA7u (kh\xE1m \u0111\u1ECBnh k\u1EF3, ch\u0103m s\xF3c ph\xF2ng ng\u1EEBa)\n\u2014 S\u1EE9c kh\u1ECFe t\xE2m th\u1EA7n (PTSD, tr\u1EA7m c\u1EA3m, lo \u00E2u)\n\u2014 Thu\u1ED1c (\xEDt ho\u1EB7c kh\xF4ng \u0111\u1ED3ng thanh to\xE1n)\n\u2014 Ch\u0103m s\xF3c c\u1EA5p c\u1EE9u v\xE0 kh\u1EA9n c\u1EA5p\n\u2014 Ch\u0103m s\xF3c chuy\xEAn khoa (tim m\u1EA1ch, ung th\u01B0, ph\u1EABu thu\u1EADt)\n\u2014 Telehealth (kh\xE1m qua video t\u1EA1i nh\xE0)\n\n<strong>Chi ph\xED:</strong> Mi\u1EC5n ph\xED cho nhi\u1EC1u C\u1EF1u chi\u1EBFn binh. C\u1EF1u chi\u1EBFn binh tham chi\u1EBFn \u0111\u01B0\u1EE3c <strong>ch\u0103m s\xF3c mi\u1EC5n ph\xED trong 10 n\u0103m</strong> sau khi xu\u1EA5t ng\u0169.\n\n\u0110\u0103ng k\xFD t\u1EA1i <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a> ho\u1EB7c g\u1ECDi <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a>.", chips:["L\xE0m th\u1EBF n\xE0o \u0111\u1EC3 \u0111\u0103ng k\xFD?","T\xF4i c\xF3 \u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n kh\xF4ng?","T\xECm t\u01B0 v\u1EA5n vi\xEAn VSO","Xem c\xE1c ph\xFAc l\u1EE3i kh\xE1c"] },
-      healthcare_enroll: { pct:76, bot:"<strong>Cách đăng ký Chăm sóc Sức khỏe VA:</strong>\n\n<strong>Cách 1</strong> — Trực tuyến: <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Đăng ký tại VA.gov</a>\n<strong>Cách 2</strong> — Gọi: <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a> (Thứ 2–6, 8am–8pm ET)\n<strong>Cách 3</strong> — Trực tiếp tại bất kỳ trung tâm y tế VA: <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Tìm địa điểm →</a>\n\n<strong>Bạn sẽ cần:</strong>\n— DD-214 (giấy xuất ngũ)\n— Giấy tờ tùy thân có ảnh\n— Thông tin bảo hiểm (nếu có — không bắt buộc)\n— Thông tin thu nhập (xác định mức đồng thanh toán)\n\n<strong>Sau khi nộp đơn:</strong>\nVA thường xử lý đơn trong <strong>1–2 tuần</strong>. Bạn sẽ nhận thư với nhóm ưu tiên và hướng dẫn đặt lịch khám đầu tiên.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Không chia sẻ thông tin cá nhân như SSN trong chat này — đăng ký an toàn tại VA.gov.</em>", chips:["Tôi có đủ điều kiện không?","Tìm tư vấn viên VSO","Xem các phúc lợi khác"] },
-      healthcare_eligibility: { pct:82, bot:"<strong>Điều kiện Chăm sóc Sức khỏe VA:</strong>\n\nBạn có thể đủ điều kiện nếu:\n— Phục vụ 24+ tháng liên tục, HOỎC\n— Xuất ngũ vì khuyết tật liên quan đến phục vụ, HOỎC\n— Phục vụ trong vùng chiến đấu sau 11/11/1998, HOỎC\n— Tiếp xúc với chất độc khi phục vụ (Đạo luật PACT — bao gồm Việt Nam, Vùng Vịnh, Iraq, Afghanistan)\n\n<strong>Mở rộng Đạo luật PACT:</strong> Từ tháng 3/2024, tất cả Cựu chiến binh tiếp xúc chất độc có thể đăng ký trực tiếp — không cần nộp đơn khuyết tật trước.\n\n<strong>Nhóm ưu tiên:</strong> Cựu chiến binh có xếp hạng khuyết tật cao hơn được khám trước và trả ít hơn.\n\nKhông chắc? Tư vấn viên VSO có thể kiểm tra điều kiện trong vài phút.", chips:["Làm thế nào để đăng ký?","Tìm tư vấn viên VSO","Xem các phúc lợi khác"] },
-      file_claim: { pct:76, bot:"<strong>C\xE1ch n\u1ED9p \u0111\u01A1n y\xEAu c\u1EA7u b\u1ED3i th\u01B0\u1EDDng khuy\u1EBFt t\u1EADt:</strong>\n\n<strong>B\u01B0\u1EDBc 1</strong> \u2014 T\u1EA1o t\xE0i kho\u1EA3n t\u1EA1i VA.gov\n<strong>B\u01B0\u1EDBc 2</strong> \u2014 Ho\xE0n th\xE0nh M\u1EABu VA 21-526EZ\n<strong>B\u01B0\u1EDBc 3</strong> \u2014 Chu\u1EA9n b\u1ECB DD-214 v\xE0 h\u1ED3 s\u01A1 y t\u1EBF\n<strong>B\u01B0\u1EDBc 4</strong> \u2014 N\u1ED9p tr\u1EF1c tuy\u1EBFn, qua \u0111\u01B0\u1EDDng b\u01B0u \u0111i\u1EC7n ho\u1EB7c tr\u1EF1c ti\u1EBFp", chips:["C\u1EA7n nh\u1EEFng gi\u1EA5y t\u1EDD g\xEC?","T\xECm t\u01B0 v\u1EA5n vi\xEAn VSO","Xem c\xE1c ph\xFAc l\u1EE3i kh\xE1c","B\u1EAFt \u0111\u1EA7u l\u1EA1i"] },
-      documents: { pct:82, bot:"<strong>Gi\u1EA5y t\u1EDD c\u1EA7n thi\u1EBFt:</strong>\n\n\u2014 DD-214\n\u2014 H\u1ED3 s\u01A1 y t\u1EBF\n\u2014 H\u1ED3 s\u01A1 \u0111i\u1EC1u tr\u1ECB qu\u00E2n s\u1EF1\n\u2014 L\u1EDDi khai c\u1EE7a \u0111\u1ED3ng \u0111\u1ED9i (khuy\u1EBFn ngh\u1ECB)\n\u2014 Th\u01B0 Nexus t\u1EEB b\xE1c s\u0129 (khuy\u1EBFn ngh\u1ECB)\n\n<em>Kh\xF4ng bao gi\u1EDD nh\u1EADp th\xF4ng tin c\xE1 nh\u00E2n nh\u01B0 s\u1ED1 An sinh X\xE3 h\u1ED9i v\xE0o chat n\xE0y \u2014 h\xE3y d\xF9ng VA.gov \u0111\u1EC3 g\u1EEDi t\xE0i li\u1EC7u an to\xE0n.</em>", chips:["T\xECm t\u01B0 v\u1EA5n vi\xEAn VSO","Xem c\xE1c ph\xFAc l\u1EE3i kh\xE1c","B\u1EAFt \u0111\u1EA7u l\u1EA1i"] },
-      vso: { pct:92, bot:null, chips:["L\xE0m th\u1EBF n\xE0o \u0111\u1EC3 n\u1ED9p \u0111\u01A1n?","Xem t\u1EA5t c\u1EA3 ph\xFAc l\u1EE3i","B\u1EAFt \u0111\u1EA7u l\u1EA1i"] },
-      spouse: { pct:48, bot:"C\u1EA3m \u01A1n s\u1EF1 h\u1ED7 tr\u1EE3 v\xE0 hy sinh c\u1EE7a b\u1EA1n. S\u1EE9c m\u1EA1nh \u0111\u1EB1ng sau m\u1ED7i qu\xE2n nh\xE2n l\xE0 gia \u0111\xECnh h\u1ECD. \uD83E\uDD0D\n\n<strong>Ph\xFAc l\u1EE3i d\xE0nh cho v\u1EE3/ch\u1ED3ng v\xE0 ng\u01B0\u1EDDi ph\u1EE5 thu\u1ED9c:</strong>\n\n\u2014 <strong>CHAMPVA</strong> \u2014 ch\u0103m s\xF3c s\u1EE9c kh\u1ECFe mi\u1EC5n ph\xED\n\u2014 <strong>DEA (Ch. 35)</strong> \u2014 ph\xFAc l\u1EE3i gi\xE1o d\u1EE5c\n\u2014 <strong>DIC</strong> \u2014 thanh to\xE1n h\xE0ng th\xE1ng\n\u2014 <strong>Vay mua nh\xE0</strong> \u2014 c\xF3 th\u1EC3 \u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n", chips:["Cho t\xF4i bi\u1EBFt v\u1EC1 DIC","Cho t\xF4i bi\u1EBFt v\u1EC1 CHAMPVA","T\xECm t\u01B0 v\u1EA5n vi\xEAn VSO","Xem c\xE1c ph\xFAc l\u1EE3i kh\xE1c"] },
-      voc_rehab: { pct:62, bot:"<strong>Ph\u1EE5c h\u1ED3i Ngh\u1EC1 nghi\u1EC7p (VR&E / Ch\u01B0\u01A1ng 31)</strong> \u2014 h\u1ED7 tr\u1EE3 ngh\u1EC1 nghi\u1EC7p cho C\u1EF1u chi\u1EBFn binh c\xF3 khuy\u1EBFt t\u1EADt li\xEAn quan \u0111\u1EBFn ph\u1EE5c v\u1EE5.\n\n<strong>Bao g\u1ED3m:</strong>\n\u2014 T\u01B0 v\u1EA5n v\xE0 l\u1EADp k\u1EBF ho\u1EA1ch ngh\u1EC1 nghi\u1EC7p\n\u2014 H\u1ECDc ph\xED, s\xE1ch v\xE0 v\u1EADt li\u1EC7u\n\u2014 \u0110\xE0o t\u1EA1o vi\u1EC7c l\xE0m v\xE0 ch\u1EE9ng ch\u1EC9\n\u2014 H\u1ED7 tr\u1EE3 t\xECm vi\u1EC7c\n\n<strong>Ai \u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n:</strong>\n\u2014 X\u1EBFp h\u1EA1ng khuy\u1EBFt t\u1EADt VA <strong>10% tr\u1EDF l\xEAn</strong>\n\u2014 C\xF3 r\xE0o c\u1EA3n vi\u1EC7c l\xE0m li\xEAn quan \u0111\u1EBFn khuy\u1EBFt t\u1EADt\n\n<strong>Th\u1EDDi h\u1EA1n:</strong> L\xEAn \u0111\u1EBFn 48 th\xE1ng.", chips:["L\xE0m th\u1EBF n\xE0o \u0111\u1EC3 \u0111\u0103ng k\xFD VR&E?","GI Bill","T\xECm t\u01B0 v\u1EA5n vi\xEAn VSO","Xem c\xE1c ph\xFAc l\u1EE3i kh\xE1c"] }
-    },
-    ko: {
-      welcome: { pct:5, bot:null, cards:[{icon:"\u{1F396}\uFE0F",title:"\uCC38\uC804\uC6A9\uC0AC",desc:"\uBBF8\uAD70\uC5D0\uC11C \uBCF5\uBB34\uD588\uC2B5\uB2C8\uB2E4"},{icon:"\u2694\uFE0F",title:"\uD604\uC5ED",desc:"\uD604\uC7AC \uBCF5\uBB34 \uC911"},{icon:"\uD83D\uDC9B",title:"\uBC30\uC6B0\uC790/\uAC00\uC871",desc:"\uCC38\uC804\uC6A9\uC0AC\uC758 \uAC00\uC871"},{icon:"\uD83D\uDD4A\uFE0F",title:"\uC720\uC871 \uBC30\uC6B0\uC790",desc:"\uCC38\uC804\uC6A9\uC0AC \uBC30\uC6B0\uC790\uB97C \uC783\uC740"}] },
-      veteran: { pct:18, bot:null, cards:[{icon:"\uD83C\uDFDC\uFE0F",title:"9/11 \uC774\uD6C4",desc:"2001\uB144\uBD80\uD130 \uD604\uC7AC"},{icon:"\uD83C\uDF0A",title:"\uAC78\uD504\uC804",desc:"1990\u20132001"},{icon:"\uD83C\uDF3F",title:"\uBCA0\uD2B8\uB0A8 \uC2DC\uB300",desc:"1964\u20131975"},{icon:"\uD83D\uDD35",title:"\uAE30\uD0C0 \uC2DC\uB300",desc:"\uD55C\uAD6D\uC804, \uB0C9\uC804 \uB4F1"}] },
-      era: { pct:32, bot:"\uD604\uC7AC VA \uC7A5\uC560 \uB4F1\uAE09\uC774 \uC788\uC2B5\uB2C8\uAE4C?", cards:[{icon:"\u2705",title:"\uC608 \u2014 \uB4F1\uAE09 \uC788\uC74C",desc:"\uB4F1\uAE09 %\uAC00 \uC788\uC2B5\uB2C8\uB2E4"},{icon:"\uD83D\uDCDD",title:"\uC544\uB2C8\uC624 \u2014 \uC544\uC9C1",desc:"\uCCAD\uAD6C\uD55C \uC801 \uC5C6\uC74C"},{icon:"\u274C",title:"\uAC70\uBD80\uB428",desc:"\uCCAD\uAD6C\uAC00 \uAC70\uBD80\uB428"},{icon:"\u2753",title:"\uC798 \uBAA8\uB984",desc:"\uD655\uC778\uC774 \uD544\uC694\uD569\uB2C8\uB2E4"}] },
-      benefits_menu: { pct:48, bot:"\uC8FC\uC694 \uD61C\uD0DD\uC785\uB2C8\uB2E4. \uC5B4\uB5A4 \uAC83\uC774 \uAD00\uC2EC\uC774\uC2ED\uB2C8\uAE4C?", cards:[{icon:"\uD83D\uDCB0",title:"\uC7A5\uC560 \uAE09\uC5EC",desc:"\uBE44\uACFC\uC138 \uC6D4\uBCC4 \uAE09\uC5EC"},{icon:"\uD83C\uDF93",title:"GI Bill",desc:"\uAD50\uC721 \uC790\uAE08"},{icon:"\uD83C\uDFE0",title:"VA \uC8FC\uD0DD \uB300\uCD9C",desc:"\uACC4\uC57D\uAE08 \uC5C6\uC74C"},{icon:"\u2622\uFE0F",title:"PACT\uBC95",desc:"\uB3C5\uC131 \uB178\uCD9C"},{icon:"\uD83C\uDFE5",title:"\uC758\uB8CC \uC11C\uBE44\uC2A4",desc:"VA \uC758\uB8CC"},{icon:"\uD83D\uDC54",title:"\uC9C1\uC5C5 \uC7AC\uD65C",desc:"\uC9C1\uC5C5 \uD6C8\uB828"}] },
-      disability: { pct:62, bot:"<strong>VA \uC7A5\uC560 \uBCF4\uC0C1</strong> \u2014 \uBCF5\uBB34 \uAD00\uB828 \uC0C1\uD0DC\uC5D0 \uB300\uD55C \uBE44\uACFC\uC138 \uC6D4\uBCC4 \uAE09\uC5EC.\n\n<strong>2026\uB144 \uC694\uC728 (\uCC38\uC804\uC6A9\uC0AC, \uBD80\uC591\uAC00\uC871 \uC5C6\uC74C):</strong> 10%: $180 | 50%: $1,133 | 100%: $3,939/\uC6D4\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>2025\uB144 12\uC6D4\uBD80\uD130 \uC801\uC6A9 (COLA 2.8%). VA.gov\uC5D0\uC11C \uD655\uC778\uD558\uC138\uC694.</em>", chips:["\uCCAD\uAD6C \uBC29\uBC95\uC740?","\uC5B4\uB5A4 \uC11C\uB958\uAC00 \uD544\uC694\uD569\uB2C8\uAE4C?","VSO \uC0C1\uB2F4\uC0AC \uCC3E\uAE30","\uB2E4\uB978 \uD61C\uD0DD \uBCF4\uAE30"] },
-      gi_bill: { pct:62, bot:"<strong>Post-9/11 GI Bill (33장)</strong> — 귀하가 획득한 교육 혜택.\n\n<strong>포함 항목:</strong>\n— <strong>학비:</strong> 공립대 전액; 사립대 최대 $26,042/년\n— <strong>주거:</strong> 학교 우편번호 기준 월 수당 ($1,169–$4,400+/월)\n— <strong>교재:</strong> 최대 $1,000/년\n— <strong>기간:</strong> 최대 36개월\n\n<strong>자격:</strong>\n— 2001년 9월 10일 이후 90일+ 현역 복무\n— 명예 제대\n— 복무 기간에 따라 혜택 증가 (36개월+ 시 100%)\n\n<strong>온라인 학생:</strong> 주거 수당 고정 $1,169/월.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>2025–2026 학년도 주거 수당. <a href='https://va.gov/education/benefit-rates/post-9-11-gi-bill-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>에서 확인하세요.</em>", chips:["신청 방법은?","GI Bill 이전 가능한가요?","VSO 상담사 찾기","다른 혜택 보기"] },
-      file_claim: { pct:76, bot:"<strong>VA \uC7A5\uC560 \uCCAD\uAD6C \uBC29\uBC95:</strong>\n\n<strong>1\uB2E8\uACC4</strong> \u2014 VA.gov\uC5D0\uC11C \uACC4\uC815 \uC0DD\uC131\n<strong>2\uB2E8\uACC4</strong> \u2014 VA \uC591\uC2DD 21-526EZ \uC791\uC131\n<strong>3\uB2E8\uACC4</strong> \u2014 DD-214 \uBC0F \uC758\uB8CC \uAE30\uB85D \uC900\uBE44\n<strong>4\uB2E8\uACC4</strong> \u2014 \uC628\uB77C\uC778, \uC6B0\uD3B8 \uB610\uB294 \uC9C1\uC811 \uC81C\uCD9C", chips:["\uC5B4\uB5A4 \uC11C\uB958\uAC00 \uD544\uC694\uD569\uB2C8\uAE4C?","VSO \uC0C1\uB2F4\uC0AC \uCC3E\uAE30","\uB2E4\uB978 \uD61C\uD0DD \uBCF4\uAE30","\uCC98\uC74C\uC73C\uB85C"] },
-      documents: { pct:82, bot:"<strong>\uD544\uC694\uD55C \uC11C\uB958:</strong>\n\n\u2014 DD-214\n\u2014 \uC758\uB8CC \uAE30\uB85D\n\u2014 \uBCF5\uBB34 \uCE58\uB8CC \uAE30\uB85D\n\u2014 \uB3D9\uB8CC \uC9C4\uC220\uC11C (\uAD8C\uC7A5)\n\u2014 \uC758\uC0AC\uC758 Nexus \uD3B8\uC9C0 (\uAD8C\uC7A5)\n\n<em>\uC774 \uCC57\uBD07\uC5D0 \uC8FC\ubbFC\uB4F1\uB85D\uBC88\uD638 \uB4F1 \uAC1C\uC778\uC815\uBCF4\uB97C \uC785\uB825\uD558\uC9C0 \uB9C8\uC138\uC694 \u2014 VA.gov\uC5D0\uC11C \uC548\uC804\uD558\uAC8C \uC81C\uCD9C\uD558\uC138\uC694.</em>", chips:["VSO \uC0C1\uB2F4\uC0AC \uCC3E\uAE30","\uB2E4\uB978 \uD61C\uD0DD \uBCF4\uAE30","\uCC98\uC74C\uC73C\uB85C"] },
-      vso: { pct:92, bot:null, chips:["\uCCAD\uAD6C \uBC29\uBC95\uC740?","\uBAA8\uB4E0 \uD61C\uD0DD \uBCF4\uAE30","\uCC98\uC74C\uC73C\uB85C"] },
-      spouse: { pct:48, bot:"\uADC0\uD558\uC758 \uC9C0\uC6D0\uACFC \uD76C\uC0DD\uC5D0 \uAC10\uC0AC\uB4DC\uB9BD\uB2C8\uB2E4. \uD83E\uDD0D\n\n<strong>\uBC30\uC6B0\uC790 \uBC0F \uBD80\uC591\uAC00\uC871\uC744 \uC704\uD55C \uD61C\uD0DD:</strong>\n\n\u2014 <strong>CHAMPVA</strong> \u2014 \uBB34\uB8CC VA \uC758\uB8CC\n\u2014 <strong>DEA (Ch. 35)</strong> \u2014 \uAD50\uC721 \uD61C\uD0DD\n\u2014 <strong>DIC</strong> \u2014 \uC6D4\uBCC4 \uC9C0\uAE09\uAE08\n\u2014 <strong>\uC8FC\uD0DD \uB300\uCD9C</strong> \u2014 \uC790\uACA9\uC774 \uB420 \uC218 \uC788\uC74C", chips:["DIC\uC5D0 \uB300\uD574 \uC54C\uB824\uC8FC\uC138\uC694","CHAMPVA\uC5D0 \uB300\uD574 \uC54C\uB824\uC8FC\uC138\uC694","VSO \uC0C1\uB2F4\uC0AC \uCC3E\uAE30","\uB2E4\uB978 \uD61C\uD0DD \uBCF4\uAE30"] },
-      healthcare: { pct:62, bot:"<strong>VA \uC758\uB8CC \uC11C\uBE44\uC2A4</strong> \u2014 \uC790\uACA9 \uC788\uB294 \uCC38\uC804\uC6A9\uC0AC\uB97C \uC704\uD55C \uC885\uD569 \uC758\uB8CC.\n\n<strong>\uD3EC\uD568 \uD56D\uBAA9:</strong>\n\u2014 1\uCC28 \uC9C4\uB8CC (\uC815\uAE30 \uAC80\uC9C4, \uC608\uBC29 \uCE58\uB8CC)\n\u2014 \uC815\uC2E0 \uAC74\uAC15 (PTSD, \uC6B0\uC6B8\uC99D, \uBD88\uC548)\n\u2014 \uCC98\uBC29\uC57D (\uC800\uB834\uD558\uAC70\uB098 \uBB34\uB8CC)\n\u2014 \uC751\uAE09 \uBC0F \uAE34\uAE09 \uCE58\uB8CC\n\u2014 \uC804\uBB38 \uC9C4\uB8CC (\uC2EC\uC7A5, \uC885\uC591, \uC678\uACFC)\n\u2014 \uC6D0\uACA9 \uC9C4\uB8CC (\uC9D1\uC5D0\uC11C \uD654\uC0C1 \uC9C4\uB8CC)\n\n<strong>\uBE44\uC6A9:</strong> \uB9CE\uC740 \uCC38\uC804\uC6A9\uC0AC\uC5D0\uAC8C \uBB34\uB8CC. \uC804\uD22C \uCC38\uC804\uC6A9\uC0AC\uB294 \uC81C\uB300 \uD6C4 <strong>10\uB144\uAC04 \uBB34\uB8CC \uCE58\uB8CC</strong>.\n\n<a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a>\uC5D0\uC11C \uB4F1\uB85D\uD558\uAC70\uB098 <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a>\uB85C \uC804\uD654\uD558\uC138\uC694.", chips:["\uB4F1\uB85D \uBC29\uBC95\uC740?","VA \uC758\uB8CC \uC790\uACA9\uC774 \uB418\uB098\uC694?","VSO \uC0C1\uB2F4\uC0AC \uCC3E\uAE30","\uB2E4\uB978 \uD61C\uD0DD \uBCF4\uAE30"] },
-      healthcare_enroll: { pct:76, bot:"<strong>VA 의료 서비스 등록 방법:</strong>\n\n<strong>방법 1</strong> — 온라인: <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov에서 신청</a>\n<strong>방법 2</strong> — 전화: <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a> (월–금 오전 8시–오후 8시 ET)\n<strong>방법 3</strong> — VA 의료 센터 직접 방문: <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>위치 찾기 →</a>\n\n<strong>필요한 서류:</strong>\n— DD-214 (제대 서류)\n— 사진이 있는 신분증\n— 보험 정보 (있는 경우 — 필수 아님)\n— 소득 정보 (본인부담금 수준 결정)\n\n<strong>신청 후:</strong>\nVA는 보통 <strong>1–2주</strong> 내에 처리합니다. 우선순위 그룹과 첫 진료 예약 안내가 포함된 편지를 받게 됩니다.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>이 채팅에서 SSN 등 개인정보를 공유하지 마세요 — VA.gov에서 안전하게 신청하세요.</em>", chips:["VA 의료 자격이 되나요?","VSO 상담사 찾기","다른 혜택 보기"] },
-      healthcare_eligibility: { pct:82, bot:"<strong>VA 의료 서비스 자격:</strong>\n\n다음 중 해당되면 자격이 있을 수 있습니다:\n— 24개월+ 연속 현역 복무, 또는\n— 복무 관련 장애로 제대, 또는\n— 1998년 11월 11일 이후 전투 지역 복무, 또는\n— 복무 중 독성 물질 노출 (PACT법 — 베트남, 걸프전, 이라크, 아프가니스탄 포함)\n\n<strong>PACT법 확대:</strong> 2024년 3월부터 독성 물질에 노출된 모든 참전용사가 직접 등록 가능 — 장애 신청 불필요.\n\n<strong>우선순위 그룹:</strong> 장애 등급이 높은 참전용사가 먼저 진료받고 비용이 적습니다.\n\n확실하지 않으신가요? VSO 상담사가 몇 분 안에 자격을 확인해 드립니다.", chips:["등록 방법은?","VSO 상담사 찾기","다른 혜택 보기"] },
-      home_loan: { pct:62, bot:"<strong>VA \uC8FC\uD0DD \uB300\uCD9C</strong> \u2014 \uAC00\uC7A5 \uAC00\uCE58 \uC788\uB294 \uD61C\uD0DD \uC911 \uD558\uB098\uC785\uB2C8\uB2E4.\n\n<strong>\uACC4\uC57D\uAE08 \uBD88\uD544\uC694</strong> \u2014 \uC77C\uBC18 \uB300\uCD9C\uC740 3\u201320% \uD544\uC694\n<strong>PMI \uC5C6\uC74C</strong> \u2014 \uC6D4 $100\u2013$300 \uC808\uC57D\n<strong>\uACBD\uC7C1\uB825 \uC788\uB294 \uAE08\uB9AC</strong> \u2014 \uC77C\uBC18 \uBAA8\uAE30\uC9C0\uBCF4\uB2E4 \uB099\uC74C\n<strong>\uD3C9\uC0DD \uC7AC\uC0AC\uC6A9 \uAC00\uB2A5</strong> \u2014 \uC774\uC804 \uB300\uCD9C \uC0C1\uD658 \uD6C4 \uC7AC\uC0AC\uC6A9\n\n<strong>\uC790\uACA9:</strong> 90\uC77C+ \uD604\uC5ED \uBCF5\uBB34, \uB610\uB294 6\uB144+ \uC8FC\uBC29\uC704\uAD70/\uC608\uBE44\uAD70.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>\uC77C\uBC18 \uC815\uBCF4\uC785\uB2C8\uB2E4. \uB300\uCD9C \uC870\uAC74\uC740 \uB300\uCD9C\uAE30\uAD00\uC5D0 \uB530\uB77C \uB2E4\uB985\uB2C8\uB2E4.</em>", chips:["VA \uB300\uCD9C \uC790\uACA9\uC774 \uB418\uB098\uC694?","VA \uB300\uCD9C \uBC1B\uB294 \uBC29\uBC95\uC740?","VSO \uC0C1\uB2F4\uC0AC \uCC3E\uAE30","\uB2E4\uB978 \uD61C\uD0DD \uBCF4\uAE30"] },
-      voc_rehab: { pct:62, bot:"<strong>\uC9C1\uC5C5 \uC7AC\uD65C (VR&E / 31\uC7A5)</strong> \u2014 \uC7A5\uC560\uAC00 \uC788\uB294 \uCC38\uC804\uC6A9\uC0AC\uB97C \uC704\uD55C \uC9C1\uC5C5 \uC9C0\uC6D0.\n\n<strong>\uD3EC\uD568 \uD56D\uBAA9:</strong>\n\u2014 \uC9C1\uC5C5 \uC0C1\uB2F4 \uBC0F \uACC4\uD68D\n\u2014 \uD559\uBE44, \uAD50\uC7AC \uBC0F \uC790\uC7AC\n\u2014 \uC9C1\uC5C5 \uD6C8\uB828 \uBC0F \uC790\uACA9\uC99D\n\u2014 \uC774\uB825\uC11C \uB3C4\uC6C0 \uBC0F \uCDE8\uC5C5 \uC9C0\uC6D0\n\n<strong>\uC790\uACA9:</strong>\n\u2014 VA \uC7A5\uC560 \uB4F1\uAE09 <strong>10% \uC774\uC0C1</strong>\n\u2014 \uC7A5\uC560 \uAD00\uB828 \uCDE8\uC5C5 \uC7A5\uBCBD\n\n<strong>\uAE30\uAC04:</strong> \uCD5C\uB300 48\uAC1C\uC6D4.", chips:["VR&E \uC2E0\uCCAD \uBC29\uBC95\uC740?","GI Bill","VSO \uC0C1\uB2F4\uC0AC \uCC3E\uAE30","\uB2E4\uB978 \uD61C\uD0DD \uBCF4\uAE30"] }
-    },
-    tl: {
-      welcome: { pct:5, bot:null, cards:[{icon:"\u{1F396}\uFE0F",title:"Beterano",desc:"Naglingkod sa militar ng US"},{icon:"\u2694\uFE0F",title:"Aktibong Serbisyo",desc:"Kasalukuyang naglilingkod"},{icon:"\uD83D\uDC9B",title:"Asawa / Pamilya",desc:"Miyembro ng pamilya ng beterano"},{icon:"\uD83D\uDD4A\uFE0F",title:"Naiwang Asawa",desc:"Nawalan ng asawang beterano"}] },
-      veteran: { pct:18, bot:null, cards:[{icon:"\uD83C\uDFDC\uFE0F",title:"Post-9/11",desc:"2001 hanggang kasalukuyan"},{icon:"\uD83C\uDF0A",title:"Digmaang Gulpo",desc:"1990\u20132001"},{icon:"\uD83C\uDF3F",title:"Panahon ng Vietnam",desc:"1964\u20131975"},{icon:"\uD83D\uDD35",title:"Ibang Panahon",desc:"Korea, Cold War, atbp."}] },
-      era: { pct:32, bot:"Mayroon ka bang VA disability rating sa kasalukuyan?", cards:[{icon:"\u2705",title:"Oo \u2014 may rating",desc:"Mayroon akong rating %"},{icon:"\uD83D\uDCDD",title:"Hindi \u2014 hindi pa",desc:"Hindi pa nag-file"},{icon:"\u274C",title:"Tinanggihan",desc:"Tinanggihan ang aking claim"},{icon:"\u2753",title:"Hindi sigurado",desc:"Kailangan kong suriin"}] },
-      benefits_menu: { pct:48, bot:"Narito ang mga pangunahing benepisyo. Alin ang interesado ka?", cards:[{icon:"\uD83D\uDCB0",title:"Bayad sa Kapansanan",desc:"Buwanang bayad na walang buwis"},{icon:"\uD83C\uDF93",title:"GI Bill",desc:"Pondo sa edukasyon"},{icon:"\uD83C\uDFE0",title:"VA Home Loan",desc:"Walang down payment"},{icon:"\u2622\uFE0F",title:"PACT Act",desc:"Toxic exposure"},{icon:"\uD83C\uDFE5",title:"Pangangalagang Pangkalusugan",desc:"VA medical care"},{icon:"\uD83D\uDC54",title:"Voc Rehab",desc:"Pagsasanay sa trabaho"}] },
-      disability: { pct:62, bot:"<strong>VA Disability Compensation</strong> \u2014 buwanang bayad na walang buwis para sa mga kondisyong konektado sa serbisyo.\n\n<strong>2026 na rate (beterano, walang dependent):</strong> 10%: $180 | 50%: $1,133 | 100%: $3,939/buwan\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Epektibo Dis 2025 (COLA 2.8%). I-verify sa VA.gov.</em>", chips:["Paano mag-file ng claim?","Anong mga dokumento ang kailangan?","Humanap ng VSO counselor","Tingnan ang ibang benepisyo"] },
-      gi_bill: { pct:62, bot:"<strong>Post-9/11 GI Bill (Chapter 33)</strong> — ang iyong nakamit na benepisyo sa edukasyon.\n\n<strong>Saklaw:</strong>\n— <strong>Tuition:</strong> Buong bayad sa public schools; hanggang $26,042/taon sa private\n— <strong>Housing:</strong> Buwanang allowance batay sa ZIP code ng school ($1,169–$4,400+/buwan)\n— <strong>Mga libro:</strong> Hanggang $1,000/taon\n— <strong>Tagal:</strong> Hanggang 36 na buwan\n\n<strong>Sino ang kwalipikado:</strong>\n— 90+ araw active duty pagkatapos ng Set 10, 2001\n— Honorable discharge\n— Mga benepisyo tumataas ayon sa tagal ng serbisyo (100% sa 36+ buwan)\n\n<strong>Online na estudyante:</strong> Fixed rate na $1,169/buwan para sa housing.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Housing rates para sa 2025–2026 academic year. I-verify sa <a href='https://va.gov/education/benefit-rates/post-9-11-gi-bill-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>", chips:["Paano mag-apply?","Humanap ng VSO counselor","Tingnan ang ibang benepisyo"] },
-      file_claim: { pct:76, bot:"<strong>Paano mag-file ng claim sa kapansanan:</strong>\n\n<strong>Hakbang 1</strong> \u2014 Gumawa ng account sa VA.gov\n<strong>Hakbang 2</strong> \u2014 Kumpletuhin ang VA Form 21-526EZ\n<strong>Hakbang 3</strong> \u2014 Tipunin ang DD-214 at mga medikal na rekord\n<strong>Hakbang 4</strong> \u2014 Isumite online, sa pamamagitan ng koreo, o personal", chips:["Anong mga dokumento ang kailangan?","Humanap ng VSO counselor","Tingnan ang ibang benepisyo","Magsimula muli"] },
-      documents: { pct:82, bot:"<strong>Mga dokumentong kailangan:</strong>\n\n\u2014 DD-214\n\u2014 Mga medikal na rekord\n\u2014 Mga rekord ng serbisyo sa militar\n\u2014 Buddy statements (inirerekomenda)\n\u2014 Nexus letter mula sa doktor (inirerekomenda)\n\n<em>Huwag ibahagi ang personal na impormasyon tulad ng Social Security number sa chat na ito \u2014 gamitin ang VA.gov para magsumite ng mga dokumento nang ligtas.</em>", chips:["Humanap ng VSO counselor","Tingnan ang ibang benepisyo","Magsimula muli"] },
-      vso: { pct:92, bot:null, chips:["Paano mag-file ng claim?","Tingnan ang lahat ng benepisyo","Magsimula muli"] },
-      spouse: { pct:48, bot:"Salamat sa iyong suporta at sakripisyo. Ang lakas sa likod ng bawat sundalo ay ang kanilang pamilya. \uD83E\uDD0D\n\n<strong>Mga benepisyo para sa asawa at dependents:</strong>\n\n\u2014 <strong>CHAMPVA</strong> \u2014 libreng VA healthcare\n\u2014 <strong>DEA (Ch. 35)</strong> \u2014 mga benepisyo sa edukasyon\n\u2014 <strong>DIC</strong> \u2014 buwanang bayad\n\u2014 <strong>Home Loan</strong> \u2014 maaaring maging eligible", chips:["Sabihin sa akin ang tungkol sa DIC","Sabihin sa akin ang tungkol sa CHAMPVA","Humanap ng VSO counselor","Tingnan ang ibang benepisyo"] },
-      healthcare: { pct:62, bot:"<strong>VA Healthcare</strong> \u2014 komprehensibong pangangalagang medikal para sa mga kwalipikadong Beterano.\n\n<strong>Saklaw:</strong>\n\u2014 Primary care (regular checkup, preventive care)\n\u2014 Mental health (PTSD, depression, anxiety)\n\u2014 Mga gamot (mababa o walang copay)\n\u2014 Urgent care at emergency care\n\u2014 Specialty care (cardiology, oncology, surgery)\n\u2014 Telehealth (video appointment mula sa bahay)\n\n<strong>Gastos:</strong> Libre para sa maraming Beterano. Mga combat Veteran ay may <strong>libreng pangangalaga sa loob ng 10 taon</strong> pagkatapos ng discharge.\n\nMag-enroll sa <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a> o tumawag sa <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a>.", chips:["Paano mag-enroll?","Kwalipikado ba ako sa VA Healthcare?","Humanap ng VSO counselor","Tingnan ang ibang benepisyo"] },
-      healthcare_enroll: { pct:76, bot:"<strong>Paano mag-enroll sa VA Healthcare:</strong>\n\n<strong>Paraan 1</strong> — Online: <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Mag-apply sa VA.gov</a>\n<strong>Paraan 2</strong> — Tumawag: <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a> (Lun–Biy 8am–8pm ET)\n<strong>Paraan 3</strong> — Personal sa kahit anong VA medical center: <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>Hanapin ang lokasyon →</a>\n\n<strong>Kakailanganin mo:</strong>\n— DD-214 (discharge papers)\n— Government-issued photo ID\n— Insurance info (kung mayroon — hindi required)\n— Income information (para matukoy ang copay level)\n\n<strong>Pagkatapos mag-apply:</strong>\nKaraniwang pinoproseso ng VA ang mga aplikasyon sa loob ng <strong>1–2 linggo</strong>. Makakatanggap ka ng sulat na may priority group assignment at instructions para sa unang appointment.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Huwag ibahagi ang personal na impormasyon tulad ng SSN sa chat na ito — mag-apply nang ligtas sa VA.gov.</em>", chips:["Kwalipikado ba ako sa VA Healthcare?","Humanap ng VSO counselor","Tingnan ang ibang benepisyo"] },
-      healthcare_eligibility: { pct:82, bot:"<strong>Eligibility sa VA Healthcare:</strong>\n\nMaaaring kwalipikado ka kung:\n— 24+ buwan na tuloy-tuloy na active duty, O\n— Na-discharge dahil sa service-connected disability, O\n— Nagsilbi sa combat zone pagkatapos ng Nov 11, 1998, O\n— Na-expose sa toxins habang naglilingkod (PACT Act — kasama ang Vietnam, Gulf War, Iraq, Afghanistan)\n\n<strong>PACT Act expansion:</strong> Simula Marso 2024, lahat ng toxic-exposed na Beterano ay maaaring mag-enroll nang direkta — hindi na kailangang mag-apply para sa disability muna.\n\n<strong>Priority groups:</strong> Mga Beterano na may mas mataas na disability rating ay unang natitingnan at mas mababa ang bayad.\n\nHindi sigurado? Maaaring i-verify ng VSO counselor ang iyong eligibility sa ilang minuto.", chips:["Paano mag-enroll?","Humanap ng VSO counselor","Tingnan ang ibang benepisyo"] },
-      home_loan: { pct:62, bot:"<strong>VA Home Loan</strong> \u2014 isa sa pinaka-mahalagang benepisyo na iyong nakamit.\n\n<strong>Walang down payment</strong> \u2014 karamihan ng conventional loan ay nangangailangan ng 3\u201320%\n<strong>Walang PMI</strong> \u2014 makatitipid ng $100\u2013$300/buwan\n<strong>Competitive na interest rates</strong> \u2014 mas mababa kaysa conventional mortgage\n<strong>Magagamit muli</strong> \u2014 maaaring gamitin ulit pagkatapos bayaran ang nakaraang VA loan\n\n<strong>Sino ang kwalipikado:</strong> 90+ araw active duty, o 6+ taon National Guard/Reserve.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Ito ay pangkalahatang impormasyon lamang. Ang mga tuntunin ay depende sa iyong lender.</em>", chips:["Kwalipikado ba ako sa VA Home Loan?","Paano kumuha ng VA Home Loan?","Humanap ng VSO counselor","Tingnan ang ibang benepisyo"] },
-      voc_rehab: { pct:62, bot:"<strong>Vocational Rehabilitation (VR&E / Chapter 31)</strong> \u2014 suporta sa karera para sa mga Beterano na may kapansanan.\n\n<strong>Saklaw:</strong>\n\u2014 Career counseling at planning\n\u2014 Tuition, libro at supplies\n\u2014 Job training at certifications\n\u2014 Tulong sa resume at job placement\n\n<strong>Sino ang kwalipikado:</strong>\n\u2014 VA disability rating na <strong>10% o higit pa</strong>\n\u2014 May hadlang sa trabaho dahil sa kapansanan\n\n<strong>Tagal:</strong> Hanggang 48 buwan.", chips:["Paano mag-apply sa VR&E?","GI Bill","Humanap ng VSO counselor","Tingnan ang ibang benepisyo"] }
-    }
-  };
-
-  // ── MULTILINGUAL CHIP ROUTES ───────────────────────────────────────────────
-  var CHIP_MAP_I18N = {
-    es: {
-      "Veterano":"veteran","Servicio Activo":"active_duty","Cónyuge / Familia":"spouse","Cónyuge Sobreviviente":"surviving_spouse",
-      "Post-11 de Sep.":"era","Guerra del Golfo":"era","Era de Vietnam":"era","Otra Era":"era",
-      "Sí — calificado":"disability","No — todavía no":"file_claim","Fue denegado":"denied","No estoy seguro":"file_claim",
-      "Pago por Discapacidad":"disability","GI Bill":"gi_bill","Préstamo VA":"home_loan","Ley PACT":"pact_act",
-      "Atención Médica":"healthcare","Rehabilitación Voc.":"voc_rehab",
-      "¿Cómo presento un reclamo?":"file_claim","¿Qué documentos necesito?":"documents",
-      "Buscar consejero VSO":"vso","Ver otros beneficios":"benefits_menu","Ver todos los beneficios":"all_benefits",
-      "¿Califico?":"pact_qualify","¿Soy elegible?":"home_loan_apply","¿Cómo solicito?":"gi_bill_apply",
-      "¿Cómo me inscribo?":"healthcare_enroll","¿Soy elegible para atención médica VA?":"healthcare_eligibility",
-      "Cuéntame sobre el programa BDD":"bdd","Cuéntame sobre DIC":"dic","Cuéntame sobre CHAMPVA":"champva",
-      "¿Cómo solicito DIC?":"dic_apply","¿Puedo transferir mi GI Bill?":"gi_bill_transfer",
-      "¿Soy elegible para un Préstamo VA?":"home_loan_apply",
-      "¿Cómo obtengo un Préstamo VA?":"home_loan_apply",
-      "¿Cómo solicito Rehabilitación Voc.?":"voc_rehab_apply",
-      "Empezar de nuevo":"welcome"
-    },
-    vi: {
-      "C\u1EF1u chi\u1EBFn binh":"veteran","T\u1EA1i ng\u0169":"active_duty","V\u1EE3/Ch\u1ED3ng & Gia \u0111\xECnh":"spouse","V\u1EE3/Ch\u1ED3ng g\xF3a":"surviving_spouse",
-      "Sau 11/9":"era","Chi\u1EBFn tranh V\xF9ng V\u1ECBnh":"era","Th\u1EDDi k\u1EF3 Vi\u1EC7t Nam":"era","Th\u1EDDi k\u1EF3 kh\xE1c":"era",
-      "C\xF3 \u2014 \u0111\xE3 x\u1EBFp h\u1EA1ng":"disability","Ch\u01B0a \u2014 ch\u01B0a n\u1ED9p":"file_claim","B\u1ECB t\u1EEB ch\u1ED1i":"denied","Kh\xF4ng ch\u1EAFc":"file_claim",
-      "Tr\u1EE3 c\u1EA5p khuy\u1EBFt t\u1EADt":"disability","GI Bill":"gi_bill","Vay mua nh\xE0 VA":"home_loan","\u0110\u1EA1o lu\u1EADt PACT":"pact_act",
-      "Ch\u0103m s\xF3c s\u1EE9c kh\u1ECFe":"healthcare","Ph\u1EE5c h\u1ED3i ngh\u1EC1 nghi\u1EC7p":"voc_rehab",
-      "L\xE0m th\u1EBF n\xE0o \u0111\u1EC3 n\u1ED9p \u0111\u01A1n?":"file_claim","C\u1EA7n nh\u1EEFng gi\u1EA5y t\u1EDD g\xEC?":"documents",
-      "T\xECm t\u01B0 v\u1EA5n vi\xEAn VSO":"vso","Xem c\xE1c ph\xFAc l\u1EE3i kh\xE1c":"benefits_menu","Xem t\u1EA5t c\u1EA3 ph\xFAc l\u1EE3i":"all_benefits",
-      "T\xF4i c\xF3 \u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n kh\xF4ng?":"pact_qualify","L\xE0m th\u1EBF n\xE0o \u0111\u1EC3 \u0111\u0103ng k\xFD?":"gi_bill_apply",
-      "Cho t\xF4i bi\u1EBFt v\u1EC1 DIC":"dic","Cho t\xF4i bi\u1EBFt v\u1EC1 CHAMPVA":"champva",
-      "T\xF4i c\xF3 \u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n Vay VA kh\xF4ng?":"home_loan_apply",
-      "L\xE0m th\u1EBF n\xE0o \u0111\u1EC3 Vay VA?":"home_loan_apply",
-      "L\xE0m th\u1EBF n\xE0o \u0111\u1EC3 \u0111\u0103ng k\xFD VR&E?":"voc_rehab_apply",
-      "T\xF4i c\xF3 \u0111\u1EE7 \u0111i\u1EC1u ki\u1EC7n kh\xF4ng?":"healthcare_eligibility",
-      "B\u1EAFt \u0111\u1EA7u l\u1EA1i":"welcome"
-    },
-    ko: {
-      "\uCC38\uC804\uC6A9\uC0AC":"veteran","\uD604\uC5ED":"active_duty","\uBC30\uC6B0\uC790/\uAC00\uC871":"spouse","\uC720\uC871 \uBC30\uC6B0\uC790":"surviving_spouse",
-      "9/11 \uC774\uD6C4":"era","\uAC78\uD504\uC804":"era","\uBCA0\uD2B8\uB0A8 \uC2DC\uB300":"era","\uAE30\uD0C0 \uC2DC\uB300":"era",
-      "\uC608 \u2014 \uB4F1\uAE09 \uC788\uC74C":"disability","\uC544\uB2C8\uC624 \u2014 \uC544\uC9C1":"file_claim","\uAC70\uBD80\uB428":"denied","\uC798 \uBAA8\uB984":"file_claim",
-      "\uC7A5\uC560 \uAE09\uC5EC":"disability","GI Bill":"gi_bill","VA \uC8FC\uD0DD \uB300\uCD9C":"home_loan","PACT\uBC95":"pact_act",
-      "\uC758\uB8CC \uC11C\uBE44\uC2A4":"healthcare","\uC9C1\uC5C5 \uC7AC\uD65C":"voc_rehab",
-      "\uCCAD\uAD6C \uBC29\uBC95\uC740?":"file_claim","\uC5B4\uB5A4 \uC11C\uB958\uAC00 \uD544\uC694\uD569\uB2C8\uAE4C?":"documents",
-      "VSO \uC0C1\uB2F4\uC0AC \uCC3E\uAE30":"vso","\uB2E4\uB978 \uD61C\uD0DD \uBCF4\uAE30":"benefits_menu","\uBAA8\uB4E0 \uD61C\uD0DD \uBCF4\uAE30":"all_benefits",
-      "\uC790\uACA9\uC774 \uB418\uB098\uC694?":"pact_qualify","\uB4F1\uB85D \uBC29\uBC95\uC740?":"healthcare_enroll",
-      "DIC\uC5D0 \uB300\uD574 \uC54C\uB824\uC8FC\uC138\uC694":"dic","CHAMPVA\uC5D0 \uB300\uD574 \uC54C\uB824\uC8FC\uC138\uC694":"champva",
-      "VA \uB300\uCD9C \uC790\uACA9\uC774 \uB418\uB098\uC694?":"home_loan_apply",
-      "VA \uB300\uCD9C \uBC1B\uB294 \uBC29\uBC95\uC740?":"home_loan_apply",
-      "VR&E \uC2E0\uCCAD \uBC29\uBC95\uC740?":"voc_rehab_apply",
-      "VA \uC758\uB8CC \uC790\uACA9\uC774 \uB418\uB098\uC694?":"healthcare_eligibility",
-      "신청 방법은?":"gi_bill_apply",
-      "GI Bill 이전 가능한가요?":"gi_bill_transfer",
-      "\uCC98\uC74C\uC73C\uB85C":"welcome"
-    },
-    tl: {
-      "Beterano":"veteran","Aktibong Serbisyo":"active_duty","Asawa / Pamilya":"spouse","Naiwang Asawa":"surviving_spouse",
-      "Post-9/11":"era","Digmaang Gulpo":"era","Panahon ng Vietnam":"era","Ibang Panahon":"era",
-      "Oo \u2014 may rating":"disability","Hindi \u2014 hindi pa":"file_claim","Tinanggihan":"denied","Hindi sigurado":"file_claim",
-      "Bayad sa Kapansanan":"disability","GI Bill":"gi_bill","VA Home Loan":"home_loan","PACT Act":"pact_act",
-      "Pangangalagang Pangkalusugan":"healthcare","Voc Rehab":"voc_rehab",
-      "Paano mag-file ng claim?":"file_claim","Anong mga dokumento ang kailangan?":"documents",
-      "Humanap ng VSO counselor":"vso","Tingnan ang ibang benepisyo":"benefits_menu","Tingnan ang lahat ng benepisyo":"all_benefits",
-      "Kwalipikado ba ako?":"pact_qualify","Paano mag-apply?":"file_claim","Paano mag-enroll?":"healthcare_enroll",
-      "Sabihin sa akin ang tungkol sa DIC":"dic","Sabihin sa akin ang tungkol sa CHAMPVA":"champva",
-      "Kwalipikado ba ako sa VA Home Loan?":"home_loan_apply",
-      "Paano kumuha ng VA Home Loan?":"home_loan_apply",
-      "Paano mag-apply sa VR&E?":"voc_rehab_apply",
-      "Kwalipikado ba ako sa VA Healthcare?":"healthcare_eligibility",
-      "Magsimula muli":"welcome"
-    }
-  };
   // ── CHIP → NODE MAP ────────────────────────────────────────────────────────
   var CHIP_MAP = {
     'Veteran':'veteran', 'Active Duty':'active_duty', 'Spouse / Family':'spouse',
@@ -1028,112 +887,29 @@
   ];
 
   // ── i18n ───────────────────────────────────────────────────────────────────
-  var I18N = {
-    en: {
-      ph: 'Type a question or tap an option…',
-      online: 'Online · Free · 24/7',
-      choose: 'Choose an option',
-      warn: function (r) { return 'You have ' + r + ' question' + (r === 1 ? '' : 's') + ' remaining this session.'; },
-      limitTitle: 'Session Complete',
-      limitMsg: "You've covered a lot of ground. Your VSO counselor can help you continue — free.",
-      limitTopics: 'Topics you explored:',
-      sumPrompt: 'Want a summary sent to your email?',
-      sumPH: 'your@email.com',
-      sendSum: 'Send My Summary →',
-      sumSent: '✓ Summary sent! Check your inbox.',
-      contVSO: 'Continue with your VSO counselor:',
-      startFresh: 'Start Fresh →',
-      gated: 'For this topic, we recommend speaking directly with your VSO counselor — they can provide personalized guidance at no cost.',
-      fallback: "Great question. For the most accurate guidance I'd recommend speaking with a free VSO counselor.",
-      fallbackChips: ['Find a VSO counselor', 'See all benefits', 'Start over'],
-      disclaimerTitle: 'Before we get started',
-      disclaimerBody: 'VetNavigator provides general VA benefits information only.\n\nThis chatbot is not a lawyer, claims agent, or VSO counselor. Information shared here is for guidance purposes and may not reflect your specific situation.\n\nFor personalized help, contact your local VSO counselor.\n\nDo not share personal information such as your Social Security Number, VA file number, date of birth, or financial details in this chat.\n\nFor further details, please review our <a href="https://vetnavigator.ai/privacy.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Privacy Policy</a> and <a href="https://vetnavigator.ai/terms.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Terms of Service</a>.',
-      disclaimerBtn: 'I Understand — Let\'s Go'
-    },
-    es: {
-      ph: 'Escriba una pregunta o toque una opción…',
-      online: 'En línea · Gratuito · 24/7',
-      choose: 'Elija una opción',
-      warn: function (r) { return 'Le quedan ' + r + ' pregunta' + (r === 1 ? '' : 's') + ' en esta sesión.'; },
-      limitTitle: 'Sesión Completa',
-      limitMsg: 'Ha cubierto mucho terreno. Su consejero VSO puede ayudarle a continuar — gratis.',
-      limitTopics: 'Temas que exploró:',
-      sumPrompt: '¿Desea recibir un resumen por correo?',
-      sumPH: 'su@correo.com',
-      sendSum: 'Enviar Mi Resumen →',
-      sumSent: '✓ ¡Resumen enviado!',
-      contVSO: 'Continúe con su consejero VSO:',
-      startFresh: 'Comenzar de Nuevo →',
-      gated: 'Para este tema, recomendamos hablar directamente con su consejero VSO — pueden brindar orientación personalizada sin costo.',
-      fallback: '¡Buena pregunta! Recomiendo hablar con un consejero VSO gratuito.',
-      fallbackChips: ['Buscar consejero VSO', 'Ver todos los beneficios', 'Empezar de nuevo'],
-      disclaimerTitle: 'Antes de comenzar',
-      disclaimerBody: 'VetNavigator proporciona información general sobre beneficios del VA únicamente.\n\nEste chatbot no es un abogado, agente de reclamaciones ni consejero VSO. La información compartida aquí es orientativa y puede no reflejar su situación específica.\n\nPara ayuda personalizada, comuníquese con su consejero VSO local.\n\nNo comparta información personal como su Número de Seguro Social, número de archivo del VA, fecha de nacimiento o detalles financieros en este chat.\n\nPara más detalles, consulte nuestra <a href="https://vetnavigator.ai/privacy.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Política de Privacidad</a> y <a href="https://vetnavigator.ai/terms.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Términos de Servicio</a>.',
-      disclaimerBtn: 'Entiendo — ¡Comencemos!'
-    },
-    vi: {
-      ph: 'Nhập câu hỏi hoặc chọn tùy chọn…',
-      online: 'Trực tuyến · Miễn phí · 24/7',
-      choose: 'Chọn một tùy chọn',
-      warn: function (r) { return 'Bạn còn ' + r + ' câu hỏi trong phiên này.'; },
-      limitTitle: 'Phiên Hoàn Thành',
-      limitMsg: 'Bạn đã tìm hiểu được nhiều. Cố vấn VSO có thể giúp tiếp tục — miễn phí.',
-      limitTopics: 'Chủ đề bạn đã khám phá:',
-      sumPrompt: 'Bạn có muốn nhận tóm tắt qua email?',
-      sumPH: 'email@cua-ban.com',
-      sendSum: 'Gửi Tóm Tắt →',
-      sumSent: '✓ Đã gửi tóm tắt!',
-      contVSO: 'Tiếp tục với cố vấn VSO:',
-      startFresh: 'Bắt Đầu Lại →',
-      gated: 'Đối với chủ đề này, chúng tôi khuyên bạn nên nói chuyện trực tiếp với cố vấn VSO — họ có thể cung cấp hướng dẫn cá nhân miễn phí.',
-      fallback: 'Câu hỏi hay! Tôi khuyên nên nói chuyện với cố vấn VSO miễn phí.',
-      fallbackChips: ['Tìm cố vấn VSO', 'Xem tất cả phúc lợi', 'Bắt đầu lại'],
-      disclaimerTitle: 'Trước khi bắt đầu',
-      disclaimerBody: 'VetNavigator chỉ cung cấp thông tin chung về phúc lợi VA.\n\nChatbot này không phải là luật sư, đại lý yêu cầu, hay cố vấn VSO. Thông tin được chia sẻ ở đây chỉ mang tính hướng dẫn và có thể không phản ánh tình huống cụ thể của bạn.\n\nĐể được hỗ trợ cá nhân, hãy liên hệ với cố vấn VSO địa phương của bạn.\n\nKhông chia sẻ thông tin cá nhân như Số An sinh Xã hội, số hồ sơ VA, ngày sinh hoặc thông tin tài chính trong chat này.\n\nĐể biết thêm chi tiết, vui lòng xem <a href="https://vetnavigator.ai/privacy.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Chính sách Quyền riêng tư</a> và <a href="https://vetnavigator.ai/terms.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Điều khoản Dịch vụ</a> của chúng tôi.',
-      disclaimerBtn: 'Tôi hiểu — Bắt đầu nào!'
-    },
-    ko: {
-      ph: '질문을 입력하거나 옵션을 탭하세요…',
-      online: '온라인 · 무료 · 24/7',
-      choose: '옵션 선택',
-      warn: function (r) { return '이 세션에서 질문 ' + r + '개가 남았습니다.'; },
-      limitTitle: '세션 완료',
-      limitMsg: '많은 것을 알아보셨습니다. VSO 상담사가 무료로 도움을 드릴 수 있습니다.',
-      limitTopics: '탐색한 주제:',
-      sumPrompt: '이메일로 요약을 받으시겠습니까?',
-      sumPH: '이메일@주소.com',
-      sendSum: '요약 보내기 →',
-      sumSent: '✓ 요약이 전송되었습니다!',
-      contVSO: 'VSO 상담사와 계속하기:',
-      startFresh: '처음으로 →',
-      gated: '이 주제에 대해서는 VSO 상담사와 직접 상담하시기를 권장합니다 — 무료로 개인 맞춤 안내를 받으실 수 있습니다.',
-      fallback: '좋은 질문입니다! 무료 VSO 상담사와 상담하시기를 권장합니다.',
-      fallbackChips: ['VSO 상담사 찾기', '모든 혜택 보기', '처음으로'],
-      disclaimerTitle: '시작하기 전에',
-      disclaimerBody: 'VetNavigator는 VA 혜택에 관한 일반적인 정보만 제공합니다.\n\n이 챗봇은 변호사, 청구 대리인 또는 VSO 상담사가 아닙니다. 여기서 공유되는 정보는 안내 목적이며 귀하의 특정 상황을 반영하지 않을 수 있습니다.\n\n개인 맞춤 도움을 받으려면 지역 VSO 상담사에게 문의하십시오.\n\n이 채팅에서 주민등록번호, VA 파일 번호, 생년월일 또는 재정 정보와 같은 개인 정보를 공유하지 마십시오.\n\n자세한 내용은 <a href="https://vetnavigator.ai/privacy.html" target="_blank" style="color:#e8c84a;text-decoration:underline">개인정보 보호정책</a> 및 <a href="https://vetnavigator.ai/terms.html" target="_blank" style="color:#e8c84a;text-decoration:underline">서비스 약관</a>을 검토하십시오.',
-      disclaimerBtn: '이해합니다 — 시작하겠습니다!'
-    },
-    tl: {
-      ph: 'Mag-type ng tanong o mag-tap ng opsyon…',
-      online: 'Online · Libre · 24/7',
-      choose: 'Pumili ng opsyon',
-      warn: function (r) { return 'Mayroon kang ' + r + ' tanong na natitira.'; },
-      limitTitle: 'Kumpleto ang Session',
-      limitMsg: 'Marami kang natuklas. Ang iyong VSO counselor ay makakatulong nang libre.',
-      limitTopics: 'Mga paksang iyong tiningnan:',
-      sumPrompt: 'Gusto mo bang magpadala ng buod sa email?',
-      sumPH: 'iyong@email.com',
-      sendSum: 'Ipadala ang Buod →',
-      sumSent: '✓ Naipadala na ang buod!',
-      contVSO: 'Magpatuloy sa iyong VSO counselor:',
-      startFresh: 'Magsimula Muli →',
-      gated: 'Para sa paksang ito, inirerekomenda naming makipag-usap nang direkta sa iyong VSO counselor — maaari silang magbigay ng personal na gabay nang walang bayad.',
-      fallback: 'Magandang tanong! Inirerekomenda ang pakikipag-usap sa libreng VSO counselor.',
-      fallbackChips: ['Humanap ng VSO counselor', 'Tingnan ang lahat ng benepisyo', 'Magsimula muli'],
-      disclaimerTitle: 'Bago tayo magsimula',
-      disclaimerBody: 'Ang VetNavigator ay nagbibigay lamang ng pangkalahatang impormasyon tungkol sa mga benepisyo ng VA.\n\nAng chatbot na ito ay hindi isang abogado, ahente ng claims, o VSO counselor. Ang impormasyong ibinabahagi dito ay para sa gabay lamang at maaaring hindi sumasalamin sa iyong partikular na sitwasyon.\n\nPara sa personalized na tulong, makipag-ugnayan sa iyong lokal na VSO counselor.\n\nHuwag ibahagi ang personal na impormasyon tulad ng iyong Social Security Number, VA file number, petsa ng kapanganakan, o mga detalyeng pinansyal sa chat na ito.\n\nPara sa karagdagang detalye, mangyaring suriin ang aming <a href="https://vetnavigator.ai/privacy.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Patakaran sa Privacy</a> at <a href="https://vetnavigator.ai/terms.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Mga Tuntunin ng Serbisyo</a>.',
-      disclaimerBtn: 'Naiintindihan ko — Magsimula na!'
-    }
+  // English UI strings. Non-English translations come from widget-lang.js
+  // via lang_getUIString(). When a non-English language is selected but its
+  // JSON hasn't loaded yet (or failed to load), s() falls back to UI_EN.
+  var UI_EN = {
+    ph: 'Type a question or tap an option…',
+    online: 'Online · Free · 24/7',
+    choose: 'Choose an option',
+    warn: { template: 'You have {{n}} question{{s}} remaining this session.', pluralSuffix: 's' },
+    limitTitle: 'Session Complete',
+    limitMsg: "You've covered a lot of ground. Your VSO counselor can help you continue — free.",
+    limitTopics: 'Topics you explored:',
+    sumPrompt: 'Want a summary sent to your email?',
+    sumPH: 'your@email.com',
+    sendSum: 'Send My Summary →',
+    sumSent: '✓ Summary sent! Check your inbox.',
+    contVSO: 'Continue with your VSO counselor:',
+    startFresh: 'Start Fresh →',
+    gated: 'For this topic, we recommend speaking directly with your VSO counselor — they can provide personalized guidance at no cost.',
+    fallback: "Great question. For the most accurate guidance I'd recommend speaking with a free VSO counselor.",
+    fallbackChips: ['Find a VSO counselor', 'See all benefits', 'Start over'],
+    disclaimerTitle: 'Before we get started',
+    disclaimerBody: 'VetNavigator provides general VA benefits information only.\n\nThis chatbot is not a lawyer, claims agent, or VSO counselor. Information shared here is for guidance purposes and may not reflect your specific situation.\n\nFor personalized help, contact your local VSO counselor.\n\nDo not share personal information such as your Social Security Number, VA file number, date of birth, or financial details in this chat.\n\nFor further details, please review our <a href="https://vetnavigator.ai/privacy.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Privacy Policy</a> and <a href="https://vetnavigator.ai/terms.html" target="_blank" style="color:#e8c84a;text-decoration:underline">Terms of Service</a>.',
+    disclaimerBtn: 'I Understand — Let\'s Go'
   };
 
   // ── VISITED NODE TRACKING ───────────────────────────────────────────────
@@ -1149,7 +925,7 @@
   }
 
   function chipTarget(label) {
-    if (lang !== 'en' && CHIP_MAP_I18N[lang] && CHIP_MAP_I18N[lang][label]) return CHIP_MAP_I18N[lang][label];
+    if (lang !== 'en') { var tr = lang_getChipTarget(label, lang); if (tr) return tr; }
     return CHIP_MAP[label] || null;
   }
 
@@ -1192,8 +968,11 @@
   }
 
   function s(key) {
-    var d = I18N[lang] || I18N.en;
-    return d[key] !== undefined ? d[key] : (I18N.en[key] || '');
+    if (lang !== 'en') {
+      var tr = lang_getUIString(key, lang);
+      if (tr !== null) return tr;
+    }
+    return (UI_EN[key] !== undefined) ? UI_EN[key] : '';
   }
 
   // ── CSS ────────────────────────────────────────────────────────────────────
@@ -1265,9 +1044,9 @@
     'border:.5px solid rgba(0,0,0,.08);background:transparent;',
     'color:#94a3b8;cursor:pointer;white-space:nowrap;',
     'transition:all .15s;font-family:inherit}',
-    '.vnlg:hover:not(.lk){background:rgba(178,34,52,.05);color:#64748b}',
+    '.vnlg:hover{background:rgba(178,34,52,.05);color:#64748b}',
     '.vnlg.act{background:rgba(178,34,52,.1);border-color:rgba(178,34,52,.15);color:#8b3a3a}',
-    '.vnlg.lk{opacity:.35;cursor:default}',
+    '.vnlg.loading{opacity:.5;pointer-events:none}',
 
     // Tabs — warm background
     '#vntb{display:flex;background:#faf8f7;border-bottom:.5px solid rgba(0,0,0,.04)}',
@@ -1498,11 +1277,16 @@
       { code: 'ko', label: '한국어' },
       { code: 'tl', label: 'Filipino' }
     ];
-    var lbs = langs.map(function (l) {
-      var lk  = (!HAS_ML && l.code !== 'en') ? ' lk' : '';
-      var act = (l.code === 'en') ? ' act' : '';
-      return '<button class="vnlg' + lk + act + '" data-lang="' + l.code + '">' + l.label + '</button>';
-    }).join('');
+    // Filter master catalog to only languages the customer has enabled
+    var enabled = langs.filter(function (l) { return SELECTED_LANGS.indexOf(l.code) !== -1; });
+    // Hide selector entirely when only English is enabled
+    var lbs = '';
+    if (enabled.length > 1) {
+      lbs = enabled.map(function (l) {
+        var act = (l.code === 'en') ? ' act' : '';
+        return '<button class="vnlg' + act + '" data-lang="' + l.code + '">' + l.label + '</button>';
+      }).join('');
+    }
 
     var tabs = '<div id="vntb">'
       + '<button class="vntb act" data-tab="chat">💬 Veteran Chat</button>'
@@ -1663,7 +1447,7 @@
       +   '<div style="flex:1"><div id="vnon">' + ORG_NAME + '</div>'
       +   '<div id="vnst"><span class="vnd"></span> <span id="vnstx">Online · Free · 24/7</span></div></div></div>'
       +   tabs
-      +   '<div id="vnlb">' + lbs + '</div>'
+      +   (lbs ? '<div id="vnlb">' + lbs + '</div>' : '')
       +   '<div id="vnpb"><div id="vnpr"></div></div>'
       +   '<div id="vnchat" class="vntp act" data-panel="chat">'
       +     '<div id="vnms"></div>'
@@ -1798,30 +1582,11 @@
       + "Let's get started. Which best describes you?";
     NODES.veteran.bot = 'Thank you for your service.\n\n'
       + ORG_NAME + ' is proud to support you. When did you serve?';
-    // Spanish
-    if (NODES_I18N.es) {
-      var locEs = ORG_CITY ? '\n📍 Sirviendo a veteranos en ' + ORG_CITY : '';
-      NODES_I18N.es.welcome.bot = '¡Bienvenido a ' + ORG_NAME + '!' + locEs + '\n\nEstamos aqu\xED para ayudarle a encontrar y reclamar cada beneficio que se ha ganado. Este asistente es gratuito, disponible 24/7 y habla su idioma.\n\n\u2139\uFE0F *Solo informaci\xF3n general sobre beneficios VA \u2014 no asesoramiento legal. Nunca ingrese informaci\xF3n personal en este chat.*\n\n\xBFCu\xE1l le describe mejor?';
-      NODES_I18N.es.veteran.bot = 'Gracias por su servicio. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' se enorgullece de apoyarle. \xBFCu\xE1ndo sirvi\xF3?';
-    }
-    // Vietnamese
-    if (NODES_I18N.vi) {
-      var locVi = ORG_CITY ? '\n📍 Ph\u1EE5c v\u1EE5 c\u1EF1u chi\u1EBFn binh t\u1EA1i ' + ORG_CITY : '';
-      NODES_I18N.vi.welcome.bot = 'Ch\xE0o m\u1EEBng \u0111\u1EBFn v\u1EDBi ' + ORG_NAME + '!' + locVi + '\n\nCh\xFAng t\xF4i \u1EDF \u0111\xE2y \u0111\u1EC3 gi\xFAp b\u1EA1n t\xECm v\xE0 nh\u1EADn m\u1ECDi quy\u1EC1n l\u1EE3i b\u1EA1n \u0111\xE3 x\u1EE9ng \u0111\xE1ng. Tr\u1EE3 l\xFD n\xE0y mi\u1EC5n ph\xED, ho\u1EA1t \u0111\u1ED9ng 24/7 v\xE0 n\xF3i ng\xF4n ng\u1EEF c\u1EE7a b\u1EA1n.\n\n\u2139\uFE0F *Ch\u1EC9 cung c\u1EA5p th\xF4ng tin chung v\u1EC1 ph\xFAc l\u1EE3i VA \u2014 kh\xF4ng ph\u1EA3i t\u01B0 v\u1EA5n ph\xE1p l\xFD. Kh\xF4ng bao gi\u1EDD nh\u1EADp th\xF4ng tin c\xE1 nh\xE2n nh\u01B0 s\u1ED1 An sinh X\xE3 h\u1ED9i v\xE0o chat n\xE0y.*\n\n\u0110i\u1EC1u n\xE0o m\xF4 t\u1EA3 \u0111\xFAng nh\u1EA5t v\u1EC1 b\u1EA1n?';
-      NODES_I18N.vi.veteran.bot = 'C\u1EA3m \u01A1n b\u1EA1n \u0111\xE3 ph\u1EE5c v\u1EE5 \u0111\u1EA5t n\u01B0\u1EDBc. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' t\u1EF1 h\xE0o \u0111\u01B0\u1EE3c h\u1ED7 tr\u1EE3 b\u1EA1n. B\u1EA1n ph\u1EE5c v\u1EE5 khi n\xE0o?';
-    }
-    // Korean
-    if (NODES_I18N.ko) {
-      var locKo = ORG_CITY ? '\n📍 ' + ORG_CITY + ' \uC7AC\uD5A5\uAD70\uC778 \uC9C0\uC6D0' : '';
-      NODES_I18N.ko.welcome.bot = ORG_NAME + '\uC5D0 \uC624\uC2E0 \uAC83\uC744 \uD658\uC601\uD569\uB2C8\uB2E4!' + locKo + '\n\n\uC800\uD76C\uB294 \uADC0\uD558\uAC00 \uBC1B\uC744 \uC790\uACA9\uC774 \uC788\uB294 \uBAA8\uB4E0 \uD61C\uD0DD\uC744 \uCC3E\uACE0 \uC2E0\uCCAD\uD558\uB294 \uB370 \uB3C4\uC6C0\uC744 \uB4DC\uB9AC\uAE30 \uC704\uD574 \uC5EC\uAE30 \uC788\uC2B5\uB2C8\uB2E4. \uC774 \uC548\uB0B4\uC790\uB294 \uBB34\uB8CC\uC774\uBA70 24/7 \uC774\uC6A9 \uAC00\uB2A5\uD569\uB2C8\uB2E4.\n\n\u2139\uFE0F *VA \uD61C\uD0DD \uC77C\uBC18 \uC815\uBCF4\uB9CC \uC81C\uACF5 \u2014 \uBC95\uC801 \uC870\uC5B8 \uC544\uB2D9\uB2C8\uB2E4. \uC8FC\uBBFC\uB4F1\uB85D\uBC88\uD638 \uB4F1 \uAC1C\uC778\uC815\uBCF4\uB97C \uC774 \uCC57\uBD07\uC5D0 \uC785\uB825\uD558\uC9C0 \uB9C8\uC138\uC694.*\n\n\uADC0\uD558\uC5D0\uAC8C \uAC00\uC7A5 \uC798 \uB9DE\uB294 \uAC83\uC740 \uBB34\uC5C7\uC785\uB2C8\uAE4C?';
-      NODES_I18N.ko.veteran.bot = '\uADC0\uD558\uC758 \uBD09\uC0AC\uC5D0 \uAC10\uC0AC\uB4DC\uB9BD\uB2C8\uB2E4. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + '\uC740 \uADC0\uD558\uB97C \uC9C0\uC6D0\uD558\uAC8C \uB418\uC5B4 \uC790\uB791\uC2A4\uB7FD\uC2B5\uB2C8\uB2E4. \uC5B8\uC81C \uBCF5\uBB34\uD558\uC168\uC2B5\uB2C8\uAE4C?';
-    }
-    // Filipino
-    if (NODES_I18N.tl) {
-      var locTl = ORG_CITY ? '\n📍 Naglilingkod sa mga beterano sa ' + ORG_CITY : '';
-      NODES_I18N.tl.welcome.bot = 'Maligayang pagdating sa ' + ORG_NAME + '!' + locTl + '\n\nNandito kami para tulungan kang mahanap at makuha ang bawat benepisyong iyong nakamit. Ang assistant na ito ay libre, available 24/7, at nagsasalita ng iyong wika.\n\n\u2139\uFE0F *Pangkalahatang impormasyon lamang tungkol sa mga benepisyo ng VA \u2014 hindi legal na payo. Huwag maglagay ng personal na impormasyon tulad ng SSN sa chat na ito.*\n\nAlin ang pinaka-angkop sa iyo?';
-      NODES_I18N.tl.veteran.bot = 'Salamat sa iyong serbisyo. \uD83C\uDDFA\uD83C\uDDF8\n\n' + ORG_NAME + ' ay ipinagmamalaki na suportahan kayo. Kailan kayo naglingkod?';
-    }
+    // Non-English ORG_NAME/ORG_CITY injection is now handled at render time
+    // by lang_replacePlaceholders() inside renderNode. Translated bot strings
+    // come from the lazy-loaded per-language JSON files and carry {{ORG_NAME}}
+    // and {{#ORG_CITY}}...{{/ORG_CITY}} tokens that get substituted when they
+    // actually hit the DOM.
   }
 
   // ── FILE CLAIM NODE — inject regional office line dynamically ──────────────
@@ -1896,17 +1661,17 @@
 
   // ── RENDER NODE ────────────────────────────────────────────────────────────
   function getNode(key) {
-    // Check for language-specific override, fall back to English NODES
-    if (lang !== 'en' && NODES_I18N[lang] && NODES_I18N[lang][key]) {
-      // Merge: translated node overrides English, but inherit missing fields
-      var base = NODES[key] || {};
-      var tr   = NODES_I18N[lang][key];
-      return {
-        pct:   tr.pct   !== undefined ? tr.pct   : base.pct,
-        bot:   tr.bot   !== undefined ? tr.bot   : base.bot,
-        cards: tr.cards !== undefined ? tr.cards : base.cards,
-        chips: tr.chips !== undefined ? tr.chips : base.chips
-      };
+    if (lang !== 'en') {
+      var tr = lang_getNode(key, lang);
+      if (tr) {
+        var base = NODES[key] || {};
+        return {
+          pct:   tr.pct   !== undefined ? tr.pct   : base.pct,
+          bot:   tr.bot   !== undefined ? tr.bot   : base.bot,
+          cards: tr.cards !== undefined ? tr.cards : base.cards,
+          chips: tr.chips !== undefined ? tr.chips : base.chips
+        };
+      }
     }
     return NODES[key];
   }
@@ -1915,7 +1680,13 @@
     var node = getNode(key); if (!node) return;
     markVisited(key);
     if (node.bot) {
-      var plain = botMsg(node.bot);
+      // Translated bots may carry {{ORG_NAME}} / {{#ORG_CITY}}...{{/ORG_CITY}}
+      // placeholders from the lazy-loaded JSON. English bots are built with
+      // values already concatenated at boot (no placeholders).
+      var botText = (lang !== 'en')
+        ? lang_replacePlaceholders(node.bot, { ORG_NAME: ORG_NAME, ORG_CITY: ORG_CITY })
+        : node.bot;
+      var plain = botMsg(botText);
       chatHistory.push({ topic: key, text: plain.substring(0, 120) });
     }
     clearOpts();
@@ -1924,11 +1695,7 @@
     var skipStartOver = ['welcome','benefits_menu','all_benefits','empathy_intro',
       'cat_money','cat_healthcare','cat_education','cat_housing','cat_family','cat_claims'];
     if (skipStartOver.indexOf(key) === -1) {
-      var startOverLabel = (lang === 'es') ? 'Empezar de nuevo'
-        : (lang === 'vi') ? 'Bắt đầu lại'
-        : (lang === 'ko') ? '처음으로'
-        : (lang === 'tl') ? 'Magsimula muli'
-        : 'Start over';
+      var startOverLabel = lang_getMiscString('startOver', lang) || 'Start over';
       var hasIt = chips.some(function (c) { return c === startOverLabel || c === 'Start over' || c === 'Start Fresh →'; });
       if (!hasIt) chips.push(startOverLabel);
     }
@@ -2519,7 +2286,7 @@
     var rem = CONV_LIMIT - turnCount;
     if (rem === CONV_LIMIT - WARN_AT || (rem <= 2 && rem > 0)) {
       ge('vnwn').style.display = 'block';
-      ge('vnwn').textContent = s('warn')(rem);
+      ge('vnwn').textContent = lang_formatPlural(s('warn'), rem);
     }
   }
 
@@ -2761,6 +2528,183 @@
     renderNode('welcome');
   }
 
+  // ── LANGUAGE LOADER ────────────────────────────────────────────────────────
+  // Lazy-fetches per-language JSON files from the CDN for non-English
+  // translations. Called from widget-engine-render.js (getNode),
+  // widget-routing.js (s and chipTarget), widget-engine.js (setLang,
+  // route, VARO follow-up, Start Over, typeBelow), widget-engine-session.js
+  // (warn formatPlural). English stays inline in widget-content.js.
+  //
+  // URL format: https://cdn.vetnavigator.ai/chatbot/v1/lang/<code>.json
+
+  var LANG_CDN           = 'https://cdn.vetnavigator.ai/chatbot/v1/lang/';
+  var LANG_FETCH_RETRY_MS = 500;
+
+  // Cache of successfully loaded language data, keyed by code.
+  //   langCache[code] = { nodes: {...}, chipMap: {...}, ui: {...}, misc: {...} }
+  var langCache = {};
+
+  // In-flight or resolved promises, keyed by code. Reused on concurrent calls
+  // so a single lang fetch never runs twice.
+  var langPromises = {};
+
+  // Languages that permanently failed to load after retry.
+  var langFailed = {};
+
+  // ── INTERNAL: fetch helpers ───────────────────────────────────────────────
+  function fetchLangOnce(code) {
+    return fetch(LANG_CDN + encodeURIComponent(code) + '.json', {
+      cache: 'default'
+    }).then(function (resp) {
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      return resp.json();
+    });
+  }
+
+  function fetchLangWithRetry(code) {
+    return fetchLangOnce(code).catch(function () {
+      return new Promise(function (resolve) { setTimeout(resolve, LANG_FETCH_RETRY_MS); })
+        .then(function () { return fetchLangOnce(code); });
+    });
+  }
+
+  // ── INTERNAL: load + validate + cache ─────────────────────────────────────
+  function loadLang(code) {
+    if (code === 'en') return Promise.resolve(null);
+    if (langCache[code]) return Promise.resolve(langCache[code]);
+    if (langPromises[code]) return langPromises[code];
+
+    langPromises[code] = fetchLangWithRetry(code).then(function (data) {
+      if (!data || typeof data !== 'object') throw new Error('Invalid payload');
+      if (!data.nodes || !data.chipMap || !data.ui || !data.misc) {
+        throw new Error('Missing required keys (nodes/chipMap/ui/misc)');
+      }
+      langCache[code] = data;
+      return data;
+    }).catch(function (err) {
+      langFailed[code] = true;
+      if (window.console && console.warn) {
+        console.warn('[VetNavigator] Language "' + code + '" failed to load: ' +
+          (err && err.message ? err.message : err));
+      }
+      // Resolve null — callers fall back to English silently.
+      return null;
+    });
+
+    return langPromises[code];
+  }
+
+  // ── PUBLIC API ────────────────────────────────────────────────────────────
+
+  // Called by widget-config.js applyConfig() once cfg.selectedLanguages is known.
+  // Returns a Promise.all so the caller CAN await if needed, but widget boot
+  // must NOT block on this — English is inline and renders immediately.
+  function lang_init(selectedLangs) {
+    if (!Array.isArray(selectedLangs)) selectedLangs = ['en'];
+    var nonEn = [];
+    for (var i = 0; i < selectedLangs.length; i++) {
+      var c = selectedLangs[i];
+      if (c && c !== 'en') nonEn.push(c);
+    }
+    return Promise.all(nonEn.map(loadLang));
+  }
+
+  // Returns a promise that resolves (with data or null) when the language
+  // fetch completes. Use from setLang() when user clicks a language button
+  // that may still be loading.
+  function lang_whenReady(code) {
+    return loadLang(code);
+  }
+
+  // Synchronous: has this language completed loading (success or fail)?
+  function lang_isLoaded(code) {
+    return code === 'en' || !!langCache[code] || !!langFailed[code];
+  }
+
+  // Synchronous: is this language ready to serve content?
+  function lang_isAvailable(code) {
+    return code === 'en' || (!!langCache[code] && !langFailed[code]);
+  }
+
+  // Get a translated node. Returns the node object, or null if the
+  // language isn't loaded or doesn't translate this key. Callers fall
+  // back to English NODES[key] — partial-translation fallback preserved.
+  function lang_getNode(key, code) {
+    if (code === 'en') return null;
+    var data = langCache[code];
+    if (!data || !data.nodes) return null;
+    return data.nodes[key] || null;
+  }
+
+  // Reverse chip-label lookup. Given a translated label and active lang,
+  // return the English node name to navigate to, or null if the language
+  // isn't loaded or the label isn't in its chipMap.
+  function lang_getChipTarget(label, code) {
+    if (code === 'en') return null;
+    var data = langCache[code];
+    if (!data || !data.chipMap) return null;
+    return data.chipMap[label] || null;
+  }
+
+  // Get a UI string. Returns the raw value (string, array for fallbackChips,
+  // or { template, pluralSuffix } object for warn), or null if not available.
+  function lang_getUIString(key, code) {
+    if (code === 'en') return null;
+    var data = langCache[code];
+    if (!data || !data.ui) return null;
+    return (key in data.ui) ? data.ui[key] : null;
+  }
+
+  // Get a misc string (startOver, typeBelow).
+  function lang_getMiscString(key, code) {
+    if (code === 'en') return null;
+    var data = langCache[code];
+    if (!data || !data.misc) return null;
+    return (key in data.misc) ? data.misc[key] : null;
+  }
+
+  // ── PLACEHOLDER SUBSTITUTION ──────────────────────────────────────────────
+  // Handles:
+  //   {{VAR}}                    — replaced with vars[VAR] (or empty if missing)
+  //   {{#VAR}}...{{/VAR}}        — conditional block (Mustache-style).
+  //                                Content stripped entirely if vars[VAR] is
+  //                                empty/undefined/null. Otherwise content is
+  //                                kept and any {{VAR}} tokens inside get
+  //                                substituted in the second pass.
+  //
+  // Processing order matters: conditional blocks are resolved FIRST so that
+  // stripped blocks can't leave orphan {{VAR}} tokens behind.
+  function lang_replacePlaceholders(str, vars) {
+    if (typeof str !== 'string') return str;
+    vars = vars || {};
+    // Conditional blocks
+    str = str.replace(/\{\{#(\w+)\}\}([\s\S]*?)\{\{\/\1\}\}/g, function (_, name, content) {
+      var v = vars[name];
+      if (v === undefined || v === null || v === '') return '';
+      return content;
+    });
+    // Simple tokens
+    str = str.replace(/\{\{(\w+)\}\}/g, function (_, name) {
+      var v = vars[name];
+      return (v === undefined || v === null) ? '{{' + name + '}}' : String(v);
+    });
+    return str;
+  }
+
+  // Format a pluralized warn-style template (from ui.warn in the JSON files).
+  // tmpl shape: { template: "...{{n}}...{{s}}...", pluralSuffix: "s" | "" }
+  //   {{n}} → count
+  //   {{s}} → '' when count === 1, else pluralSuffix (or '' if no plural form)
+  // If tmpl is already a plain string (e.g., English inline literal), count/
+  // pluralSuffix are ignored and the string is returned as-is.
+  function lang_formatPlural(tmpl, count) {
+    if (typeof tmpl === 'string') return tmpl;
+    if (!tmpl || typeof tmpl.template !== 'string') return '';
+    var s = (count === 1) ? '' : (tmpl.pluralSuffix || '');
+    return tmpl.template
+      .replace(/\{\{n\}\}/g, String(count))
+      .replace(/\{\{s\}\}/g, s);
+  }
 
   // ── TIER GATE FREE TEXT ────────────────────────────────────────────────────
   function gatedFreeText(text) {
@@ -2819,7 +2763,7 @@
   function route(text) {
     var t = text.trim();
     // Check language-specific chip map first
-    if (lang !== 'en' && CHIP_MAP_I18N[lang] && CHIP_MAP_I18N[lang][t]) return CHIP_MAP_I18N[lang][t];
+    if (lang !== 'en') { var tr = lang_getChipTarget(t, lang); if (tr) return tr; }
     if (CHIP_MAP[t]) return CHIP_MAP[t];
     for (var i = 0; i < KW.length; i++) {
       if (KW[i][0].test(t)) return KW[i][1];
@@ -3003,11 +2947,7 @@
       var skipStartOver = ['welcome','benefits_menu','all_benefits','empathy_intro',
         'cat_money','cat_healthcare','cat_education','cat_housing','cat_family','cat_claims'];
       if (skipStartOver.indexOf(key) === -1) {
-        var startOverLabel = (lang === 'es') ? 'Empezar de nuevo'
-          : (lang === 'vi') ? 'Bắt đầu lại'
-          : (lang === 'ko') ? '처음으로'
-          : (lang === 'tl') ? 'Magsimula muli'
-          : 'Start over';
+        var startOverLabel = lang_getMiscString('startOver', lang) || 'Start over';
         var hasIt = chips.some(function (c) { return c === startOverLabel || c === 'Start over' || c === 'Start Fresh →'; });
         if (!hasIt) chips.push(startOverLabel);
       }
@@ -3056,7 +2996,7 @@
     // Awaiting state follow-up after city clarification prompt
     if (awaitingStateForVARO) {
       // If veteran tapped a chip instead of typing a state — release the flag and route normally
-      var isChipInput = CHIP_MAP[text] || (lang !== 'en' && CHIP_MAP_I18N[lang] && CHIP_MAP_I18N[lang][text]);
+      var isChipInput = !!CHIP_MAP[text] || (lang !== 'en' && !!lang_getChipTarget(text, lang));
       if (isChipInput) { awaitingStateForVARO = false; }
       else {
       awaitingStateForVARO = false;
@@ -3274,11 +3214,7 @@
       userMsg(text);
       turnCount++;
       checkWarn();
-      var nudgeReply = (lang === 'es') ? 'Escriba su pregunta abajo — estoy aquí para ayudar. 👇'
-        : (lang === 'vi') ? 'Nhập câu hỏi của bạn bên dưới — tôi sẵn sàng giúp bạn. 👇'
-        : (lang === 'ko') ? '아래에 질문을 입력하세요 — 도움을 드리겠습니다. 👇'
-        : (lang === 'tl') ? 'I-type ang iyong tanong sa ibaba — nandito ako para tumulong. 👇'
-        : 'Go ahead and type your question below — I\'m here to help. 👇';
+      var nudgeReply = lang_getMiscString('typeBelow', lang) || 'Go ahead and type your question below — I\'m here to help. 👇';
       setTimeout(function () {
         clearOpts();
         botMsg(nudgeReply);
@@ -3359,7 +3295,28 @@
 
   // ── LANGUAGE ───────────────────────────────────────────────────────────────
   function setLang(code) {
-    if (!HAS_ML && code !== 'en') return; // silently ignore locked languages
+    // Already loaded (English always is, non-English via successful fetch)?
+    if (code === 'en' || lang_isAvailable(code)) {
+      applyLang(code);
+      return;
+    }
+    // Not yet loaded — show loading state on the clicked button, await, then apply.
+    var btn = document.querySelector('.vnlg[data-lang="' + code + '"]');
+    if (btn) btn.classList.add('loading');
+    lang_whenReady(code).then(function () {
+      if (btn) btn.classList.remove('loading');
+      if (lang_isAvailable(code)) {
+        applyLang(code);
+      } else {
+        // Load failed — silent bail, stay on current language.
+        if (window.console && console.warn) {
+          console.warn('[VetNavigator] Language "' + code + '" could not be loaded. Staying on ' + lang + '.');
+        }
+      }
+    });
+  }
+
+  function applyLang(code) {
     lang = code;
     ge('vntx').placeholder = s('ph');
     ge('vnstx').textContent = s('online');
