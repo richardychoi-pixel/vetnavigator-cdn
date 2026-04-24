@@ -1778,21 +1778,6 @@
     };
     return m[k] || k.replace(/_/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
   }
-
-  // ── BOOT ───────────────────────────────────────────────────────────────────
-  function boot() {
-    loadConfig(function () {
-      buildVALocations();
-      buildFileClaimNode();
-      init();
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
-  } else {
-    boot();
-  }
   // ── ACCENT COLOR HELPER ────────────────────────────────────────────────────
   function applyAccent(hex) {
     // Update --vr CSS variable (tab underline, progress bar, email send btn)
@@ -3662,6 +3647,21 @@
 
     // Notification bubble logic (skip in embed mode) — lives in widget-engine-notif.js
     initNotifBubble(!!EMBED_TARGET);
+  }
+
+  // ── BOOT ───────────────────────────────────────────────────────────────────
+  function boot() {
+    loadConfig(function () {
+      buildVALocations();
+      buildFileClaimNode();
+      init();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
   }
 
 })();
