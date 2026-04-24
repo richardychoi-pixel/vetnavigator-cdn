@@ -38,7 +38,7 @@
   var LICENSE_KEY, ORG_NAME, ORG_CITY, ORG_ADDR, ORG_PHONE, ORG_EMAIL;
   var ORG_WEB, ORG_HOURS, ORG_MISSION, ORG_EVENTS, ORG_LEADERS;
   var TIER_MAP = { DEMO: 4, PREMIUM: 4, STANDARD: 3, STARTER: 2, BASIC: 1 };
-  var TIER_STR, TIER_LVL, IS_DEMO, HAS_MIC, HAS_ADMIN;
+  var TIER_STR, TIER_LVL, IS_DEMO, HAS_MIC, HAS_ADMIN, MULTILINGUAL;
   var CONV_LIMIT, WARN_AT;
   var ORG_LOGO, ORG_WELCOME, ORG_ACCENT, ORG_FAB_SIZE;
   var ORG_STATE;
@@ -74,6 +74,7 @@
     TIER_LVL   = TIER_MAP[TIER_STR] !== undefined ? TIER_MAP[TIER_STR] : 1;
     IS_DEMO    = TIER_STR === 'DEMO';
     HAS_MIC    = TIER_LVL >= 3 || IS_DEMO;
+    MULTILINGUAL = cfg.multilingual === true;
     // Admin access: validated server-side via X-VN-Admin header (demo bypasses)
     var _urlAdmin = new URLSearchParams(window.location.search).get('vnadmin') || '';
     HAS_ADMIN  = IS_DEMO
@@ -1226,6 +1227,20 @@
     '.vnadd{font-size:11px;padding:3px 10px;border-radius:8px;border:1px solid rgba(178,34,52,.2);background:rgba(178,34,52,.04);color:#cc3344;cursor:pointer;font-family:inherit;margin-bottom:6px}',
     '#vnsv{margin-top:10px}',
     '#vnsvd{display:none;text-align:center;font-size:13px;color:#166534;padding:8px 0;font-weight:500}',
+    '#vnsvd.vnsvd-saving{color:#64748b}',
+    '#vnsvd.vnsvd-error{color:#dc2626;line-height:1.4}',
+
+    // Languages section — checkbox grid
+    '.vnlangrow{display:flex;align-items:center;gap:8px;padding:6px 2px;cursor:pointer;font-size:12px;color:#1e293b;border-bottom:.5px solid rgba(0,0,0,.04)}',
+    '.vnlangrow:last-child{border-bottom:none}',
+    '.vnlangrow:hover:not(.vnlangrow-locked):not(.vnlangrow-coming):not(.vnlangrow-capped){background:rgba(90,143,212,.04)}',
+    '.vnlangrow-locked{cursor:default;color:#475569}',
+    '.vnlangrow-coming{cursor:not-allowed;color:#94a3b8}',
+    '.vnlangrow-coming em{font-style:italic;color:#94a3b8;font-size:11px;font-weight:400}',
+    '.vnlangrow-capped{cursor:not-allowed;opacity:.5}',
+    '.vnlangchk{width:14px;height:14px;cursor:pointer;margin:0;flex-shrink:0}',
+    '.vnlangchk:disabled{cursor:not-allowed}',
+    '.vnlanglbl{flex:1;line-height:1.3}',
 
     // Scan tabs — light theme
     '.vnsc{flex:1;padding:6px 8px;font-size:11px;font-weight:600;cursor:pointer;',
@@ -1326,6 +1341,19 @@
         + '<button class="vnadd" id="vnadde">+ Add Event</button>'
         + '<span class="vnal">Leadership & Counselors</span><div id="ald"></div>'
         + '<button class="vnadd" id="vnadda">+ Add Person</button>'
+        + '<div style="font-size:12px;font-weight:700;margin-top:14px;margin-bottom:4px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Languages</div>'
+        + '<div style="font-size:11px;color:#64748b;margin-bottom:8px">Choose which languages your veterans can switch to. English is always available.</div>'
+        + '<div id="vnlangs" style="margin-bottom:8px">'
+        + '<label class="vnlangrow vnlangrow-locked"><input type="checkbox" id="vnlang-en" class="vnlangchk" checked disabled><span class="vnlanglbl">English</span></label>'
+        + '<label class="vnlangrow" data-lang="es"><input type="checkbox" id="vnlang-es" class="vnlangchk"><span class="vnlanglbl">Spanish</span></label>'
+        + '<label class="vnlangrow" data-lang="vi"><input type="checkbox" id="vnlang-vi" class="vnlangchk"><span class="vnlanglbl">Vietnamese</span></label>'
+        + '<label class="vnlangrow" data-lang="ko"><input type="checkbox" id="vnlang-ko" class="vnlangchk"><span class="vnlanglbl">Korean</span></label>'
+        + '<label class="vnlangrow" data-lang="tl"><input type="checkbox" id="vnlang-tl" class="vnlangchk"><span class="vnlanglbl">Filipino</span></label>'
+        + '<label class="vnlangrow vnlangrow-coming"><input type="checkbox" id="vnlang-zh" class="vnlangchk" disabled><span class="vnlanglbl">Chinese (Mandarin) <em>— Coming soon</em></span></label>'
+        + '<label class="vnlangrow vnlangrow-coming"><input type="checkbox" id="vnlang-ar" class="vnlangchk" disabled><span class="vnlanglbl">Arabic <em>— Coming soon</em></span></label>'
+        + '<label class="vnlangrow vnlangrow-coming"><input type="checkbox" id="vnlang-fr" class="vnlangchk" disabled><span class="vnlanglbl">French <em>— Coming soon</em></span></label>'
+        + '</div>'
+        + '<div id="vnlangup" style="display:none;font-size:11px;color:#64748b;margin-top:6px;padding:6px 10px;background:rgba(178,34,52,.04);border-radius:6px">Want more languages? <a href="mailto:ops@vetnavigator.ai?subject=Plan upgrade — additional languages" style="color:#cc3344;text-decoration:none">Email ops@vetnavigator.ai about upgrading →</a></div>'
         + '<div style="display:flex;justify-content:center;margin-top:8px"><button id="vnsv" class="vnbtn-glass">Save Changes</button></div>'
         + '<div id="vnsvd">✓ Saved!</div>'
         + '</div>'
@@ -2053,7 +2081,77 @@
       + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
     ge('ald').appendChild(r);
   }
+  // Compute the per-tier language cap.
+  // MUST stay in sync with Worker's getLanguageCap() in worker.js.
+  function getLanguageCap(tier, multilingual) {
+    var t = (tier || '').toUpperCase();
+    if (t === 'PREMIUM' || t === 'DEMO') return 8;
+    if (t === 'STANDARD') return 6;
+    if (multilingual) return 4;  // Basic+ML or Starter+ML
+    return 1;  // Basic or Starter without ML
+  }
+
+  // The 5 non-English languages currently live in production. Chinese/Arabic/
+  // French are coming in Session 4 — their checkboxes exist in the DOM but are
+  // always disabled. Keep this list in sync with the HTML in buildHTML's admin
+  // panel template.
+  var LIVE_LANG_CODES = ['es', 'vi', 'ko', 'tl'];
+
+  // Recompute cap-disabled state on all non-locked, non-coming-soon checkboxes.
+  // Called on every checkbox change and after populating state on admin open.
+  function updateLangCapState() {
+    var cap = getLanguageCap(TIER_STR, MULTILINGUAL);
+    var selected = 1;  // English always counts
+    LIVE_LANG_CODES.forEach(function (code) {
+      var cb = ge('vnlang-' + code);
+      if (cb && cb.checked) selected++;
+    });
+    LIVE_LANG_CODES.forEach(function (code) {
+      var cb = ge('vnlang-' + code);
+      if (!cb) return;
+      var row = cb.parentNode;  // the <label>
+      if (cb.checked) {
+        cb.disabled = false;
+        row.classList.remove('vnlangrow-capped');
+        row.removeAttribute('title');
+      } else if (selected >= cap) {
+        cb.disabled = true;
+        row.classList.add('vnlangrow-capped');
+        row.title = 'Your plan supports up to ' + cap + ' language' + (cap === 1 ? '' : 's') + ' including English';
+      } else {
+        cb.disabled = false;
+        row.classList.remove('vnlangrow-capped');
+        row.removeAttribute('title');
+      }
+    });
+    // Upgrade CTA: visible only when at cap AND not Premium/Demo
+    var up = ge('vnlangup');
+    if (up) {
+      var showUp = (selected >= cap) && TIER_STR !== 'PREMIUM' && TIER_STR !== 'DEMO';
+      up.style.display = showUp ? 'block' : 'none';
+    }
+  }
+
+  // Re-sync checkbox state from SELECTED_LANGS (used by populateAdmin and by
+  // the vnSave rollback path after a server rejection).
+  function applyLangCheckboxState() {
+    LIVE_LANG_CODES.forEach(function (code) {
+      var cb = ge('vnlang-' + code);
+      if (cb) cb.checked = SELECTED_LANGS.indexOf(code) !== -1;
+    });
+    updateLangCapState();
+  }
+
   function vnSave() {
+    // Snapshot current state for rollback if server rejects
+    var snap = {
+      ORG_NAME: ORG_NAME, ORG_CITY: ORG_CITY, ORG_STATE: ORG_STATE,
+      ORG_PHONE: ORG_PHONE, ORG_EMAIL: ORG_EMAIL, ORG_HOURS: ORG_HOURS,
+      ORG_EVENTS: ORG_EVENTS.slice(), ORG_LEADERS: ORG_LEADERS.slice(),
+      SELECTED_LANGS: SELECTED_LANGS.slice()
+    };
+
+    // Optimistic update of module globals + visible UI
     ORG_NAME   = ge('an').value.trim() || ORG_NAME;
     ORG_CITY   = ge('ac').value.trim() || ORG_CITY;
     ORG_STATE  = (ge('ast').value.trim() || ORG_STATE).toUpperCase();
@@ -2062,29 +2160,87 @@
     ORG_HOURS  = ge('ah').value.trim() || ORG_HOURS;
     ORG_EVENTS  = Array.from(ge('aev').querySelectorAll('input')).map(function (i) { return i.value.trim(); }).filter(Boolean);
     ORG_LEADERS = Array.from(ge('ald').querySelectorAll('input')).map(function (i) { return i.value.trim(); }).filter(Boolean);
+
+    // Collect selected languages — English always first, then any checked non-coming-soon
+    var newLangs = ['en'];
+    LIVE_LANG_CODES.forEach(function (code) {
+      var cb = ge('vnlang-' + code);
+      if (cb && cb.checked && !cb.disabled) newLangs.push(code);
+    });
+    SELECTED_LANGS = newLangs;
+
     ge('vnon').textContent = ORG_NAME;
     buildVSO();
-    ge('vnsvd').style.display = 'block';
-    setTimeout(function () { ge('vnsvd').style.display = 'none'; }, 2500);
 
-    // Persist to server if we have a real license key
-    if (LICENSE_KEY && LICENSE_KEY.startsWith('VN-') && LICENSE_KEY !== 'VN-DEMO') {
-      fetch(VN_API + '/config?key=' + encodeURIComponent(LICENSE_KEY), {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          adminToken: new URLSearchParams(window.location.search).get('vnadmin') || '',
-          orgName:    ORG_NAME,
-          orgCity:    ORG_CITY,
-          orgState:   ORG_STATE,
-          orgPhone:   ORG_PHONE,
-          orgEmail:   ORG_EMAIL,
-          orgHours:   ORG_HOURS,
-          events:     ORG_EVENTS,
-          leaders:    ORG_LEADERS
-        })
-      }).catch(function () { /* silent — local save still worked */ });
+    // Show saving banner immediately
+    var banner = ge('vnsvd');
+    banner.className = 'vnsvd-saving';
+    banner.textContent = 'Saving…';
+    banner.style.display = 'block';
+
+    // Demo/placeholder keys: local-only save, no network call
+    if (!LICENSE_KEY || !LICENSE_KEY.startsWith('VN-') || LICENSE_KEY === 'VN-DEMO') {
+      banner.className = '';
+      banner.textContent = '✓ Saved!';
+      setTimeout(function () { banner.style.display = 'none'; }, 2500);
+      return;
     }
+
+    fetch(VN_API + '/config?key=' + encodeURIComponent(LICENSE_KEY), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        adminToken: new URLSearchParams(window.location.search).get('vnadmin') || '',
+        orgName:    ORG_NAME,
+        orgCity:    ORG_CITY,
+        orgState:   ORG_STATE,
+        orgPhone:   ORG_PHONE,
+        orgEmail:   ORG_EMAIL,
+        orgHours:   ORG_HOURS,
+        events:     ORG_EVENTS,
+        leaders:    ORG_LEADERS,
+        selectedLanguages: SELECTED_LANGS
+      })
+    }).then(function (resp) {
+      if (resp.ok) {
+        banner.className = '';
+        banner.textContent = '✓ Saved!';
+        setTimeout(function () { banner.style.display = 'none'; }, 2500);
+        return;
+      }
+      return resp.json().then(function (err) {
+        throw new Error((err && err.error) || ('Save failed (HTTP ' + resp.status + ')'));
+      }, function () {
+        throw new Error('Save failed (HTTP ' + resp.status + ')');
+      });
+    }).catch(function (err) {
+      // Rollback optimistic update
+      ORG_NAME   = snap.ORG_NAME;
+      ORG_CITY   = snap.ORG_CITY;
+      ORG_STATE  = snap.ORG_STATE;
+      ORG_PHONE  = snap.ORG_PHONE;
+      ORG_EMAIL  = snap.ORG_EMAIL;
+      ORG_HOURS  = snap.ORG_HOURS;
+      ORG_EVENTS = snap.ORG_EVENTS;
+      ORG_LEADERS = snap.ORG_LEADERS;
+      SELECTED_LANGS = snap.SELECTED_LANGS;
+      ge('vnon').textContent = ORG_NAME;
+      buildVSO();
+      applyLangCheckboxState();
+
+      // Translate common worker errors to friendly messages
+      var msg = (err && err.message) ? err.message : 'Save failed';
+      if (msg === 'selectedLanguages exceeds tier cap') {
+        msg = 'Too many languages selected for your plan.';
+      } else if (msg === 'unauthorized') {
+        msg = 'Admin token invalid — please check your admin URL.';
+      } else if (msg.indexOf('Failed to fetch') !== -1 || msg.indexOf('NetworkError') !== -1) {
+        msg = "Couldn't save — please check your connection and try again.";
+      }
+      banner.className = 'vnsvd-error';
+      banner.textContent = '⚠ ' + msg;
+      setTimeout(function () { banner.style.display = 'none'; banner.className = ''; }, 4000);
+    });
   }
 
   function populateAdmin() {
@@ -2107,6 +2263,8 @@
         + '<button class="vnarm" onclick="this.parentNode.remove()">×</button>';
       ge('ald').appendChild(r);
     });
+    // Languages: check boxes per SELECTED_LANGS, then compute cap-disabled state
+    applyLangCheckboxState();
   }
 
   // ── ADMIN PANEL WIRING ─────────────────────────────────────────────────────
@@ -2116,6 +2274,11 @@
     ge('vnadde').addEventListener('click', vnAE);
     ge('vnadda').addEventListener('click', vnAL);
     ge('vnsv').addEventListener('click', vnSave);
+    // Language checkboxes — wire change events on the 4 live non-EN codes
+    LIVE_LANG_CODES.forEach(function (code) {
+      var cb = ge('vnlang-' + code);
+      if (cb) cb.addEventListener('change', updateLangCapState);
+    });
     populateAdmin();
 
     // Scan tab switching
