@@ -1279,8 +1279,11 @@
     '#vnn{right:12px}}'
   ].join('');
   // ── ADMIN URL GATE ─────────────────────────────────────────────────────────
-  // Admin Panel only shows when VSO adds ?vnadmin=1 to their site URL
-  var SHOW_ADMIN = /[?&]vnadmin=1(?:&|$)/i.test(window.location.search);
+  // Admin Panel renders when URL contains ?vnadmin=<value>. Token validation
+  // happens server-side via HAS_ADMIN (cfg.adminValid). This regex is only the
+  // URL-presence check — it intentionally accepts any non-empty value because
+  // the Worker is authoritative on whether the token is real.
+  var SHOW_ADMIN = /[?&]vnadmin=[^&]+/i.test(window.location.search);
   var SHOW_BRANDING = false; // set to true in applyConfig after tier confirmed
 
   // ── BUILD HTML ─────────────────────────────────────────────────────────────
@@ -3730,8 +3733,7 @@
 
     initBranding();
 
-    // Admin panel wiring (Starter+ AND ?vnadmin=1)
-    // Admin panel wiring (Starter+ AND ?vnadmin=1) — logic in widget-engine-admin.js
+    // Admin panel wiring (Starter+ AND ?vnadmin=<token>) — logic in widget-engine-admin.js
     if (HAS_ADMIN && SHOW_ADMIN) {
       initAdminPanel();
     }
