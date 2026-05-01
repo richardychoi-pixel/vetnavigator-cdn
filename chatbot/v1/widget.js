@@ -2106,11 +2106,12 @@
     return 1;  // Basic or Starter without ML
   }
 
-  // The 5 non-English languages currently live in production. Chinese/Arabic/
-  // French are coming in Session 4 — their checkboxes exist in the DOM but are
-  // always disabled. Keep this list in sync with the HTML in buildHTML's admin
-  // panel template.
-  var LIVE_LANG_CODES = ['es', 'vi', 'ko', 'tl'];
+  // All 7 non-English languages currently live in production (Session 4 ship,
+  // May 1 2026 — Chinese/Arabic/French enabled today). MUST stay in sync with
+  // the admin checkbox HTML in widget-engine-render.js (lines ~71-77) AND
+  // with the master language catalog in widget-engine-render.js buildHTML's
+  // langs array (lines ~11-19).
+  var LIVE_LANG_CODES = ['es', 'vi', 'ko', 'tl', 'zh', 'ar', 'fr'];
 
   // Recompute cap-disabled state on all non-locked, non-coming-soon checkboxes.
   // Called on every checkbox change and after populating state on admin open.
