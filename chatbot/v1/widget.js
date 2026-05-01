@@ -1272,6 +1272,15 @@
     '#vnft{text-align:center;padding:5px 0 6px;font-size:10px;color:#94a3b8;',
     'background:#e4e8f2}',
 
+    // RTL support — activates when #vnchat[dir="rtl"] (Arabic only)
+    '#vnchat[dir="rtl"] .vnbb.b{text-align:right;',
+    'border-bottom-left-radius:12px;border-bottom-right-radius:3px}',
+    '#vnchat[dir="rtl"] .vnbb.u{margin-left:0;margin-right:auto;',
+    'border-bottom-right-radius:12px;border-bottom-left-radius:3px}',
+    '#vnchat[dir="rtl"] .vnty{border-bottom-left-radius:12px;border-bottom-right-radius:3px}',
+    '#vnchat[dir="rtl"] #vncd{direction:rtl}',
+    '#vnchat[dir="rtl"] .vnav{margin-left:0;margin-right:6px}',
+
     // Mobile
     '@media(max-width:460px){',
     '#vnp{width:calc(100vw - 24px);right:12px;bottom:80px}',
@@ -1293,7 +1302,10 @@
       { code: 'es', label: 'Español' },
       { code: 'vi', label: 'Tiếng Việt' },
       { code: 'ko', label: '한국어' },
-      { code: 'tl', label: 'Filipino' }
+      { code: 'tl', label: 'Filipino' },
+      { code: 'zh', label: '中文' },
+      { code: 'ar', label: 'العربية' },
+      { code: 'fr', label: 'Français' }
     ];
     // Filter master catalog to only languages the customer has enabled
     var enabled = langs.filter(function (l) { return SELECTED_LANGS.indexOf(l.code) !== -1; });
@@ -1352,9 +1364,9 @@
         + '<label class="vnlangrow" data-lang="vi"><input type="checkbox" id="vnlang-vi" class="vnlangchk"><span class="vnlanglbl">Vietnamese</span></label>'
         + '<label class="vnlangrow" data-lang="ko"><input type="checkbox" id="vnlang-ko" class="vnlangchk"><span class="vnlanglbl">Korean</span></label>'
         + '<label class="vnlangrow" data-lang="tl"><input type="checkbox" id="vnlang-tl" class="vnlangchk"><span class="vnlanglbl">Filipino</span></label>'
-        + '<label class="vnlangrow vnlangrow-coming"><input type="checkbox" id="vnlang-zh" class="vnlangchk" disabled><span class="vnlanglbl">Chinese (Mandarin) <em>— Coming soon</em></span></label>'
-        + '<label class="vnlangrow vnlangrow-coming"><input type="checkbox" id="vnlang-ar" class="vnlangchk" disabled><span class="vnlanglbl">Arabic <em>— Coming soon</em></span></label>'
-        + '<label class="vnlangrow vnlangrow-coming"><input type="checkbox" id="vnlang-fr" class="vnlangchk" disabled><span class="vnlanglbl">French <em>— Coming soon</em></span></label>'
+        + '<label class="vnlangrow" data-lang="zh"><input type="checkbox" id="vnlang-zh" class="vnlangchk"><span class="vnlanglbl">Chinese (Mandarin)</span></label>'
+        + '<label class="vnlangrow" data-lang="ar"><input type="checkbox" id="vnlang-ar" class="vnlangchk"><span class="vnlanglbl">Arabic</span></label>'
+        + '<label class="vnlangrow" data-lang="fr"><input type="checkbox" id="vnlang-fr" class="vnlangchk"><span class="vnlanglbl">French</span></label>'
         + '</div>'
         + '<div id="vnlangup" style="display:none;font-size:11px;color:#64748b;margin-top:6px;padding:6px 10px;background:rgba(178,34,52,.04);border-radius:6px">Want more languages? <a href="mailto:ops@vetnavigator.ai?subject=Plan upgrade — additional languages" style="color:#cc3344;text-decoration:none">Email ops@vetnavigator.ai about upgrading →</a></div>'
         + '<div style="display:flex;justify-content:center;margin-top:8px"><button id="vnsv" class="vnbtn-glass">Save Changes</button></div>'
@@ -3474,6 +3486,9 @@
     document.querySelectorAll('.vnlg').forEach(function (b) {
       b.classList.toggle('act', b.getAttribute('data-lang') === code);
     });
+    // RTL support: flip chat text direction for Arabic; LTR for all other langs
+    var chatEl = ge('vnchat');
+    if (chatEl) chatEl.setAttribute('dir', code === 'ar' ? 'rtl' : 'ltr');
     // Clear chat and re-render welcome in new language
     visitedNodes = {};
     ge('vnms').innerHTML = '';
