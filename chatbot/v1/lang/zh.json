@@ -1,0 +1,323 @@
+{
+  "nodes": {
+    "welcome": {
+      "pct": 5,
+      "bot": "欢迎来到 {{ORG_NAME}}！{{#ORG_CITY}}\n📍 服务于 {{ORG_CITY}} 的退伍军人{{/ORG_CITY}}\n\n我们在这里帮助您找到并申请您应得的每一项福利。本助手免费、24/7 全天候服务，并使用您的语言。\n\nℹ️ *仅提供 VA 福利的一般信息 — 非法律咨询。请勿在本聊天中输入任何个人信息。*\n\n以下哪一项最符合您的情况？",
+      "cards": [
+        {
+          "icon": "🎖️",
+          "title": "退伍军人",
+          "desc": "我曾在美国军队服役"
+        },
+        {
+          "icon": "⚔️",
+          "title": "现役军人",
+          "desc": "目前正在服役"
+        },
+        {
+          "icon": "💛",
+          "title": "配偶 / 家属",
+          "desc": "退伍军人的家属"
+        },
+        {
+          "icon": "🕊️",
+          "title": "遗属配偶",
+          "desc": "失去退伍军人配偶"
+        }
+      ]
+    },
+    "veteran": {
+      "pct": 18,
+      "bot": "感谢您的服务。🇺🇸\n\n{{ORG_NAME}} 很荣幸能为您提供支持。您是何时服役的？",
+      "cards": [
+        {
+          "icon": "🏜️",
+          "title": "9·11 后",
+          "desc": "2001 年至今"
+        },
+        {
+          "icon": "🌊",
+          "title": "海湾战争",
+          "desc": "1990–2001"
+        },
+        {
+          "icon": "🌿",
+          "title": "越战时期",
+          "desc": "1964–1975"
+        },
+        {
+          "icon": "🔵",
+          "title": "其他时期",
+          "desc": "韩战、冷战等"
+        }
+      ]
+    },
+    "era": {
+      "pct": 32,
+      "bot": "您目前是否有 VA 伤残评定？",
+      "cards": [
+        {
+          "icon": "✅",
+          "title": "是 — 已评定",
+          "desc": "我有评定百分比"
+        },
+        {
+          "icon": "📝",
+          "title": "否 — 尚未申请",
+          "desc": "从未提交过"
+        },
+        {
+          "icon": "❌",
+          "title": "曾被拒绝",
+          "desc": "我的申请被驳回"
+        },
+        {
+          "icon": "❓",
+          "title": "不确定",
+          "desc": "需要查询"
+        }
+      ]
+    },
+    "benefits_menu": {
+      "pct": 48,
+      "bot": "以下是主要福利。您对哪一项最感兴趣？",
+      "cards": [
+        {
+          "icon": "💰",
+          "title": "伤残补偿",
+          "desc": "免税月度补偿"
+        },
+        {
+          "icon": "🎓",
+          "title": "GI 法案",
+          "desc": "教育资助"
+        },
+        {
+          "icon": "🏠",
+          "title": "VA 房贷",
+          "desc": "无需首付"
+        },
+        {
+          "icon": "☢️",
+          "title": "PACT 法案",
+          "desc": "毒物暴露"
+        },
+        {
+          "icon": "🏥",
+          "title": "医疗保健",
+          "desc": "VA 医疗服务"
+        },
+        {
+          "icon": "👔",
+          "title": "职业康复",
+          "desc": "就业培训"
+        }
+      ]
+    },
+    "disability": {
+      "pct": 62,
+      "bot": "<strong>VA 伤残补偿</strong> — 针对与服役相关病症的免税月度补偿。\n\n<strong>2026 年补偿标准（仅退伍军人本人）：</strong> 10%：$180 | 50%：$1,133 | 100%：$3,939/月\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>2025 年 12 月生效标准（COLA 2.8%）。请在 VA.gov 核实。</em>",
+      "chips": [
+        "如何提交申请？",
+        "需要哪些文件？",
+        "查找 VSO 顾问",
+        "查看其他福利"
+      ]
+    },
+    "gi_bill": {
+      "pct": 62,
+      "bot": "<strong>9·11 后 GI 法案（第 33 章）</strong> — 您应得的教育福利。\n\n<strong>承担范围：</strong>\n— <strong>学费：</strong>公立大学全额；私立大学每年最高 $26,042\n— <strong>住房：</strong>按邮政编码计算的月度津贴（$1,169–$4,400+/月）\n— <strong>书籍：</strong>每年最高 $1,000\n— <strong>期限：</strong>最长 36 个月\n\n<strong>申请条件：</strong>\n— 2001 年 9 月 10 日后服现役 90 天以上\n— 光荣退役\n— 福利随服役时间增加（服役 36 个月以上达 100%）\n\n<strong>在线学生：</strong>住房津贴固定为每月 $1,169。\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>2025–2026 学年住房补助标准。请在 <a href='https://va.gov/education/benefit-rates/post-9-11-gi-bill-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a> 核实。</em>",
+      "chips": [
+        "如何申请？",
+        "我可以转让 GI 法案福利吗？",
+        "查找 VSO 顾问",
+        "查看其他福利"
+      ]
+    },
+    "home_loan": {
+      "pct": 62,
+      "bot": "<strong>VA 房屋贷款</strong> — 您所获得的最有价值的福利之一。\n\n<strong>无需首付</strong> — 大多数传统贷款需要 3–20% 首付\n<strong>无 PMI（私人抵押保险）</strong> — 比传统贷款每月节省 $100–$300\n<strong>利率优惠</strong> — 通常低于传统房贷利率\n<strong>可重复使用</strong> — 此福利可多次使用\n\n<strong>申请条件：</strong>服现役 90 天以上，或国民警卫队/预备役 6 年以上。\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>这是一般信息。具体条款取决于您的贷款机构。</em>",
+      "chips": [
+        "我符合 VA 房贷条件吗？",
+        "如何获得 VA 房贷？",
+        "查找 VSO 顾问",
+        "查看其他福利"
+      ]
+    },
+    "pact_act": {
+      "pct": 62,
+      "bot": "<strong>PACT 法案（2022）</strong> — 数十年来 VA 福利最大规模的扩展。\n\n涵盖范围：焚烧坑、橙剂、海湾战争综合症。\n\n现在可能有超过 500 万退伍军人符合资格。",
+      "chips": [
+        "我符合资格吗？",
+        "查找 VSO 顾问",
+        "查看其他福利"
+      ]
+    },
+    "healthcare": {
+      "pct": 62,
+      "bot": "<strong>VA 医疗保健</strong> — 为符合资格的退伍军人提供全面医疗服务。\n\n<strong>承担范围：</strong>\n— 初级医疗（体检、预防保健）\n— 心理健康（PTSD、抑郁、焦虑）\n— 处方药（低额或无额自付）\n— 紧急及急诊护理\n— 专科医疗（心脏科、肿瘤科、外科）\n— 远程医疗（在家进行视频问诊）\n\n<strong>费用：</strong>许多退伍军人可免费享受。作战退伍军人在退役后<strong>10 年内可获免费医疗</strong>。\n\n请在 <a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>VA.gov</a> 注册或致电 <a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a>。",
+      "chips": [
+        "如何注册？",
+        "我符合 VA 医疗资格吗？",
+        "查找 VSO 顾问",
+        "查看其他福利"
+      ]
+    },
+    "voc_rehab": {
+      "pct": 62,
+      "bot": "<strong>职业康复（VR&E / 第 31 章）</strong> — 为伤残退伍军人提供的就业支持。\n\n<strong>承担范围：</strong>\n— 职业咨询和规划\n— 学费、书籍和材料\n— 就业培训和资格认证\n— 简历制作和工作介绍协助\n\n<strong>申请条件：</strong>\n— VA 伤残评定 <strong>10% 或以上</strong>\n— 因伤残导致的就业障碍\n\n<strong>期限：</strong>最长 48 个月福利。",
+      "chips": [
+        "如何申请职业康复？",
+        "GI 法案",
+        "查找 VSO 顾问",
+        "查看其他福利"
+      ]
+    },
+    "denied": {
+      "pct": 76,
+      "bot": "<strong>申请被拒并非终点。</strong>\n\n大多数申请首次都会被拒 — 但在正确帮助下，超过 70% 的上诉都能成功。\n\n<strong>您的选择：</strong>\n— 补充申请（提交新证据）\n— 退伍军人上诉委员会\n— 免费的 VSO 代表为您争取权益\n\n请不要放弃。VSO 顾问可免费审查您的拒绝信。",
+      "chips": [
+        "查找 VSO 顾问",
+        "如何提交申请？",
+        "查看其他福利",
+        "重新开始"
+      ]
+    },
+    "file_claim": {
+      "pct": 76,
+      "bot": "<strong>如何提交伤残申请：</strong>\n\n<strong>第 1 步</strong> — 在 VA.gov 创建账户\n<strong>第 2 步</strong> — 填写 VA 21-526EZ 表格\n<strong>第 3 步</strong> — 准备 DD-214 和医疗记录\n<strong>第 4 步</strong> — 在线、邮寄或亲自提交\n\n<strong>📬 邮寄：</strong>\nDepartment of Veterans Affairs\nClaims Intake Center\nPO Box 4444, Janesville, WI 53547-4444\n\n<strong>🏥 亲自办理：</strong> <a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>查找最近的 VA 办公地点 →</a>",
+      "chips": [
+        "需要哪些文件？",
+        "查找 VSO 顾问",
+        "查看其他福利",
+        "重新开始"
+      ]
+    },
+    "documents": {
+      "pct": 82,
+      "bot": "<strong>所需文件：</strong>\n\n— DD-214（退役证明）\n— 医疗记录\n— 军中治疗记录\n— 战友证词（建议）\n— 医生关联信（建议）\n\n<em>请勿在本聊天中输入社会安全号码等个人信息 — 请使用 VA.gov 安全提交文件。</em>\n\n如需 DD-214？请在 archives.gov/veterans 免费申请。",
+      "chips": [
+        "查找 VSO 顾问",
+        "查看其他福利",
+        "重新开始"
+      ]
+    },
+    "healthcare_enroll": {
+      "pct": 76,
+      "bot": "<strong>如何注册 VA 医疗保健：</strong>\n\n<strong>方式 1</strong> — 在线：<a href='https://va.gov/health-care/apply-for-health-care-form-10-10ez/introduction' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>在 VA.gov 申请</a>\n<strong>方式 2</strong> — 致电：<a href='tel:+18772228387' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>1-877-222-8387</a>（周一至周五 上午 8 点至晚上 8 点 ET）\n<strong>方式 3</strong> — 亲自前往任何 VA 医疗中心：<a href='https://va.gov/find-locations' target='_blank' rel='noopener noreferrer' style='color:var(--gold);text-decoration:underline;text-underline-offset:2px;'>查找地点 →</a>\n\n<strong>需要准备：</strong>\n— DD-214（退役证明）\n— 带照片的身份证\n— 保险信息（如有 — 非必需）\n— 收入信息（用于确定自付额）\n\n<strong>申请之后：</strong>\nVA 通常在 <strong>1–2 周内</strong> 处理申请。您将收到一封信函，告知您的优先级别和首次预约说明。\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>请勿在本聊天中分享 SSN 等个人信息 — 请在 VA.gov 安全申请。</em>",
+      "chips": [
+        "我符合 VA 医疗资格吗？",
+        "查找 VSO 顾问",
+        "查看其他福利"
+      ]
+    },
+    "healthcare_eligibility": {
+      "pct": 82,
+      "bot": "<strong>VA 医疗保健资格：</strong>\n\n如果符合以下任一情况，您可能合资格：\n— 连续服现役 24 个月以上，或\n— 因服役相关伤残而退役，或\n— 1998 年 11 月 11 日后曾在战区服役，或\n— 服役期间曾接触毒物（PACT 法案 — 涵盖越南、海湾战争、伊拉克、阿富汗）\n\n<strong>PACT 法案扩展：</strong>自 2024 年 3 月起，所有曾接触毒物的退伍军人可直接注册 — 无需先申请伤残。\n\n<strong>优先级别：</strong>伤残评定较高的退伍军人优先就诊，且自付费用较低。\n\n不确定？VSO 顾问可在数分钟内核实您的资格。",
+      "chips": [
+        "如何注册？",
+        "查找 VSO 顾问",
+        "查看其他福利"
+      ]
+    },
+    "vso": {
+      "pct": 92,
+      "bot": null,
+      "chips": [
+        "如何提交申请？",
+        "查看其他福利",
+        "重新开始"
+      ]
+    },
+    "active_duty": {
+      "pct": 32,
+      "bot": "感谢您的服务和奉献。\n\n<strong>正在准备退役或转业？</strong>\n\n离开前应<em>提前</em>处理的关键福利：\n\n— <strong>TAP 项目</strong> — 强制性转业协助\n— <strong>伤残评定</strong> — 在退役前申请（BDD 项目）\n— <strong>GI 法案</strong> — 退役当天即可使用的教育福利\n— <strong>VA 医疗保健</strong> — 10 年内注册可获免费医疗\n— <strong>VA 房贷</strong> — 退役后立即可用",
+      "chips": [
+        "介绍 BDD 项目",
+        "GI 法案",
+        "VA 房贷",
+        "查找 VSO 顾问"
+      ]
+    },
+    "spouse": {
+      "pct": 48,
+      "bot": "感谢您的支持和奉献。每位军人背后的力量都是他们的家人。🤍\n\n<strong>配偶和家属可享福利：</strong>\n\n— <strong>CHAMPVA</strong> — 免费 VA 医疗保健\n— <strong>DEA（第 35 章）</strong> — 家属教育福利\n— <strong>遗属抚恤金</strong> — 收入支持\n— <strong>DIC</strong> — 退伍军人因服役原因去世时的月度补偿\n— <strong>房贷</strong> — 遗属配偶可能符合资格",
+      "chips": [
+        "介绍 DIC",
+        "介绍 CHAMPVA",
+        "查找 VSO 顾问",
+        "查看其他福利"
+      ]
+    }
+  },
+  "chipMap": {
+    "退伍军人": "veteran",
+    "现役军人": "active_duty",
+    "配偶 / 家属": "spouse",
+    "遗属配偶": "surviving_spouse",
+    "9·11 后": "era",
+    "海湾战争": "era",
+    "越战时期": "era",
+    "其他时期": "era",
+    "是 — 已评定": "disability",
+    "否 — 尚未申请": "file_claim",
+    "曾被拒绝": "denied",
+    "不确定": "file_claim",
+    "伤残补偿": "disability",
+    "GI 法案": "gi_bill",
+    "VA 房贷": "home_loan",
+    "PACT 法案": "pact_act",
+    "医疗保健": "healthcare",
+    "职业康复": "voc_rehab",
+    "如何提交申请？": "file_claim",
+    "需要哪些文件？": "documents",
+    "查找 VSO 顾问": "vso",
+    "查看其他福利": "benefits_menu",
+    "查看所有福利": "all_benefits",
+    "我符合资格吗？": "pact_qualify",
+    "我符合 VA 房贷条件吗？": "home_loan_apply",
+    "如何申请？": "gi_bill_apply",
+    "如何注册？": "healthcare_enroll",
+    "我符合 VA 医疗资格吗？": "healthcare_eligibility",
+    "介绍 BDD 项目": "bdd",
+    "介绍 DIC": "dic",
+    "介绍 CHAMPVA": "champva",
+    "如何申请 DIC？": "dic_apply",
+    "我可以转让 GI 法案福利吗？": "gi_bill_transfer",
+    "如何获得 VA 房贷？": "home_loan_apply",
+    "如何申请职业康复？": "voc_rehab_apply",
+    "重新开始": "welcome"
+  },
+  "ui": {
+    "ph": "请输入问题或选择一个选项…",
+    "online": "在线 · 免费 · 24/7",
+    "choose": "请选择一个选项",
+    "warn": {
+      "template": "本次会话还剩 {{n}} 个问题。",
+      "pluralSuffix": ""
+    },
+    "limitTitle": "本次会话已结束",
+    "limitMsg": "您已了解了很多内容。VSO 顾问可以免费帮助您继续。",
+    "limitTopics": "您探讨的主题：",
+    "sumPrompt": "希望通过电子邮件接收摘要吗？",
+    "sumPH": "您的@邮箱.com",
+    "sendSum": "发送我的摘要 →",
+    "sumSent": "✓ 摘要已发送！",
+    "contVSO": "继续与您的 VSO 顾问联系：",
+    "startFresh": "重新开始 →",
+    "gated": "对于此主题，我们建议您直接咨询 VSO 顾问 — 他们可免费提供个性化指导。",
+    "fallback": "好问题！建议您咨询免费的 VSO 顾问。",
+    "fallbackChips": [
+      "查找 VSO 顾问",
+      "查看所有福利",
+      "重新开始"
+    ],
+    "disclaimerTitle": "开始之前",
+    "disclaimerBody": "VetNavigator 仅提供有关 VA 福利的一般信息。\n\n本聊天机器人不是律师、申索代理或 VSO 顾问。此处分享的信息仅供参考，可能不反映您的具体情况。\n\n如需个性化协助，请联系您当地的 VSO 顾问。\n\n请勿在本聊天中分享个人信息，例如社会安全号码、VA 档案号、出生日期或财务详情。\n\n更多详情，请查阅我们的 <a href=\"https://vetnavigator.ai/privacy.html\" target=\"_blank\" style=\"color:#e8c84a;text-decoration:underline\">隐私政策</a> 和 <a href=\"https://vetnavigator.ai/terms.html\" target=\"_blank\" style=\"color:#e8c84a;text-decoration:underline\">服务条款</a>。",
+    "disclaimerBtn": "我明白 — 开始吧！"
+  },
+  "misc": {
+    "startOver": "重新开始",
+    "typeBelow": "请在下方输入您的问题 — 我在这里为您提供帮助。👇"
+  }
+}
