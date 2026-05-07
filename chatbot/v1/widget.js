@@ -445,7 +445,7 @@
 
     feedback: {
       pct: 5,
-      bot: "<strong>VetNavigator Support</strong>\n\nFor help with your chatbot, account, or billing:\n\n📧 <strong>support@vetnavigator.ai</strong>\n⏱ We respond within 24 hours\n\nPlease include your organization name and license key in your message.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>This channel is for VSO administrator support only. Please do not include personal veteran information such as SSNs, claim numbers, or medical details in your message.</em>",
+      bot: "<strong>VetNavigator Support</strong>\n\nFor help with your chatbot, account, or billing:\n\n📧 <strong>ops@vetnavigator.ai</strong>\n⏱ We respond within 24 hours\n\nPlease include your organization name and license key in your message.\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>This channel is for VSO administrator support only. Please do not include personal veteran information such as SSNs, claim numbers, or medical details in your message.</em>",
       chips: ['See all benefits', 'Start over']
     },
 
