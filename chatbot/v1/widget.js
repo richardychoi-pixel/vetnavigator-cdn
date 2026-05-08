@@ -2608,20 +2608,6 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(vetPayload)
     }).catch(function () {});
-
-    // CC to ops via Worker proxy (sender = ops@ for internal)
-    var ccPayload = {
-      key: LICENSE_KEY,
-      sender:      { name: 'VetNavigator AI', email: SUPPORT_EMAIL },
-      htmlContent: html,
-      to: [{ email: OPS_EMAIL }],
-      subject: '📋 Session Summary CC — ' + ORG_NAME
-    };
-    fetch(VN_API + '/brevo/email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(ccPayload)
-    }).catch(function () {});
   }
 
   // ── SUMMARY PROMPT (shown on "Start over" when 2+ topics explored) ────────
