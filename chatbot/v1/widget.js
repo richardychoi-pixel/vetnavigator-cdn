@@ -2216,7 +2216,23 @@
     }
 
     ge('vnon').textContent = ORG_NAME;
+    // Refresh node-content from updated module globals (NODES.vso.bot,
+    // NODES.welcome.bot, NODES.veteran.bot). The same two functions run on
+    // boot from openPanel/init — reusing them keeps the live view and the
+    // initial-load view identical.
     buildVSO();
+    buildWelcome();
+
+    // In-place chat refresh used after a successful save (network or local).
+    // Clears the chat-messages area, option/chip areas, and re-renders the
+    // welcome bubble so the user sees their updated info immediately —
+    // mirrors the boot/restart pattern (no page reload required).
+    function refreshChatInPlace() {
+      var msgs = ge('vnms'); if (msgs) msgs.innerHTML = '';
+      var cd   = ge('vncd'); if (cd)   cd.innerHTML   = '';
+      var ch   = ge('vnch'); if (ch)   ch.innerHTML   = '';
+      setTimeout(function () { renderNode('welcome'); }, 50);
+    }
 
     // Show saving banner immediately
     var banner = ge('vnsvd');
@@ -2229,6 +2245,7 @@
       banner.className = '';
       banner.textContent = '✓ Saved!';
       setTimeout(function () { banner.style.display = 'none'; }, 2500);
+      refreshChatInPlace();
       return;
     }
 
@@ -2259,6 +2276,8 @@
         banner.className = '';
         banner.textContent = '✓ Saved!';
         setTimeout(function () { banner.style.display = 'none'; }, 2500);
+        // In-place refresh — sidebar/welcome reflect new values without reload.
+        refreshChatInPlace();
         return;
       }
       return resp.json().then(function (err) {
@@ -2281,7 +2300,10 @@
       ORG_LEADERS = snap.ORG_LEADERS;
       if (langsVisible) SELECTED_LANGS = snap.SELECTED_LANGS;
       ge('vnon').textContent = ORG_NAME;
+      // Re-run buildVSO + buildWelcome to revert NODES.* content to pre-save
+      // values (they were optimistically rewritten with the new globals above).
       buildVSO();
+      buildWelcome();
       if (langsVisible) applyLangCheckboxState();
 
       // Translate common worker errors to friendly messages
