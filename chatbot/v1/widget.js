@@ -36,7 +36,7 @@
 
   // ── CONFIG VARIABLES (populated by loadConfig) ────────────────────────────
   var LICENSE_KEY, ORG_NAME, ORG_CITY, ORG_ADDR, ORG_PHONE, ORG_EMAIL;
-  var ORG_WEB, ORG_HOURS, ORG_MISSION, ORG_EVENTS, ORG_LEADERS;
+  var ORG_WEB, ORG_SOCIAL, ORG_HOURS, ORG_MISSION, ORG_EVENTS, ORG_LEADERS;
   var TIER_MAP = { DEMO: 4, PREMIUM: 4, STANDARD: 3, STARTER: 2, BASIC: 1 };
   var TIER_STR, TIER_LVL, IS_DEMO, HAS_MIC, HAS_ADMIN, MULTILINGUAL;
   var CONV_LIMIT, WARN_AT;
@@ -58,6 +58,7 @@
     ORG_PHONE   = cfg.orgPhone   || '';
     ORG_EMAIL   = cfg.orgEmail   || '';
     ORG_WEB     = cfg.orgWeb     || '';
+    ORG_SOCIAL  = cfg.orgSocial  || '';
     ORG_HOURS   = cfg.orgHours   || '';
     ORG_MISSION = cfg.orgMission || '';
     ORG_EVENTS  = Array.isArray(cfg.events)  ? cfg.events  : [];
@@ -77,9 +78,13 @@
     MULTILINGUAL = cfg.multilingual === true;
     // Admin access: validated server-side via X-VN-Admin header (demo bypasses)
     var _urlAdmin = new URLSearchParams(window.location.search).get('vnadmin') || '';
+    // Option B (2026-05-23): admin panel available to all paid tiers (Basic+).
+    // The panel's org-info editor is universal; AI scan tools (TIER_LVL >= 2),
+    // languages section (MULTILINGUAL || TIER_LVL >= 3), and branding tab
+    // (TIER_LVL >= 4 / SHOW_BRANDING) gate themselves further inside the panel.
     HAS_ADMIN  = IS_DEMO
       ? (_urlAdmin === '1' || cfg.adminValid === true)
-      : (TIER_LVL >= 2 && cfg.adminValid === true);
+      : (TIER_LVL >= 1 && cfg.adminValid === true);
     CONV_LIMIT = (IS_DEMO || TIER_LVL >= 3) ? 999 : (TIER_LVL >= 2 ? 20 : 10);
     WARN_AT    = Math.ceil(CONV_LIMIT * 0.8);
     ORG_LOGO    = (TIER_LVL >= 4 || IS_DEMO) ? (cfg.orgLogo          || '') : '';
@@ -1326,49 +1331,63 @@
       + (SHOW_BRANDING ? '<button class="vntb" data-tab="branding">🎨 Branding</button>' : '')
       + '</div>';
 
+    // Option B (2026-05-23): admin panel structure:
+    //   - Scan tools (vnsct + vnscw + vnscf): TIER_LVL >= 2 (Starter+)
+    //   - Org-info form: all tiers
+    //   - Languages section: MULTILINGUAL || TIER_LVL >= 3 (Basic+ML, Starter+ML, Standard, Premium)
+    //   - Save button: all tiers
     var adm = HAS_ADMIN && SHOW_ADMIN
       ? '<div id="vnadp" class="vntp" data-panel="admin" style="padding:14px">'
-        + '<div id="vnsct" style="display:flex;gap:0;margin-bottom:8px;border-radius:10px;overflow:hidden;border:1px solid #d1d5db">'
-        + '<button class="vnsc act" data-sc="web">🌐 Website</button>'
-        + '<button class="vnsc" data-sc="fb">📘 Facebook</button>'
-        + '<button class="vnsc" data-sc="man">✏️ Manual</button>'
-        + '</div>'
-        + '<div id="vnscw">'
-        + '<div style="display:flex;gap:6px;margin-bottom:4px">'
-        + '<input id="vnscu" type="text" class="vnai" style="margin-bottom:0" placeholder="https://yourpost.org"/>'
-        + '<button id="vnscb" style="padding:7px 12px;border-radius:8px;border:1px solid rgba(26,58,107,.3);background:rgba(26,58,107,.08);color:#1a3a6b;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit">🔍 Scan</button>'
-        + '</div>'
-        + '<div id="vnscst" style="font-size:11px;min-height:12px;margin-bottom:4px;line-height:1.4"></div>'
-        + '</div>'
-        + '<div id="vnscf" style="display:none">'
-        + '<div style="font-size:11px;color:#64748b;line-height:1.4;margin-bottom:6px">Go to your Facebook page → About tab → select all → copy → paste below.</div>'
-        + '<textarea id="vnfbpa" placeholder="Paste your Facebook About page text here…" style="width:100%;height:70px;background:#fafbfc;border:1px solid #d1d5db;border-radius:10px;padding:8px 12px;font-size:13px;color:#1e293b;font-family:inherit;resize:none;outline:none;box-sizing:border-box;margin-bottom:6px"></textarea>'
-        + '<button id="vnfbb" style="width:100%;padding:8px;border-radius:10px;border:1px solid rgba(26,58,107,.2);background:rgba(26,58,107,.06);color:#1a3a6b;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">📘 Extract from Facebook</button>'
-        + '<div id="vnscst2" style="font-size:11px;min-height:12px;margin-top:4px;margin-bottom:2px;line-height:1.4"></div>'
-        + '</div>'
+        + (TIER_LVL >= 2
+            ? '<div id="vnsct" style="display:flex;gap:0;margin-bottom:8px;border-radius:10px;overflow:hidden;border:1px solid #d1d5db">'
+              + '<button class="vnsc act" data-sc="web">🌐 Website</button>'
+              + '<button class="vnsc" data-sc="fb">📘 Facebook</button>'
+              + '<button class="vnsc" data-sc="man">✏️ Manual</button>'
+              + '</div>'
+              + '<div id="vnscw">'
+              + '<div style="display:flex;gap:6px;margin-bottom:4px">'
+              + '<input id="vnscu" type="text" class="vnai" style="margin-bottom:0" placeholder="https://yourpost.org"/>'
+              + '<button id="vnscb" style="padding:7px 12px;border-radius:8px;border:1px solid rgba(26,58,107,.3);background:rgba(26,58,107,.08);color:#1a3a6b;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit">🔍 Scan</button>'
+              + '</div>'
+              + '<div id="vnscst" style="font-size:11px;min-height:12px;margin-bottom:4px;line-height:1.4"></div>'
+              + '</div>'
+              + '<div id="vnscf" style="display:none">'
+              + '<div style="font-size:11px;color:#64748b;line-height:1.4;margin-bottom:6px">Go to your Facebook page → About tab → select all → copy → paste below.</div>'
+              + '<textarea id="vnfbpa" placeholder="Paste your Facebook About page text here…" style="width:100%;height:70px;background:#fafbfc;border:1px solid #d1d5db;border-radius:10px;padding:8px 12px;font-size:13px;color:#1e293b;font-family:inherit;resize:none;outline:none;box-sizing:border-box;margin-bottom:6px"></textarea>'
+              + '<button id="vnfbb" style="width:100%;padding:8px;border-radius:10px;border:1px solid rgba(26,58,107,.2);background:rgba(26,58,107,.06);color:#1a3a6b;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">📘 Extract from Facebook</button>'
+              + '<div id="vnscst2" style="font-size:11px;min-height:12px;margin-top:4px;margin-bottom:2px;line-height:1.4"></div>'
+              + '</div>'
+            : ''
+          )
         + '<span class="vnal">Organization Name</span><input class="vnai" id="an" type="text"/>'
         + '<span class="vnal">City</span><input class="vnai" id="ac" type="text"/>'
         + '<span class="vnal">State <span style="font-size:10px;color:#94a3b8;font-weight:400">(2-letter, e.g. IL)</span></span><input class="vnai" id="ast" type="text" maxlength="2" placeholder="e.g. IL"/>'
+        + '<span class="vnal">Address</span><input class="vnai" id="aa" type="text" placeholder="Street address"/>'
         + '<span class="vnal">Phone</span><input class="vnai" id="ap" type="text"/>'
         + '<span class="vnal">Email</span><input class="vnai" id="ae" type="email"/>'
+        + '<span class="vnal">Website</span><input class="vnai" id="aw" type="text" placeholder="https://yourpost.org"/>'
+        + '<span class="vnal">Facebook / Social URL</span><input class="vnai" id="aso" type="text" placeholder="facebook.com/yourpost"/>'
         + '<span class="vnal">Office Hours</span><input class="vnai" id="ah" type="text"/>'
         + '<span class="vnal">Upcoming Events</span><div id="aev"></div>'
         + '<button class="vnadd" id="vnadde">+ Add Event</button>'
         + '<span class="vnal">Leadership & Counselors</span><div id="ald"></div>'
         + '<button class="vnadd" id="vnadda">+ Add Person</button>'
-        + '<div style="font-size:12px;font-weight:700;margin-top:14px;margin-bottom:4px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Languages</div>'
-        + '<div style="font-size:11px;color:#64748b;margin-bottom:8px">Choose which languages your veterans can switch to. English is always available.</div>'
-        + '<div id="vnlangs" style="margin-bottom:8px">'
-        + '<label class="vnlangrow vnlangrow-locked"><input type="checkbox" id="vnlang-en" class="vnlangchk" checked disabled><span class="vnlanglbl">English</span></label>'
-        + '<label class="vnlangrow" data-lang="es"><input type="checkbox" id="vnlang-es" class="vnlangchk"><span class="vnlanglbl">Spanish</span></label>'
-        + '<label class="vnlangrow" data-lang="vi"><input type="checkbox" id="vnlang-vi" class="vnlangchk"><span class="vnlanglbl">Vietnamese</span></label>'
-        + '<label class="vnlangrow" data-lang="ko"><input type="checkbox" id="vnlang-ko" class="vnlangchk"><span class="vnlanglbl">Korean</span></label>'
-        + '<label class="vnlangrow" data-lang="tl"><input type="checkbox" id="vnlang-tl" class="vnlangchk"><span class="vnlanglbl">Filipino</span></label>'
-        + '<label class="vnlangrow" data-lang="zh"><input type="checkbox" id="vnlang-zh" class="vnlangchk"><span class="vnlanglbl">Chinese (Mandarin)</span></label>'
-        + '<label class="vnlangrow" data-lang="ar"><input type="checkbox" id="vnlang-ar" class="vnlangchk"><span class="vnlanglbl">Arabic</span></label>'
-        + '<label class="vnlangrow" data-lang="fr"><input type="checkbox" id="vnlang-fr" class="vnlangchk"><span class="vnlanglbl">French</span></label>'
-        + '</div>'
-        + '<div id="vnlangup" style="display:none;font-size:11px;color:#64748b;margin-top:6px;padding:6px 10px;background:rgba(178,34,52,.04);border-radius:6px">Want more languages? <a href="mailto:ops@vetnavigator.ai?subject=Plan upgrade — additional languages" style="color:#cc3344;text-decoration:none">Email ops@vetnavigator.ai about upgrading →</a></div>'
+        + ((MULTILINGUAL || TIER_LVL >= 3)
+            ? '<div style="font-size:12px;font-weight:700;margin-top:14px;margin-bottom:4px;background:linear-gradient(180deg,#1a3a6b,#2d5090);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Languages</div>'
+              + '<div style="font-size:11px;color:#64748b;margin-bottom:8px">Choose which languages your veterans can switch to. English is always available.</div>'
+              + '<div id="vnlangs" style="margin-bottom:8px">'
+              + '<label class="vnlangrow vnlangrow-locked"><input type="checkbox" id="vnlang-en" class="vnlangchk" checked disabled><span class="vnlanglbl">English</span></label>'
+              + '<label class="vnlangrow" data-lang="es"><input type="checkbox" id="vnlang-es" class="vnlangchk"><span class="vnlanglbl">Spanish</span></label>'
+              + '<label class="vnlangrow" data-lang="vi"><input type="checkbox" id="vnlang-vi" class="vnlangchk"><span class="vnlanglbl">Vietnamese</span></label>'
+              + '<label class="vnlangrow" data-lang="ko"><input type="checkbox" id="vnlang-ko" class="vnlangchk"><span class="vnlanglbl">Korean</span></label>'
+              + '<label class="vnlangrow" data-lang="tl"><input type="checkbox" id="vnlang-tl" class="vnlangchk"><span class="vnlanglbl">Filipino</span></label>'
+              + '<label class="vnlangrow" data-lang="zh"><input type="checkbox" id="vnlang-zh" class="vnlangchk"><span class="vnlanglbl">Chinese (Mandarin)</span></label>'
+              + '<label class="vnlangrow" data-lang="ar"><input type="checkbox" id="vnlang-ar" class="vnlangchk"><span class="vnlanglbl">Arabic</span></label>'
+              + '<label class="vnlangrow" data-lang="fr"><input type="checkbox" id="vnlang-fr" class="vnlangchk"><span class="vnlanglbl">French</span></label>'
+              + '</div>'
+              + '<div id="vnlangup" style="display:none;font-size:11px;color:#64748b;margin-top:6px;padding:6px 10px;background:rgba(178,34,52,.04);border-radius:6px">Want more languages? <a href="mailto:ops@vetnavigator.ai?subject=Plan upgrade — additional languages" style="color:#cc3344;text-decoration:none">Email ops@vetnavigator.ai about upgrading →</a></div>'
+            : ''
+          )
         + '<div style="display:flex;justify-content:center;margin-top:8px"><button id="vnsv" class="vnbtn-glass">Save Changes</button></div>'
         + '<div id="vnsvd">✓ Saved!</div>'
         + '</div>'
@@ -2159,9 +2178,15 @@
   }
 
   function vnSave() {
+    // Option B (2026-05-23): the languages section only renders for tiers that can use it
+    // (Basic+ML, Starter+ML, Standard, Premium). For Basic-no-ML and Starter-no-ML it
+    // doesn't render, so we must NOT collect or send selectedLanguages.
+    var langsVisible = MULTILINGUAL || TIER_LVL >= 3;
+
     // Snapshot current state for rollback if server rejects
     var snap = {
       ORG_NAME: ORG_NAME, ORG_CITY: ORG_CITY, ORG_STATE: ORG_STATE,
+      ORG_ADDR: ORG_ADDR, ORG_WEB: ORG_WEB, ORG_SOCIAL: ORG_SOCIAL,
       ORG_PHONE: ORG_PHONE, ORG_EMAIL: ORG_EMAIL, ORG_HOURS: ORG_HOURS,
       ORG_EVENTS: ORG_EVENTS.slice(), ORG_LEADERS: ORG_LEADERS.slice(),
       SELECTED_LANGS: SELECTED_LANGS.slice()
@@ -2171,19 +2196,24 @@
     ORG_NAME   = ge('an').value.trim() || ORG_NAME;
     ORG_CITY   = ge('ac').value.trim() || ORG_CITY;
     ORG_STATE  = (ge('ast').value.trim() || ORG_STATE).toUpperCase();
+    ORG_ADDR   = ge('aa').value.trim() || ORG_ADDR;
     ORG_PHONE  = ge('ap').value.trim() || ORG_PHONE;
     ORG_EMAIL  = ge('ae').value.trim() || ORG_EMAIL;
+    ORG_WEB    = ge('aw').value.trim() || ORG_WEB;
+    ORG_SOCIAL = ge('aso').value.trim() || ORG_SOCIAL;
     ORG_HOURS  = ge('ah').value.trim() || ORG_HOURS;
     ORG_EVENTS  = Array.from(ge('aev').querySelectorAll('input')).map(function (i) { return i.value.trim(); }).filter(Boolean);
     ORG_LEADERS = Array.from(ge('ald').querySelectorAll('input')).map(function (i) { return i.value.trim(); }).filter(Boolean);
 
-    // Collect selected languages — English always first, then any checked non-coming-soon
-    var newLangs = ['en'];
-    LIVE_LANG_CODES.forEach(function (code) {
-      var cb = ge('vnlang-' + code);
-      if (cb && cb.checked && !cb.disabled) newLangs.push(code);
-    });
-    SELECTED_LANGS = newLangs;
+    // Collect selected languages only when languages section is rendered
+    if (langsVisible) {
+      var newLangs = ['en'];
+      LIVE_LANG_CODES.forEach(function (code) {
+        var cb = ge('vnlang-' + code);
+        if (cb && cb.checked && !cb.disabled) newLangs.push(code);
+      });
+      SELECTED_LANGS = newLangs;
+    }
 
     ge('vnon').textContent = ORG_NAME;
     buildVSO();
@@ -2202,21 +2232,28 @@
       return;
     }
 
+    // Build PUT body — omit selectedLanguages when languages section didn't render
+    // (avoids overwriting existing KV value with an empty/stale array).
+    var bodyData = {
+      adminToken: new URLSearchParams(window.location.search).get('vnadmin') || '',
+      orgName:    ORG_NAME,
+      orgCity:    ORG_CITY,
+      orgState:   ORG_STATE,
+      orgAddress: ORG_ADDR,
+      orgPhone:   ORG_PHONE,
+      orgEmail:   ORG_EMAIL,
+      orgWeb:     ORG_WEB,
+      orgSocial:  ORG_SOCIAL,
+      orgHours:   ORG_HOURS,
+      events:     ORG_EVENTS,
+      leaders:    ORG_LEADERS
+    };
+    if (langsVisible) bodyData.selectedLanguages = SELECTED_LANGS;
+
     fetch(VN_API + '/config?key=' + encodeURIComponent(LICENSE_KEY), {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        adminToken: new URLSearchParams(window.location.search).get('vnadmin') || '',
-        orgName:    ORG_NAME,
-        orgCity:    ORG_CITY,
-        orgState:   ORG_STATE,
-        orgPhone:   ORG_PHONE,
-        orgEmail:   ORG_EMAIL,
-        orgHours:   ORG_HOURS,
-        events:     ORG_EVENTS,
-        leaders:    ORG_LEADERS,
-        selectedLanguages: SELECTED_LANGS
-      })
+      body: JSON.stringify(bodyData)
     }).then(function (resp) {
       if (resp.ok) {
         banner.className = '';
@@ -2234,15 +2271,18 @@
       ORG_NAME   = snap.ORG_NAME;
       ORG_CITY   = snap.ORG_CITY;
       ORG_STATE  = snap.ORG_STATE;
+      ORG_ADDR   = snap.ORG_ADDR;
       ORG_PHONE  = snap.ORG_PHONE;
       ORG_EMAIL  = snap.ORG_EMAIL;
+      ORG_WEB    = snap.ORG_WEB;
+      ORG_SOCIAL = snap.ORG_SOCIAL;
       ORG_HOURS  = snap.ORG_HOURS;
       ORG_EVENTS = snap.ORG_EVENTS;
       ORG_LEADERS = snap.ORG_LEADERS;
-      SELECTED_LANGS = snap.SELECTED_LANGS;
+      if (langsVisible) SELECTED_LANGS = snap.SELECTED_LANGS;
       ge('vnon').textContent = ORG_NAME;
       buildVSO();
-      applyLangCheckboxState();
+      if (langsVisible) applyLangCheckboxState();
 
       // Translate common worker errors to friendly messages
       var msg = (err && err.message) ? err.message : 'Save failed';
@@ -2264,8 +2304,11 @@
     ge('an').value = ORG_NAME;
     ge('ac').value = ORG_CITY;
     ge('ast').value = ORG_STATE;
+    ge('aa').value = ORG_ADDR;
     ge('ap').value = ORG_PHONE;
     ge('ae').value = ORG_EMAIL;
+    ge('aw').value = ORG_WEB;
+    ge('aso').value = ORG_SOCIAL;
     ge('ah').value = ORG_HOURS;
     ORG_EVENTS.forEach(function (e) {
       var r = document.createElement('div'); r.className = 'vnadr';
