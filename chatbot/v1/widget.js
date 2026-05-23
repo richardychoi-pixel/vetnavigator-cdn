@@ -2234,6 +2234,31 @@
       setTimeout(function () { renderNode('welcome'); }, 50);
     }
 
+    // Notify the parent page (chat.html embed surface) to re-render its sidebar
+    // (#sb-name, #sb-city, #sb-contact, #sb-events, #sb-leaders, #sb-social-card,
+    // document.title, topbar logo). The sidebar lives in chat.html, outside the
+    // widget's scope; chat.html exposes window.vnRefreshSidebar specifically for
+    // this cross-scope notification. No-op on surfaces that don't expose it
+    // (e.g. index.html demo embed has no sidebar). Same cfg shape chat.html
+    // builds from GET /config, so initial-load and post-save go through identical
+    // render logic.
+    function refreshParentSidebar() {
+      if (typeof window.vnRefreshSidebar !== 'function') return;
+      window.vnRefreshSidebar({
+        orgName:    ORG_NAME,
+        orgCity:    ORG_CITY,
+        orgAddress: ORG_ADDR,
+        orgPhone:   ORG_PHONE,
+        orgEmail:   ORG_EMAIL,
+        orgWeb:     ORG_WEB,
+        orgSocial:  ORG_SOCIAL,
+        orgHours:   ORG_HOURS,
+        events:     ORG_EVENTS,
+        leaders:    ORG_LEADERS,
+        orgLogo:    ORG_LOGO  // Premium-gated at the widget global (blanked for tier < PREMIUM in applyConfig)
+      });
+    }
+
     // Show saving banner immediately
     var banner = ge('vnsvd');
     banner.className = 'vnsvd-saving';
@@ -2246,6 +2271,7 @@
       banner.textContent = '✓ Saved!';
       setTimeout(function () { banner.style.display = 'none'; }, 2500);
       refreshChatInPlace();
+      refreshParentSidebar();
       return;
     }
 
@@ -2276,8 +2302,10 @@
         banner.className = '';
         banner.textContent = '✓ Saved!';
         setTimeout(function () { banner.style.display = 'none'; }, 2500);
-        // In-place refresh — sidebar/welcome reflect new values without reload.
+        // In-place refresh — widget welcome bubble + parent page sidebar reflect
+        // new values without a page reload.
         refreshChatInPlace();
+        refreshParentSidebar();
         return;
       }
       return resp.json().then(function (err) {
