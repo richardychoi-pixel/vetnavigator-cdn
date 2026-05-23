@@ -2413,8 +2413,10 @@
       }
     }
 
-    // Website scan
-    ge('vnscb').addEventListener('click', function () {
+    // Website scan — null-guard (Option B: scan tools only render at TIER_LVL >= 2;
+    // Basic-tier panel exists but #vnscb is not in the DOM).
+    var _scb = ge('vnscb');
+    if (_scb) _scb.addEventListener('click', function () {
       var url = ge('vnscu').value.trim();
       if (!url) return;
       if (!url.startsWith('http')) url = 'https://' + url;
@@ -2468,8 +2470,9 @@
         });
     });
 
-    // Facebook text scan
-    ge('vnfbb').addEventListener('click', function () {
+    // Facebook text scan — null-guard (Option B: same conditional as #vnscb above).
+    var _fbb = ge('vnfbb');
+    if (_fbb) _fbb.addEventListener('click', function () {
       var paste = ge('vnfbpa').value.trim();
       if (!paste || paste.length < 40) {
         ge('vnscst2').style.color   = 'rgba(255,120,120,.85)';
