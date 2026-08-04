@@ -378,13 +378,13 @@
 
     gi_bill: {
       pct: 62,
-      bot: "<strong>Post-9/11 GI Bill (Chapter 33)</strong> — your earned education benefit.\n\n<strong>What it covers:</strong>\n— <strong>Tuition:</strong> Full at public schools; up to $26,042/yr at private\n— <strong>Housing:</strong> Monthly allowance based on school ZIP ($1,169–$4,400+/mo)\n— <strong>Books:</strong> Up to $1,000/year\n— <strong>Duration:</strong> Up to 36 months of benefits\n— <strong>Online students:</strong> Flat $1,169/month for housing\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates for 2025–2026 academic year. Verify at <a href='https://va.gov/education/benefit-rates/post-9-11-gi-bill-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
+      bot: "<strong>Post-9/11 GI Bill (Chapter 33)</strong> — your earned education benefit.\n\n<strong>What it covers:</strong>\n— <strong>Tuition:</strong> Full at public schools; up to $29,921/yr at private\n— <strong>Housing:</strong> Monthly allowance based on school ZIP ($1,169–$4,400+/mo)\n— <strong>Books:</strong> Up to $1,000/year\n— <strong>Duration:</strong> Up to 36 months of benefits\n— <strong>Online students:</strong> Flat $1,169/month for housing\n\n<em style='font-size:11px;color:rgba(255,255,255,0.4);'>Rates for 2025–2026 academic year. Verify at <a href='https://va.gov/education/benefit-rates/post-9-11-gi-bill-rates' target='_blank' rel='noopener noreferrer' style='color:rgba(232,200,74,0.6);'>VA.gov</a>.</em>",
       chips: ['Do I qualify for GI Bill?', 'How do I apply for GI Bill?', 'Can I transfer my GI Bill?', 'Find a VSO counselor', 'See other benefits']
     },
 
     gi_bill_eligible: {
       pct: 68,
-      bot: "<strong>GI Bill eligibility:</strong>\n\n<strong>You qualify for the Post-9/11 GI Bill if:</strong>\n— 90+ days active duty after Sept 10, 2001\n— Honorable discharge\n\n<strong>Benefit level scales with service:</strong>\n— 36+ months: 100% of benefits\n— 30 months: 90%\n— 24 months: 80%\n— 6 months: 60%\n— 90 days: 40%\n\n<strong>Other GI Bill chapters:</strong>\n— <strong>Chapter 30 (Montgomery)</strong> — paid into during service, ~$2,122/mo\n— <strong>Chapter 31 (Voc Rehab)</strong> — for Veterans with 10%+ disability rating\n\nNot sure which chapter is right for you? A VSO counselor can help compare.",
+      bot: "<strong>GI Bill eligibility:</strong>\n\n<strong>You qualify for the Post-9/11 GI Bill if:</strong>\n— 90+ days active duty after Sept 10, 2001\n— Honorable discharge\n\n<strong>Benefit level scales with service:</strong>\n— 36+ months: 100% of benefits\n— 30 months: 90%\n— 24 months: 80%\n— 6 months: 60%\n— 90 days: 40%\n\n<strong>Other GI Bill chapters:</strong>\n— <strong>Chapter 30 (Montgomery)</strong> — paid into during service, ~$2,518/mo\n— <strong>Chapter 31 (Voc Rehab)</strong> — for Veterans with 10%+ disability rating\n\nNot sure which chapter is right for you? A VSO counselor can help compare.",
       chips: ['How do I apply for GI Bill?', 'What is Voc Rehab?', 'GI Bill types', 'Find a VSO counselor']
     },
 
@@ -714,7 +714,7 @@
 
     gi_bill_types: {
       pct: 54,
-      bot: "<strong>GI Bill — Choosing the right chapter:</strong>\n\n<strong>Chapter 33 — Post-9/11 GI Bill</strong> (most popular)\n— Served 90+ days after 9/10/2001\n— Covers full tuition at public schools, $26,042/yr cap at private\n— Includes monthly housing allowance (BAH rate)\n— Best for full-time students\n\n<strong>Chapter 30 — Montgomery GI Bill</strong>\n— Paid into during service ($1,200 contribution)\n— Monthly stipend paid directly to you (~$2,122/mo full-time)\n— More flexible — can be used for on-the-job training\n\n<strong>Chapter 31 — Voc Rehab</strong> (separate program)\n— For veterans with a service-connected disability\n— Covers school + living expenses + books\n\n<strong>Yellow Ribbon Program:</strong> Covers tuition above the Post-9/11 cap at private schools. School must participate.",
+      bot: "<strong>GI Bill — Choosing the right chapter:</strong>\n\n<strong>Chapter 33 — Post-9/11 GI Bill</strong> (most popular)\n— Served 90+ days after 9/10/2001\n— Covers full tuition at public schools, $29,921/yr cap at private\n— Includes monthly housing allowance (BAH rate)\n— Best for full-time students\n\n<strong>Chapter 30 — Montgomery GI Bill</strong>\n— Paid into during service ($1,200 contribution)\n— Monthly stipend paid directly to you (~$2,518/mo full-time)\n— More flexible — can be used for on-the-job training\n\n<strong>Chapter 31 — Voc Rehab</strong> (separate program)\n— For veterans with a service-connected disability\n— Covers school + living expenses + books\n\n<strong>Yellow Ribbon Program:</strong> Covers tuition above the Post-9/11 cap at private schools. School must participate.",
       chips: ['How do I apply for GI Bill?', 'What is Voc Rehab?', 'Find a VSO counselor']
     },
 
